@@ -3,6 +3,6 @@
 dependencies:
   - role: ansible-supervisor_task
     name: 'oauth2_proxy_{{ oauth2_proxy_app_name }}'
-    command: 'oauth2_proxy --provider="github" --github-org="ManabiIO" --email-domain=* --client-id="{{ oauth2_proxy_client_id }}" --client-secret="{{ oauth2_proxy_client_secret }}" --cookie-secret="{{ oauth2_proxy_cookie_secret }}" --redirect-url="{{ oauth2_proxy_redirect_url }}" --http-address="127.0.0.1:{{ oauth2_proxy_port }}" --upstream="{{ oauth2_proxy_upstream }}"'
+    command: 'oauth2_proxy --provider="github" --github-org="ManabiIO" --email-domain=* --client-id="{{ oauth2_proxy_client_id }}" --client-secret="{{ oauth2_proxy_client_secret }}" --cookie-domain="{{ oauth2_proxy_cookie_domain }}" --cookie-secret="{{ oauth2_proxy_cookie_secret }}" --redirect-url="{{ oauth2_proxy_redirect_url }}" --http-address="127.0.0.1:{{ oauth2_proxy_port }}" --upstream="{{ oauth2_proxy_upstream }}"'
     user: ubuntu
     numprocs: 1

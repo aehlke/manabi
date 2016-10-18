@@ -21,6 +21,7 @@ dependencies:
     oauth2_proxy_port: '{{ rq_dashboard.oauth2_proxy_port }}'
     oauth2_proxy_upstream: 'http://127.0.0.1:{{ rq_dashboard.port }}'
     oauth2_proxy_redirect_url: 'https://{{ rq_dashboard.hostname }}/oauth2/callback'
+    oauth2_proxy_cookie_domain: '{{ rq_dashboard.hostname }}'
 
   - role: ansible-supervisor_task
     name: rq-dashboard
