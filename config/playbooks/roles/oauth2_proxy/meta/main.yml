@@ -1,5 +1,7 @@
 ---
 
+allow_duplicates: yes
+
 dependencies:
   - role: ansible-supervisor_task
     name: 'oauth2_proxy_{{ oauth2_proxy_app_name }}'
