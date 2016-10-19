@@ -1,3 +1,4 @@
 ---
 
 - src: https://github.com/aehlke/ansible-supervisor_task
+- src: https://github.com/aehlke/sa-tarsnap
