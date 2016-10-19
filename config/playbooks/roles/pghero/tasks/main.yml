@@ -26,6 +26,8 @@
   with_items:
     - 'DATABASE_URL=postgres://{{ postgres_secrets.username }}:{{ postgres_secrets.password|urlencode() }}@localhost:5432/{{ postgres_secrets.db_name }}'
     - 'PORT={{ pghero.port }}'
+    - 'USERNAME={{ pghero_internal_username }}'
+    - 'PASSWORD={{ pghero_internal_password }}'
   become: yes
   notify: Restart PgHero
 

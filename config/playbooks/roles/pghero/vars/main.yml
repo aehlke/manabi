@@ -1,0 +1,5 @@
+---
+
+# We rely on oauth2_proxy for authentication, not pghero's basic auth.
+pghero_internal_username: pghero_unwanted_basic_auth
+pghero_internal_password: pghero_unwanted_basic_auth
