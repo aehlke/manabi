@@ -54,11 +54,14 @@
     system: yes
   become: yes
 
-- name: Create /var/run/redis
+- name: Create redis directories
   file:
-    path: /var/run/redis
+    path: '{{ item }}'
     state: directory
     owner: '{{ redis_user }}'
+  with_items:
+    - /var/run/redis
+    - '{{ redis_working_dir }}'
   become: yes
 
 - name: Install Redis

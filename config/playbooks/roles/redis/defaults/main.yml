@@ -5,3 +5,4 @@ redis_user: redis
 redis_group: '{{ redis_user }}'
 redis_download_url: 'http://download.redis.io/releases/redis-{{ redis_version }}.tar.gz'
 redis_install_dir: /opt/redis
+redis_working_dir: /var/lib/redis
