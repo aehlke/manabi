@@ -14,14 +14,14 @@ dependencies:
     user: ubuntu
     numprocs: 1
 
-  - role: oauth2_proxy
-    oauth2_proxy_app_name: rq_dashboard
-    oauth2_proxy_client_id: '{{ rq_dashboard_secrets.github_client_id }}'
-    oauth2_proxy_client_secret: '{{ rq_dashboard_secrets.github_client_secret }}'
-    oauth2_proxy_port: '{{ rq_dashboard.oauth2_proxy_port }}'
-    oauth2_proxy_upstream: 'http://127.0.0.1:{{ rq_dashboard.port }}'
-    oauth2_proxy_redirect_url: 'https://{{ rq_dashboard.hostname }}/oauth2/callback'
-    oauth2_proxy_cookie_domain: '{{ rq_dashboard.hostname }}'
+  # - role: oauth2_proxy
+  #   oauth2_proxy_app_name: rq_dashboard
+  #   oauth2_proxy_client_id: '{{ rq_dashboard_secrets.github_client_id }}'
+  #   oauth2_proxy_client_secret: '{{ rq_dashboard_secrets.github_client_secret }}'
+  #   oauth2_proxy_port: '{{ rq_dashboard.oauth2_proxy_port }}'
+  #   oauth2_proxy_upstream: 'http://127.0.0.1:{{ rq_dashboard.port }}'
+  #   oauth2_proxy_redirect_url: 'https://{{ rq_dashboard.hostname }}/oauth2/callback'
+  #   oauth2_proxy_cookie_domain: '{{ rq_dashboard.hostname }}'
 
   - role: ansible-supervisor_task
     name: rq-dashboard
