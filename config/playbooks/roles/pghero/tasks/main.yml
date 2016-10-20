@@ -28,6 +28,7 @@
     - 'PORT={{ pghero.port }}'
   become: yes
   notify: Restart PgHero
+  # TODO: Check the values before setting them, otherwise /etc/pghero/conf.d/other fills up.
 
 - name: Set PgHero to one worker
   command: pghero scale web=1
