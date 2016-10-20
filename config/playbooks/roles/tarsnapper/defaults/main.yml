@@ -1,4 +1,6 @@
 ---
 
 postgres_backup_file: /tmp/production-db.sql.gz
+
+tarsnap_conf_path: /usr/local/etc/tarsnap.conf
 tarsnapper_dir: /etc/tarsnapper

@@ -16,3 +16,12 @@
     src: tarsnapper.conf.j2
     dest: '{{ tarsnapper_dir }}/tarsnapper.conf'
   become: yes
+
+- name: Place Tarsnap configuration
+  template:
+    src: tarsnap.conf.j2
+    dest: '{{ tarsnap_conf_path }}'
+  become: yes
+
+# Be sure to run:
+# sudo tarsnap-keygen --keyfile /root/tarsnap.key --user email.address --machine mymachine
