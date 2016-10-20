@@ -1,0 +1,18 @@
+# {{ ansible_managed }}
+# Example config: https://github.com/jeffwidman/ansible-tarsnap/blob/master/templates/tarsnapper_jobs.yml.j2.example
+
+# Global values, valid for all jobs unless overridden:
+# A job's delta controls when old backups are expired
+deltas: 1h 1d 7d 30d 180d
+
+# A job's target sets the name of the created archive
+# target: /localmachine/$name-$date
+
+# You can also include jobs from separate files
+# include-jobs: /usr/local/etc/tarsnapper/*.yml
+
+jobs:
+  postgres:
+    source: {{ postgres_backup_file }}
+    exec_before: sudo -u postgres pg_dumpall --file={{ postgres_backup_file }} | gzip
+    target: production-db-$date.sql.gz

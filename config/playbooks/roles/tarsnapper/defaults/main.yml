@@ -1,0 +1,4 @@
+---
+
+postgres_backup_file: /tmp/production-db.sql.gz
+tarsnapper_dir: /etc/tarsnapper

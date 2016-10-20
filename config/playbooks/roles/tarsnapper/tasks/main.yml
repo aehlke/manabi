@@ -1,0 +1,18 @@
+---
+
+- name: Install Tarsnapper
+  pip:
+    name: tarsnapper
+  become: yes
+
+- name: Create Tarsnapper directory
+  file:
+    path: '{{ tarsnapper_dir }}'
+    state: directory
+  become: yes
+
+- name: Place Tarsnapper configuration
+  template:
+    src: tarsnapper.conf.j2
+    dest: '{{ tarsnapper_dir }}/tarsnapper.conf'
+  become: yes

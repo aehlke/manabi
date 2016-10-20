@@ -1,0 +1,4 @@
+---
+
+dependencies:
+  - { role: sa-tarsnap, tags: ['tarsnap'] }

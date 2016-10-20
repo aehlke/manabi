@@ -13,4 +13,4 @@
   roles:
     - { role: manabi, tags: ['manabi'] }
     - { role: pghero, tags: ['pghero'] }
-    - { role: sa-tarsnap, tags: ['tarsnap'] }
+    - { role: tarsnapper, tags: ['tarsnap'] }
