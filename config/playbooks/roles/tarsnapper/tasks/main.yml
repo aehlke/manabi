@@ -23,5 +23,14 @@
     dest: '{{ tarsnap_conf_path }}'
   become: yes
 
+- name: Run Tarsnapper on cron
+  cron:
+    name: "Tarsnapper backups"
+    minute: 0
+    hour: */4
+    user: root
+    job: 'tarsnapper -c {{ tarsnapper_dir }}/tarsnapper.conf --quiet make'
+    cron_file: tarsnapper_backups
+
 # Be sure to run:
 # sudo tarsnap-keygen --keyfile /root/tarsnap.key --user email.address --machine mymachine
