@@ -29,7 +29,7 @@
     minute: 0
     hour: */4
     user: root
-    job: 'tarsnapper -c {{ tarsnapper_dir }}/tarsnapper.conf --quiet make'
+    job: 'PATH=$PATH:/usr/local/bin tarsnapper -c {{ tarsnapper_dir }}/tarsnapper.conf --quiet make'
     cron_file: tarsnapper_backups
 
 # Be sure to run:
