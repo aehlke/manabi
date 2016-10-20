@@ -32,3 +32,4 @@
     owner: postgres
     group: postgres
   become: yes
+  notify: Restart PostgreSQL server
