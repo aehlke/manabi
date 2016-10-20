@@ -31,3 +31,11 @@
     - ['80', '443']
   become: yes
   notify: Restart ufw
+
+- name: Allow Tarsnap port
+  ufw:
+    rule: allow
+    port: 9279
+    proto: tcp
+  become: yes
+  notify: Restart ufw
