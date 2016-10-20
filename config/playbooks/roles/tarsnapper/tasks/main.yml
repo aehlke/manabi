@@ -29,8 +29,9 @@
     minute: 0
     hour: '*/4'
     user: root
-    job: 'PATH=$PATH:/usr/local/bin tarsnapper -c {{ tarsnapper_dir }}/tarsnapper.conf --quiet make'
+    job: 'PATH=$PATH:/usr/local/bin tarsnapper -c {{ tarsnapper_dir }}/tarsnapper.conf
     cron_file: tarsnapper_backups
+  become: yes
 
 # Be sure to run:
 # sudo tarsnap-keygen --keyfile /root/tarsnap.key --user email.address --machine mymachine

@@ -6,6 +6,6 @@ dependencies:
     oauth2_proxy_client_id: '{{ pghero_secrets.github_client_id }}'
     oauth2_proxy_client_secret: '{{ pghero_secrets.github_client_secret }}'
     oauth2_proxy_port: '{{ pghero.oauth2_proxy_port }}'
-    oauth2_proxy_upstream: 'http://{{ pghero_internal_username }}:{{ pghero_internal_password }}@127.0.0.1:{{ pghero.port }}'
+    oauth2_proxy_upstream: 'http://127.0.0.1:{{ pghero.port }}'
     oauth2_proxy_redirect_url: 'https://{{ pghero.hostname }}/oauth2/callback'
     oauth2_proxy_cookie_domain: '{{ pghero.hostname }}'
