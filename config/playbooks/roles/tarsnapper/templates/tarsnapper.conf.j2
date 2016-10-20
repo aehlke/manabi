@@ -14,5 +14,5 @@ deltas: 1h 1d 7d 30d 180d
 jobs:
   postgres:
     source: {{ postgres_backup_file }}
-    exec_before: sudo -u postgres pg_dumpall --file={{ postgres_backup_file }} | gzip
+    exec_before: sudo -u postgres pg_dumpall --file={{ postgres_backup_file }} | gzip -f
     target: production-db-$date.sql.gz
