@@ -49,3 +49,20 @@
   notify:
     - Reload uwsgi
     - Restart RQ workers
+
+- name: Collect static files
+  django_manage:
+    command: collectstatic
+    app_path: '{{ app_root_path }}'
+    virtualenv: '{{ app_virtualenv_path }}'
+  become: yes
+
+- name: Assign ownership of static files to nginx
+  file:
+    path: '{{ app_static_files_path }}'
+    state: dirctory
+    mode: 'u=r,g=r'
+    owner: www-data
+    group: www-data
+    recurse: yes
+  become: yes

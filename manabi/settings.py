@@ -109,7 +109,7 @@ else:
 USE_X_FORWARDED_HOST = True
 
 STATIC_ROOT = os.path.join(SITE_MEDIA_ROOT, 'static')
-STATIC_URL = '/site_media/static/'
+STATIC_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'

@@ -16,6 +16,15 @@
     mode: 0755
   become: yes
 
+- name: Create static files directory for nginx
+  file:
+    path: '{{ app_static_files_path }}'
+    state: dirctory
+    mode: 'u=r,g=r'
+    owner: www-data
+    group: www-data
+  become: yes
+
 - name: Add default nginx config
   template:
     src: templates/nginx.conf.j2

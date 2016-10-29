@@ -3,6 +3,7 @@
 app_port: 8080
 app_hostname: manabi.io
 app_root_path: /home/ubuntu/manabi
+app_static_files_path: /var/www/manabi
 app_virtualenv_path: /home/ubuntu/.virtualenvs/manabi
 
 uwsgi_socket: /tmp/manabi_uwsgi.socket
