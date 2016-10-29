@@ -5,6 +5,10 @@
     name: nginx
   become: yes
 
+- name: Disable Ubuntu's own automatic startup of nginx since we use Supervisor
+  command: 'update-rc.d -f nginx disable'
+  become: yes
+
 - name: Allow nginx to write to logs
   file:
     path: /var/log/nginx
