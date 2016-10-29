@@ -19,7 +19,7 @@
 - name: Create static files directory for nginx
   file:
     path: '{{ app_static_files_path }}'
-    state: dirctory
+    state: directory
     mode: 'u=r,g=r'
     owner: www-data
     group: www-data
