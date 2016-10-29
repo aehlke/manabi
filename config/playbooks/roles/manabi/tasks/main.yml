@@ -50,18 +50,18 @@
     - Reload uwsgi
     - Restart RQ workers
 
-- name: Collect static files
-  django_manage:
-    command: collectstatic
-    app_path: '{{ app_root_path }}'
-    virtualenv: '{{ app_virtualenv_path }}'
-  become: yes
-
 - name: Add ubuntu to www-data group to be able to manipulate static files
   user:
     name: ubuntu
     groups: www-data
     append: yes
+  become: yes
+
+- name: Collect static files
+  django_manage:
+    command: collectstatic
+    app_path: '{{ app_root_path }}'
+    virtualenv: '{{ app_virtualenv_path }}'
   become: yes
 
 - name: Assign ownership of static files to nginx
