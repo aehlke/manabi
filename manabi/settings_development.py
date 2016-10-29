@@ -1,3 +1,5 @@
+import os.path
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -22,3 +24,7 @@ CACHES = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+STATICFILES_DIRS = [
+    os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static'),
+]

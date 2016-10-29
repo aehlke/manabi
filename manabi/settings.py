@@ -103,7 +103,7 @@ USE_I18N = False
 
 USE_X_FORWARDED_HOST = True
 
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = None
 STATIC_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
@@ -171,25 +171,6 @@ if DEBUG:
 
 
 ROOT_URLCONF = 'manabi.urls'
-
-#  TEMPLATE_CONTEXT_PROCESSORS = (
-#      'django.contrib.auth.context_processors.auth',
-#      'django.core.context_processors.request',
-#      'django.core.context_processors.debug',
-#      'django.core.context_processors.i18n',
-#      'django.core.context_processors.media',
-#      'django.core.context_processors.static',
-#      'django.contrib.messages.context_processors.messages',
-#
-#      #'staticfiles.context_processors.static_url',
-#      #"pinax.core.context_processors.pinax_settings",
-#      #'pinax.apps.account.context_processors.account',
-#      #'notification.context_processors.notification',
-#      #'announcements.context_processors.site_wide_announcements',
-#
-#      #'dojango.context_processors.config',
-#      #'manabi.context_processors.site_base_extender',
-#  )
 
 INSTALLED_APPS = (
     'django.contrib.admin',
