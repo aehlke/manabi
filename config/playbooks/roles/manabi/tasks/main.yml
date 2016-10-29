@@ -57,6 +57,13 @@
     virtualenv: '{{ app_virtualenv_path }}'
   become: yes
 
+- name: Add ubuntu to www-data group to be able to manipulate static files
+  user:
+    name: ubuntu
+    groups: www-data
+    append: yes
+  become: yes
+
 - name: Assign ownership of static files to nginx
   file:
     path: '{{ app_static_files_path }}'
