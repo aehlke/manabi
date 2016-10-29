@@ -42,6 +42,7 @@ router.register(r'flashcards/next_cards_for_review',
     base_name='next-card-for-review')
 
 urlpatterns = [
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rq/', include('django_rq.urls')),
 

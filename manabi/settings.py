@@ -111,16 +111,6 @@ USE_X_FORWARDED_HOST = True
 STATIC_ROOT = os.path.join(SITE_MEDIA_ROOT, 'static')
 STATIC_URL = '/site_media/static/'
 
-# Additional directories which hold static files
-#import uni_form
-#STATICFILES_DIRS = (
-#    #('basic_project', os.path.join(PROJECT_ROOT, 'media')),
-#    ('pinax', os.path.join(PINAX_ROOT, 'media', PINAX_THEME)),
-#    os.path.join(PROJECT_ROOT, 'static'),
-#    os.path.join(PINAX_ROOT, 'media', PINAX_THEME),
-#    os.path.join(uni_form.__path__[0], 'media'),
-#)
-
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'
 
@@ -130,6 +120,7 @@ TEMPLATES = [{
     'APP_DIRS': True,
     'OPTIONS': {
         'context_processors': [
+            'django.core.context_processors.request',
             'django.template.context_processors.debug',
             'django.template.context_processors.request',
             'django.contrib.auth.context_processors.auth',
@@ -214,9 +205,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.humanize',
-)
-
-INSTALLED_APPS += (
     'django.contrib.staticfiles',
 
     # external
@@ -230,6 +218,13 @@ INSTALLED_APPS += (
     #'uni_form',
 
     'django_extensions',
+
+    # Auth
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    # 'allauth.socialaccount.providers.facebook',
+    # 'allauth.socialaccount.providers.twitter',
 
     # Other
     'rest_framework',
@@ -286,10 +281,8 @@ ABSOLUTE_URL_OVERRIDES = {
 ACCOUNT_EMAIL_VERIFICATION = False
 
 AUTHENTICATION_BACKENDS = [
-    #'pinax.apps.account.auth_backends.AuthenticationBackend',
-    #'utils.auth_backends.AuthenticationBackendWithLazySignup',
     'django.contrib.auth.backends.ModelBackend',
-    'lazysignup.backends.LazySignupBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
 BASIC_AUTH_CHALLENGE = 'Manabi'
