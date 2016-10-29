@@ -4,6 +4,7 @@ from django.contrib import admin
 from lazysignup.decorators import allow_lazy_user
 from rest_framework import routers
 
+import manabi.views
 from manabi.apps.utils.views import direct_to_template
 from manabi.apps.flashcards.api_views import (
     DeckViewSet,
@@ -45,6 +46,8 @@ urlpatterns = [
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rq/', include('django_rq.urls')),
+
+    url(r'^$', manabi.views.homepage),
 
     url(r'^terms-of-service/$', direct_to_template,
         {'template': 'tos.html'}, name='terms_of_service'),

@@ -11,7 +11,6 @@ from socket import gethostname
 LIVE_HOST = os.path.isfile('/etc/manabi/production')
 
 PROJECT_ROOT = os.path.abspath(os.path.dirname(__file__))
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
 DEBUG = not LIVE_HOST
 
@@ -111,7 +110,9 @@ SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'
 
 TEMPLATES = [{
     'BACKEND': 'django.template.backends.jinja2.Jinja2',
-    'DIRS': [os.path.join(BASE_DIR, 'templates')],
+    'DIRS': [
+        os.path.join(PROJECT_ROOT, 'templates'),
+    ],
     'APP_DIRS': True,
     'OPTIONS': {
         'context_processors': [
@@ -119,7 +120,8 @@ TEMPLATES = [{
             'django.template.context_processors.request',
             'django.contrib.auth.context_processors.auth',
             'django.contrib.messages.context_processors.messages',
-        ]
+        ],
+        'environment': 'manabi.jinja2_environment.environment',
     },
 }]
 if LIVE_HOST:
