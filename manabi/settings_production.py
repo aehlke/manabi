@@ -10,3 +10,5 @@ CACHES = {
         'LOCATION': '127.0.0.1:11211',
     }
 }
+
+STATIC_ROOT = '/var/www/manabi'

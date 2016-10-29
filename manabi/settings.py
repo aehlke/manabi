@@ -101,14 +101,9 @@ LANGUAGE_CODE = 'en'
 SITE_ID = 1
 USE_I18N = False
 
-if LIVE_HOST:
-    SITE_MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'site_media')
-else:
-    SITE_MEDIA_ROOT = os.path.join(PROJECT_ROOT, 'site_media')
-
 USE_X_FORWARDED_HOST = True
 
-STATIC_ROOT = os.path.join(SITE_MEDIA_ROOT, 'static')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 STATIC_URL = '/static/'
 
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
@@ -282,6 +277,17 @@ ACCOUNT_EMAIL_VERIFICATION = False
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
+]
+
+# django-allauth
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = 'optional'
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+ACCOUNT_LOGIN_ATTEMPTS_LIMIT = 10
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_USERNAME_BLACKLIST = [
+    'admin', 'administrator', 'alex', 'alexe', 'aehlke', 'manabi', 'manabio', 'master',
+    'owner', 'manabiorg', 'manabi.io', 'alexehlke', 'ehlke', 'anki',
 ]
 
 BASIC_AUTH_CHALLENGE = 'Manabi'
