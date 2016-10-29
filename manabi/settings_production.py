@@ -12,3 +12,10 @@ CACHES = {
 }
 
 STATIC_ROOT = '/var/www/manabi'
+
+EMAIL_BACKEND = 'sparkpost.django.email_backend.SparkPostEmailBackend'
+SPARKPOST_OPTIONS = {
+    'track_opens': True,
+    'track_clicks': True,
+    'transactional': True,
+}
