@@ -20,7 +20,7 @@
   file:
     path: '{{ app_static_files_path }}'
     state: directory
-    mode: 'u=r,g=r'
+    mode: 'u=rw,g=rw'
     owner: www-data
     group: www-data
   become: yes

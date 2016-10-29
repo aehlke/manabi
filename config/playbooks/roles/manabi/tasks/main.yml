@@ -64,11 +64,11 @@
     virtualenv: '{{ app_virtualenv_path }}'
   become: yes
 
-- name: Assign ownership of static files to nginx
+- name: Assign ownership of static files to www-data
   file:
     path: '{{ app_static_files_path }}'
     state: directory
-    mode: 'u=r,g=r'
+    mode: 'u=rw,g=rw'
     owner: www-data
     group: www-data
     recurse: yes
