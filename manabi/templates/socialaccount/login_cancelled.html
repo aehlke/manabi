@@ -8,7 +8,7 @@
 
 <h1>{{ _("Login Cancelled") }}</h1>
 
-{% url 'account_login' as login_url %}
+{% set login_url = url('account_login') %}
 
 <p>{% trans %}You decided to cancel logging in to our site using one of your existing accounts. If this was a mistake, please proceed to <a href="{{login_url}}">sign in</a>.{% endtrans %}</p>
 

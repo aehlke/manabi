@@ -16,7 +16,7 @@
 <p>{% trans email=confirmation.email_address.email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endtrans %}</p>
 
 <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
-{% csrf_token %}
+{{ csrf_token }}
     <button type="submit">{% trans 'Confirm' %}</button>
 </form>
 

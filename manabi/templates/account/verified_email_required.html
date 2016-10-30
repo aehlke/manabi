@@ -7,7 +7,7 @@
 {% block content %}
 <h1>{{ _("Verify Your E-mail Address") }}</h1>
 
-{% url 'account_email' as email_url %}
+{% set email_url = url('account_email') %}
 
 <p>{% trans %}This part of the site requires us to verify that
 you are who you claim to be. For this purpose, we require that you
