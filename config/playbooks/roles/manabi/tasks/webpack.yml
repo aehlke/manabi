@@ -1,8 +1,11 @@
 ---
 
-- name: Install npm
+- name: Install node and npm
   apt:
-    name: npm
+    name: '{{ item }}'
+  with_items:
+    - nodejs
+    - npm
   become: yes
 
 - name: Install npm dependencies
