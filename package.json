@@ -1,34 +1,34 @@
 {
-  "name": "manabi",
-  "version": "2.0.0",
-  "description": "Manabi Japanese flashcards",
-  "main": "manabi/static/js/index.js",
-  "scripts": {
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/aehlke/manabi.git"
-  },
-  "author": "",
-  "license": "AGPL-3.0",
-  "bugs": {
-    "url": "https://github.com/aehlke/manabi/issues"
-  },
-  "homepage": "https://github.com/aehlke/manabi#readme",
-  "dependencies": {
-    "draft-js": "^0.9.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
-  },
-  "devDependencies": {
-    "babel-core": "^6.18.0",
-    "babel-loader": "^6.2.7",
-    "babel-preset-es2015": "^6.18.0",
-    "babel-preset-react": "^6.16.0",
-    "jquery": "^3.1.1",
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2",
-    "webpack": "^1.13.3",
-    "webpack-bundle-tracker": "0.0.93"
-  }
+    "name": "manabi",
+    "version": "2.0.0",
+    "description": "Manabi Japanese flashcards",
+    "main": "manabi/static/js/index.js",
+    "scripts": {
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/aehlke/manabi.git"
+    },
+    "author": "",
+    "license": "AGPL-3.0",
+    "bugs": {
+        "url": "https://github.com/aehlke/manabi/issues"
+    },
+    "homepage": "https://github.com/aehlke/manabi#readme",
+    "dependencies": {
+        "draft-js": "^0.9.1",
+        "react": "^15.3.2",
+        "react-dom": "^15.3.2"
+    },
+    "devDependencies": {
+        "babel-core": "^6.18.0",
+        "babel-loader": "^6.2.7",
+        "babel-preset-es2015": "^6.18.0",
+        "babel-preset-react": "^6.16.0",
+        "jquery": "^3.1.1",
+        "react": "^15.3.2",
+        "react-dom": "^15.3.2",
+        "webpack": "^1.13.3",
+        "webpack-bundle-tracker": "0.0.93"
+    }
 }
