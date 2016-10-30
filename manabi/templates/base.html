@@ -30,35 +30,11 @@
 
         <div class="container">
             <div class="header clearfix">
-                <nav>
-                    <ul class="nav nav-pills float-xs-right">
-                        <!-- <li class="nav-item">
-                            <a class="nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-                        </li> -->
-                        {% if request.user.is_anonymous() %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Pricing</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="https://twitter.com/manabiSRS">Twitter</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('account_login') }}">Log in</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('account_signup') }}">Sign up</a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('account_email') }}">Change email</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{{ url('account_logout') }}">Sign out</a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </nav>
-                <h3 class="text-muted">Manabi</h3>
+                {% if request.user.is_anonymous() %}
+                    {% include "snippets/nav_anonymous.html" %}
+                {% else %}
+                    {% include "snippets/nav_authenticated.html" %}
+                {% endif %}
             </div>
         </div>
 
