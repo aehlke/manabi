@@ -35,3 +35,4 @@ node_modules
 webpack-stats.json
 webpack-stats-prod.json
 manabi/static/js/bundles/
+manabi/static/js/dist/
