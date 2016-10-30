@@ -17,29 +17,25 @@
 
         <div class="form-group">
             <div id="annotated-japanese-input" class="form-control"></div>
-            <input type="text" class="form-control" placeholder="Meaning">
+
+            <input type="text" class="form-control {{ '.form-control-danger' if serializer.meaning.errors }}" placeholder="Meaning" value="{{ serializer.meaning.value }}">
+            {% for error in (serializer.meaning.errors or []) %}
+                <div class="form-control-feedback">{{ error }}</div>
+            {% endfor %}
         </div>
 
         <div class="form-group">
-            <label>Cards to generate</label>
-            <div class="form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox">
-                    Recognition
-                </label>
-                <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox" disabled>
-                    Production
-                </label>
-                <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox">
-                    Kanji Reading
-                </label>
-                <label class="form-check-label">
-                    <input class="form-check-input" type="checkbox">
-                    Kanji Writing
-                </label>
-            </div>
+            {% for template_name, label in serializer.active_card_templates.choices.items() %}
+                <div class="form-check-inline">
+                    <label class="form-check-label">
+                        <input class="form-check-input" type="checkbox" value="{{ template_name }}" {{ 'checked' if template_name in (serializer.active_card_templates.value or []) }}>
+                        {{ label }}
+                    </label>
+                </div>
+            {% endfor %}
+            {% for error in (serializer.active_card_templates.errors or []) %}
+                <div class="form-control-feedback">{{ error }}</div>
+            {% endfor %}
         </div>
 
         <button type="submit" class="btn btn-default btn-primary">Create Flashcards</button>

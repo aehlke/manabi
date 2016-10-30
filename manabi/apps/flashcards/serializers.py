@@ -150,7 +150,12 @@ class FactSerializer(ManabiModelSerializer):
 
 class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
     active_card_templates = serializers.MultipleChoiceField(
-        choices=['recognition', 'kanji_reading', 'kanji_writing', 'production'],
+        choices=[
+            ('recognition', 'Recognition'),
+            ('production', 'Production'),
+            ('kanji_reading', 'Kanji reading'),
+            ('kanji_writing', 'Kanji writing'),
+        ],
         allow_empty=True,
     )
 
