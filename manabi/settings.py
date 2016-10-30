@@ -124,6 +124,7 @@ TEMPLATES = [{
         'environment': 'manabi.jinja2_environment.environment',
         'extensions': [
             'jinja2.ext.i18n',
+            'jinja2.ext.with_',
         ],
     },
 }]

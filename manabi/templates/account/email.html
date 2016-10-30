@@ -7,7 +7,7 @@
 {% block content %}
     <h1>{{ _("E-mail Addresses") }}</h1>
 {% if user.emailaddress_set.all %}
-<p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
+<p>{{ _("The following e-mail addresses are associated with your account:") }}</p>
 
 <form action="{{ url('account_email') }}" class="email_list" method="post">
 <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
@@ -31,9 +31,9 @@
   {% endfor %}
 
 <div class="buttonHolder">
-      <button class="secondaryAction" type="submit" name="action_primary" >{% trans 'Make Primary' %}</button>
-      <button class="secondaryAction" type="submit" name="action_send" >{% trans 'Re-send Verification' %}</button>
-      <button class="primaryAction" type="submit" name="action_remove" >{% trans 'Remove' %}</button>
+      <button class="secondaryAction" type="submit" name="action_primary" >{{ _("Make Primary") }}</button>
+      <button class="secondaryAction" type="submit" name="action_send" >{{ _("Re-send Verification") }}</button>
+      <button class="primaryAction" type="submit" name="action_remove" >{{ _("Remove") }}</button>
 </div>
 
 </fieldset>
@@ -59,7 +59,7 @@
 {% block extra_body %}
 <script type="text/javascript">
 (function() {
-  var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+  var message = "{{ _("Do you really want to remove the selected e-mail address?") }}";
   var actions = document.getElementsByName('action_remove');
   if (actions.length) {
     actions[0].addEventListener("click", function(e) {
