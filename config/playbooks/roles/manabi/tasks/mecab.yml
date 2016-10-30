@@ -9,3 +9,12 @@
     - mecab-ipadic
     - mecab-ipadic-utf8
   become: yes
+
+- name: Add mecabrc
+  template:
+    src: mecabrc.j2
+    dest: /usr/local/etc/mecabrc
+    owner: ubuntu
+    group: ubuntu
+    mode: 'u=rw,g=rw,o=r'
+  become: yes
