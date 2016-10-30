@@ -301,6 +301,9 @@ JDIC_AUDIO_SERVER_TIMEOUT = 6 # seconds
 START_OF_DAY = 5 # hour of day most likely to be while the user is asleep, localized
 
 MECAB_ENCODING = 'utf8'
+if sys.platform == 'darwin':
+    # Assume brew-installed mecab-ipadic.
+    MECAB_IPADIC_PATH =
 
 WEBPACK_LOADER = {
     'DEFAULT': {
