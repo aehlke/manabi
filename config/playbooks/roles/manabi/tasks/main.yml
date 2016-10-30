@@ -50,6 +50,8 @@
     - Reload uwsgi
     - Restart RQ workers
 
+- include: webpack.yml
+
 - name: Add ubuntu to www-data group to be able to manipulate static files
   user:
     name: ubuntu
