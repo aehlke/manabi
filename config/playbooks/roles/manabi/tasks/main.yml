@@ -68,7 +68,7 @@
   file:
     path: '{{ app_static_files_path }}'
     state: directory
-    mode: 'u=rw,g=rw'
+    mode: 'u=rwx,g=rwx'
     owner: www-data
     group: www-data
     recurse: yes
