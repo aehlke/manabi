@@ -1,5 +1,6 @@
 from django.contrib.staticfiles.storage import staticfiles_storage
-from django.urls import reverse, translation
+from django.urls import reverse
+from django.utils import translation
 
 from jinja2 import Environment
 
