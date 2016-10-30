@@ -2,10 +2,10 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Account" %}{% endblock %}
+{% block head_title %}{{ _("Account") }}{% endblock %}
 
 {% block content %}
-    <h1>{% trans "E-mail Addresses" %}</h1>
+    <h1>{{ _("E-mail Addresses") }}</h1>
 {% if user.emailaddress_set.all %}
 <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
 
@@ -21,11 +21,11 @@
 
 {{ emailaddress.email }}
     {% if emailaddress.verified %}
-    <span class="verified">{% trans "Verified" %}</span>
+    <span class="verified">{{ _("Verified") }}</span>
     {% else %}
-    <span class="unverified">{% trans "Unverified" %}</span>
+    <span class="unverified">{{ _("Unverified") }}</span>
     {% endif %}
-      {% if emailaddress.primary %}<span class="primary">{% trans "Primary" %}</span>{% endif %}
+      {% if emailaddress.primary %}<span class="primary">{{ _("Primary") }}</span>{% endif %}
 </label>
 </div>
   {% endfor %}
@@ -40,17 +40,17 @@
 </form>
 
 {% else %}
-<p><strong>{% trans 'Warning:'%}</strong> {% trans "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc." %}</p>
+<p><strong>{% trans 'Warning:'%}</strong> {{ _("You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc.") }}</p>
 
 {% endif %}
 
 
-    <h2>{% trans "Add E-mail Address" %}</h2>
+    <h2>{{ _("Add E-mail Address") }}</h2>
 
     <form method="post" action="{% url 'account_email' %}" class="add_email">
         {% csrf_token %}
         {{ form.as_p }}
-        <button name="action_add" type="submit">{% trans "Add E-mail" %}</button>
+        <button name="action_add" type="submit">{{ _("Add E-mail") }}</button>
     </form>
 
 {% endblock %}

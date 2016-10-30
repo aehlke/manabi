@@ -2,10 +2,10 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+{% block head_title %}{{ _("Verify Your E-mail Address") }}{% endblock %}
 
 {% block content %}
-<h1>{% trans "Verify Your E-mail Address" %}</h1>
+<h1>{{ _("Verify Your E-mail Address") }}</h1>
 
 {% url 'account_email' as email_url %}
 
