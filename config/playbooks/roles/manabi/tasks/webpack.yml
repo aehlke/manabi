@@ -13,4 +13,6 @@
     path: '{{ app_root_path }}'
 
 - name: Build with webpack
-  command: '{{ app_root_path }}/node_modules/.bin/webpack --config webpack_production.config.js'
+  command: './node_modules/.bin/webpack --config webpack_production.config.js'
+  args:
+    chdir: '{{ app_root_path }}'
