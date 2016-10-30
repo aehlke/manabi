@@ -129,6 +129,7 @@ TEMPLATES = [{
             'jinja2.ext.autoescape',
             'jinja2.ext.i18n',
             'jinja2.ext.with_',
+            'webpack_loader.contrib.jinja2ext.WebpackExtension',
         ],
     },
 }]
@@ -214,6 +215,7 @@ INSTALLED_APPS = (
     'djoser',
     # 'silk',
     'raven.contrib.django.raven_compat',
+    'webpack_loader',
 
     # My own.
     'manabi.apps.flashcards',
@@ -300,15 +302,23 @@ START_OF_DAY = 5 # hour of day most likely to be while the user is asleep, local
 
 MECAB_ENCODING = 'utf8'
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': 'js/bundles/',  # must end with slash
+        'STATS_FILE': os.path.join(PROJECT_ROOT, 'static/js/webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map'],
+    }
+}
+if not DEBUG:
+    WEBPACK_LOADER.update({
+        'BUNDLE_DIR_NAME': 'js/dist/',
+        'STATS_FILE': os.path.join(PROJECT_ROOT, 'static/js/webpack-stats-prod.json')
+    })
 
-if LIVE_HOST:
-    DEFAULT_URL_PREFIX = 'https://manabi.io'
-else:
-    #DEFAULT_URL_PREFIX = 'http://192.168.2.127:8000'
-    DEFAULT_URL_PREFIX = 'http://192.168.0.1:8000'
-
-#sudo su postgres -c psql template1
-
+DEFAULT_URL_PREFIX = 'http://192.168.0.1:8000'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [

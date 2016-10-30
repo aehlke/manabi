@@ -29,3 +29,9 @@ reset_manabi_db.sh
 *.tar.gz
 deploy
 .DS_Store
+
+# React
+node_modules
+webpack-stats.json
+webpack-stats-prod.json
+manabi/static/js/bundles/

@@ -1,3 +1,5 @@
+DEFAULT_URL_PREFIX = 'https://manabi.io'
+
 REDIS = {
     'host': 'localhost',
     'port': 6378,
@@ -19,3 +21,8 @@ SPARKPOST_OPTIONS = {
     'track_clicks': True,
     'transactional': True,
 }
+
+WEBPACK_LOADER.update({
+    'BUNDLE_DIR_NAME': 'dist/',
+    'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats-prod.json')
+})
