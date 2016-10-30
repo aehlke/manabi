@@ -8,7 +8,6 @@
 - name: Install npm dependencies
   npm:
     path: '{{ app_root_path }}'
-    state: latest
 
 - name: Build with webpack
   command: '{{ app_root_path }}/node_modules/.bin/webpack --config webpack_production.config.js'
