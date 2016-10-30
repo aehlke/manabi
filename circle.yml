@@ -6,7 +6,7 @@ machine:
 
 dependencies:
   pre:
-    - sudo apt-get install mecab-ipadic
+    - sudo apt-get install mecab mecab-ipadic mecab-ipadic-utf8
 
 deployment:
   production:
