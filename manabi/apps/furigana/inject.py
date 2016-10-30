@@ -4,7 +4,7 @@ import MeCab
 import jcconv
 from django.conf import settings
 
-tagger = MeCab.Tagger('-Ochasen') #.format(settings.MECAB_RC_PATH))
+tagger = MeCab.Tagger('-Ochasen')
 
 
 def _reading(node):
@@ -31,7 +31,8 @@ def inject_furigana(text):
         # Add any skipped text.
         node_index_in_remaining_text = remaining_text.find(surface)
         injected_text.append(remaining_text[:node_index_in_remaining_text])
-        remaining_text = remaining_text[node_index_in_remaining_text + len(surface):]
+        remaining_text = (
+            remaining_text[node_index_in_remaining_text + len(surface):])
 
         reading = _reading(node)
 
@@ -44,7 +45,9 @@ def inject_furigana(text):
 
         suffix = ''
         redundant_length = 0
-        for surface_char, reading_char in zip(reversed(surface), reversed(reading)):
+        for surface_char, reading_char in zip(
+            reversed(surface), reversed(reading),
+        ):
             if surface_char != reading_char:
                 break
             redundant_length += 1
