@@ -1,4 +1,4 @@
-{% load account %}
+
 
 {% user_display user as name %}
 {% trans %}Successfully signed in as {{name}}.{% endtrans %}
