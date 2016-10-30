@@ -1,0 +1,15 @@
+{% block title %}{% block head_title %}{% endblock %}{% endblock %}
+
+{% block extra_head %}{% endblock %}
+
+{% block messages %}
+    {% for message in messages %}
+        <div class="alert alert-info" role="alert">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endblock }
+
+{% block extra_body_scripts %}
+    {% block extra_body %}{% endblock %}
+{% endblock %}
