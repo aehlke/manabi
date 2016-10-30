@@ -112,7 +112,7 @@ ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'
 
 TEMPLATES = [{
-    'BACKEND': 'django.template.backends.jinja2.Jinja2',
+    'BACKEND': 'manabi.jinja2_backend.ManabiJinja2',
     'DIRS': [
         os.path.join(PROJECT_ROOT, 'templates'),
     ],

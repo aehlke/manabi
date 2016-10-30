@@ -22,7 +22,7 @@ class DeckQuerySet(QuerySet):
         if not user.is_authenticated():
             return self.none()
 
-        return self.filter(owner=user, active=True)
+        return self.filter(owner=user, active=True).order_by('name')
 
     def shared_decks(self):
         return self.filter(shared=True, active=True)

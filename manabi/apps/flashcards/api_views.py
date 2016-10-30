@@ -4,11 +4,13 @@ from django.conf import settings
 from rest_framework import viewsets, status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.views import APIView
 import pytz
 
+from manabi.api.renderers import ManabiHTMLRenderer
 from manabi.api.viewsets import MultiSerializerViewSetMixin
 from manabi.apps.flashcards.models import (
     Deck,
@@ -46,12 +48,11 @@ from manabi.apps.flashcards.serializers import (
 
 class DeckViewSet(viewsets.ModelViewSet):
     serializer_class = DeckSerializer
+    renderer_classes = [ManabiHTMLRenderer, JSONRenderer]
+    template_name = 'flashcards/decks.html'
 
     def get_queryset(self):
-        user = self.request.user
-        if not user.is_authenticated():
-            return Deck.objects.none()
-        return Deck.objects.filter(owner=user, active=True).order_by('name')
+        return Deck.objects.of_user(self.request.user)
 
     def perform_create(self, serializer):
         instance = serializer.save(owner=self.request.user)

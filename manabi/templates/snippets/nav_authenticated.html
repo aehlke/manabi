@@ -3,11 +3,14 @@
     <div class="collapse navbar-toggleable-xs" id="navbar-header">
         <a class="navbar-brand" href="/">Manabi</a>
         <ul class="nav navbar-nav">
-            <li class="nav-item">
-                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'homepage' }}">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'decks' }}">
+                <a class="nav-link" href="/">Decks</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ url('account_email') }}">Change email</a>
+                <a class="nav-link" href="{{ url('account_email') }}">Settings</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('account_logout') }}">Sign out</a>
