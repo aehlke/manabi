@@ -162,9 +162,6 @@ class ReviewAvailabilities(object):
                 u"",
             )
 
-        return (u"You'll soon forget 19 expressions—now's a good time to review them.",
-            u"We have 7 more you might have forgotten, plus new ones to learn.")
-
         return (
             u"This text will tell you about the cards ready for you to learn or review.",
             u"I haven't built this part of the backend API yet—this is beta, it'll come before release!"
