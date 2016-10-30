@@ -2,11 +2,11 @@
 
 
 
-{% block head_title %}{% trans "Login Cancelled" %}{% endblock %}
+{% block head_title %}{{ _("Login Cancelled") }}{% endblock %}
 
 {% block content %}
 
-<h1>{% trans "Login Cancelled" %}</h1>
+<h1>{{ _("Login Cancelled") }}</h1>
 
 {% url 'account_login' as login_url %}
 
