@@ -3,31 +3,45 @@
 {% block title %}Create Flashcards{% endblock %}
 
 {% block content %}
-    {{ csrf_token }}
     <form action="" method="post" novalidate>
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-        {# {% render_form serializer template_pack='rest_framework/vertical' %} #}
-
-        {{ serializer }}
-
-        <br>
-        {% for o in  serializer.deck.iter_options() %}
-            {{ o.value }}<br>
-            {{ o.display_text }}<br>
-        {% endfor %}
-
         <div class="form-group">
-            <label for="exampleSelect1">Choose deck</label>
             <select class="form-control" id="deck-choice">
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
+                <option>Choose deck</option>
+                {% for deck_option in serializer.deck.iter_options() %}
+                    <option value="{{ deck_option.value }}" {{ 'selected' if deck_option.value == serializer.deck.value }} {{ 'disabled' if deck_option.disabled }}>{{ deck_option.display_text }}</option>
+                {% endfor %}
             </select>
         </div>
 
-        <button type="submit" class="btn btn-default">Sign in</button>
+        <div class="form-group">
+            <div id="annotated-japanese-input" class="form-control"></div>
+            <input type="text" class="form-control" placeholder="Meaning">
+        </div>
+
+        <div class="form-group">
+            <label>Cards to generate</label>
+            <div class="form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    Recognition
+                </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" disabled>
+                    Production
+                </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    Kanji Reading
+                </label>
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox">
+                    Kanji Writing
+                </label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-default btn-primary">Create Flashcards</button>
     </form>
 {% endblock %}

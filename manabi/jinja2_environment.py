@@ -9,6 +9,7 @@ from allauth.account.utils import user_display
 def environment(**options):
     env = Environment(**options)
     env.globals.update({
+        'dir': dir,
         'static': staticfiles_storage.url,
         'url': reverse,
         'get_providers': get_providers,
