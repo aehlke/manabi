@@ -318,6 +318,9 @@ if not DEBUG:
         'STATS_FILE': os.path.join(PROJECT_ROOT, 'static/js/webpack-stats-prod.json')
     })
 
+print '$$$$$$$$$$$$$$$$$$$$$$$$$$$$'
+print WEBPACK_LOADER
+
 DEFAULT_URL_PREFIX = 'http://192.168.0.1:8000'
 
 REST_FRAMEWORK = {
