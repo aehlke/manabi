@@ -58,11 +58,8 @@
   become: yes
 
 - name: Collect static files
-  django_manage:
-    command: collectstatic
-    app_path: '{{ app_root_path }}'
-    virtualenv: '{{ app_virtualenv_path }}'
-  become: yes
+  command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py collectstatic --noinput'
+  tags: collectstatic
 
 - name: Assign ownership of static files to www-data
   file:
