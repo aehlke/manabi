@@ -160,7 +160,10 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
         )
 
     def filter_deck(self, queryset):
-        user = self.context['user']
+        try:
+            user = self.context['user']
+        except KeyError:
+            return queryset
         return queryset.of_user(user)
 
     def create(self, validated_data):
