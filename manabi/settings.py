@@ -313,7 +313,7 @@ WEBPACK_LOADER = {
     }
 }
 if not DEBUG:
-    WEBPACK_LOADER.update({
+    WEBPACK_LOADER['DEFAULT'].update({
         'BUNDLE_DIR_NAME': 'js/dist/',
         'STATS_FILE': os.path.join(PROJECT_ROOT, 'static/js/webpack-stats-prod.json')
     })
