@@ -1,7 +1,7 @@
 from rest_framework.renderers import TemplateHTMLRenderer
 
 
-class ManabiHTMLRenderer(TemplateHTMLRenderer):
+class ModelViewSetHTMLRenderer(TemplateHTMLRenderer):
     def get_template_context(self, data, renderer_context):
         context = {'data': data}
         response = renderer_context['response']

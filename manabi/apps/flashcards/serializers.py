@@ -3,7 +3,10 @@ from datetime import datetime
 
 from django.shortcuts import get_object_or_404
 
-from manabi.api.serializers import ManabiModelSerializer
+from manabi.api.serializers import (
+    ManabiModelSerializer,
+    FilterRelatedMixin,
+)
 from manabi.apps.flashcards.models import (
     Card,
     Deck,
@@ -145,7 +148,7 @@ class FactSerializer(ManabiModelSerializer):
         return fact
 
 
-class FactWithCardsSerializer(FactSerializer):
+class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
     active_card_templates = serializers.MultipleChoiceField(
         choices=['recognition', 'kanji_reading', 'kanji_writing', 'production'],
         allow_empty=True,
@@ -155,6 +158,10 @@ class FactWithCardsSerializer(FactSerializer):
         fields = FactSerializer.Meta.fields + (
             'active_card_templates',
         )
+
+    def filter_deck(self, queryset):
+        user = self.context['user']
+        return queryset.of_user(user)
 
     def create(self, validated_data):
         active_card_templates = validated_data.pop('active_card_templates')

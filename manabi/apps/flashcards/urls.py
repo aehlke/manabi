@@ -3,7 +3,7 @@ from django.conf.urls import *
 from rest_framework import routers
 
 from manabi.apps.flashcards import views
-from manabi.apps.flashcards import api_views import
+from manabi.apps.flashcards import api_views
 
 router = routers.SimpleRouter()
 router.register(r'decks', api_views.DeckViewSet, base_name='deck')
