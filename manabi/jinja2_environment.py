@@ -12,7 +12,6 @@ def environment(**options):
         'url': reverse,
     })
 
-    env.extensions.append('jinja2.ext.i18n')
-    env.install_gettext_translation(translation)
+    env.install_gettext_translations(translation)
 
     return env

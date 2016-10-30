@@ -122,6 +122,9 @@ TEMPLATES = [{
             'django.contrib.messages.context_processors.messages',
         ],
         'environment': 'manabi.jinja2_environment.environment',
+        'extensions': [
+            'jinja2.ext.i18n',
+        ],
     },
 }]
 if LIVE_HOST:
