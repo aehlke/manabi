@@ -4,6 +4,10 @@ machine:
   services:
     - redis
 
+dependencies:
+  pre:
+    - sudo apt-get install mecab-ipadic
+
 deployment:
   production:
     branch: master

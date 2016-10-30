@@ -63,6 +63,7 @@ urlpatterns = [
 
     url(r'^api/auth/', include('djoser.urls')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
+    url(r'^api/furigana/', include('manabi.apps.furigana.urls')),
     url(r'^api/twitter_usages/', include('manabi.apps.twitter_usages.urls')),
 ]
 

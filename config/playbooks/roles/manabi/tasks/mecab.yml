@@ -1,0 +1,6 @@
+---
+
+- name: Install mecab-ipadic
+  apt:
+    name: mecab-ipadic
+  become: yes

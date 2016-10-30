@@ -1,5 +1,7 @@
 ---
 
+- include: mecab.yml
+
 - name: Machine-level configuration directory for Manabi
   file:
     path: /etc/manabi

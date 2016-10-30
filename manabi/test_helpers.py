@@ -175,6 +175,9 @@ class APIShortcuts(object):
             user=user,
         )
 
+    def inject_furigana(self, expression):
+        return self.post('/api/furigana/inject/', {'text': expression}).json()['text_with_furigana']
+
 
 def random_name():
     return ''.join(random.choice(string.ascii_lowercase) for _ in xrange(5))

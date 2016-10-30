@@ -18,7 +18,7 @@
         <div class="form-group">
             <div id="annotated-japanese-input" class="form-control"></div>
 
-            <input type="text" class="form-control {{ '.form-control-danger' if serializer.meaning.errors }}" placeholder="Meaning" value="{{ serializer.meaning.value }}">
+            <input type="text" class="form-control {{ '.form-control-danger' if serializer.meaning.errors }}" placeholder="Meaning" value="{{ serializer.meaning.value }}" maxlength="{{ serializer.meaning.max_length }}">
             {% for error in (serializer.meaning.errors or []) %}
                 <div class="form-control-feedback">{{ error }}</div>
             {% endfor %}
