@@ -318,9 +318,6 @@ if not DEBUG:
         'STATS_FILE': os.path.join(PROJECT_ROOT, 'static/js/webpack-stats-prod.json')
     })
 
-print '$$$$$$$$$$$$$$$$$$$$$$$$$$$$'
-print WEBPACK_LOADER
-
 DEFAULT_URL_PREFIX = 'http://192.168.0.1:8000'
 
 REST_FRAMEWORK = {
@@ -328,6 +325,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
+    'UNICODE_JSON': False,
     # Use Django's standard `django.contrib.auth` permissions,
     # or allow read-only access for unauthenticated users.
     # Requires using model permissions, not ready for this yet...

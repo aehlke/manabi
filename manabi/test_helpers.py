@@ -62,10 +62,17 @@ class ManabiTestCase(APITestCase):
         if user is None:
             user = create_user()
         self.client.login(username=user.username, password=PASSWORD)
-        resp = getattr(self.client, verb)(url, user=user, format='json', *args, **kwargs)
+        print self.client
+        resp = getattr(self.client, verb)(
+            url,
+            user=user,
+            HTTP_ACCEPT='application/json',
+            HTTP_ACCEPT_CHARSET='utf-8',
+            format='json',
+            *args, **kwargs)
         headers = dict(resp.items())
-        if 'json' in headers.get('Content-Type', ''):
-            resp.json = json.loads(resp.content)
+        #  if 'json' in headers.get('Content-Type', ''):
+        #      resp.json = json.loads(resp.content)
         return resp
 
     def get(self, *args, **kwargs):
@@ -131,35 +138,35 @@ class APIShortcuts(object):
 
     def decks(self, user):
         resp = self.get('/api/flashcards/decks/', user=user)
-        return resp.json
+        return resp.json()
 
     def add_shared_deck(self, shared_deck, user):
         return self.post(
             '/api/flashcards/synchronized_decks/',
             {'synchronized_with': shared_deck.id},
             user=user,
-        ).json
+        ).json()
 
     def move_fact_to_deck(self, fact, deck, user):
         return self.patch(
             '/api/flashcards/facts/{}/'.format(fact.id),
             {'deck': deck.id},
             user=user,
-        ).json
+        ).json()
 
     def next_cards_for_review(self, user):
         return self.get(
-            '/api/flashcards/next_cards_for_review/', user=user).json
+            '/api/flashcards/next_cards_for_review/', user=user).json()
 
     def review_card(self, user, card, grade):
         return self.post(
             '/api/flashcards/cards/{}/reviews/'.format(card['id']),
             {'grade': grade},
             user=user,
-        ).json
+        ).json()
 
     def undo_review(self, user):
-        return self.post('/api/flashcards/undo_card_review/', user=user).json
+        return self.post('/api/flashcards/undo_card_review/', user=user).json()
 
     def review_availabilities(self, user, deck=None):
         return self.get(
