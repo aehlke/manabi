@@ -16,8 +16,6 @@ from manabi.apps.flashcards.api_views import (
     CardViewSet,
 )
 
-# TODO admin.autodiscover()
-
 
 api_router = routers.DefaultRouter()
 api_router.register(r'flashcards/decks',

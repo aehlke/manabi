@@ -301,6 +301,7 @@ JDIC_AUDIO_SERVER_TIMEOUT = 6 # seconds
 START_OF_DAY = 5 # hour of day most likely to be while the user is asleep, localized
 
 MECAB_ENCODING = 'utf8'
+MECAB_RC_PATH = '/usr/local/etc/mecabrc'
 
 WEBPACK_LOADER = {
     'DEFAULT': {
