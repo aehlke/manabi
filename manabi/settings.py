@@ -123,6 +123,7 @@ TEMPLATES = [{
         ],
         'environment': 'manabi.jinja2_environment.environment',
         'extensions': [
+            'jinja2.ext.autoescape',
             'jinja2.ext.i18n',
             'jinja2.ext.with_',
         ],
@@ -276,6 +277,7 @@ ACCOUNT_USERNAME_BLACKLIST = [
     'admin', 'administrator', 'alex', 'alexe', 'aehlke', 'manabi', 'manabio', 'master',
     'owner', 'manabiorg', 'manabi.io', 'alexehlke', 'ehlke', 'anki',
 ]
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 BASIC_AUTH_CHALLENGE = 'Manabi'
 BASIC_AUTH_REALM = 'manabi'
@@ -285,7 +287,7 @@ LAZYSIGNUP_ENABLE = False
 SITE_NAME = 'Manabi'
 
 LOGIN_URL = '/account/login/'
-LOGIN_REDIRECT_URLNAME = 'home'
+LOGIN_REDIRECT_URLNAME = 'homepage'
 
 DEFAULT_FROM_EMAIL = 'Manabi <support@manabi.io>'
 

@@ -1,5 +1,5 @@
 
 
 
-{% user_display user as user_display %}
+{% set name = user_display(user) %}
 <p><strong>{{ _("Note") }}:</strong> {% trans %}you are already logged in as {{ user_display }}.{% endtrans %}</p>

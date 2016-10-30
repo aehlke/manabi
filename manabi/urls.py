@@ -47,7 +47,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rq/', include('django_rq.urls')),
 
-    url(r'^$', manabi.views.homepage),
+    url(r'^$', manabi.views.homepage, name='homepage'),
 
     url(r'^terms-of-service/$', direct_to_template,
         {'template': 'tos.html'}, name='terms_of_service'),

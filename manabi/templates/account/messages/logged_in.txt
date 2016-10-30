@@ -1,4 +1,3 @@
 
-
-{% user_display user as name %}
+{% set name = user_display(user) %}
 {% trans %}Successfully signed in as {{name}}.{% endtrans %}
