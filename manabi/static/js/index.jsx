@@ -6,8 +6,12 @@ import { EditorState } from 'draft-js'
 import createSingleLinePlugin from 'draft-js-single-line-plugin'
 const singleLinePlugin = createSingleLinePlugin()
 
+import createFuriganaPlugin from './draft-js-furigana-plugin/furiganaPlugin'
+const furiganaPlugin = createFuriganaPlugin()
+
 const plugins = [
     singleLinePlugin,
+    furiganaPlugin,
 ]
 
 
@@ -18,6 +22,7 @@ class AnnotatedJapaneseInput extends React.Component {
         this.state = {editorState: EditorState.createEmpty()}
         this.onChange = (editorState) => this.setState({editorState})
     }
+
     render() {
         const {editorState} = this.state;
         return <Editor
@@ -27,6 +32,8 @@ class AnnotatedJapaneseInput extends React.Component {
         />
     }
 }
+
+
 
 ReactDOM.render(
     <AnnotatedJapaneseInput />,
