@@ -5,6 +5,7 @@ import { EditorState } from 'draft-js'
 import {convertFromRaw, convertToRaw} from 'draft-js';
 import 'whatwg-fetch'
 import Cookies from 'js-cookie'
+import debounce from 'lodash/debounce'
 
 import createSingleLinePlugin from 'draft-js-single-line-plugin'
 const singleLinePlugin = createSingleLinePlugin()
@@ -25,7 +26,7 @@ class AnnotatedJapaneseInput extends React.Component {
 
         this.state = {editorState: EditorState.createEmpty()}
 
-        this.onChange = (editorState) => {
+        let updateFurigana = debounce((editorState) => {
             let plainText = editorState.getCurrentContent().getPlainText('')
 
             let url = 'http://dev.manabi.io:8000/api/furigana/inject/'
@@ -43,6 +44,10 @@ class AnnotatedJapaneseInput extends React.Component {
                     let textWithFuriganaRaw = json['text_with_furigana']
                     console.log(textWithFuriganaRaw)
                 })
+        }, 250, {maxWait: 1000})
+
+        this.onChange = (editorState) => {
+            updateFurigana(editorState)
 
             this.setState({editorState})
         }
