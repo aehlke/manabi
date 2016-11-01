@@ -92,6 +92,7 @@ const createFuriganaPlugin = (config = {}) => {
   return {
     //MentionSuggestions: decorateComponentWithProps(MentionSuggestions, mentionSearchProps),
     decorators: [
+        // TODO: Decorate furigana entities with ruby/rt tags.
       /*{
         strategy: mentionStrategy(mentionTrigger),
         component: decorateComponentWithProps(Mention, { theme, mentionComponent }),
