@@ -18,8 +18,14 @@ def _reading(node):
 
 
 def inject_furigana(text):
+    '''
+    Returns 2-tuple of (text_with_furigana, furigana_positions).
+    '''
+    furigana_positions = []
+
     injected_text = []
     remaining_text = text
+    current_offset = 0
 
     # https://runble1.com/python-mecab-morphological-analysis/
     tagger.parse('')
@@ -58,8 +64,11 @@ def inject_furigana(text):
 
         injected_text.append(u'｜{}《{}》{}'.format(surface, reading, suffix))
 
+        current_offset += node_index_in_remaining_text
+        furigana_positions.append((current_offset, current_offset + len(surface), reading))
+
         node = node.next
 
     injected_text.append(remaining_text)
 
-    return u''.join(injected_text)
+    return (u''.join(injected_text), furigana_positions)

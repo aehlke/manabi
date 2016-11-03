@@ -11,4 +11,9 @@ def inject_furigana(request):
     except KeyError:
         raise ValidationError("Must supply text parameter.")
 
-    return Response({'text_with_furigana': inject.inject_furigana(text)})
+    text_with_furigana, furigana_positions = inject.inject_furigana(text)
+
+    return Response({
+        'text_with_furigana': text_with_furigana,
+        'furigana_positions': furigana_positions,
+    })
