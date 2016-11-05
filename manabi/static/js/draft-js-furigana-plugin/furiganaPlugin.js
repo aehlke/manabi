@@ -1,16 +1,10 @@
 import decorateComponentWithProps from 'decorate-component-with-props';
 import { Map } from 'immutable';
 import TextWithFurigana from './Furigana';
-//import MentionSuggestions from './MentionSuggestions';
-//import MentionSuggestionsPortal from './MentionSuggestionsPortal';
-// import defaultRegExp from './defaultRegExp';
-//import mentionStrategy from './mentionStrategy';
-//import mentionSuggestionsStrategy from './mentionSuggestionsStrategy';
-//import mentionStyles from './mentionStyles.css';
-//import mentionSuggestionsStyles from './mentionSuggestionsStyles.css';
-// import mentionSuggestionsEntryStyles from './mentionSuggestionsEntryStyles.css';
-// import suggestionsFilter from './utils/defaultSuggestionsFilter';
-// import defaultPositionSuggestions from './utils/positionSuggestions';
+import 'whatwg-fetch'
+import debounce from 'lodash/debounce'
+import furiganaStrategy from './furiganaStrategy';
+import { Entity, Modifier, SelectionState } from 'draft-js'
 
 const createFuriganaPlugin = (config = {}) => {
     const defaultTheme = {
@@ -43,30 +37,87 @@ const createFuriganaPlugin = (config = {}) => {
     const store = {
         getEditorState: undefined,
         setEditorState: undefined,
-        getPortalClientRect: (offsetKey) => clientRectFunctions.get(offsetKey)(),
-        getAllSearches: () => searches,
-        /*isEscaped: (offsetKey) => escapedSearch === offsetKey,
-    escapeSearch: (offsetKey) => {
-      escapedSearch = offsetKey;
-    },
-
-    resetEscapedSearch: () => {
-      escapedSearch = undefined;
-    },*/
-
-        /*register: (offsetKey) => {
-      searches = searches.set(offsetKey, offsetKey);
-    },*/
-
-        /*updatePortalClientRect: (offsetKey, func) => {
-      clientRectFunctions = clientRectFunctions.set(offsetKey, func);
-    },
-
-    unregister: (offsetKey) => {
-      searches = searches.delete(offsetKey);
-      clientRectFunctions = clientRectFunctions.delete(offsetKey);
-    },*/
     };
+
+    const applyFurigana = (plainText, textWithFuriganaRaw, furiganaPositions) => {
+        let currentContent = store.getEditorState().getCurrentContent()
+        let blockMap = currentContent.getBlockMap()
+
+        // We assume only plain text + kanji entitites.
+        var offset = 0
+        var invalidated = false
+        blockMap.forEach((block) => {
+            // If the input has diverged since the API call, invalidate the results.
+            let blockPlainText = block.getText()
+            if (invalidated || blockPlainText != plainText.substr(offset, blockPlainText.length)) {
+                console.log('diverged, throwing out API response...')
+                console.log(blockPlainText); console.log(plainText)
+                invalidated = true
+                return
+            }
+
+            let currentContent = store.getEditorState().getCurrentContent()
+            let endOffset = offset + block.getText().length
+            // console.log(block.getText())
+
+            for (let [furiganaStart, furiganaEnd, furigana] of furiganaPositions) {
+                if (furiganaStart > endOffset || furiganaEnd > endOffset) {
+                    break
+                }
+
+                let furiganaStartInBlock = furiganaStart - offset
+                let furiganaEndInBlock = furiganaEnd - offset
+
+                // Check that there's no existing furigana within this range.
+                var hasExistingFuriganaInRange = false
+                for (let furiganaInnerIndex = furiganaStartInBlock; furiganaInnerIndex < furiganaEndInBlock; furiganaInnerIndex++ ) {
+                    if (block.getEntityAt(furiganaInnerIndex) != null) {
+                        hasExistingFuriganaInRange = true
+                        break
+                    }
+                }
+                if (hasExistingFuriganaInRange) {
+                    continue
+                }
+
+                let furiganaEntityKey = Entity.create('FURIGANA', 'SEGMENTED', {furigana: furigana})
+                let surfaceSelection = new SelectionState({
+                    anchorKey: block.getKey(),
+                    anchorOffset: furiganaStartInBlock,
+                    focusKey: block.getKey(),
+                    focusOffset: furiganaEndInBlock,
+                })
+                let furiganaEntity = Modifier.applyEntity(
+                    currentContent,
+                    surfaceSelection,
+                    furiganaEntityKey,
+                )
+            }
+
+            offset += block.getText()
+        })
+    }
+
+    const updateFurigana = debounce((editorState) => {
+        let plainText = editorState.getCurrentContent().getPlainText('')
+
+        let url = 'http://dev.manabi.io:8000/api/furigana/inject/'
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': csrfToken,
+            },
+            body: JSON.stringify({text: plainText}),
+        })
+            .then((response) => response.json())
+            .then((json) => {
+                let textWithFuriganaRaw = json['text_with_furigana']
+                let furiganaPositions = json['furigana_positions']
+                applyFurigana(plainText, textWithFuriganaRaw, furiganaPositions)
+            })
+    }, 250, {maxWait: 1000})
 
     // Styles are overwritten instead of merged as merging causes a lot of confusion.
     //
@@ -86,7 +137,6 @@ const createFuriganaPlugin = (config = {}) => {
         // mentionTrigger,
     };
     return {
-        //MentionSuggestions: decorateComponentWithProps(MentionSuggestions, mentionSearchProps),
         decorators: [
             {
                 strategy: furiganaStrategy(),
@@ -99,15 +149,10 @@ const createFuriganaPlugin = (config = {}) => {
             store.setEditorState = setEditorState;
         },
 
-        /*onDownArrow: (keyboardEvent) => callbacks.onDownArrow && callbacks.onDownArrow(keyboardEvent),
-    onTab: (keyboardEvent) => callbacks.onTab && callbacks.onTab(keyboardEvent),
-    onUpArrow: (keyboardEvent) => callbacks.onUpArrow && callbacks.onUpArrow(keyboardEvent),
-    onEscape: (keyboardEvent) => callbacks.onEscape && callbacks.onEscape(keyboardEvent),
-    handleReturn: (keyboardEvent) => callbacks.handleReturn && callbacks.handleReturn(keyboardEvent),*/
         onChange: (editorState) => {
             if (callbacks.onChange) return callbacks.onChange(editorState);
 
-            this.updateFurigana(editorState)
+            updateFurigana(editorState)
 
             return editorState;
         },
