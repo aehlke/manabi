@@ -1,10 +1,12 @@
-import decorateComponentWithProps from 'decorate-component-with-props';
 import { Map } from 'immutable';
 import TextWithFurigana from './Furigana';
 import 'whatwg-fetch'
 import debounce from 'lodash/debounce'
 import furiganaStrategy from './furiganaStrategy';
-import { Entity, Modifier, SelectionState } from 'draft-js'
+import { Entity, Modifier, SelectionState, EditorState, convertToRaw } from 'draft-js'
+import Cookies from 'js-cookie'
+
+const csrfToken = Cookies.get('csrftoken')
 
 const createFuriganaPlugin = (config = {}) => {
     const defaultTheme = {
@@ -40,11 +42,13 @@ const createFuriganaPlugin = (config = {}) => {
     };
 
     const applyFurigana = (plainText, textWithFuriganaRaw, furiganaPositions) => {
-        let currentContent = store.getEditorState().getCurrentContent()
-        let blockMap = currentContent.getBlockMap()
+        var editorState = store.getEditorState()
+        let blockMap = editorState.getCurrentContent().getBlockMap()
+        console.log("furigana positions:", furiganaPositions)
 
         // We assume only plain text + kanji entitites.
         var offset = 0
+        var furiganaAdded = false
         var invalidated = false
         blockMap.forEach((block) => {
             // If the input has diverged since the API call, invalidate the results.
@@ -56,9 +60,13 @@ const createFuriganaPlugin = (config = {}) => {
                 return
             }
 
-            let currentContent = store.getEditorState().getCurrentContent()
+            let currentContent = editorState.getCurrentContent()
             let endOffset = offset + block.getText().length
             // console.log(block.getText())
+
+            /*block.findEntityRanges(function(){return true}, function(start,end) {
+                console.log("find entity ranges:", start, end)
+            })*/
 
             for (let [furiganaStart, furiganaEnd, furigana] of furiganaPositions) {
                 if (furiganaStart > endOffset || furiganaEnd > endOffset) {
@@ -70,12 +78,30 @@ const createFuriganaPlugin = (config = {}) => {
 
                 // Check that there's no existing furigana within this range.
                 var hasExistingFuriganaInRange = false
-                for (let furiganaInnerIndex = furiganaStartInBlock; furiganaInnerIndex < furiganaEndInBlock; furiganaInnerIndex++ ) {
+                console.log("gonna try to find existing furigana...", furiganaStartInBlock, furiganaEndInBlock)
+                // TODO Consolidate w/ furiganaStrategy
+                block.findEntityRanges(
+                    function (character) {
+                        const entityKey = character.getEntity();
+                        return (entityKey !== null && Entity.get(entityKey).getType() === 'FURIGANA');
+                    },
+                    function(entityStart, entityEnd) {
+                        console.log("should I bail on adding furigana? the existing one", entityStart, entityEnd, "and the furigana position I want to add", furiganaStartInBlock, furiganaEndInBlock)
+                        if (furiganaStartInBlock >= entityStart && furiganaEndInBlock <= entityEnd) {
+                            console.log("ALREADY HAS FURIGANA!")
+                            hasExistingFuriganaInRange = true
+                        }
+                    },
+                )
+                console.log("checked.")
+                /*for (let furiganaInnerIndex = furiganaStartInBlock; furiganaInnerIndex < furiganaEndInBlock; furiganaInnerIndex++ ) {
+                    console.log("checking entity at index:", furiganaInnerIndex, block.getEntityAt(furiganaInnerIndex))
                     if (block.getEntityAt(furiganaInnerIndex) != null) {
+                        console.log("ALREADY HAS FURIGANA!")
                         hasExistingFuriganaInRange = true
                         break
                     }
-                }
+                }*/
                 if (hasExistingFuriganaInRange) {
                     continue
                 }
@@ -87,19 +113,47 @@ const createFuriganaPlugin = (config = {}) => {
                     focusKey: block.getKey(),
                     focusOffset: furiganaEndInBlock,
                 })
-                let furiganaEntity = Modifier.applyEntity(
+
+                let textToReplace = block.getText().substring(
+                    furiganaStartInBlock, furiganaEndInBlock)
+
+                let furiganaEntityAppliedState = Modifier.replaceText(
                     currentContent,
                     surfaceSelection,
+                    textToReplace,
+                    null,
                     furiganaEntityKey,
                 )
+
+                editorState = EditorState.push(
+                    editorState,
+                    furiganaEntityAppliedState,
+                    'apply-furigana',
+                )
+
+                furiganaAdded = true
+                console.log("created entity", currentContent, surfaceSelection, furiganaEntityKey)
             }
 
             offset += block.getText()
         })
+
+        if (furiganaAdded) {
+            console.log("furigana added! pushing state...")
+            console.log(convertToRaw(editorState.getCurrentContent()));
+            store.setEditorState(editorState)
+            console.log(convertToRaw(store.getEditorState().getCurrentContent()));
+        }
     }
+
+    // TODO: Try injecting furigana on a timer rather than in the onChange callback, to avoid the infinite loops.
 
     const updateFurigana = debounce((editorState) => {
         let plainText = editorState.getCurrentContent().getPlainText('')
+
+        if (plainText.trim() === '') {
+            return
+        }
 
         let url = 'http://dev.manabi.io:8000/api/furigana/inject/'
         fetch(url, {
@@ -115,44 +169,35 @@ const createFuriganaPlugin = (config = {}) => {
             .then((json) => {
                 let textWithFuriganaRaw = json['text_with_furigana']
                 let furiganaPositions = json['furigana_positions']
+
                 applyFurigana(plainText, textWithFuriganaRaw, furiganaPositions)
             })
     }, 250, {maxWait: 1000})
 
-    // Styles are overwritten instead of merged as merging causes a lot of confusion.
-    //
-    // Why? Because when merging a developer needs to know all of the underlying
-    // styles which needs a deep dive into the code. Merging also makes it prone to
-    // errors when upgrading as basically every styling change would become a major
-    // breaking change. 1px of an increased padding can break a whole layout.
     const {
-        theme = defaultTheme,
     } = config;
-    const mentionSearchProps = {
-        callbacks,
-        theme,
-        store,
-        entityMutability: config.entityMutability ? config.entityMutability : 'SEGMENTED',
-        // positionSuggestions,
-        // mentionTrigger,
-    };
     return {
         decorators: [
             {
-                strategy: furiganaStrategy(),
-                component: decorateComponentWithProps(TextWithFurigana, { theme }),
+                strategy: furiganaStrategy,
+                component: TextWithFurigana,
             },
         ],
 
         initialize: ({ getEditorState, setEditorState }) => {
             store.getEditorState = getEditorState;
             store.setEditorState = setEditorState;
+
+            setInterval(function() {
+               updateFurigana(store.getEditorState())
+            }, 3000);
         },
 
         onChange: (editorState) => {
-            if (callbacks.onChange) return callbacks.onChange(editorState);
-
-            updateFurigana(editorState)
+            if (store.getEditorState().getCurrentContent() !== editorState.getCurrentContent()) {
+                // console.log(store.getEditorState().getCurrentContent())
+                // updateFurigana(editorState)
+            }
 
             return editorState;
         },
