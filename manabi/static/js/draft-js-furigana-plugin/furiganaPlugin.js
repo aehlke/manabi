@@ -105,7 +105,7 @@ const createFuriganaPlugin = (config = {}) => {
                     continue
                 }
 
-                let furiganaEntityKey = Entity.create('FURIGANA', 'SEGMENTED', {furigana: furigana})
+                let furiganaEntityKey = Entity.create('FURIGANA', 'IMMUTABLE', {furigana: furigana})
                 let surfaceSelection = new SelectionState({
                     anchorKey: block.getKey(),
                     anchorOffset: furiganaStartInBlock,
@@ -131,7 +131,6 @@ const createFuriganaPlugin = (config = {}) => {
                 )
 
                 furiganaAdded = true
-                console.log("created entity", convertToRaw(editorState.getCurrentContent()), furiganaEntityKey)
             }
 
             offset += block.getText()

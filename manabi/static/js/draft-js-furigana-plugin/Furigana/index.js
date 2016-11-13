@@ -12,6 +12,11 @@ const TextWithFurigana = (props) => {
         <rt><button type="button" className="btn btn-outline-primary btn-sm">{furigana}</button></rt>
         </ruby>
     );
+
+        // <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm">{furigana}</button></rt>
+        //<rt><button type="button" className="btn btn-outline-primary btn-sm">{furigana}</button></rt>
+
+        //<rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm">{furigana}</button></rt>
 };
 
 export default TextWithFurigana;
