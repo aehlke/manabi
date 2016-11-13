@@ -13,7 +13,7 @@ import createFuriganaPlugin from './draft-js-furigana-plugin/furiganaPlugin'
 const furiganaPlugin = createFuriganaPlugin()
 
 const plugins = [
-    singleLinePlugin,
+    // singleLinePlugin,
     furiganaPlugin,
 ]
 

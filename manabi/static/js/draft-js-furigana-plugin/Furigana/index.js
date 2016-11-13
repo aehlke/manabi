@@ -9,7 +9,7 @@ const TextWithFurigana = (props) => {
     return (
         <ruby>
         {props.children}
-        <rt><button>{furigana}</button></rt>
+        <rt><button type="button" className="btn btn-outline-primary btn-sm">{furigana}</button></rt>
         </ruby>
     );
 };

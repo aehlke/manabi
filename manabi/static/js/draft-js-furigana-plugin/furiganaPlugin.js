@@ -155,6 +155,12 @@ const createFuriganaPlugin = (config = {}) => {
             return
         }
 
+        if (store.lastFetchedFuriganaText === plainText) {
+            return
+        }
+
+        store.lastFetchedFuriganaText = plainText
+
         let url = 'http://dev.manabi.io:8000/api/furigana/inject/'
         fetch(url, {
             method: 'POST',
@@ -185,19 +191,34 @@ const createFuriganaPlugin = (config = {}) => {
         ],
 
         initialize: ({ getEditorState, setEditorState }) => {
-            store.getEditorState = getEditorState;
-            store.setEditorState = setEditorState;
+            store.getEditorState = getEditorState
+            store.setEditorState = setEditorState
 
-            setInterval(function() {
-               updateFurigana(store.getEditorState())
-            }, 3000);
+            store.lastFetchedFuriganaText = null
+
+            // setInterval(function() {
+            //    updateFurigana(store.getEditorState())
+            // }, 3000);
         },
 
+        // handlePastedText: (text, html) => {
+        //     console.log('pasted')
+        //     updateFurigana(store.getEditorState())
+        // },
+        //
+        // handleBeforeInput: (chars) => {
+        //     console.log('before input')
+        //     updateFurigana(store.getEditorState())
+        // },
+
         onChange: (editorState) => {
-            if (store.getEditorState().getCurrentContent() !== editorState.getCurrentContent()) {
-                // console.log(store.getEditorState().getCurrentContent())
-                // updateFurigana(editorState)
-            }
+            // console.log("onChange in plugin")
+            // if (store.getEditorState().getCurrentContent() !== editorState.getCurrentContent()) {
+            //     console.log("changed!")
+            // //     // console.log(store.getEditorState().getCurrentContent())
+            // //     // updateFurigana(editorState)
+            // }
+            updateFurigana(editorState)
 
             return editorState;
         },
