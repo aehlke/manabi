@@ -60,9 +60,7 @@ const createFuriganaPlugin = (config = {}) => {
                 return
             }
 
-            let currentContent = editorState.getCurrentContent()
             let endOffset = offset + block.getText().length
-            // console.log(block.getText())
 
             /*block.findEntityRanges(function(){return true}, function(start,end) {
                 console.log("find entity ranges:", start, end)
@@ -73,6 +71,7 @@ const createFuriganaPlugin = (config = {}) => {
                     break
                 }
 
+                let currentContent = editorState.getCurrentContent()
                 let furiganaStartInBlock = furiganaStart - offset
                 let furiganaEndInBlock = furiganaEnd - offset
 
@@ -132,7 +131,7 @@ const createFuriganaPlugin = (config = {}) => {
                 )
 
                 furiganaAdded = true
-                console.log("created entity", currentContent, surfaceSelection, furiganaEntityKey)
+                console.log("created entity", convertToRaw(editorState.getCurrentContent()), furiganaEntityKey)
             }
 
             offset += block.getText()
@@ -145,8 +144,6 @@ const createFuriganaPlugin = (config = {}) => {
             console.log(convertToRaw(store.getEditorState().getCurrentContent()));
         }
     }
-
-    // TODO: Try injecting furigana on a timer rather than in the onChange callback, to avoid the infinite loops.
 
     const updateFurigana = debounce((editorState) => {
         let plainText = editorState.getCurrentContent().getPlainText('')
@@ -196,9 +193,10 @@ const createFuriganaPlugin = (config = {}) => {
 
             store.lastFetchedFuriganaText = null
 
-            // setInterval(function() {
-            //    updateFurigana(store.getEditorState())
-            // }, 3000);
+            // Fail-safe.
+            setInterval(function() {
+               updateFurigana(store.getEditorState())
+            }, 1000);
         },
 
         // handlePastedText: (text, html) => {
