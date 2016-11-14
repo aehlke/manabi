@@ -171,6 +171,13 @@ class AnnotatedJapaneseInput extends React.Component {
                         .apply()
                     currentOffset += 1
                 }
+
+                // If at end of a text node, move to the start of the next node.
+                let textNode = state.texts.first()
+                if (textNode && state.selection.anchorOffset === textNode.length) {
+                    state = moveToNextNode(state, parentNode, textNode)
+                    console.log("At end of text node; moved to start of next.")
+                }
             }
             console.log("moveForward: moved forward, currentOffset is", currentOffset)
             return {
@@ -273,7 +280,6 @@ class AnnotatedJapaneseInput extends React.Component {
 
     updateFurigana = debounce(() => {
         // IME is active?
-        console.log("is active?", this.tmp, this.tmp.isComposing)
         if (this.tmp.isComposing) {
             return
         }
