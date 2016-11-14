@@ -45,9 +45,14 @@ module.exports = {
                 //use the babel loader
                 loader: 'babel-loader',
                 query: {
-                    presets: ['react', 'es2015']
+                    presets: ['react', 'es2015', 'stage-0']
                 }
-            }
+            },
+            {
+                test: /\.json$/,
+                include: /node_modules/,
+                loader: 'json-loader',
+            },
         ]
     },
 

@@ -2,6 +2,10 @@
 
 {% block title %}Create Flashcards{% endblock %}
 
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ static('css/facts_creator.css') }}">
+{% endblock %}
+
 {% block content %}
     <form action="" method="post" novalidate>
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
