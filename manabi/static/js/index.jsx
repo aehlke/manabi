@@ -5,6 +5,7 @@ import AutoReplace from 'slate-auto-replace'
 import Cookies from 'js-cookie'
 import debounce from 'lodash/debounce'
 import 'whatwg-fetch'
+import Immutable, { List } from 'immutable'
 
 const csrfToken = Cookies.get('csrftoken')
 
@@ -24,7 +25,7 @@ const schema = {
             return (
                 <ruby className={`${isSelected ? 'selected' : ''}`}>
                     {surface}
-                    <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm" spellCheck={false}>ruby</button></rt>
+                    <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm" spellCheck={false}>{furigana}</button></rt>
                 </ruby>
             )
 
@@ -42,9 +43,42 @@ const schema = {
 
 
 function serializeNodesToText(nodes) {
-  return nodes
-    .map(block => block.text)
-    .join('\n')
+    return nodes
+        .map(node => {
+            if (node.type === 'textWithFurigana') {
+                return node.get('data').get('surface')
+            } else if (typeof node.nodes === 'undefined') {
+                return node.text
+            }
+            return node.nodes
+                .map(node => {
+                    if (node.kind === 'text') {
+                        return node.text
+                    } else if (node.type === 'textWithFurigana') {
+                        return node.get('data').get('surface')
+                    } else {
+                        throw new Error("Unexpected node type found in serializer.")
+                    }
+                })
+                .join('')
+        })
+        .join('\n')
+}
+
+
+function moveToNextNode(state, parentNode, currentNode) {
+    let nextNode = parentNode.getNextSibling(currentNode.key)
+    console.log(nextNode)
+    let nextRange = state.selection.merge({
+        anchorKey: nextNode.key,
+        anchorOffset: 0,
+        focusKey: nextNode.key,
+        focusOffset: 0,
+    })
+    return state
+        .transform()
+        .moveTo(nextRange)
+        .apply()
 }
 
 
@@ -63,7 +97,7 @@ class AnnotatedJapaneseInput extends React.Component {
         // Fail-safe.
         setInterval(() => {
             this.updateFurigana()
-        }, 3000);
+        }, 2300);
     }
 
     applyFurigana = (plainText, textWithFuriganaRaw, furiganaPositions) => {
@@ -77,51 +111,59 @@ class AnnotatedJapaneseInput extends React.Component {
         // TODO: Save current selection to restore at end.
         // TODO: Compare raw prefix with textWithFuriganaRaw to decide whether to reject.
 
-        // Move selection to start.
-        let firstTextNode = state.document.getTexts().first()
-        let startRange = state.selection.merge({
-            anchorKey: firstTextNode.key,
-            anchorOffset: 0,
-            focusKey: firstTextNode.key,
-            focusOffset: 0,
-        })
-        state = state
-            .transform()
-            .moveTo(startRange)
-            .apply()
 
         var currentOffset = 0
 
         // Does not land within textWithFurigana nodes, but counts their surface length
         // when passing through them. If it would land within one, it instead lands
         // immediately after it.
+        //
+        // Assumes nothing is selected (as we only use this for moving the cursor).
+        // Also assumes the document is a *single block* (as we only use single line inputs).
         function moveForward(state, n) {
             console.log("moveForward: will move forward", n)
+            console.log(Raw.serialize(state))
+            let parentNode = state.document.nodes.first()
             for (var i = 0; i < n; i++) {
+                // Are we at the end of a text node?
+                if (state.texts.first()) {
+                    let textNode = state.texts.first()
+                    if (state.selection.anchorOffset === textNode.length) {
+                        // At end of a text node; move to next node.
+                        console.log("At end of a text node; move to next node.")
+                        state = moveToNextNode(state, parentNode, textNode)
+                    }
+                }
+                // console.log("inlines?", state.inlines)
+                // console.log("text?", state.texts.first())
                 let currentInline = state.inlines.get(0)
                 let landingInsideFurigana = (
                     currentInline && currentInline.type === 'textWithFurigana')
 
-                console.log("modeForward: moving forward by 1")
-                state = state
-                    .transform()
-                    .moveForward(1)
-                    .apply()
-
                 if (landingInsideFurigana) {
-                    let surface = serializeNodesToText(currentInline.get('nodes'))
-                    console.log("moveForward: Landing inside furigana...", surface)
+                    let surface = serializeNodesToText(Immutable.List.of(currentInline))
+                    console.log("moveForward: Landing inside furigana...", currentInline, surface)
                     i += surface.length
                     currentOffset += surface.length
 
+                    console.log("Inside furigana node; moving to next node.")
+                    state = moveToNextNode(state, parentNode, currentInline)
+                    console.log(state.selection)
+
                     if (i > n) {
                         // We're ending midway into existing furigana.
+                        console.log("moveForward: Ending midway into existing furigana...")
                         return {
                             state: state,
                             landedInsideFurigana: true,
                         }
                     }
                 } else {
+                    console.log("modeForward: moving forward by 1")
+                    state = state
+                        .transform()
+                        .moveForward(1)
+                        .apply()
                     currentOffset += 1
                 }
             }
@@ -134,9 +176,23 @@ class AnnotatedJapaneseInput extends React.Component {
 
         // Assumes these are already sorted ascending.
         for (let [furiganaStart, furiganaEnd, furigana] of furiganaPositions) {
+            // Move selection to start.
+            let firstNode = state.document.nodes.first()//getTexts().first()
+            let startRange = state.selection.merge({
+                anchorKey: firstNode.key,
+                anchorOffset: 0,
+                focusKey: firstNode.key,
+                focusOffset: 0,
+            })
+            state = state
+                .transform()
+                .moveTo(startRange)
+                .apply()
+            currentOffset = 0
+
             console.log("furiganaStart", furiganaStart, "furiganaEnd", furiganaEnd)
             // Try to move forward to start of intended furigana.
-            let moveForwardResult = moveForward(state, furiganaStart - currentOffset)
+            let moveForwardResult = moveForward(state, furiganaStart) // - currentOffset)
             state = moveForwardResult.state
 
             if (moveForwardResult.landedInsideFurigana) {
@@ -161,6 +217,11 @@ class AnnotatedJapaneseInput extends React.Component {
             }
 
             // Does a furigana already cover the desired range?
+            console.log("Does a furigana already cover the desired range?")
+            console.log('selected offsets', state.selection.anchorOffset, state.selection.focusOffset)
+            // console.log(state.texts.first() ? serializeNodesToText(state.fragment.nodes) : '..not text..')
+            console.log(state.inlines.first())
+            console.log(state.inlines.first() ? state.inlines.first().kind : '')
             if (state.inlines.some(inline => inline.type === 'textWithFurigana')) {
                 // Skip this furigana; already covered.
                 console.log("Skipping as this range contains furigana already.")
@@ -172,12 +233,21 @@ class AnnotatedJapaneseInput extends React.Component {
             }
 
             // Apply the furigana.
-
-            let surface = serializeNodesToText(state.fragment.nodes)
+            console.log("Going to apply the furigana...")
+            console.log(state.selection.focusOffset)
+            console.log(state.selection.anchorOffset)
+            var surface
+            //if (state.
+            if (state.inlines.length > 0) {
+                surface = serializeNodesToText(state.fragment.nodes)
+            } else {
+                surface = state.startText.text.substring(
+                    state.selection.anchorOffset, state.selection.focusOffset)
+            }
             console.log("Applying furigana to range!", surface, furigana)
             state = state
                 .transform()
-                .wrapInline({
+                .insertInline({
                     type: 'textWithFurigana',
                     isVoid: true,
                     data: {
@@ -185,60 +255,18 @@ class AnnotatedJapaneseInput extends React.Component {
                         surface: surface,
                     },
                 })
-                .collapseToEnd()
                 .apply()
             this.onChange(state)
             currentOffset += furiganaEnd - furiganaStart
         }
 
-        /*while (currentOffset < 20) {
-            // 52:    return state.inlines.some(inline => inline.type == 'link')
-            // if state.inlines
-            let currentInline = state.inlines.get(0)
-            if (currentInline && currentInline.type === 'textWithFurigana') {
-                console.log("found furigana inline", currentInline)
-                let data = currentInline.get('data')
-                let furigana = data.get('furigana')
-                // let surface = data.get('surface')
-                let surface = currentInline.children
-                console.log(furigana, surface)
-
-                currentOffset += surface.length
-                console.log("moved forward ", surface.length, "(found furigana)...")
-            }
-
-            state = state
-                .transform()
-                .moveForward(1)
-                .apply()
-            currentOffset += 1
-            console.log("moved forward 1...")
-        }*/
-
-        /*state = state
-            .transform()
-            .insertInline({
-                type: 'textWithFurigana',
-                isVoid: true,
-                data: {
-                    furigana: 'foo-furigana',
-                    surface: 'foo-surface',
-                },
-            })
-            .extendBackward(2)
-            .wrapInline({
-                type: 'textWithFurigana',
-                isVoid: true,
-                data: { },
-            })
-            .collapseToEnd()
-            .apply()*/
-
+        console.log("finished furigana application.")
+        console.log("")
         this.onChange(state)
     }
 
     updateFurigana = debounce(() => {
-        let plainText = Plain.serialize(this.state.state)
+        let plainText = serializeNodesToText(this.state.state.document.nodes)
         console.log("updateFurigana", plainText)
 
         if (plainText.trim() === '') {
