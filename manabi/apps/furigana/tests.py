@@ -59,3 +59,21 @@ class FuriganaInjectionTest(ManabiTestCase):
         self.assertEqual(furigana_positions[1][FURIGANA_POSITION_START], 8)
         self.assertEqual(furigana_positions[1][FURIGANA_POSITION_END], 9)
         self.assertEqual(furigana_positions[1][FURIGANA_POSITION_FURIGANA], u"まな")
+
+    def test_kanji_and_ascii_spaces(self):
+        text_with_furigana, _ = inject_furigana(u"foobar   学び")
+        self.assertEqual(u"foobar   ｜学《まな》び", text_with_furigana)
+
+    def test_furigana_positions_with_kanji_and_ascii_spaces(self):
+        _, furigana_positions = inject_furigana(u"foobar   学び")
+
+        self.assertEqual(furigana_positions[0][FURIGANA_POSITION_START], 9)
+        self.assertEqual(furigana_positions[0][FURIGANA_POSITION_END], 10)
+        self.assertEqual(furigana_positions[0][FURIGANA_POSITION_FURIGANA], u"まな")
+
+    def test_furigana_positions_with_kanji_and_hiragana_prefix_and_ascii_spaces(self):
+        _, furigana_positions = inject_furigana(u"foo   で背を寄せる")
+
+        self.assertEqual(furigana_positions[0][FURIGANA_POSITION_START], 7)
+        self.assertEqual(furigana_positions[0][FURIGANA_POSITION_END], 8)
+        self.assertEqual(furigana_positions[0][FURIGANA_POSITION_FURIGANA], u"せ")
