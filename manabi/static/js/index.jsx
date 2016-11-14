@@ -5,7 +5,7 @@ import AutoReplace from 'slate-auto-replace'
 import Cookies from 'js-cookie'
 import debounce from 'lodash/debounce'
 import 'whatwg-fetch'
-import Immutable, { List } from 'immutable'
+import Immutable from 'immutable'
 
 const csrfToken = Cookies.get('csrftoken')
 
@@ -90,6 +90,9 @@ class AnnotatedJapaneseInput extends React.Component {
             state: initialState,
         }
 
+        this.tmp = {}
+        this.tmp.compositions = 0
+        this.tmp.isComposing = false
         this.lastFetchedFuriganaText = null
 
         // this.updateFurigana = debounce(this._updateFurigana, 250, {maxWait: 1000})
@@ -125,6 +128,7 @@ class AnnotatedJapaneseInput extends React.Component {
             console.log(Raw.serialize(state))
             let parentNode = state.document.nodes.first()
             for (var i = 0; i < n; i++) {
+                console.log("moveForward: top of loop.", i, n, currentOffset)
                 // Are we at the end of a text node?
                 if (state.texts.first()) {
                     let textNode = state.texts.first()
@@ -143,10 +147,11 @@ class AnnotatedJapaneseInput extends React.Component {
                 if (landingInsideFurigana) {
                     let surface = serializeNodesToText(Immutable.List.of(currentInline))
                     console.log("moveForward: Landing inside furigana...", currentInline, surface)
-                    i += surface.length
+                    i += (surface.length - 1)
                     currentOffset += surface.length
 
                     console.log("Inside furigana node; moving to next node.")
+                    console.log("set i to", i, "currentOFfset at", currentOffset)
                     state = moveToNextNode(state, parentNode, currentInline)
                     console.log(state.selection)
 
@@ -233,11 +238,12 @@ class AnnotatedJapaneseInput extends React.Component {
             }
 
             // Apply the furigana.
-            console.log("Going to apply the furigana...")
+            console.log("Going to apply the furigana...", furigana)
+            console.log(Raw.serialize(state))
+            console.log(state.selection.anchorKey)
             console.log(state.selection.focusOffset)
             console.log(state.selection.anchorOffset)
             var surface
-            //if (state.
             if (state.inlines.length > 0) {
                 surface = serializeNodesToText(state.fragment.nodes)
             } else {
@@ -247,7 +253,7 @@ class AnnotatedJapaneseInput extends React.Component {
             console.log("Applying furigana to range!", surface, furigana)
             state = state
                 .transform()
-                .insertInline({
+                .wrapInline({
                     type: 'textWithFurigana',
                     isVoid: true,
                     data: {
@@ -266,6 +272,12 @@ class AnnotatedJapaneseInput extends React.Component {
     }
 
     updateFurigana = debounce(() => {
+        // IME is active?
+        console.log("is active?", this.tmp, this.tmp.isComposing)
+        if (this.tmp.isComposing) {
+            return
+        }
+
         let plainText = serializeNodesToText(this.state.state.document.nodes)
         console.log("updateFurigana", plainText)
 
@@ -298,6 +310,22 @@ class AnnotatedJapaneseInput extends React.Component {
             })
     }, 250, {maxWait: 1000})
 
+    onCompositionStart = (e) => {
+        this.tmp.isComposing = true
+        this.tmp.compositions++
+    }
+    onCompositionEnd = (e) => {
+        const count = this.tmp.compositions
+
+        // The `count` check here ensures that if another composition starts
+        // before the timeout has closed out this one, we will abort unsetting the
+        // `isComposing` flag, since a composition in still in affect.
+        setTimeout(() => {
+            if (this.tmp.compositions > count) return
+            this.tmp.isComposing = false
+        })
+    }
+
     onChange = (state) => {
         console.log('onChange')
         this.setState({ state })
@@ -310,6 +338,8 @@ class AnnotatedJapaneseInput extends React.Component {
                 state={this.state.state}
                 plugins={this.plugins}
                 schema={schema}
+                onCompositionEnd={this.onCompositionEnd}
+                onCompositionStart={this.onCompositionStart}
                 onChange={this.onChange}
             />
         )
