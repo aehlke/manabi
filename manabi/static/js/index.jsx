@@ -93,7 +93,6 @@ function cursorOffset(state) {
     return accumulatedText.length
 }
 
-
 function moveToNextNode(state, parentNode, currentNode) {
     let nextNode = parentNode.getNextSibling(currentNode.key)
     let nextRange = state.selection.merge({
@@ -108,7 +107,6 @@ function moveToNextNode(state, parentNode, currentNode) {
         .apply()
 }
 
-
 class AnnotatedJapaneseInput extends React.Component {
     constructor(props) {
         super(props)
@@ -122,16 +120,22 @@ class AnnotatedJapaneseInput extends React.Component {
         this.tmp.isComposing = false
         this.lastFetchedFuriganaText = null
 
-        // this.updateFurigana = debounce(this._updateFurigana, 250, {maxWait: 1000})
-
         // Fail-safe.
         setInterval(() => {
             this.updateFurigana()
-        }, 1000);
+        }, 500);
+    }
+
+    maybeIMEActive = () => {
+        return this.tmp.isComposing
     }
 
     applyFurigana = (plainText, textWithFuriganaRaw, furiganaPositions) => {
         console.log("applyFurigana(...)")
+
+        if (this.maybeIMEActive()) {
+            return
+        }
 
         let { state } = this.state
 
@@ -314,6 +318,7 @@ class AnnotatedJapaneseInput extends React.Component {
                     },
                 })
                 .apply()
+
             this.onChange(state)
             currentOffset += furiganaEnd - furiganaStart
         }
@@ -323,14 +328,13 @@ class AnnotatedJapaneseInput extends React.Component {
 
         console.log("Restoring cursor position to", cursorOffsetBeforeApplication)
         state = moveToStart(state)
-        state = moveForward(state, cursorOffsetBeforeApplication)
+        state = moveForward(state, cursorOffsetBeforeApplication).state
 
         this.onChange(state)
     }
 
     updateFurigana = debounce(() => {
-        // IME is active?
-        if (this.tmp.isComposing) {
+        if (this.maybeIMEActive()) {
             return
         }
 
@@ -342,8 +346,6 @@ class AnnotatedJapaneseInput extends React.Component {
         }
 
         let plainText = serializeNodesToText(this.state.state.document.nodes)
-        console.log("updateFurigana", plainText)
-
         if (plainText.trim() === '') {
             return
         }
