@@ -32,39 +32,39 @@ const schema = {
     }
 }
 
+// Does not iterate into nested nodes.
+function nodeText(node, textWithFuriganaFormatter = null) {
+    if (node.type === 'textWithFurigana') {
+        if (textWithFuriganaFormatter) {
+            return textWithFuriganaFormatter(node)
+        }
+        return node.get('data').get('surface')
+    } else if (node.kind === 'text') {
+        return node.text
+    } else {
+        throw new Error("Unexpected node type found in serializer.")
+    }
+}
 
-function serializeNodesToText(nodes) {
+function serializeNodesToText(nodes, textWithFuriganaFormatter = null) {
     return nodes
         .map(node => {
-            if (node.type === 'textWithFurigana') {
-                return node.get('data').get('surface')
-            } else if (typeof node.nodes === 'undefined') {
-                return node.text
+            if (typeof node.nodes === 'undefined') {
+                return nodeText(node, textWithFuriganaFormatter)
             }
             return node.nodes
-                .map(node => {
-                    if (node.kind === 'text') {
-                        return node.text
-                    } else if (node.type === 'textWithFurigana') {
-                        return node.get('data').get('surface')
-                    } else {
-                        throw new Error("Unexpected node type found in serializer.")
-                    }
-                })
+                .map(node => nodeText(node, textWithFuriganaFormatter))
                 .join('')
         })
         .join('\n')
 }
 
-
-// Does not iterate into nested nodes.
-function nodeText(node) {
-    if (node.type === 'textWithFurigana') {
-        return node.get('data').get('surface')
-    }
-    return node.text
+function serializeToManabiRawFormat(state) {
+    return serializeNodesToText(state.document.nodes, function (node) {
+        let data = node.get('data')
+        return `｜${data.get('surface')}《${data.get('furigana')}》`
+    })
 }
-
 
 // Returns the offset from the start of the document, in count of characters.
 // Assumes a single block (for single-line inputs).
@@ -134,9 +134,21 @@ class AnnotatedJapaneseInput extends React.Component {
         console.log("applyFurigana(...)")
 
         let { state } = this.state
+
+        // Only apply furigana when nothing is actively selected.
+        if (state.selection.anchorKey !== state.selection.focusKey
+            || state.selection.anchorOffset !== state.selection.focusOffset
+        ) {
+            return
+        }
         let cursorOffsetBeforeApplication = cursorOffset(state)
 
-        // TODO: Compare raw prefix with textWithFuriganaRaw to decide whether to reject.
+        if (plainText
+            !== (serializeNodesToText(state.document.nodes).substring(0, plainText.length))
+        ) {
+            console.log("Content diverged since fetching furigana; throwing out.")
+            return
+        }
 
         var currentOffset = 0
 
@@ -180,8 +192,7 @@ class AnnotatedJapaneseInput extends React.Component {
                         }
                     }
                 }
-                // console.log("inlines?", state.inlines)
-                // console.log("text?", state.texts.first())
+
                 let currentInline = state.inlines.get(0)
                 let landingInsideFurigana = (
                     currentInline && currentInline.type === 'textWithFurigana')
@@ -284,10 +295,6 @@ class AnnotatedJapaneseInput extends React.Component {
 
             // Apply the furigana.
             console.log("Going to apply the furigana...", furigana)
-            console.log(Raw.serialize(state))
-            console.log(state.selection.anchorKey)
-            console.log(state.selection.focusOffset)
-            console.log(state.selection.anchorOffset)
             var surface
             if (state.inlines.length > 0) {
                 surface = serializeNodesToText(state.fragment.nodes)
