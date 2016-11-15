@@ -9,6 +9,12 @@ import Immutable from 'immutable'
 
 const csrfToken = Cookies.get('csrftoken')
 
+// TODO: Off-by-1 furigana application bugs.
+// TODO: Click ruby buttons to edit ruby text (including removal?).
+// TODO: Load in initial state from backend or from query param.
+// TODO: Hook up serialized form to form submission.
+// TODO: Single-line restriction.
+// TODO: Spinner?
 
 const initialState = Plain.deserialize('')
 
@@ -337,8 +343,6 @@ class AnnotatedJapaneseInput extends React.Component {
         if (this.maybeIMEActive()) {
             return
         }
-
-        // TODO: Don't try to update when text is selected
 
         // Not sure why this is needed, yet.
         if (!this.state.state.document) {
