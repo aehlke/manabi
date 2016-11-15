@@ -23,19 +23,10 @@ const schema = {
             const isSelected = state.selection.hasFocusIn(node)
 
             return (
-                <ruby className={`${isSelected ? 'selected' : ''}`}>
+                <ruby contentEditable={false} className={`${isSelected ? 'selected' : ''}`}>
                     {surface}
                     <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm" spellCheck={false}>{furigana}</button></rt>
                 </ruby>
-            )
-
-            return (
-                <span >
-                    {props.children}
-                <ruby contentEditable={false} className={`${isSelected ? 'selected' : ''}`}>
-                    <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm" spellCheck={false}>ruby</button></rt>
-                </ruby>
-                </span>
             )
         },
     }
@@ -66,9 +57,45 @@ function serializeNodesToText(nodes) {
 }
 
 
+// Does not iterate into nested nodes.
+function nodeText(node) {
+    if (node.type === 'textWithFurigana') {
+        return node.get('data').get('surface')
+    }
+    return node.text
+}
+
+
+// Returns the offset from the start of the document, in count of characters.
+// Assumes a single block (for single-line inputs).
+function cursorOffset(state) {
+    let { selection } = state
+    // let nodes = state.document.nodes.toJS()[0].nodes
+    let nodes = state.document.nodes.first().get('nodes')
+
+    if (selection.anchorKey !== selection.focusKey) {
+        throw new Error("cursorOffset only works on 0-length selections.")
+    }
+
+    var accumulatedText = ''
+
+    for (let node of nodes) {
+        let text = nodeText(node)
+        let targetNodeFound = selection.anchorKey === node.key
+        if (targetNodeFound) {
+            text = text.substring(0, selection.anchorOffset)
+        }
+        accumulatedText += text
+        if (targetNodeFound) {
+            break
+        }
+    }
+    return accumulatedText.length
+}
+
+
 function moveToNextNode(state, parentNode, currentNode) {
     let nextNode = parentNode.getNextSibling(currentNode.key)
-    console.log(nextNode)
     let nextRange = state.selection.merge({
         anchorKey: nextNode.key,
         anchorOffset: 0,
@@ -100,22 +127,33 @@ class AnnotatedJapaneseInput extends React.Component {
         // Fail-safe.
         setInterval(() => {
             this.updateFurigana()
-        }, 2300);
+        }, 1000);
     }
 
     applyFurigana = (plainText, textWithFuriganaRaw, furiganaPositions) => {
-        console.log("apply")
+        console.log("applyFurigana(...)")
 
         let { state } = this.state
+        let cursorOffsetBeforeApplication = cursorOffset(state)
 
-        // console.log(Raw.serialize(state))
-        // console.log(state.transform()inlines)
-
-        // TODO: Save current selection to restore at end.
         // TODO: Compare raw prefix with textWithFuriganaRaw to decide whether to reject.
 
-
         var currentOffset = 0
+
+        function moveToStart(state) {
+            let firstNode = state.document.nodes.first()
+            let startRange = state.selection.merge({
+                anchorKey: firstNode.key,
+                anchorOffset: 0,
+                focusKey: firstNode.key,
+                focusOffset: 0,
+            })
+            return state
+                .transform()
+                .moveTo(startRange)
+                .apply()
+            currentOffset = 0
+        }
 
         // Does not land within textWithFurigana nodes, but counts their surface length
         // when passing through them. If it would land within one, it instead lands
@@ -135,7 +173,11 @@ class AnnotatedJapaneseInput extends React.Component {
                     if (state.selection.anchorOffset === textNode.length) {
                         // At end of a text node; move to next node.
                         console.log("At end of a text node; move to next node.")
-                        state = moveToNextNode(state, parentNode, textNode)
+                        try {
+                            state = moveToNextNode(state, parentNode, textNode)
+                        } catch (e) {
+                            // TODO: Catch a specific error type here, for when no next node.
+                        }
                     }
                 }
                 // console.log("inlines?", state.inlines)
@@ -152,7 +194,11 @@ class AnnotatedJapaneseInput extends React.Component {
 
                     console.log("Inside furigana node; moving to next node.")
                     console.log("set i to", i, "currentOFfset at", currentOffset)
-                    state = moveToNextNode(state, parentNode, currentInline)
+                    try {
+                        state = moveToNextNode(state, parentNode, currentInline)
+                    } catch (e) {
+                        // TODO: Catch a specific error type here, for when no next node.
+                    }
                     console.log(state.selection)
 
                     if (i > n) {
@@ -175,7 +221,11 @@ class AnnotatedJapaneseInput extends React.Component {
                 // If at end of a text node, move to the start of the next node.
                 let textNode = state.texts.first()
                 if (textNode && state.selection.anchorOffset === textNode.length) {
-                    state = moveToNextNode(state, parentNode, textNode)
+                    try {
+                        state = moveToNextNode(state, parentNode, textNode)
+                    } catch (e) {
+                        // TODO: Catch a specific error type here, for when no next node.
+                    }
                     console.log("At end of text node; moved to start of next.")
                 }
             }
@@ -188,19 +238,7 @@ class AnnotatedJapaneseInput extends React.Component {
 
         // Assumes these are already sorted ascending.
         for (let [furiganaStart, furiganaEnd, furigana] of furiganaPositions) {
-            // Move selection to start.
-            let firstNode = state.document.nodes.first()//getTexts().first()
-            let startRange = state.selection.merge({
-                anchorKey: firstNode.key,
-                anchorOffset: 0,
-                focusKey: firstNode.key,
-                focusOffset: 0,
-            })
-            state = state
-                .transform()
-                .moveTo(startRange)
-                .apply()
-            currentOffset = 0
+            state = moveToStart(state)
 
             console.log("furiganaStart", furiganaStart, "furiganaEnd", furiganaEnd)
             // Try to move forward to start of intended furigana.
@@ -275,12 +313,24 @@ class AnnotatedJapaneseInput extends React.Component {
 
         console.log("finished furigana application.")
         console.log("")
+
+        console.log("Restoring cursor position to", cursorOffsetBeforeApplication)
+        state = moveToStart(state)
+        state = moveForward(state, cursorOffsetBeforeApplication)
+
         this.onChange(state)
     }
 
     updateFurigana = debounce(() => {
         // IME is active?
         if (this.tmp.isComposing) {
+            return
+        }
+
+        // TODO: Don't try to update when text is selected
+
+        // Not sure why this is needed, yet.
+        if (!this.state.state.document) {
             return
         }
 
@@ -291,6 +341,7 @@ class AnnotatedJapaneseInput extends React.Component {
             return
         }
 
+        // TODO: Handle isComposing during the fetch result, and put this inside there...
         if (this.lastFetchedFuriganaText === plainText) {
             return
         }
