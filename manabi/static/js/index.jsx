@@ -351,6 +351,7 @@ class AnnotatedJapaneseInput extends React.Component {
 
         let plainText = serializeNodesToText(this.state.state.document.nodes)
         if (plainText.trim() === '') {
+            this.lastFetchedFuriganaText = null
             return
         }
 
