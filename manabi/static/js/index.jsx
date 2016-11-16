@@ -17,21 +17,33 @@ const csrfToken = Cookies.get('csrftoken')
 
 const initialState = Plain.deserialize('')
 
+class TextWithFurigana extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+
+    render() {
+        return (
+                <ruby contentEditable={false} className={`${this.props.isSelected ? 'selected' : ''}`}>
+                {this.props.surface}
+                <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm" spellCheck={false}>{this.props.furigana}</button></rt>
+            </ruby>
+        )
+    }
+}
+
 const schema = {
     nodes: {
         textWithFurigana: (props) => {
             const { state, node } = props
             const { data } = node
-            // const code = data.get('code')
-            const furigana = data.get('furigana')
-            const surface = data.get('surface')
-            const isSelected = state.selection.hasFocusIn(node)
 
             return (
-                <ruby contentEditable={false} className={`${isSelected ? 'selected' : ''}`}>
-                    {surface}
-                    <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm" spellCheck={false}>{furigana}</button></rt>
-                </ruby>
+                <TextWithFurigana
+                    furigana={data.get('furigana')}
+                    surface={data.get('surface')}
+                    isSelected={state.selection.hasFocusIn(node)}
+                />
             )
         },
     }
