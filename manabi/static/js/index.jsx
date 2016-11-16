@@ -9,7 +9,6 @@ import Immutable from 'immutable'
 
 const csrfToken = Cookies.get('csrftoken')
 
-// TODO: Off-by-1 furigana application bugs.
 // TODO: Click ruby buttons to edit ruby text (including removal?).
 // TODO: Load in initial state from backend or from query param.
 // TODO: Hook up serialized form to form submission.
@@ -208,12 +207,12 @@ class AnnotatedJapaneseInput extends React.Component {
                     currentInline && currentInline.type === 'textWithFurigana')
 
                 if (landingInsideFurigana) {
-                    let surface = serializeNodesToText(Immutable.List.of(currentInline))
+                    let surface = currentInline.data.get('surface')
                     console.log("moveForward: Landing inside furigana...", currentInline, surface)
                     i += (surface.length - 1)
                     currentOffset += surface.length
 
-                    console.log("Inside furigana node; moving to next node.")
+                    console.log("Inside furigana node;", surface ,"moving to next node.")
                     console.log("set i to", i, "currentOFfset at", currentOffset)
                     try {
                         state = moveToNextNode(state, parentNode, currentInline)
