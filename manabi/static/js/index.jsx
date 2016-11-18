@@ -1,3 +1,4 @@
+import Debug from 'debug'
 import React from 'react'
 import ReactDOM from 'react-dom'
 import { Editor, Raw, Plain } from 'slate'
@@ -7,9 +8,9 @@ import debounce from 'lodash/debounce'
 import 'whatwg-fetch'
 import Immutable from 'immutable'
 
+const debug = console.log;//Debug('manabi')
 const csrfToken = Cookies.get('csrftoken')
 
-// TODO: Click ruby buttons to edit ruby text (including removal?).
 // TODO: Load in initial state from backend or from query param.
 // TODO: Hook up serialized form to form submission.
 // TODO: Single-line restriction.
@@ -18,34 +19,21 @@ const csrfToken = Cookies.get('csrftoken')
 const initialState = Plain.deserialize('')
 
 class TextWithFurigana extends React.Component {
-    constructor(props) {
-        super(props)
-    }
-
     render() {
         return (
                 <ruby contentEditable={false} className={`${this.props.isSelected ? 'selected' : ''}`}>
                 {this.props.surface}
-                <rt contentEditable={false}><button contentEditable={false} type="button" className="btn btn-outline-primary btn-sm" spellCheck={false}>{this.props.furigana}</button></rt>
+                <rt contentEditable={false}>
+                    <button
+                        contentEditable={false}
+                        type="button"
+                        className="btn btn-outline-primary btn-sm"
+                        spellCheck={false}
+                        onClick={this.props.furiganaButtonOnClick}
+                    >{this.props.furigana}</button>
+            </rt>
             </ruby>
         )
-    }
-}
-
-const schema = {
-    nodes: {
-        textWithFurigana: (props) => {
-            const { state, node } = props
-            const { data } = node
-
-            return (
-                <TextWithFurigana
-                    furigana={data.get('furigana')}
-                    surface={data.get('surface')}
-                    isSelected={state.selection.hasFocusIn(node)}
-                />
-            )
-        },
     }
 }
 
@@ -111,7 +99,13 @@ function cursorOffset(state) {
 }
 
 function moveToNextNode(state, parentNode, currentNode) {
-    let nextNode = parentNode.getNextSibling(currentNode.key)
+    debug('moveToNextNode(...)')
+    debug("Current node is", currentNode)
+    var nextNode = parentNode.getNextSibling(currentNode.key)
+    if (nextNode.type === 'textWithFurigana') {
+        // Must always select a text node.
+        nextNode = nextNode.nodes.first()
+    }
     let nextRange = state.selection.merge({
         anchorKey: nextNode.key,
         anchorOffset: 0,
@@ -148,7 +142,7 @@ class AnnotatedJapaneseInput extends React.Component {
     }
 
     applyFurigana = (plainText, textWithFuriganaRaw, furiganaPositions) => {
-        console.log("applyFurigana(...)")
+        debug("applyFurigana(...)")
 
         if (this.maybeIMEActive()) {
             return
@@ -167,25 +161,43 @@ class AnnotatedJapaneseInput extends React.Component {
         if (plainText
             !== (serializeNodesToText(state.document.nodes).substring(0, plainText.length))
         ) {
-            console.log("Content diverged since fetching furigana; throwing out.")
+            debug("Content diverged since fetching furigana; throwing out.")
             return
         }
 
         var currentOffset = 0
 
         function moveToStart(state) {
-            let firstNode = state.document.nodes.first()
+            debug("moveToStart(...)")
+            let firstTextNode = state.document.nodes.first().nodes.first()
+            debug("moveToStart: first node selected:", firstTextNode.toJS())
+            debug("moveToStart: document", state.document.nodes.first().toJS())
             let startRange = state.selection.merge({
-                anchorKey: firstNode.key,
+                anchorKey: firstTextNode.key,
                 anchorOffset: 0,
-                focusKey: firstNode.key,
+                focusKey: firstTextNode.key,
                 focusOffset: 0,
             })
+            currentOffset = 0
             return state
                 .transform()
                 .moveTo(startRange)
                 .apply()
-            currentOffset = 0
+        }
+
+        function moveForwardToFirstNonEmptyNode(state) {
+            debug('moveForwardToFirstNonEmptyNode()')
+            let parentNode = state.document.nodes.first()
+            let textNode = state.texts.first()
+            if (state.selection.isAtEndOf(textNode)) {
+                debug("moveForwardToFirstNonEmptyNode: moving forward")
+                try {
+                    state = moveToNextNode(state, parentNode, textNode)
+                } catch (e) {
+                    // TODO: Catch a specific error type here, for when no next node.
+                }
+            }
+            return state
         }
 
         // Does not land within textWithFurigana nodes, but counts their surface length
@@ -195,17 +207,17 @@ class AnnotatedJapaneseInput extends React.Component {
         // Assumes nothing is selected (as we only use this for moving the cursor).
         // Also assumes the document is a *single block* (as we only use single line inputs).
         function moveForward(state, n) {
-            console.log("moveForward: will move forward", n)
-            console.log(Raw.serialize(state))
+            debug("moveForward: will move forward", n)
+            debug(Raw.serialize(state))
             let parentNode = state.document.nodes.first()
             for (var i = 0; i < n; i++) {
-                console.log("moveForward: top of loop.", i, n, currentOffset)
+                debug("moveForward: top of loop.", i, n, currentOffset)
                 // Are we at the end of a text node?
-                if (state.texts.first()) {
+                if (parentNode.type !== 'textWithFurigana' && state.texts.first()) {
                     let textNode = state.texts.first()
-                    if (state.selection.anchorOffset === textNode.length) {
+                    if (state.selection.isAtEndOf(textNode)) {
                         // At end of a text node; move to next node.
-                        console.log("At end of a text node; move to next node.")
+                        debug("At end of a text node; move to next node.", textNode)
                         try {
                             state = moveToNextNode(state, parentNode, textNode)
                         } catch (e) {
@@ -220,29 +232,30 @@ class AnnotatedJapaneseInput extends React.Component {
 
                 if (landingInsideFurigana) {
                     let surface = currentInline.data.get('surface')
-                    console.log("moveForward: Landing inside furigana...", currentInline, surface)
+                    debug("moveForward: Landing inside furigana...", currentInline, surface)
                     i += (surface.length - 1)
+                    debug("currentOffset was at", currentOffset)
                     currentOffset += surface.length
 
-                    console.log("Inside furigana node;", surface ,"moving to next node.")
-                    console.log("set i to", i, "currentOFfset at", currentOffset)
+                    debug("Inside furigana node;", surface ,"moving to next node.")
+                    debug("set i to", i, "currentOFfset at", currentOffset)
                     try {
                         state = moveToNextNode(state, parentNode, currentInline)
                     } catch (e) {
                         // TODO: Catch a specific error type here, for when no next node.
                     }
-                    console.log(state.selection)
+                    debug(state.selection)
 
                     if (i > n) {
                         // We're ending midway into existing furigana.
-                        console.log("moveForward: Ending midway into existing furigana...")
+                        debug("moveForward: Ending midway into existing furigana...")
                         return {
                             state: state,
                             landedInsideFurigana: true,
                         }
                     }
                 } else {
-                    console.log("modeForward: moving forward by 1")
+                    debug("modeForward: moving forward by 1 (incl currentOffset which was at", currentOffset, ")")
                     state = state
                         .transform()
                         .moveForward(1)
@@ -258,10 +271,10 @@ class AnnotatedJapaneseInput extends React.Component {
                     } catch (e) {
                         // TODO: Catch a specific error type here, for when no next node.
                     }
-                    console.log("At end of text node; moved to start of next.")
+                    debug("At end of text node; moved to start of next.")
                 }
             }
-            console.log("moveForward: moved forward, currentOffset is", currentOffset)
+            debug("moveForward: moved forward, currentOffset is", currentOffset)
             return {
                 state: state,
                 landedInsideFurigana: false,
@@ -270,20 +283,25 @@ class AnnotatedJapaneseInput extends React.Component {
 
         // Assumes these are already sorted ascending.
         for (let [furiganaStart, furiganaEnd, furigana] of furiganaPositions) {
+            debug("furiganaStart", furiganaStart, "furiganaEnd", furiganaEnd)
             state = moveToStart(state)
+            debug("moved to start... currentOffset at", currentOffset)
+            debug(state.document.nodes.first().toJS())
 
-            console.log("furiganaStart", furiganaStart, "furiganaEnd", furiganaEnd)
             // Try to move forward to start of intended furigana.
             let moveForwardResult = moveForward(state, furiganaStart) // - currentOffset)
             state = moveForwardResult.state
 
             if (moveForwardResult.landedInsideFurigana) {
-                console.log("Landed inside furigana; moving on to next candidate.")
+                debug("Landed inside furigana; moving on to next candidate.")
                 continue
             }
 
+            // Make sure we're not in an empty in-between text node.
+            state = moveForwardToFirstNonEmptyNode(state)
+
             // Select the desired furigana range.
-            console.log("Select desired range of length", furiganaEnd-furiganaStart)
+            debug("Select desired range of length", furiganaEnd-furiganaStart)
             state = state
                 .transform()
                 .extendForward(furiganaEnd - furiganaStart)
@@ -294,19 +312,16 @@ class AnnotatedJapaneseInput extends React.Component {
                 state.selection.focusOffset - state.selection.anchorOffset
                 !== furiganaEnd - furiganaStart
             ) {
-                console.log("Couldn't select enough characters for furigana range.")
+                debug("Couldn't select enough characters for furigana range.")
                 break
             }
 
             // Does a furigana already cover the desired range?
-            console.log("Does a furigana already cover the desired range?")
-            console.log('selected offsets', state.selection.anchorOffset, state.selection.focusOffset)
-            // console.log(state.texts.first() ? serializeNodesToText(state.fragment.nodes) : '..not text..')
-            console.log(state.inlines.first())
-            console.log(state.inlines.first() ? state.inlines.first().kind : '')
+            debug("Does a furigana already cover the desired range?")
+            debug('selected offsets', state.selection.anchorOffset, state.selection.focusOffset)
             if (state.inlines.some(inline => inline.type === 'textWithFurigana')) {
                 // Skip this furigana; already covered.
-                console.log("Skipping as this range contains furigana already.")
+                debug("Skipping as this range contains furigana already.")
                 state = state
                     .transform()
                     .collapseToStart()
@@ -315,7 +330,7 @@ class AnnotatedJapaneseInput extends React.Component {
             }
 
             // Apply the furigana.
-            console.log("Going to apply the furigana...", furigana)
+            debug("Going to apply the furigana...", furigana)
             var surface
             if (state.inlines.length > 0) {
                 surface = serializeNodesToText(state.fragment.nodes)
@@ -323,7 +338,7 @@ class AnnotatedJapaneseInput extends React.Component {
                 surface = state.startText.text.substring(
                     state.selection.anchorOffset, state.selection.focusOffset)
             }
-            console.log("Applying furigana to range!", surface, furigana)
+            debug("Applying furigana to range!", surface, furigana)
             state = state
                 .transform()
                 .wrapInline({
@@ -340,10 +355,10 @@ class AnnotatedJapaneseInput extends React.Component {
             currentOffset += furiganaEnd - furiganaStart
         }
 
-        console.log("finished furigana application.")
-        console.log("")
+        debug("finished furigana application.")
+        debug("")
 
-        console.log("Restoring cursor position to", cursorOffsetBeforeApplication)
+        debug("Restoring cursor position to", cursorOffsetBeforeApplication)
         state = moveToStart(state)
         state = moveForward(state, cursorOffsetBeforeApplication).state
 
@@ -392,6 +407,67 @@ class AnnotatedJapaneseInput extends React.Component {
             })
     }, 250, {maxWait: 1000})
 
+    promptToUpdateFurigana = (node) => {
+        let { data } = node
+        let surface = data.get('surface')
+        let furigana = data.get('furigana')
+
+        let newFurigana = window.prompt(
+            `Enter the intended furigana reading for 「${surface}」.`,
+            furigana)
+
+        if (newFurigana !== null) {
+            let { state } = this.state
+
+            data.furigana = newFurigana
+            let properties = {
+                data: {
+                    furigana: newFurigana,
+                    surface: surface,
+                },
+            }
+
+            state = state
+                .transform()
+                .setNodeByKey(node.key, properties)
+                .apply()
+            this.setState({ state })
+        }
+    }
+
+    schema = {
+        nodes: {
+            textWithFurigana: (props) => {
+                const { state, node } = props
+                const { data } = node
+
+                function furiganaButtonOnClick(e) {
+                    e.preventDefault()
+
+                    // TODO: Race condition; once the debug package releases with
+                    // fix for mis-detecting Electron, use it with debug=slate:transform
+                    // to diagnose what is triggering the onChange reversion immediately
+                    // after our data update and get rid of this ugly hack.
+                    setTimeout(function() {
+                        this.promptToUpdateFurigana(props.node)
+                    }.bind(this), 10)
+                }
+
+                const surface = data.get('surface')
+                const furigana = data.get('furigana')
+
+                return (
+                    <TextWithFurigana
+                        furigana={data.get('furigana')}
+                        surface={data.get('surface')}
+                        isSelected={state.selection.hasFocusIn(node)}
+                        furiganaButtonOnClick={furiganaButtonOnClick.bind(this)}
+                    />
+                )
+            },
+        }
+    }
+
     onCompositionStart = (e) => {
         this.tmp.isComposing = true
         this.tmp.compositions++
@@ -409,8 +485,10 @@ class AnnotatedJapaneseInput extends React.Component {
     }
 
     onChange = (state) => {
-        console.log('onChange')
+        debug('onChange')
         this.setState({ state })
+
+        debug(Raw.serialize(state).document.nodes[0])
     }
 
     // On change, update the app's React state with the new editor state.
@@ -419,7 +497,7 @@ class AnnotatedJapaneseInput extends React.Component {
             <Editor
                 state={this.state.state}
                 plugins={this.plugins}
-                schema={schema}
+                schema={this.schema}
                 onCompositionEnd={this.onCompositionEnd}
                 onCompositionStart={this.onCompositionStart}
                 onChange={this.onChange}
