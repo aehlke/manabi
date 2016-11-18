@@ -13,7 +13,6 @@ const csrfToken = Cookies.get('csrftoken')
 
 // TODO: Load in initial state from backend or from query param.
 // TODO: Hook up serialized form to form submission.
-// TODO: Single-line restriction.
 // TODO: Spinner?
 
 const initialState = Plain.deserialize('')
@@ -484,11 +483,47 @@ class AnnotatedJapaneseInput extends React.Component {
         })
     }
 
+    collapseToSingleLine = (state) => {
+        let lineNodes = state.document.nodes
+        let firstLineNode = lineNodes.first()
+        if (lineNodes.size > 1) {
+            var transformingState = state.transform()
+            for (let lineNode of lineNodes.slice(1)) {
+                var nodeCounter = 0
+                let innerNodes = lineNode.nodes
+                // Skip first node if it's an empty text.
+                if (innerNodes.first().length === 0) {
+                    innerNodes = innerNodes.shift()
+                }
+                for (let node of innerNodes) {
+                    transformingState = transformingState
+                        .moveNodeByKey(
+                            node.key,
+                            firstLineNode.key,
+                            firstLineNode.length + nodeCounter,
+                        )
+                    nodeCounter += 1
+                }
+
+                transformingState = transformingState
+                    .removeNodeByKey(lineNode.key)
+            }
+            state = transformingState.apply()
+            return state
+        }
+
+        // TODO: strip newlines?
+        // See https://github.com/icelab/draft-js-single-line-plugin/blob/7abdf477c6d619dae841c57d79cffe74dba11780/lib/index.js#L70 for example.
+        return state
+    }
+
     onChange = (state) => {
         debug('onChange')
-        this.setState({ state })
 
-        debug(Raw.serialize(state).document.nodes[0])
+        state = this.collapseToSingleLine(state)
+        debug(state.document.nodes.toJS())
+
+        this.setState({ state })
     }
 
     // On change, update the app's React state with the new editor state.
