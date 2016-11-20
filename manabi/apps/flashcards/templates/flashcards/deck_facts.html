@@ -1,0 +1,22 @@
+{% extends "flashcards/deck_detail_base.html" %}
+
+{% set deck = data %}
+
+{% block deck_content %}
+    <div class="deck-facts list-group">
+        {% for fact in deck.facts %}
+            <a href="" class="list-group-item list-group-item-action">
+                <span class="tag tag-default tag-pill float-xs-right">
+                    {{ fact.card_count }}
+                    {% trans card_count=card_count %}
+                        Card
+                    {% pluralize %}
+                        Cards
+                    {% endtrans %}
+                </span>
+                <div class="fact-expression">{{ (fact.reading or fact.expression)|as_ruby_tags|safe }}</div>
+                <div class="fact-meaning">{{ fact.meaning }}</div>
+            </a>
+        {% endfor %}
+    </div>
+{% endblock %}

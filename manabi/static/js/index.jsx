@@ -8,12 +8,13 @@ import debounce from 'lodash/debounce'
 import 'whatwg-fetch'
 import Immutable from 'immutable'
 
-const debug = console.log;//Debug('manabi')
+const debug = console.log; //Debug('manabi')
+
 const csrfToken = Cookies.get('csrftoken')
 
 // TODO: Load in initial state from backend or from query param.
 // TODO: Hook up serialized form to form submission.
-// TODO: Spinner?
+// TODO: Spinner / loading activity indicator.
 
 const initialState = Plain.deserialize('')
 

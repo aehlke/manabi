@@ -4,7 +4,7 @@
     <h1>My Decks</h1>
     <div class="list-group">
         {% for deck in data %}
-            <a href="#" class="list-group-item">{{ deck.name }}</a>
+            <a href="{{ url('deck-detail', args=[deck.id]) }}" class="list-group-item">{{ deck.name }}</a>
         {% endfor %}
     </div>
 {% endblock %}

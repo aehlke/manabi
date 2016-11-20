@@ -49,7 +49,6 @@ from manabi.apps.flashcards.serializers import (
 class DeckViewSet(viewsets.ModelViewSet):
     serializer_class = DeckSerializer
     renderer_classes = [ModelViewSetHTMLRenderer, JSONRenderer]
-    template_name = 'flashcards/decks.html'
 
     def get_queryset(self):
         return Deck.objects.of_user(self.request.user)

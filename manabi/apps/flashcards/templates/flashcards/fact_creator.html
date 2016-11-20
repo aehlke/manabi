@@ -3,7 +3,7 @@
 {% block title %}Create Flashcards{% endblock %}
 
 {% block extra_head %}
-    <link rel="stylesheet" href="{{ static('css/facts_creator.css') }}">
+    <link rel="stylesheet" href="{{ static('css/fact.css') }}">
 {% endblock %}
 
 {% block content %}
@@ -44,4 +44,11 @@
 
         <button type="submit" class="btn btn-default btn-primary">Create Flashcards</button>
     </form>
+{% endblock %}
+
+{% block extra_body_scripts %}
+    <script>
+    </script>
+
+    {{ render_bundle('main') }}
 {% endblock %}

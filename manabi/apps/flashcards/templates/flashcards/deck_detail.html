@@ -1,0 +1,9 @@
+{% extends "flashcards/deck_detail_base.html" %}
+
+{% set deck = data %}
+
+{% block deck_content %}
+    <p class="deck-description">
+        {{ deck.description }}
+    </p>
+{% endblock %}

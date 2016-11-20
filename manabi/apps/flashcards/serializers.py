@@ -224,6 +224,30 @@ class DetailedCardSerializer(CardSerializer):
     suspended = serializers.BooleanField()
 
 
+class DetailedDeckSerializer(DeckSerializer):
+    facts = FactWithCardsSerializer(
+        many=True,
+        read_only=True,
+    )
+
+    class Meta(DeckSerializer.Meta):
+        fields = DeckSerializer.Meta.fields + (
+            'facts',
+        )
+
+
+class DetailedSharedDeckSerializer(SharedDeckSerializer):
+    facts = FactWithCardsSerializer(
+        many=True,
+        read_only=True,
+    )
+
+    class Meta(DeckSerializer.Meta):
+        fields = DeckSerializer.Meta.fields + (
+            'facts',
+        )
+
+
 class ReviewAvailabilitiesSerializer(serializers.Serializer):
     ready_for_review = serializers.BooleanField()
     early_review_available = serializers.BooleanField()

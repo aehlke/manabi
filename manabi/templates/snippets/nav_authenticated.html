@@ -6,8 +6,8 @@
             <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'homepage' }}">
                 <a class="nav-link" href="/">Home</a>
             </li>
-            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'decks' }}">
-                <a class="nav-link" href="/">Decks</a>
+            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'deck-list' }}">
+                <a class="nav-link" href="{{ url('deck-list') }}">Decks</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ url('account_email') }}">Settings</a>

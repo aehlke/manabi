@@ -68,6 +68,9 @@ class Deck(models.Model):
         ordering = ('name',)
         #TODO-OLD unique_together = (('owner', 'name'), )
 
+    def facts_with_cards_prefeteched(self):
+        return self.fact_set.prefetch_related('card_set')
+
     @property
     def is_synchronized(self):
         return self.synchronized_with is not None

@@ -6,7 +6,7 @@ from manabi.apps.flashcards import views
 from manabi.apps.flashcards import api_views
 
 router = routers.SimpleRouter()
-router.register(r'decks', api_views.DeckViewSet, base_name='deck')
+router.register(r'decks', views.DeckViewSet, base_name='deck')
 router.register(r'facts', views.FactViewSet, base_name='fact')
 
 urlpatterns = [
