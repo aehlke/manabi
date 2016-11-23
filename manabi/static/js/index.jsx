@@ -465,7 +465,7 @@ class AnnotatedJapaneseInput extends React.Component {
                     />
                 )
             },
-        }
+        },
     }
 
     onCompositionStart = (e) => {

@@ -5,9 +5,10 @@
 {% block deck_content %}
     <div class="deck-facts list-group">
         {% for fact in deck.facts %}
-            <a href="" class="list-group-item list-group-item-action">
+            <a href="{{ url('fact-detail', args=[fact.id]) }}" class="list-group-item list-group-item-action">
                 <span class="tag tag-default tag-pill float-xs-right">
-                    {{ fact.card_count }}
+                    {% set card_count = fact.card_count %}
+                    {{ card_count }}
                     {% trans card_count=card_count %}
                         Card
                     {% pluralize %}

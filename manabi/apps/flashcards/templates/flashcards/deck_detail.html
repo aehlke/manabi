@@ -2,8 +2,14 @@
 
 {% set deck = data %}
 
+{% block title %}{{ deck.name }}{% endblock %}
+
 {% block deck_content %}
     <p class="deck-description">
-        {{ deck.description }}
+        {% if deck.description %}
+            {{ deck.description }}
+        {% else %}
+            <em>No description.</em>
+        {% endif %}
     </p>
 {% endblock %}

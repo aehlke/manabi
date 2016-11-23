@@ -4,6 +4,7 @@ from rest_framework.decorators import detail_route, list_route
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
+from manabi.api.renderers import ModelViewSetHTMLRenderer
 from manabi.apps.flashcards import api_views
 from manabi.apps.flashcards.serializers import (
     FactWithCardsSerializer,
@@ -13,6 +14,11 @@ from manabi.apps.flashcards.serializers import (
 
 
 class FactViewSet(api_views.FactViewSet):
+    serializer_class = FactWithCardsSerializer
+    serializer_action_classes = {}
+
+    renderer_classes = [TemplateHTMLRenderer]
+
     @list_route(renderer_classes=[TemplateHTMLRenderer])
     def creator(self, request, *args, **kwargs):
         serializer = FactWithCardsSerializer(
@@ -24,9 +30,21 @@ class FactViewSet(api_views.FactViewSet):
             template_name='flashcards/fact_creator.html',
         )
 
+    def retrieve(self, request, pk=None):
+        fact = self.get_object()
+        serializer = self.get_serializer(fact)
+
+        return Response(
+            {
+                'serializer': serializer,
+                'fact': fact,
+            },
+            template_name='flashcards/fact.html',
+        )
+
 
 class DeckViewSet(api_views.DeckViewSet):
-    render_classes = [TemplateHTMLRenderer]
+    renderer_classes = [ModelViewSetHTMLRenderer]
 
     def list(self, request):
         response = super(DeckViewSet, self).list(request)
