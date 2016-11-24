@@ -1,9 +1,11 @@
+import json
+
+from allauth.account.utils import user_display
+from allauth.socialaccount.templatetags.socialaccount import get_providers
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from django.utils import translation
 from jinja2 import Environment
-from allauth.socialaccount.templatetags.socialaccount import get_providers
-from allauth.account.utils import user_display
 
 from manabi.apps.furigana.jinja2 import as_ruby_tags
 
@@ -16,6 +18,7 @@ def environment(**options):
         'url': reverse,
         'get_providers': get_providers,
         'user_display': user_display,
+        'json': json.dumps,
     })
 
     env.filters['as_ruby_tags'] = as_ruby_tags

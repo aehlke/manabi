@@ -1,7 +1,7 @@
 import Debug from 'debug'
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Editor, Raw, Plain } from 'slate'
+import { Editor, Raw, Plain, Document, State, Block, Text, Inline } from 'slate'
 import AutoReplace from 'slate-auto-replace'
 import Cookies from 'js-cookie'
 import debounce from 'lodash/debounce'
@@ -15,8 +15,6 @@ const csrfToken = Cookies.get('csrftoken')
 // TODO: Load in initial state from backend or from query param.
 // TODO: Hook up serialized form to form submission.
 // TODO: Spinner / loading activity indicator.
-
-const initialState = Plain.deserialize('')
 
 class TextWithFurigana extends React.Component {
     render() {
@@ -35,6 +33,52 @@ class TextWithFurigana extends React.Component {
             </ruby>
         )
     }
+}
+
+function deserializeCharacter(char) {
+  return { text: char }
+}
+
+const manabiRawRegex = /([^《》｜]*)｜([^《》｜]*)《([^《》｜]*)》([^《》｜]*)/g
+function deserializeFromManabiRawFormat(value) {
+    var match = null, nodes = []
+
+    function addTextNode(text) {
+        nodes.push(Text.create({ characters: text.split('').map(deserializeCharacter) }))
+    }
+
+    while ((match = manabiRawRegex.exec(value)) !== null) {
+        let prefix = match[1]
+        let surface = match[2]
+        let furigana = match[3]
+        let suffix = match[4]
+
+        addTextNode(prefix)
+
+        if (furigana.length > 0) {
+            nodes.push(Inline.create({
+                type: 'textWithFurigana',
+                isVoid: true,
+                data: {
+                    furigana: furigana,
+                    surface: surface,
+                },
+            }))
+        } else if (surface.length > 0) {
+            addTextNode(surface)
+        }
+
+        addTextNode(suffix)
+    }
+
+    return State.create({
+        document: Document.create({
+            nodes: [Block.create({
+                type: 'line',
+                nodes: nodes,
+            })],
+        }),
+    })
 }
 
 // Does not iterate into nested nodes.
@@ -123,7 +167,7 @@ class AnnotatedJapaneseInput extends React.Component {
         super(props)
 
         this.state = {
-            state: initialState,
+            state: deserializeFromManabiRawFormat(window.annotatedJapaneseInputInitialValue || ""),
         }
 
         this.tmp = {}
@@ -523,6 +567,7 @@ class AnnotatedJapaneseInput extends React.Component {
 
         state = this.collapseToSingleLine(state)
         debug(state.document.nodes.toJS())
+        debug(Raw.serialize(state))
 
         this.setState({ state })
     }

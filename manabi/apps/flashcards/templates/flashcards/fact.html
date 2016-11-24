@@ -8,5 +8,6 @@
 
 {% block fact_configuration_scripts_for_bundle %}
     <script>
+        window.annotatedJapaneseInputInitialValue = {{ json(fact.reading or fact.expression)|safe }}
     </script>
 {% endblock %}
