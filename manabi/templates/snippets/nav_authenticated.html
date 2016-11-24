@@ -1,26 +1,22 @@
-<nav class="navbar navbar-light bg-faded">
+<nav class="navbar navbar-dark bg-primary">
     <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation"></button>
     <div class="collapse navbar-toggleable-xs" id="navbar-header">
         <a class="navbar-brand" href="/">Manabi</a>
-        <ul class="nav navbar-nav">
-            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'homepage' }}">
-                <a class="nav-link" href="/">Home</a>
-            </li>
-            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'deck-list' }}">
+        <ul class="nav navbar-nav float-xs-right">
+            {#<li class="nav-item {{ 'active' if request.resolver_match.url_name == 'deck-list' }}">
                 <a class="nav-link" href="{{ url('deck-list') }}">Decks</a>
-            </li>
-            <li class="nav-item">
+            </li>#}
+            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'account_email' }}">
                 <a class="nav-link" href="{{ url('account_email') }}">Settings</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'account_logout' }}">
                 <a class="nav-link" href="{{ url('account_logout') }}">Sign out</a>
             </li>
         </ul>
-        {#
-        <form class="form-inline float-xs-right">
+
+        {#<form class="form-inline float-xs-right">
             <input class="form-control" type="text" placeholder="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-        #}
+        </form>#}
     </div>
 </nav>

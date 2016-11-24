@@ -33,6 +33,13 @@
                 {% else %}
                     {% include "snippets/nav_authenticated.html" %}
                 {% endif %}
+
+                {% if request.resolver_match.url_name != 'homepage' %}
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        {% block breadcrumbs %}{% endblock %}
+                    </ol>
+                {% endif %}
             </div>
         </div>
 
