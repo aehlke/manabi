@@ -2,6 +2,10 @@
 
 {% set deck = data %}
 
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>
+{% endblock %}
+
 {% block content %}
     <h1>{{ deck.name }}</h1>
 

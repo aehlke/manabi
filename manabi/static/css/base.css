@@ -48,7 +48,8 @@ h2 {
 
 .footer {
     font-size: .5em;
-    padding-top: 3rem;
+    margin-top:2.5rem;
+    padding-top: .5rem;
     color: #ccc;
     border-top: .05rem solid #e5e5e5;
 }
