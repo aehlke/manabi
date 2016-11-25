@@ -2,9 +2,6 @@
 
 {% block content %}
     <h1>My Decks</h1>
-    <div class="list-group">
-        {% for deck in data %}
-            <a href="{{ url('deck-detail', args=[deck.id]) }}" class="list-group-item">{{ deck.name }}</a>
-        {% endfor %}
-    </div>
+    {% set decks = data %}
+    {% include 'flashcards/snippets/deck_list.html' %}
 {% endblock %}

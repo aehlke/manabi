@@ -1,7 +1,16 @@
 {% extends "base.html" %}
 
-{% block content%}
-    <h1>Home</h1>
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ static('css/homepage.css') }}">
+{% endblock %}
 
-    {% include 'flashcards/snippets/create_cards_prompt_form.html' %}
+{% block content%}
+    <div class="prompt-container">
+        {% include 'flashcards/snippets/create_cards_prompt_form.html' %}
+    </div>
+
+    <div class="decks-container">
+        <h2>My Decks</h2>
+        {% include 'flashcards/snippets/deck_list.html' %}
+    </div>
 {% endblock %}

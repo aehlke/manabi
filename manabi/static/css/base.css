@@ -12,6 +12,20 @@ body {
 
 }
 
+h1 {
+    font-weight: bolder;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+h2 {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.navbar-container {
+    margin-bottom: 2.5em;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
@@ -32,10 +46,10 @@ body {
     line-height: 3rem;
 }
 
-/* Custom page footer */
 .footer {
-    padding-top: 1.5rem;
-    color: #777;
+    font-size: .5em;
+    padding-top: 3rem;
+    color: #ccc;
     border-top: .05rem solid #e5e5e5;
 }
 

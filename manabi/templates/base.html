@@ -25,7 +25,7 @@
             <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
         <![endif]-->
 
-        <div class="container">
+        <div class="container navbar-container">
             <div class="header clearfix">
                 {% if request.user.is_anonymous() %}
                     {% include "snippets/nav_anonymous.html" %}
@@ -33,13 +33,16 @@
                     {% include "snippets/nav_authenticated.html" %}
                 {% endif %}
 
-                {% if request.resolver_match.url_name != 'homepage' %}
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        {% block breadcrumbs %}{% endblock %}
-                    </ol>
-                {% endif %}
             </div>
+        </div>
+
+        <div class="container">
+            {% if request.resolver_match.url_name != 'homepage' %}
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="/">Home</a></li>
+                    {% block breadcrumbs %}{% endblock %}
+                </ol>
+            {% endif %}
         </div>
 
         {% block messages %}
