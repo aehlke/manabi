@@ -1,0 +1,6 @@
+---
+
+manabi_collectstatic_ignores:
+  - *.scss
+  - *.md
+  - node_modules

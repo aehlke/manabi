@@ -62,7 +62,7 @@
   become: yes
 
 - name: Collect static files
-  command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py collectstatic --noinput'
+    command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py collectstatic --noinput {% for pattern in manabi_collectstatic_ignores %}--ignore {{ pattern }} {% endfor %}'
   tags: collectstatic
 
 - name: Assign ownership of static files to www-data

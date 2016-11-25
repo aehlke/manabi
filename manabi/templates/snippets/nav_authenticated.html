@@ -3,9 +3,6 @@
     <div class="collapse navbar-toggleable-xs" id="navbar-header">
         <a class="navbar-brand" href="/">Manabi</a>
         <ul class="nav navbar-nav float-xs-right">
-            {#<li class="nav-item {{ 'active' if request.resolver_match.url_name == 'deck-list' }}">
-                <a class="nav-link" href="{{ url('deck-list') }}">Decks</a>
-            </li>#}
             <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'account_email' }}">
                 <a class="nav-link" href="{{ url('account_email') }}">Settings</a>
             </li>
