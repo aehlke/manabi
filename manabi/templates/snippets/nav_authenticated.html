@@ -6,6 +6,9 @@
         <div class="navbar navbar-dark bg-primary collapse navbar-toggleable-xs " id="navbar-header">
             <a class="navbar-brand" href="/">学 <span style="opacity:0.3;margin:0 0.3rem;">|</span> Manabi</a>
             <ul class="nav navbar-nav float-xs-right">
+                <li class="nav-item">
+                    <span class="nav-link">{{ request.user.username }}</span>
+                </li>
                 <li class="nav-item {{ 'active' if request.resolver_match.url_name == 'account_email' }}">
                     <a class="nav-link" href="{{ url('account_email') }}">Settings</a>
                 </li>

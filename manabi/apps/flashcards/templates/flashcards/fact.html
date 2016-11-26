@@ -6,6 +6,10 @@
     <link rel="stylesheet" href="{{ static('css/fact.css') }}">
 {% endblock %}
 
+{% block save_button_label %}
+    Save Flashcards
+{% endblock %}
+
 {% block fact_configuration_scripts_for_bundle %}
     <script>
         window.annotatedJapaneseInputInitialValue = {{ json(fact.reading or fact.expression)|safe }}
