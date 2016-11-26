@@ -26,7 +26,9 @@ class FactViewSet(api_views.FactViewSet):
         )
 
         return Response(
-            {'serializer': serializer},
+            {
+                'serializer': serializer,
+            },
             template_name='flashcards/fact_creator.html',
         )
 
