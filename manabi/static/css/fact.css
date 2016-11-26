@@ -1,3 +1,17 @@
 ruby.selected {
     background-color: #b3d4fc;
 }
+
+#annotated-japanese-input {
+    border-top-left-radius: .3rem;
+    border-top-right-radius: .3rem;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom: none;
+}
+#fact-meaning-input {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-left-radius: .3rem;
+    border-bottom-right-radius: .3rem;
+}
