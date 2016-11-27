@@ -14,7 +14,7 @@
 {% block content %}
     <form action="{{ request.get_full_path() }}" method="POST" enctype="multipart/form-data" novalidate>
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-        <input type="hidden" name="fooooo" value="baaaaaar">
+        <input type="checkbox" name="{{ serializer.suspended.name }}" value="{{ serializer.suspended.value }}" style="display: none;">
 
         <fieldset class="form-group">
             <select class="form-control" id="deck-choice" name="{{ serializer.deck.name }}">

@@ -185,6 +185,10 @@ class AnnotatedJapaneseInput extends React.Component {
         return serializeToManabiRawFormat(this.state.state)
     }
 
+    plainText = () => {
+        return serializeNodesToText(this.state.state.document.nodes)
+    }
+
     maybeIMEActive = () => {
         return this.tmp.isComposing
     }
@@ -589,6 +593,12 @@ class AnnotatedJapaneseInput extends React.Component {
                     onCompositionEnd={this.onCompositionEnd}
                     onCompositionStart={this.onCompositionStart}
                     onChange={this.onChange}
+                />
+                <input
+                    type={'hidden'}
+                    name={'expression'}
+                    value={this.plainText()}
+                    readOnly={true}
                 />
                 <input
                     type={'hidden'}

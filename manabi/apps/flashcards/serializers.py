@@ -115,6 +115,7 @@ class FactSerializer(ManabiModelSerializer):
             'card_count',
             'created_at',
             'modified_at',
+
             'deck',
             'suspended',
             'expression',
