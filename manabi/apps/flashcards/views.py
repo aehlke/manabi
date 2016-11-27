@@ -36,13 +36,24 @@ class FactViewSet(api_views.FactViewSet):
         fact = self.get_object()
         serializer = self.get_serializer(fact)
 
-        return Response(
-            {
+        return Response({
+            'serializer': serializer,
+            'fact': fact,
+        }, template_name='flashcards/fact.html')
+
+    def post(self, request, pk):
+        fact = self.get_object()
+        serializer = self.get_serializer(fact, data=request.data)
+        if not serializer.is_valid():
+            return Response({
                 'serializer': serializer,
                 'fact': fact,
-            },
-            template_name='flashcards/fact.html',
-        )
+            }, template_name='flashcards/fact.html')
+        serializer.save()
+        return Response({
+            'serializer': serializer,
+            'fact': fact,
+        }, template_name='flashcards/fact.html')
 
 
 class DeckViewSet(api_views.DeckViewSet):

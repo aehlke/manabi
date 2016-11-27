@@ -576,6 +576,8 @@ class AnnotatedJapaneseInput extends React.Component {
     render() {
         return (
             <Editor
+                placeholder={'Japanese Expression'}
+                placeholderStyle={{color: '#999'}}
                 state={this.state.state}
                 plugins={this.plugins}
                 schema={this.schema}

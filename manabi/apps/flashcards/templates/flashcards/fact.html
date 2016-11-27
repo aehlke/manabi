@@ -12,6 +12,6 @@
 
 {% block fact_configuration_scripts_for_bundle %}
     <script>
-        window.annotatedJapaneseInputInitialValue = {{ json(fact.reading or fact.expression)|safe }}
+        window.annotatedJapaneseInputInitialValue = {{ json(serializer.reading.value or serializer.expression.value or '')|safe }}
     </script>
 {% endblock %}

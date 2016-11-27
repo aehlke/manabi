@@ -111,28 +111,43 @@ STATICFILES_DIRS = [
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'
 
-TEMPLATES = [{
-    'BACKEND': 'manabi.jinja2_backend.ManabiJinja2',
-    'DIRS': [
-        os.path.join(PROJECT_ROOT, 'templates'),
-    ],
-    'APP_DIRS': True,
-    'OPTIONS': {
-        'context_processors': [
-            'django.template.context_processors.debug',
-            'django.template.context_processors.request',
-            'django.contrib.auth.context_processors.auth',
-            'django.contrib.messages.context_processors.messages',
+TEMPLATES = [
+    {
+        'BACKEND': 'manabi.jinja2_backend.ManabiJinja2',
+        'DIRS': [
+            os.path.join(PROJECT_ROOT, 'templates'),
         ],
-        'environment': 'manabi.jinja2_environment.environment',
-        'extensions': [
-            'jinja2.ext.autoescape',
-            'jinja2.ext.i18n',
-            'jinja2.ext.with_',
-            'webpack_loader.contrib.jinja2ext.WebpackExtension',
-        ],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+            'environment': 'manabi.jinja2_environment.environment',
+            'extensions': [
+                'jinja2.ext.autoescape',
+                'jinja2.ext.i18n',
+                'jinja2.ext.with_',
+                'webpack_loader.contrib.jinja2ext.WebpackExtension',
+            ],
+        },
     },
-}]
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.debug',
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
+            ],
+        },
+    },
+]
 
 MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
