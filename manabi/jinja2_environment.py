@@ -19,6 +19,7 @@ def environment(**options):
         'get_providers': get_providers,
         'user_display': user_display,
         'json': json.dumps,
+        'int': int,
     })
 
     env.filters['as_ruby_tags'] = as_ruby_tags
