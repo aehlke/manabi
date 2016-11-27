@@ -9,7 +9,18 @@ body, h1, h2, h3, h4, h5, h6, p, div, span {
 body {
     padding-top: 1.5rem;
     padding-bottom: 1.5rem;
+}
 
+.anonymous body {
+    background-color: #ebebcc;
+    padding-top: .75rem;
+}
+
+.logo {
+    font-family: 'Kaiti SC', sans-serif;
+    font-weight: bolder;
+    font-size: 1.9rem;
+    line-height: 1rem;
 }
 
 h1 {
@@ -22,7 +33,7 @@ h2 {
     margin-bottom: 1rem;
 }
 
-.navbar-container {
+.authenticated .navbar-container {
     margin-bottom: 2.5em;
 }
 
