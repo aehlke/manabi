@@ -8,7 +8,9 @@
 
 {% block breadcrumbs %}
     <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>
-    <li class="breadcrumb-item"><a href="{{ url('deck-detail', args=[fact.deck_id]) }}">{{ fact.deck.name }}</a></li>
+    {% if serializer.deck.value %}
+        <li class="breadcrumb-item"><a href="{{ url('deck-detail', args=[serializer.deck.value]) }}">{{ serializer.deck.value.name }}</a></li>
+    {% endif %}
 {% endblock %}
 
 {% block content %}
@@ -20,7 +22,8 @@
             <select class="form-control" id="deck-choice" name="{{ serializer.deck.name }}">
                 <option>Choose deck</option>
                 {% for deck_option in serializer.deck.iter_options() %}
-                    <option value="{{ deck_option.value }}" {{ 'selected' if int(deck_option.value) == int(serializer.deck.value) }} {{ 'disabled' if deck_option.disabled }}>{{ deck_option.display_text }}</option>
+                    {{deck_option.value}}
+                    <option value="{{ deck_option.value }}" {{ 'selected' if serializer.deck.value and int(deck_option.value) == int(serializer.deck.value) }} {{ 'disabled' if deck_option.disabled }}>{{ deck_option.display_text }}</option>
                 {% endfor %}
             </select>
         </fieldset>

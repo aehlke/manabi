@@ -21,9 +21,7 @@ class FactViewSet(api_views.FactViewSet):
 
     @list_route(renderer_classes=[TemplateHTMLRenderer])
     def creator(self, request, *args, **kwargs):
-        serializer = FactWithCardsSerializer(
-            context={'user': request.user},
-        )
+        serializer = self.get_serializer()
 
         return Response(
             {
