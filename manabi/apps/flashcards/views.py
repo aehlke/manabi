@@ -1,5 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import redirect, render
+from django.urls import reverse
+from django.utils.html import escape
+from django.utils.safestring import mark_safe
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
@@ -19,16 +25,36 @@ class FactViewSet(api_views.FactViewSet):
 
     renderer_classes = [TemplateHTMLRenderer]
 
-    @list_route(renderer_classes=[TemplateHTMLRenderer])
+    @list_route(
+        methods=['GET', 'POST'],
+        renderer_classes=[TemplateHTMLRenderer],
+    )
     def creator(self, request, *args, **kwargs):
-        serializer = self.get_serializer()
+        if request.method == 'GET':
+            return Response({
+                'serializer': self.get_serializer(),
+            }, template_name='flashcards/fact_creator.html')
 
-        return Response(
-            {
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({
                 'serializer': serializer,
-            },
-            template_name='flashcards/fact_creator.html',
+            }, template_name='flashcards/fact_creator.html')
+        fact = serializer.save()
+
+        messages.success(
+            request._request,
+            mark_safe((
+                u'''Created flashcards for <a href="{}" class="alert-link">'''
+                u'''「{}」</a>.'''
+            ).format(
+                reverse('fact-detail', args=[fact.id]),
+                escape(fact.expression),
+            ))
         )
+
+        return redirect('homepage')
+
 
     def retrieve(self, request, pk=None):
         fact = self.get_object()

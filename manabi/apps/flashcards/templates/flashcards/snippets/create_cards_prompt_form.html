@@ -1,6 +1,6 @@
-<form>
+<form action="{{ url('fact-creator') }}" method="GET">
     <div class="input-group">
-        <input type="text" id="japanese-expression" class="form-control" placeholder="What Japanese expression do you want to memorize?" autofocus>
+        <input type="text" name="expression" id="japanese-expression" class="form-control" placeholder="What Japanese expression do you want to memorize?" autofocus>
         <span class="input-group-btn">
             <button class="btn btn-default btn-primary" type="submit">Create Flashcards</button>
         </span>

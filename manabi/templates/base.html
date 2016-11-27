@@ -46,11 +46,26 @@
         </div>
 
         {% block messages %}
-            {% for message in messages %}
-                <div class="alert alert-info" role="alert">
-                    {{ message }}
-                </div>
-            {% endfor %}
+            <div class="container">
+                {% for message in messages %}
+                    {% set alert_class = 'info' %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                        {% set alert_class = 'success' %}
+                    {% endif %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                        {% set alert_class = 'info' %}
+                    {% endif %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}
+                        {% set alert_class = 'warning' %}
+                    {% endif %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                        {% set alert_class = 'danger' %}
+                    {% endif %}
+                    <div class="alert alert-{{ alert_class }}" role="alert">
+                        {{ message|safe }}
+                    </div>
+                {% endfor %}
+            </div>
         {% endblock %}
 
         {% block content_container %}
