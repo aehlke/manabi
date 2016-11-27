@@ -8,7 +8,7 @@ import debounce from 'lodash/debounce'
 import 'whatwg-fetch'
 import Immutable from 'immutable'
 
-const debug = console.log; //Debug('manabi')
+const debug = function(){} //console.log //Debug('manabi')
 
 const csrfToken = Cookies.get('csrftoken')
 
@@ -179,6 +179,10 @@ class AnnotatedJapaneseInput extends React.Component {
         setInterval(() => {
             this.updateFurigana()
         }, 500);
+    }
+
+    manabiRawFormatValue = () => {
+        return serializeToManabiRawFormat(this.state.state)
     }
 
     maybeIMEActive = () => {
@@ -575,16 +579,24 @@ class AnnotatedJapaneseInput extends React.Component {
     // On change, update the app's React state with the new editor state.
     render() {
         return (
-            <Editor
-                placeholder={'Japanese Expression'}
-                placeholderStyle={{color: '#999'}}
-                state={this.state.state}
-                plugins={this.plugins}
-                schema={this.schema}
-                onCompositionEnd={this.onCompositionEnd}
-                onCompositionStart={this.onCompositionStart}
-                onChange={this.onChange}
-            />
+            <span>
+                <Editor
+                    placeholder={'Japanese Expression'}
+                    placeholderStyle={{color: '#999'}}
+                    state={this.state.state}
+                    plugins={this.plugins}
+                    schema={this.schema}
+                    onCompositionEnd={this.onCompositionEnd}
+                    onCompositionStart={this.onCompositionStart}
+                    onChange={this.onChange}
+                />
+                <input
+                    type={'hidden'}
+                    name={'reading'}
+                    value={this.manabiRawFormatValue()}
+                    readOnly={true}
+                />
+            </span>
         )
     }
 }
