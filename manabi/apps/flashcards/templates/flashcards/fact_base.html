@@ -41,7 +41,7 @@
                 {% if template_name != 'production' or active %}
                     <div class="form-check-inline">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="{{ template_name }}" {{ 'checked' if active }} {{ 'disabled' if template_name == 'production' }}>
+                            <input class="form-check-input" type="checkbox" name="{{ serializer.active_card_templates.name }}" value="{{ template_name }}" {{ 'checked' if active }} {{ 'disabled' if template_name == 'production' }}>
                             {{ label }}
                         </label>
                     </div>
