@@ -13,3 +13,29 @@
         window.annotatedJapaneseInputInitialValue = (prefillValue || serializerValue || prefillValue)
     </script>
 {% endblock %}
+
+{% block extra_body_scripts %}
+    {{ super() }}
+
+    <script>
+        $(function() {
+            var lastSelectedDeckId = sessionStorage.getItem('last-selected-deck-id')
+            if (!$('#deck-choice').val()) {
+                $('#deck-choice').val(lastSelectedDeckId)
+            }
+
+            $('#deck-choice').change(function() {
+                sessionStorage.setItem('last-selected-deck-id', $(this).val())
+            })
+
+            // Focus meaning input if expression is pre-filled.
+            if (
+                {{ json(escape(request.GET.get('expression')))|safe }}
+                && !$('#fact-meaning-input').val()
+            ) {
+                $('#fact-meaning-input').focus()
+            }
+        })
+
+    </script>
+{% endblock %}

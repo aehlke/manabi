@@ -19,13 +19,16 @@
         <input type="checkbox" name="{{ serializer.suspended.name }}" value="{{ serializer.suspended.value }}" style="display: none;">
 
         <fieldset class="form-group">
-            <select class="form-control" id="deck-choice" name="{{ serializer.deck.name }}">
-                <option>Choose deck</option>
+            <select class="form-control {{ '.form-control-danger' if serializer.deck.errors }}" id="deck-choice" name="{{ serializer.deck.name }}">
+                <option value="">Choose deck</option>
                 {% for deck_option in serializer.deck.iter_options() %}
                     {{deck_option.value}}
                     <option value="{{ deck_option.value }}" {{ 'selected' if serializer.deck.value and int(deck_option.value) == int(serializer.deck.value) }} {{ 'disabled' if deck_option.disabled }}>{{ deck_option.display_text }}</option>
                 {% endfor %}
             </select>
+            {% for error in (serializer.deck.errors or []) %}
+                <div class="form-control-feedback">{{ error }}</div>
+            {% endfor %}
         </fieldset>
 
         <fieldset class="form-group">
@@ -44,7 +47,7 @@
                 {% if template_name != 'production' or active %}
                     <div class="form-check-inline">
                         <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" name="{{ serializer.active_card_templates.name }}" value="{{ template_name }}" {{ 'checked' if active }} {{ 'disabled' if template_name == 'production' }}>
+                            <input class="form-check-input" type="checkbox" name="{{ serializer.active_card_templates.name }}" value="{{ template_name }}" {{ 'checked' if active or (request.method == 'GET' and template_name == 'recognition') }} {{ 'disabled' if template_name == 'production' }}>
                             {{ label }}
                         </label>
                     </div>
