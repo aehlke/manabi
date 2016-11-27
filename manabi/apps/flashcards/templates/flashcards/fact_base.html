@@ -7,8 +7,8 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>
     {% if serializer.deck.value %}
+        <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>
         <li class="breadcrumb-item"><a href="{{ url('deck-detail', args=[serializer.deck.value]) }}">{{ serializer.deck.value.name }}</a></li>
     {% endif %}
 {% endblock %}

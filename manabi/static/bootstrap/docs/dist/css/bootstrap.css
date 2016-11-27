@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*!
  * Bootstrap v4.0.0-alpha.5 (https://getbootstrap.com)
  * Copyright 2011-2016 The Bootstrap Authors
@@ -4472,7 +4473,7 @@ tbody.collapse.in {
 }
 
 .breadcrumb {
-  padding: 0.75rem 1rem;
+  padding: 0.4rem 0.8rem;
   margin-bottom: 1rem;
   list-style: none;
   background-color: #eceeef;
@@ -4494,7 +4495,7 @@ tbody.collapse.in {
   padding-right: 0.5rem;
   padding-left: 0.5rem;
   color: #818a91;
-  content: "/";
+  content: "›";
 }
 
 .breadcrumb-item + .breadcrumb-item:hover::before {

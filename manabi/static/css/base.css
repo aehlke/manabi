@@ -26,6 +26,10 @@ h2 {
     margin-bottom: 2.5em;
 }
 
+.breadcrumb {
+    font-size: 0.8rem;
+}
+
 /* Everything but the jumbotron gets side spacing for mobile first views */
 .header,
 .marketing,
