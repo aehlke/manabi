@@ -5,6 +5,7 @@ from allauth.socialaccount.templatetags.socialaccount import get_providers
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.urls import reverse
 from django.utils import translation
+from django.utils.html import escape
 from jinja2 import Environment
 
 from manabi.apps.furigana.jinja2 import as_ruby_tags
@@ -20,6 +21,7 @@ def environment(**options):
         'user_display': user_display,
         'json': json.dumps,
         'int': int,
+        'escape': escape,
     })
 
     env.filters['as_ruby_tags'] = as_ruby_tags

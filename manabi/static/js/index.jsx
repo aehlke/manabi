@@ -17,9 +17,10 @@ const csrfToken = Cookies.get('csrftoken')
 // TODO: Spinner / loading activity indicator.
 
 class TextWithFurigana extends React.Component {
+
     render() {
         return (
-                <ruby contentEditable={false} className={`${this.props.isSelected ? 'selected' : ''}`}>
+            <ruby contentEditable={false} className={`${this.props.isSelected ? 'selected' : ''}`}>
                 {this.props.surface}
                 <rt contentEditable={false}>
                     <button
@@ -29,7 +30,7 @@ class TextWithFurigana extends React.Component {
                         spellCheck={false}
                         onClick={this.props.furiganaButtonOnClick}
                     >{this.props.furigana}</button>
-            </rt>
+                </rt>
             </ruby>
         )
     }
@@ -45,6 +46,10 @@ function deserializeFromManabiRawFormat(value) {
 
     function addTextNode(text) {
         nodes.push(Text.create({ characters: text.split('').map(deserializeCharacter) }))
+    }
+
+    if (manabiRawRegex.exec(value) === null) {
+        addTextNode(value)
     }
 
     while ((match = manabiRawRegex.exec(value)) !== null) {
@@ -162,23 +167,47 @@ function moveToNextNode(state, parentNode, currentNode) {
         .apply()
 }
 
+function moveSelectionToEnd(state) {
+    let lastTextNode = state.document.nodes.first().nodes.last()
+    let startRange = state.selection.merge({
+        anchorKey: lastTextNode.key,
+        anchorOffset: lastTextNode.length - 1,
+        focusKey: lastTextNode.key,
+        focusOffset: lastTextNode.length - 1,
+    })
+    return state
+        .transform()
+        .moveTo(startRange)
+        .apply()
+}
+
 class AnnotatedJapaneseInput extends React.Component {
     constructor(props) {
         super(props)
 
-        this.state = {
-            state: deserializeFromManabiRawFormat(window.annotatedJapaneseInputInitialValue || ""),
-        }
+        this.hasInitializedFurigana = false
+
+        let initialState = (
+            deserializeFromManabiRawFormat(window.annotatedJapaneseInputInitialValue || ""))
+
+        initialState = moveSelectionToEnd(initialState)
+
+        this.state = { state: initialState }
 
         this.tmp = {}
         this.tmp.compositions = 0
         this.tmp.isComposing = false
         this.lastFetchedFuriganaText = null
+        this.lastFetchedFuriganaPositions = null
+        this.lastAppliedFuriganaText = null
+        this.lastAppliedFuriganaPositions = null
 
         // Fail-safe.
         setInterval(() => {
             this.updateFurigana()
         }, 500);
+
+        this.updateFurigana()
     }
 
     manabiRawFormatValue = () => {
@@ -193,8 +222,15 @@ class AnnotatedJapaneseInput extends React.Component {
         return this.tmp.isComposing
     }
 
-    applyFurigana = (plainText, textWithFuriganaRaw, furiganaPositions) => {
+    applyFurigana = (plainText, furiganaPositions) => {
         debug("applyFurigana(...)")
+
+        if (
+            this.lastAppliedFuriganaText === plainText
+            && this.lastAppliedFuriganaPositions === furiganaPositions
+        ) {
+            return
+        }
 
         if (this.maybeIMEActive()) {
             return
@@ -414,7 +450,11 @@ class AnnotatedJapaneseInput extends React.Component {
         state = moveToStart(state)
         state = moveForward(state, cursorOffsetBeforeApplication).state
 
+        this.lastAppliedFuriganaText = plainText
+        this.lastAppliedFuriganaPositions = furiganaPositions
+
         this.onChange(state)
+        console.log(this.state.state.toJS())
     }
 
     updateFurigana = debounce(() => {
@@ -430,11 +470,12 @@ class AnnotatedJapaneseInput extends React.Component {
         let plainText = serializeNodesToText(this.state.state.document.nodes)
         if (plainText.trim() === '') {
             this.lastFetchedFuriganaText = null
+            this.lastFetchedFuriganaPositions = null
             return
         }
 
-        // TODO: Handle isComposing during the fetch result, and put this inside there...
         if (this.lastFetchedFuriganaText === plainText) {
+            this.applyFurigana(plainText, this.lastFetchedFuriganaPositions)
             return
         }
 
@@ -452,10 +493,12 @@ class AnnotatedJapaneseInput extends React.Component {
         })
             .then((response) => response.json())
             .then((json) => {
-                let textWithFuriganaRaw = json['text_with_furigana']
                 let furiganaPositions = json['furigana_positions']
+                this.lastFetchedFuriganaPositions = furiganaPositions
 
-                this.applyFurigana(plainText, textWithFuriganaRaw, furiganaPositions)
+                this.applyFurigana(plainText, furiganaPositions)
+
+                this.hasInitializedFurigana = true
             })
     }, 250, {maxWait: 1000})
 
@@ -512,7 +555,7 @@ class AnnotatedJapaneseInput extends React.Component {
                     <TextWithFurigana
                         furigana={data.get('furigana')}
                         surface={data.get('surface')}
-                        isSelected={state.selection.hasFocusIn(node)}
+                        isSelected={this.hasInitializedFurigana && state.selection.hasFocusIn(node)}
                         furiganaButtonOnClick={furiganaButtonOnClick.bind(this)}
                     />
                 )
@@ -572,6 +615,7 @@ class AnnotatedJapaneseInput extends React.Component {
 
     onChange = (state) => {
         debug('onChange')
+        console.log('onChange')
 
         state = this.collapseToSingleLine(state)
         debug(state.document.nodes.toJS())

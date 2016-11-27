@@ -5,3 +5,11 @@
 {% block extra_head %}
     <link rel="stylesheet" href="{{ static('css/fact.css') }}">
 {% endblock %}
+
+{% block fact_configuration_scripts_for_bundle %}
+    <script>
+        var serializerValue = {{ json(escape(serializer.reading.value or serializer.expression.value or ''))|safe }}
+        var prefillValue = {{ json(escape(request.GET.get('expression') or ''))|safe }}
+        window.annotatedJapaneseInputInitialValue = (prefillValue || serializerValue || prefillValue)
+    </script>
+{% endblock %}

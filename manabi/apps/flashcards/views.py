@@ -39,7 +39,7 @@ class FactViewSet(api_views.FactViewSet):
             'fact': fact,
         }, template_name='flashcards/fact.html')
 
-    def post(self, request, pk):
+    def post(self, request, pk=None):
         fact = self.get_object()
         serializer = self.get_serializer(fact, data=request.data)
         if not serializer.is_valid():
