@@ -454,7 +454,6 @@ class AnnotatedJapaneseInput extends React.Component {
         this.lastAppliedFuriganaPositions = furiganaPositions
 
         this.onChange(state)
-        console.log(this.state.state.toJS())
     }
 
     updateFurigana = debounce(() => {
@@ -615,7 +614,6 @@ class AnnotatedJapaneseInput extends React.Component {
 
     onChange = (state) => {
         debug('onChange')
-        console.log('onChange')
 
         state = this.collapseToSingleLine(state)
         debug(state.document.nodes.toJS())
