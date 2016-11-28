@@ -124,6 +124,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'manabi.context_processors.url_prefixes',
             ],
             'environment': 'manabi.jinja2_environment.environment',
             'extensions': [

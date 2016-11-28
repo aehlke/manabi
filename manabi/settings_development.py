@@ -1,5 +1,8 @@
 import os.path
 
+DEFAULT_URL_PREFIX = 'http://dev.manabi.io:8000'
+API_URL_PREFIX = 'http://dev.manabi.io:8000'
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',

@@ -18,3 +18,8 @@ ruby.selected {
 .form-check-label {
     user-select: none;
 }
+.fact-actions {
+    border-radius: .25rem;
+    background-color: #eceeef;
+    padding: 1rem;
+}

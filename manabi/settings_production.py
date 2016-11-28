@@ -1,4 +1,5 @@
 DEFAULT_URL_PREFIX = 'https://manabi.io'
+API_URL_PREFIX = 'https://api.manabi.io'
 
 REDIS = {
     'host': 'localhost',

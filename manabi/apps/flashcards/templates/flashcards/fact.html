@@ -6,8 +6,79 @@
     Save Flashcards
 {% endblock %}
 
+{% block content %}
+    <div class="row">
+        <div class="col-sm-9">
+            {{ super() }}
+        </div>
+        <div class="col-sm-3 offset-sm-0">
+            <div class="fact-actions">
+                {% if not fact.suspended %}
+                    <button
+                        type="button"
+                        class="btn btn-danger btn-sm btn-block"
+                        data-toggle="tooltip"
+                        title="Archives these cards so they do not show up in review."
+                        id="archive-button"
+                    >Archive</button>
+                {% else %}
+                    <button
+                        type="button"
+                        class="btn btn-danger btn-sm btn-block"
+                        data-toggle="tooltip"
+                        title="Restores these cards so they will once again show up in review."
+                        id="unarchive-button"
+                    >Unarchive</button>
+                    <button
+                        type="button"
+                        class="btn btn-danger btn-sm btn-block"
+                        data-toggle="tooltip"
+                        title="Permanently deletes these cards."
+                        id="delete-button"
+                    >Delete</button>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
 {% block fact_configuration_scripts_for_bundle %}
     <script>
         window.annotatedJapaneseInputInitialValue = {{ json(serializer.reading.value or serializer.expression.value or '')|safe }}
+
+        function factAction(method, data, message, redirectPath) {
+            apiRequest(
+                'flashcards/facts/{{ fact.id }}/',
+                method,
+                data,
+                true,
+                message
+            )
+                .done(function() {
+                    if (redirectPath) {
+                        window.location.href = window.defaultUrlPrefix + redirectPath
+                    } else {
+                        location.reload()
+                    }
+                })
+        }
+
+        $(function() {
+            $('#archive-button').click(function(e) {
+                e.preventDefault()
+                factAction('PATCH', { suspended: true }, "Archiving Cards…")
+            })
+            $('#unarchive-button').click(function(e) {
+                e.preventDefault()
+                factAction('PATCH', { suspended: false }, "Unarchiving Cards…")
+            })
+            $('#delete-button').click(function(e) {
+                e.preventDefault()
+                var result = confirm("Are you sure you want to delete? This cannot be undone.");
+                if (result) {
+                    factAction('DELETE', {}, "Deleting Cards…", '/flashcards/decks/{{ fact.deck_id }}/facts/')
+                }
+            })
+        })
     </script>
 {% endblock %}
