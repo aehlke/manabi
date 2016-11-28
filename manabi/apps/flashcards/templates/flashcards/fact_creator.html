@@ -2,10 +2,6 @@
 
 {% block title %}Create Flashcards{% endblock %}
 
-{% block extra_head %}
-    <link rel="stylesheet" href="{{ static('css/fact.css') }}">
-{% endblock %}
-
 {% block breadcrumbs %}
     {% if serializer.deck.value %}
         <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>

@@ -15,3 +15,6 @@ ruby.selected {
     border-bottom-left-radius: .3rem;
     border-bottom-right-radius: .3rem;
 }
+.form-check-label {
+    user-select: none;
+}
