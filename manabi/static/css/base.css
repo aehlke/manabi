@@ -110,3 +110,7 @@ h2 {
         border-bottom: 0;
     }
 }
+
+.form-check-label .icheckbox_flat-red {
+    margin-right: .4rem;
+}
