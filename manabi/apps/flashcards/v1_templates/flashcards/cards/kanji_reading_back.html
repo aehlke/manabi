@@ -1,9 +1,0 @@
-{% load japanese %}
-{% load jdic_tags %}
-
-<span class="reading">{% furiganaize %}{{ fields.reading.content|linebreaksbr }}{% endfuriganaize %}</span>
-
-<span class="meaning">{{ fields.meaning.content|linebreaksbr }}</span>
-
-{% jdic_audio_player fields.expression.content fields.reading.strip_ruby_bottom %}
-

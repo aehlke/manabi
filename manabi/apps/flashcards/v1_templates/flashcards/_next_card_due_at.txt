@@ -1,3 +1,0 @@
-{% filter striptags %}
-{% include "flashcards/_next_card_due_at.html" %}
-{% endfilter %}
