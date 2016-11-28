@@ -59,8 +59,6 @@ function deserializeFromManabiRawFormat(value) {
         let furigana = match[3]
         let suffix = match[4]
 
-        console.log(prefix, surface, furigana, suffix)
-
         addTextNode(prefix)
 
         if (furigana.length > 0) {
@@ -192,8 +190,6 @@ class AnnotatedJapaneseInput extends React.Component {
 
         let initialState = (
             deserializeFromManabiRawFormat(window.annotatedJapaneseInputInitialValue || ""))
-        console.log(window.annotatedJapaneseInputInitialValue)
-        console.log(deserializeFromManabiRawFormat(window.annotatedJapaneseInputInitialValue).toJS())
 
         initialState = moveSelectionToEnd(initialState)
 
