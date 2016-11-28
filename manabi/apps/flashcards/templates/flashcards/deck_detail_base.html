@@ -11,11 +11,11 @@
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
-            <a class="nav-link {{ 'active' if request.resolver_match.url_name == 'deck-detail' }}" href="{{ url('deck-detail', args=[deck.id]) }}">Overview</a>
+            <a class="nav-link {{ 'active' if request.resolver_match.url_name == 'deck-detail' else '' }}" href="{{ url('deck-detail', args=[deck.id]) }}">Overview</a>
         </li>
         <li class="nav-item">
             {% set card_count = deck.card_count %}
-            <a class="nav-link {{ 'active' if request.resolver_match.url_name == 'deck-facts' }}" href="{{ url('deck-facts', args=[deck.id]) }}">{{ card_count }}
+            <a class="nav-link {{ 'active' if request.resolver_match.url_name == 'deck-facts' else '' }}" href="{{ url('deck-facts', args=[deck.id]) }}">{{ card_count }}
                 {% trans card_count=card_count %}
                     Card
                 {% pluralize %}

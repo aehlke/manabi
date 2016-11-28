@@ -51,12 +51,15 @@ function deserializeFromManabiRawFormat(value) {
     if (manabiRawRegex.exec(value) === null) {
         addTextNode(value)
     }
+    manabiRawRegex.lastIndex = 0  // Reset.
 
     while ((match = manabiRawRegex.exec(value)) !== null) {
         let prefix = match[1]
         let surface = match[2]
         let furigana = match[3]
         let suffix = match[4]
+
+        console.log(prefix, surface, furigana, suffix)
 
         addTextNode(prefix)
 
@@ -189,6 +192,8 @@ class AnnotatedJapaneseInput extends React.Component {
 
         let initialState = (
             deserializeFromManabiRawFormat(window.annotatedJapaneseInputInitialValue || ""))
+        console.log(window.annotatedJapaneseInputInitialValue)
+        console.log(deserializeFromManabiRawFormat(window.annotatedJapaneseInputInitialValue).toJS())
 
         initialState = moveSelectionToEnd(initialState)
 

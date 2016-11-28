@@ -4,6 +4,7 @@
 
 {% block extra_head %}
     <link rel="stylesheet" href="{{ static('css/fact.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/skins/flat/red.css" integrity="sha256-TzCPxesYP9nYi0osSmNFoC6Nd4J4VjCTY+52NKjCxuk=" crossorigin="anonymous" />
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -19,11 +20,11 @@
         <input type="checkbox" name="{{ serializer.suspended.name }}" value="{{ serializer.suspended.value }}" style="display: none;">
 
         <fieldset class="form-group">
-            <select class="form-control {{ '.form-control-danger' if serializer.deck.errors }}" id="deck-choice" name="{{ serializer.deck.name }}">
+            <select class="form-control {{ '.form-control-danger' if serializer.deck.errors else '' }}" id="deck-choice" name="{{ serializer.deck.name }}">
                 <option value="">Choose deck</option>
                 {% for deck_option in serializer.deck.iter_options() %}
                     {{deck_option.value}}
-                    <option value="{{ deck_option.value }}" {{ 'selected' if serializer.deck.value and int(deck_option.value) == int(serializer.deck.value) }} {{ 'disabled' if deck_option.disabled }}>{{ deck_option.display_text }}</option>
+                    <option value="{{ deck_option.value }}" {{ 'selected' if (serializer.deck.value and int(deck_option.value) == int(serializer.deck.value)) else '' }} {{ 'disabled' if deck_option.disabled else '' }}>{{ deck_option.display_text }}</option>
                 {% endfor %}
             </select>
             {% for error in (serializer.deck.errors or []) %}
@@ -66,4 +67,15 @@
     {% block fact_configuration_scripts_for_bundle %}{% endblock %}
 
     {{ render_bundle('main') }}
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js" integrity="sha256-8HGN1EdmKWVH4hU3Zr3FbTHoqsUcfteLZJnVmqD/rC8=" crossorigin="anonymous"></script>
+
+    <script>
+        $(function() {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_flat-red',
+                radioClass: 'iradio_flat-red',
+            })
+        })
+    </script>
 {% endblock %}
