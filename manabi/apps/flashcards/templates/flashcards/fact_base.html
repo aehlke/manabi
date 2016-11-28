@@ -7,9 +7,9 @@
 {% endblock %}
 
 {% block breadcrumbs %}
-    {% if serializer.deck.value %}
+    {% if fact.deck %}
         <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>
-        <li class="breadcrumb-item"><a href="{{ url('deck-detail', args=[serializer.deck.value]) }}">{{ serializer.deck.value.name }}</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('deck-detail', args=[fact.deck_id]) }}">{{ fact.deck.name }}</a></li>
     {% endif %}
 {% endblock %}
 

@@ -6,6 +6,13 @@
     <link rel="stylesheet" href="{{ static('css/fact.css') }}">
 {% endblock %}
 
+{% block breadcrumbs %}
+    {% if serializer.deck.value %}
+        <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>
+        <li class="breadcrumb-item"><a href="{{ url('deck-detail', args=[serializer.deck.value]) }}">{{ serializer.deck.value.name }}</a></li>
+    {% endif %}
+{% endblock %}
+
 {% block fact_configuration_scripts_for_bundle %}
     <script>
         var serializerValue = {{ json(escape(serializer.reading.value or serializer.expression.value or ''))|safe }}
