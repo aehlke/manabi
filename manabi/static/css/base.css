@@ -11,11 +11,6 @@ body {
     padding-bottom: 1.5rem;
 }
 
-.anonymous body {
-    background-color: #ebebcc;
-    padding-top: .75rem;
-}
-
 .logo {
     font-family: 'Kaiti SC', sans-serif;
     font-weight: bolder;

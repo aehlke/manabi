@@ -1,7 +1,16 @@
+body {
+    background-color: #ebebcc;
+    padding-top: 0;
+}
+
 .header {
-    padding-bottom: 0;
+    padding-bottom: .3rem;
     border-bottom: none;
-    margin-bottom: none;
+    margin-bottom: 0;
+}
+
+.nav {
+    margin-top: .4rem;
 }
 
 .landing-page-hero {
