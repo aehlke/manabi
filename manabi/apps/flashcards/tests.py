@@ -71,6 +71,22 @@ class ReviewsAPITest(ManabiTestCase):
         for card in self.next_cards_for_review(self.user):
             card_review = self.api.review_card(self.user, card, GRADE_GOOD)
 
+    def test_new_cards_appear_after_due_cards(self):
+        NEW_COUNT = 2
+
+        # Review all but last NEW_COUNT
+        cards = self.api.next_cards_for_review(self.user)['cards']
+        self.assertTrue(NEW_COUNT < len(cards))
+        for card in cards[:-NEW_COUNT]:
+            self.api.review_card(self.user, card, GRADE_GOOD)
+
+        # Make sure there are still new cards at end.
+        cards = self.api.next_cards_for_review(self.user)['cards']
+        new_cards_to_learn_count = sum(
+            1 for card in cards if card['is_new']
+        )
+        self.assertTrue(new_cards_to_learn_count >= NEW_COUNT)
+
     def test_undo_review(self):
         next_cards = self.api.next_cards_for_review(self.user)['cards']
         next_card = next_cards[0]

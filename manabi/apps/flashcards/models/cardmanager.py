@@ -192,6 +192,7 @@ class SchedulerMixin(object):
             ])
         elif learn_more:
             # TODO: Only new cards, and ignore spacing.
+            # Unless we don't need learn_more anymore...
             card_funcs = [self._next_new_cards]
         else:
             card_funcs.extend([self._next_new_cards]) # New cards at end.
