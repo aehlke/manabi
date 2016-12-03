@@ -52,6 +52,9 @@
     - Reload uwsgi
     - Restart RQ workers
 
+- name: Migrate database
+  command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py migrate --noinput'
+
 - include: webpack.yml
 
 - name: Add ubuntu to www-data group to be able to manipulate static files

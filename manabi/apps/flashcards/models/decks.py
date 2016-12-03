@@ -1,5 +1,6 @@
 import datetime
 
+from autoslug import AutoSlugField
 from cachecow.decorators import cached_function
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -38,6 +39,7 @@ class Deck(models.Model):
     objects = DeckQuerySet.as_manager()
 
     name = models.CharField(max_length=100)
+    slug = AutoSlugField(populate_from='name', always_update=True, unique=False)
     description = models.TextField(max_length=2000, blank=True)
     owner = models.ForeignKey(User, db_index=True, editable=False)
 
