@@ -98,8 +98,11 @@ class DeckViewSet(api_views.DeckViewSet):
         return response
 
     @detail_route()
-    def facts(self, request, pk=None):
+    def facts(self, request, pk=None, slug=None):
         deck = self.get_object()
+        if slug != deck.slug:
+            return redirect('deck-facts', pk=deck.pk, slug=deck.slug)
+
         return Response(
             DetailedDeckSerializer(deck).data,
             template_name='flashcards/deck_facts.html',
