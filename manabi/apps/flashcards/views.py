@@ -88,7 +88,11 @@ class DeckViewSet(api_views.DeckViewSet):
         response.template_name = 'flashcards/deck_list.html'
         return response
 
-    def retrieve(self, request, pk=None):
+    def retrieve(self, request, pk=None, slug=None):
+        deck = self.get_object()
+        if slug != deck.slug:
+            return redirect('deck-detail', pk=deck.pk, slug=deck.slug)
+
         response = super(DeckViewSet, self).retrieve(request, pk=pk)
         response.template_name = 'flashcards/deck_detail.html'
         return response

@@ -32,6 +32,7 @@ class DeckSerializer(ManabiModelSerializer):
             'created_at',
             'modified_at',
             'name',
+            'slug',
             'description',
             'card_count',
             'shared',
@@ -41,6 +42,7 @@ class DeckSerializer(ManabiModelSerializer):
         read_only_fields = (
             'id',
             'owner',
+            'slug',
             'shared_at',
             'card_count',
             'is_synchronized',
