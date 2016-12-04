@@ -2,16 +2,21 @@
 
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
+from rest_framework import status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 
 from manabi.api.renderers import ModelViewSetHTMLRenderer
 from manabi.apps.flashcards import api_views
+from manabi.apps.flashcards.models import (
+    Deck,
+)
 from manabi.apps.flashcards.serializers import (
     FactWithCardsSerializer,
     DetailedDeckSerializer,
@@ -83,6 +88,33 @@ class FactViewSet(api_views.FactViewSet):
 class DeckViewSet(api_views.DeckViewSet):
     renderer_classes = [ModelViewSetHTMLRenderer]
 
+    def get_queryset(self):
+        '''
+        Includes subscriber decks in order to allow redirecting upstream.
+        '''
+        if self.action == 'list':
+            return super(DeckViewSet, self).get_queryset()
+
+        filters = (
+            Q(active=True, shared=True)
+            | Q(synchronized_with__isnull=False)
+        )
+
+        if self.request.user.is_authenticated():
+            filters |= Q(active=True, owner=self.request.user)
+
+        return Deck.objects.filter(filters).order_by('name')
+
+    def _redirect_to_upstream_deck_if_anonymous(self, url_name):
+        deck = self.get_object()
+        if (
+                self.request.user.is_anonymous()
+                and deck.synchronized_with is not None
+        ):
+            upstream_deck = deck.synchronized_with
+            return redirect(url_name,
+                            pk=upstream_deck.pk, slug=upstream_deck.slug)
+
     def list(self, request):
         response = super(DeckViewSet, self).list(request)
         response.template_name = 'flashcards/deck_list.html'
@@ -93,6 +125,10 @@ class DeckViewSet(api_views.DeckViewSet):
         if slug != deck.slug:
             return redirect('deck-detail', pk=deck.pk, slug=deck.slug)
 
+        response = self._redirect_to_upstream_deck_if_anonymous('deck-detail')
+        if response:
+            return response
+
         response = super(DeckViewSet, self).retrieve(request, pk=pk)
         response.template_name = 'flashcards/deck_detail.html'
         return response
@@ -102,6 +138,10 @@ class DeckViewSet(api_views.DeckViewSet):
         deck = self.get_object()
         if slug != deck.slug:
             return redirect('deck-facts', pk=deck.pk, slug=deck.slug)
+
+        response = self._redirect_to_upstream_deck_if_anonymous('deck-facts')
+        if response:
+            return response
 
         return Response(
             DetailedDeckSerializer(deck).data,
