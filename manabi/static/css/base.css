@@ -74,6 +74,10 @@ h2 {
     margin: 2rem 0;
 }
 
+.nav-tabs {
+    margin-bottom: 1rem;
+}
+
 /* Main marketing message and sign up button */
 .jumbotron {
     text-align: center;
