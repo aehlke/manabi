@@ -115,6 +115,9 @@ class DeckViewSet(api_views.DeckViewSet):
                             pk=upstream_deck.pk, slug=upstream_deck.slug)
 
     def list(self, request):
+        if self.request.user.is_anonymous():
+            return redirect('shared-deck-list')
+
         response = super(DeckViewSet, self).list(request)
         response.template_name = 'flashcards/deck_list.html'
         return response
