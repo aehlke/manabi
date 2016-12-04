@@ -73,6 +73,7 @@ class SharedDeckSerializer(DeckSerializer):
             'id',
             'owner',
             'name',
+            'slug',
             'description',
             'viewer_synchronized_deck',
             'card_count',

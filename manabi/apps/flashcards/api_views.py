@@ -132,7 +132,10 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        facts = Fact.objects.filter(deck__owner=self.request.user)
+        if self.request.user.is_anonymous():
+            facts = Fact.objects.filter(deck__shared=True)
+        else:
+            facts = Fact.objects.filter(deck__owner=self.request.user)
         facts = facts.filter(active=True).distinct()
         facts = facts.select_related('deck')
         facts = facts.prefetch_related('card_set')

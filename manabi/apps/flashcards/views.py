@@ -60,7 +60,6 @@ class FactViewSet(api_views.FactViewSet):
 
         return redirect('homepage')
 
-
     def retrieve(self, request, pk=None):
         fact = self.get_object()
         serializer = self.get_serializer(fact)
@@ -125,7 +124,8 @@ class DeckViewSet(api_views.DeckViewSet):
         if slug != deck.slug:
             return redirect('deck-detail', pk=deck.pk, slug=deck.slug)
 
-        response = self._redirect_to_upstream_deck_if_anonymous('deck-detail')
+        response = self._redirect_to_upstream_deck_if_anonymous(
+            'shared-deck-detail')
         if response:
             return response
 
@@ -139,7 +139,8 @@ class DeckViewSet(api_views.DeckViewSet):
         if slug != deck.slug:
             return redirect('deck-facts', pk=deck.pk, slug=deck.slug)
 
-        response = self._redirect_to_upstream_deck_if_anonymous('deck-facts')
+        response = self._redirect_to_upstream_deck_if_anonymous(
+            'shared-deck-facts')
         if response:
             return response
 
@@ -147,3 +148,27 @@ class DeckViewSet(api_views.DeckViewSet):
             DetailedDeckSerializer(deck).data,
             template_name='flashcards/deck_facts.html',
         )
+
+
+class SharedDeckViewSet(api_views.SharedDeckViewSet):
+    renderer_classes = [ModelViewSetHTMLRenderer]
+
+    def list(self, request):
+        response = super(SharedDeckViewSet, self).list(request)
+        response.template_name = 'flashcards/shared_deck_list.html'
+        return response
+
+    def retrieve(self, request, pk=None, slug=None):
+        deck = self.get_object()
+        if slug != deck.slug:
+            return redirect('deck-detail', pk=deck.pk, slug=deck.slug)
+
+        response = super(SharedDeckViewSet, self).retrieve(request, pk=pk)
+        response.template_name = 'flashcards/deck_detail.html'
+        return response
+
+    @detail_route()
+    def facts(self, request, pk=None, slug=None):
+        response = super(SharedDeckViewSet, self).facts(request, pk=pk)
+        response.template_name = 'flashcards/deck_facts.html'
+        return response

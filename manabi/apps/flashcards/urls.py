@@ -10,6 +10,7 @@ deck_facts = views.DeckViewSet.as_view({'get': 'facts'})
 
 router = routers.SimpleRouter()
 router.register(r'decks', views.DeckViewSet, base_name='deck')
+router.register(r'shared-decks', views.SharedDeckViewSet, base_name='deck')
 router.register(r'facts', views.FactViewSet, base_name='fact')
 
 urlpatterns = [
