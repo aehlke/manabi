@@ -44,6 +44,9 @@ urlpatterns = [
     url(r'^apple-app-site-association$', TemplateView.as_view(
         template_name='apple_app_site_association.json')),
 
+    url(r'^ios-required/', TemplateView.as_view(
+        template_name='ios_required.html'), name='ios-required'),
+
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rq/', include('django_rq.urls')),

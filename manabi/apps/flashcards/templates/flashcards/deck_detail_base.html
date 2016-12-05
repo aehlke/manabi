@@ -17,14 +17,23 @@
             <div id="deck-author">by <a href="{{ url('user-profile', args=[deck.original_author.username]) }}">{{ deck.original_author.username }}</a></div>
         </div>
         <div class="col-sm-4 offset-sm-0 add-deck-container">
-            {% if deck.owner.id != request.user.id %}
+            {% if request.user.is_authenticated() %}
+                {% if deck.owner.id != request.user.id %}
+                    <button
+                        type="button"
+                        id="add-deck-button"
+                        class="btn btn-primary btn-lg btn-block add-deck"
+                        data-toggle="tooltip"
+                        title="Add this deck to your library to include it in reviews."
+                    >Add Deck</button>
+                {% endif %}
+            {% else %}
                 <button
                     type="button"
-                    id="add-deck-button"
+                    id="add-deck-branch-link-button"
                     class="btn btn-primary btn-lg btn-block add-deck"
-                    data-toggle="tooltip"
-                    title="Add this deck to your library to include it in reviews."
-                >Add Deck</button>
+                >Start Learning!</button>
+                <div id="add-deck-button-caption">Get Manabi on iPhone to learn and review this deck.</div>
             {% endif %}
         </div>
     </div>
@@ -50,6 +59,12 @@
 
 {% block extra_body_scripts %}
     <script>
+        // Branch.io initialization.
+        (function(b,r,a,n,c,h,_,s,d,k){if(!b[n]||!b[n]._q){for(;s<_.length;)c(h,_[s++]);d=r.createElement(a);d.async=1;d.src="https://cdn.branch.io/branch-latest.min.js";k=r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d,k);b[n]=h}})(window,document,"script","branch",function(b,r){b[r]=function(){b._q.push([r,arguments])}},{_q:[],_v:1},"addListener applyCode autoAppIndex banner closeBanner creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode".split(" "), 0);
+        branch.init('{{ BRANCH_KEY }}', function(err, data) {
+            // callback to handle err or data
+        });
+
         $(function() {
             $('#add-deck-button').click(function(e) {
                 e.preventDefault()
@@ -64,6 +79,12 @@
                     .done(function() {
                         location.reload()
                     })
+            })
+
+            $('#add-deck-branch-link-button').click(function(e) {
+                e.preventDefault()
+
+
             })
         })
     </script>

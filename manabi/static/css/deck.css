@@ -10,3 +10,11 @@ h1 {
     margin-top: 1rem;
     margin-bottom: 1rem;
 }
+
+#add-deck-button-caption {
+    color: #aaa;
+    text-align: center;
+    font-size: .7rem;
+    padding: 0 2rem;
+    margin-top: 1em;
+}

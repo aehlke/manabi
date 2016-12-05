@@ -336,6 +336,8 @@ if not DEBUG:
         'STATS_FILE': os.path.join(PROJECT_ROOT, 'static/js/webpack-stats-prod.json')
     })
 
+BRANCH_KEY = 'key_live_oeAeGJl13FZd3GdCrS2FXbiiyDgsH2KI'
+
 DEFAULT_URL_PREFIX = 'http://192.168.0.1:8000'
 
 REST_FRAMEWORK = {
