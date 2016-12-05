@@ -11,4 +11,5 @@ def homepage(request):
 
     return render(request, 'homepage.html', {
         'decks': decks,
+        'show_shared_decks_link_in_decks_list': True,
     })

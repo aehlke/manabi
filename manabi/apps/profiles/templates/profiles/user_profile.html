@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{% block deck_header %}My Decks{% endblock %}</h1>
-    {% set decks = data %}
+    <h1>{{ profile_user.username }}</h1>
+
     {% include 'flashcards/snippets/deck_list.html' %}
 {% endblock %}

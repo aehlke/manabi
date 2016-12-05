@@ -47,6 +47,7 @@ urlpatterns = [
 
     url(r'^$', manabi.views.homepage, name='homepage'),
     url(r'^flashcards/', include('manabi.apps.flashcards.urls')),
+    url(r'^users/', include('manabi.apps.profiles.urls')),
 
     url(r'^terms-of-service/$', direct_to_template,
         {'template': 'tos.html'}, name='terms_of_service'),

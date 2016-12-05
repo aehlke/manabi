@@ -1,5 +1,9 @@
 {% extends "base.html" %}
 
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ static('css/deck.css') }}">
+{% endblock %}
+
 {% set deck = data %}
 
 {% block breadcrumbs %}
@@ -8,6 +12,7 @@
 
 {% block content %}
     <h1>{{ deck.name }}</h1>
+    <div id="deck-author">by {{ deck.owner.username }}</div>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">

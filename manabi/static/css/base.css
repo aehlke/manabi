@@ -118,3 +118,20 @@ h2 {
 .form-check-label .icheckbox_flat-red {
     margin-right: .4rem;
 }
+
+.list-group-item-add-icon {
+
+}
+.list-group-item-add-icon:after {
+    content: '+ ';
+    position: relative;
+    top: .2rem;
+    line-height: 1rem;
+    font-size: 2rem;
+    width: 2rem;
+    display: inline-block;
+}
+
+.list-group-item-add-icon:hover:after {
+    text-decoration: none;
+}

@@ -7,7 +7,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
-from rest_framework import status
+from rest_framework import status, viewsets
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response

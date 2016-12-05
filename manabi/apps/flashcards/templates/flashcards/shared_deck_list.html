@@ -1,7 +1,3 @@
-{% extends "base.html" %}
+{% extends "flashcards/deck_list.html" %}
 
-{% block content %}
-    <h1>Shared Decks</h1>
-    {% set decks = data %}
-    {% include 'flashcards/snippets/deck_list.html' %}
-{% endblock %}
+{% block deck_header %}Shared Decks{% endblock %}
