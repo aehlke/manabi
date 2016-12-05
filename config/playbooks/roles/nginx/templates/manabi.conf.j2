@@ -20,14 +20,11 @@ server {
     }
 
     location = /favicon.ico {
-        autoindex off;
-        root {{ app_static_files_path }}/static/;
+        rewrite (.*) /static/favicon.ico;
     }
 
     location = /apple-touch-icon.png {
-        autoindex off;
-        # alias {{ app_static_files_path }}/img/manabi-icon-small.png;
-        root {{ app_static_files_path }}/static/img/;
+        rewrite (.*) /static/img/apple-touch-icon.png;
     }
 
     location / {
