@@ -24,6 +24,11 @@ server {
         alias {{ app_static_files_path }}/favicon.ico;
     }
 
+    location = /apple-touch-icon.png {
+        autoindex off;
+        alias {{ app_static_files_path }}/img/manabi-icon-small.png;
+    }
+
     location / {
         include uwsgi_params;
         uwsgi_pass uwsgi;
