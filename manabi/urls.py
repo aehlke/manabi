@@ -1,11 +1,11 @@
 from django.conf import settings
 from django.conf.urls import *
 from django.contrib import admin
+from django.views.generic.base import TemplateView
 from lazysignup.decorators import allow_lazy_user
 from rest_framework import routers
 
 import manabi.views
-from manabi.apps.utils.views import direct_to_template
 from manabi.apps.flashcards.api_views import (
     DeckViewSet,
     SynchronizedDeckViewSet,
@@ -49,12 +49,12 @@ urlpatterns = [
     url(r'^flashcards/', include('manabi.apps.flashcards.urls')),
     url(r'^users/', include('manabi.apps.profiles.urls')),
 
-    url(r'^terms-of-service/$', direct_to_template,
-        {'template': 'tos.html'}, name='terms_of_service'),
-    url(r'^privacy-policy/$', direct_to_template,
-        {'template': 'privacy.html'}, name='privacy_policy'),
-    url(r'^credits/$', direct_to_template,
-        {'template': 'credits.html'}, name='credits'),
+    url(r'^terms-of-service/$', TemplateView.as_view(
+        template_name='tos.html'), name='terms_of_service'),
+    url(r'^privacy-policy/$', TemplateView.as_view(
+        template_name='privacy.html'), name='privacy_policy'),
+    url(r'^credits/$', TemplateView.as_view(
+        template_name='credits.html'), name='credits'),
 
     # API URLs.
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
