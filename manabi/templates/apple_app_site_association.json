@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "8Y769YTXHF.io.manabi.Manabi",
+                "paths": ["/flashcards/decks/*"]
+            }
+        ]
+    }
+}

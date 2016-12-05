@@ -41,6 +41,9 @@ api_router.register(r'flashcards/next_cards_for_review',
     base_name='next-card-for-review')
 
 urlpatterns = [
+    url(r'^apple-app-site-association$', TemplateView.as_view(
+        template_name='apple_app_site_association.json')),
+
     url(r'^accounts/', include('allauth.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^rq/', include('django_rq.urls')),
