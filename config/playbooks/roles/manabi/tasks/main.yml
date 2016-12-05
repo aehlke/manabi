@@ -70,7 +70,7 @@
 
 - name: Assign ownership of static files to www-data
   file:
-    path: '{{ app_static_files_path }}'
+    path: '{{ app_files_path }}'
     state: directory
     mode: 'u=rwx,g=rwx'
     owner: www-data

@@ -16,17 +16,17 @@ server {
 
     location /static {
         autoindex off;
-        alias {{ app_static_files_path }};
+        alias {{ app_files_path }};
     }
 
     location = /favicon.ico {
         autoindex off;
-        alias {{ app_static_files_path }}/favicon.ico;
+        alias {{ app_files_path }}/favicon.ico;
     }
 
     location = /apple-touch-icon.png {
         autoindex off;
-        alias {{ app_static_files_path }}/img/manabi-icon-small.png;
+        alias {{ app_files_path }}/img/manabi-icon-small.png;
     }
 
     location / {
