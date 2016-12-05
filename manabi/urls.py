@@ -43,7 +43,7 @@ api_router.register(r'flashcards/next_cards_for_review',
 urlpatterns = [
     url(r'^apple-app-site-association$', TemplateView.as_view(
         template_name='apple_app_site_association.json',
-        content_type='application/pkcs7-mime',
+        content_type='application/json',
     )),
 
     url(r'^ios-required/', TemplateView.as_view(
