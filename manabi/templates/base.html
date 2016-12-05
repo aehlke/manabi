@@ -9,6 +9,7 @@
         <link rel="apple-touch-icon" href="{{ DEFAULT_URL_PREFIX }}{{ static('img/apple-touch-icon.png') }}">
 
         <meta name="apple-itunes-app" content="app-id=8Y769YTXHF.io.manabi.Manabi, app-argument={{ DEFAULT_URL_PREFIX + request.get_full_path() }}">
+        <meta property="og:url" content="{{ DEFAULT_URL_PREFIX + request.get_full_path() }}">
         <meta property="og:image" content="{{ DEFAULT_URL_PREFIX }}{{ static('img/manabi-icon-medium.png') }}">
         <meta property="og:image:width" content="300">
         <meta property="og:image:height" content="300">
