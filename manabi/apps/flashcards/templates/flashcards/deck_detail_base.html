@@ -61,8 +61,9 @@
     <script>
         // Branch.io initialization.
         (function(b,r,a,n,c,h,_,s,d,k){if(!b[n]||!b[n]._q){for(;s<_.length;)c(h,_[s++]);d=r.createElement(a);d.async=1;d.src="https://cdn.branch.io/branch-latest.min.js";k=r.getElementsByTagName(a)[0];k.parentNode.insertBefore(d,k);b[n]=h}})(window,document,"script","branch",function(b,r){b[r]=function(){b._q.push([r,arguments])}},{_q:[],_v:1},"addListener applyCode autoAppIndex banner closeBanner creditHistory credits data deepview deepviewCta first getCode init link logout redeem referrals removeListener sendSMS setBranchViewData setIdentity track validateCode".split(" "), 0);
-        branch.init('{{ BRANCH_KEY }}', function(err, data) {
+        branch.init({{ json(BRANCH_KEY)|safe }}, function(err, data) {
             // callback to handle err or data
+            console.log(err)
         });
 
         $(function() {
@@ -84,7 +85,35 @@
             $('#add-deck-branch-link-button').click(function(e) {
                 e.preventDefault()
 
+                var iosRequiredUrl = 'https://manabi.io/ios-required/'
+                var iosUrl = '{{ DEFAULT_URL_PREFIX + request.get_full_path() }}'
 
+                $.blockUI({ message: "Loading…" })
+
+                branch.link({
+                    channel: 'website',
+                    feature: 'add deck',
+                    stage: 'new user',
+                    data: {
+                        deckId: {{ json(deck.id)|safe }},
+                        '$desktop_url': iosRequiredUrl,
+                        '$ios_url': iosUrl,
+                        '$ipad_url': iosUrl,
+                        '$android_url': iosRequiredUrl,
+                        '$og_app_id': '1180710626',
+                        '$og_title': 'Manabi – Japanese Flashcards',
+                        '$og_description': 'Japanese flashcards app for iPhone.',
+                        '$og_image_url': 'http://i.imgur.com/mOmYVeB.png'
+                    }
+                }, function(err, link) {
+                    $.unblockUI()
+                        console.log(link)
+                    if (err !== null) {
+                        window.alert(err)
+                        return
+                    }
+                    window.location.href = link
+                });
             })
         })
     </script>
