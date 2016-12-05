@@ -22,12 +22,14 @@ from rest_framework import serializers
 
 class DeckSerializer(ManabiModelSerializer):
     owner = UserSerializer(read_only=True)
+    original_author = UserSerializer(read_only=True)
 
     class Meta(object):
         model = Deck
         fields = (
             'id',
             'owner',
+            'original_author',
             'shared_at',
             'created_at',
             'modified_at',
@@ -42,6 +44,7 @@ class DeckSerializer(ManabiModelSerializer):
         read_only_fields = (
             'id',
             'owner',
+            'original_author',
             'slug',
             'shared_at',
             'card_count',

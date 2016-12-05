@@ -11,8 +11,23 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{{ deck.name }}</h1>
-    <div id="deck-author">by {{ deck.owner.username }}</div>
+    <div class="row shared-deck-header">
+        <div class="col-sm-8">
+            <h1>{{ deck.name }}</h1>
+            <div id="deck-author">by <a href="{{ url('user-profile', args=[deck.original_author.username]) }}">{{ deck.original_author.username }}</a></div>
+        </div>
+        <div class="col-sm-4 offset-sm-0 add-deck-container">
+            {% if deck.owner.id != request.user.id %}
+                <button
+                    type="button"
+                    id="add-deck-button"
+                    class="btn btn-primary btn-lg btn-block add-deck"
+                    data-toggle="tooltip"
+                    title="Add this deck to your library to include it in reviews."
+                >Add Deck</button>
+            {% endif %}
+        </div>
+    </div>
 
     <ul class="nav nav-tabs">
         <li class="nav-item">
@@ -31,4 +46,25 @@
     </ul>
 
     {% block deck_content %}{% endblock %}
+{% endblock %}
+
+{% block extra_body_scripts %}
+    <script>
+        $(function() {
+            $('#add-deck-button').click(function(e) {
+                e.preventDefault()
+
+                apiRequest(
+                    'flashcards/synchronized_decks/',
+                    'POST',
+                    { synchronized_with: {{ deck.id }} },
+                    true,
+                    "Adding Deck…"
+                )
+                    .done(function() {
+                        location.reload()
+                    })
+            })
+        })
+    </script>
 {% endblock %}

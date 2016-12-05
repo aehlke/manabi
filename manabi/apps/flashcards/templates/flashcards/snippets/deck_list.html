@@ -3,6 +3,6 @@
         <a href="{{ url('deck-detail', args=[deck.id, deck.slug]) }}" class="list-group-item">{{ deck.name }}</a>
     {% endfor %}
     {% if show_shared_decks_link_in_decks_list %}
-        <a href="{{ url('shared-deck-list') }}" class="list-group-item"><span class="list-group-item-add-icon"></span>Add shared decks…</a>
+        <a href="{{ url('shared-deck-list') }}" class="list-group-item add-shared-decks"><span class="list-group-item-add-icon"></span>Add shared decks…</a>
     {% endif %}
 </div>

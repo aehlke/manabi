@@ -5,3 +5,8 @@ h1 {
     top: -1rem;
     font-style: italic;
 }
+
+.shared-deck-header .add-deck-container {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}

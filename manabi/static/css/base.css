@@ -123,15 +123,21 @@ h2 {
 
 }
 .list-group-item-add-icon:after {
-    content: '+ ';
+    content: '+';
     position: relative;
-    top: .2rem;
+    margin-right: 1rem;
+    top: .3rem;
     line-height: 1rem;
     font-size: 2rem;
-    width: 2rem;
     display: inline-block;
+    font-style: normal;
 }
 
 .list-group-item-add-icon:hover:after {
     text-decoration: none;
+}
+
+.list-group-item.add-shared-decks {
+    font-style: normal;
+    color: #aaa;
 }
