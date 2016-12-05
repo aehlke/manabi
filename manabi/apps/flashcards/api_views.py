@@ -10,7 +10,6 @@ from rest_framework.serializers import ValidationError
 from rest_framework.views import APIView
 import pytz
 
-from manabi.api.renderers import ModelViewSetHTMLRenderer
 from manabi.api.viewsets import MultiSerializerViewSetMixin
 from manabi.apps.flashcards.models import (
     Deck,
@@ -48,7 +47,7 @@ from manabi.apps.flashcards.serializers import (
 
 class DeckViewSet(viewsets.ModelViewSet):
     serializer_class = DeckSerializer
-    renderer_classes = [ModelViewSetHTMLRenderer, JSONRenderer]
+    renderer_classes = [JSONRenderer]
 
     def get_queryset(self):
         return Deck.objects.of_user(self.request.user)
