@@ -13,5 +13,5 @@ def user_profile(request, username):
 
     return render(request, 'profiles/user_profile.html', {
         'profile_user': user,
-        'decks': Deck.objects.of_user(user),
+        'decks': decks,
     })
