@@ -27,7 +27,7 @@ server {
     location = /apple-touch-icon.png {
         autoindex off;
         # alias {{ app_static_files_path }}/img/manabi-icon-small.png;
-        root {{ app_static_files_path }}/static/;
+        root {{ app_static_files_path }}/static/img/;
     }
 
     location / {
