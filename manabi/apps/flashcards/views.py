@@ -84,7 +84,23 @@ class FactViewSet(api_views.FactViewSet):
         }, template_name='flashcards/fact.html')
 
 
-class DeckViewSet(api_views.DeckViewSet):
+class _SubscriberDeckRedirectMixin(object):
+    def redirect_to_owner_deck_if_subscriber(self, url_name):
+        if self.request.user.is_anonymous():
+            return
+
+        deck = self.get_object()
+        subscriber_deck_for_viewer = deck.get_subscriber_deck_for_user(
+            self.request.user)
+
+        if subscriber_deck_for_viewer is None:
+            return
+
+        return redirect(url_name,
+                        pk=subscriber_deck_for_viewer.pk,
+                        slug=subscriber_deck_for_viewer.slug)
+
+class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
     renderer_classes = [ModelViewSetHTMLRenderer]
 
     def get_queryset(self):
@@ -104,30 +120,20 @@ class DeckViewSet(api_views.DeckViewSet):
 
         return Deck.objects.filter(filters).order_by('name')
 
-    def _redirect_to_upstream_deck_if_anonymous(self, url_name):
+    def _redirect_to_appropriate_deck_if_unowned(self, url_name):
         deck = self.get_object()
         if (
-                self.request.user.is_anonymous()
-                and deck.synchronized_with is not None
+                deck.synchronized_with is not None
+                and self.request.user.is_anonymous()
         ):
-            upstream_deck = deck.synchronized_with
-            return redirect(url_name,
-                            pk=upstream_deck.pk, slug=upstream_deck.slug)
-
-    def _redirect_to_owner_deck_if_subscriber(self, url_name):
-        if self.request.user.is_anonymous():
-            return
-
-        deck = self.get_object()
-        subscriber_deck_for_viewer = deck.get_subscriber_deck_for_user(
-            self.request.user)
-
-        if subscriber_deck_for_viewer is None:
-            return
-
-        return redirect(url_name,
-                        pk=subscriber_deck_for_viewer.pk,
-                        slug=subscriber_deck_for_viewer.slug)
+                upstream_deck = deck.synchronized_with
+                return redirect(url_name,
+                                pk=upstream_deck.pk, slug=upstream_deck.slug)
+        elif (
+            deck.synchronized_with is None
+            and deck.owner != self.request.user
+        ):
+            return redirect(url_name, pk=deck.pk, slug=deck.slug)
 
     def list(self, request):
         if self.request.user.is_anonymous():
@@ -143,8 +149,8 @@ class DeckViewSet(api_views.DeckViewSet):
             return redirect('deck-detail', pk=deck.pk, slug=deck.slug)
 
         response = (
-            self._redirect_to_upstream_deck_if_anonymous('deck-detail')
-            or self._redirect_to_owner_deck_if_subscriber('deck-detail'))
+            self._redirect_to_appropriate_deck_if_unowned('shared-deck-detail')
+            or self.redirect_to_owner_deck_if_subscriber('deck-detail'))
         if response:
             return response
 
@@ -159,7 +165,7 @@ class DeckViewSet(api_views.DeckViewSet):
             return redirect('deck-facts', pk=deck.pk, slug=deck.slug)
 
         response = (
-            self._redirect_to_upstream_deck_if_anonymous('deck-facts')
+            self._redirect_to_upstream_deck_if_unowned('shared-deck-facts')
             or self._redirect_to_owner_deck_if_subscriber('deck-facts'))
         if response:
             return response
@@ -170,10 +176,39 @@ class DeckViewSet(api_views.DeckViewSet):
         )
 
 
-class SharedDeckViewSet(api_views.SharedDeckViewSet):
+class SharedDeckViewSet(_SubscriberDeckRedirectMixin, api_views.SharedDeckViewSet):
     renderer_classes = [ModelViewSetHTMLRenderer]
 
     def list(self, request):
         response = super(SharedDeckViewSet, self).list(request)
         response.template_name = 'flashcards/shared_deck_list.html'
         return response
+
+    def retrieve(self, request, pk=None, slug=None):
+        deck = self.get_object()
+        if slug != deck.slug:
+            return redirect('shared-deck-detail', pk=deck.pk, slug=deck.slug)
+
+        response = self.redirect_to_owner_deck_if_subscriber('deck-detail')
+        if response:
+            return response
+
+        return Response(
+            DetailedDeckSerializer(deck).data,
+            template_name='flashcards/deck_detail.html',
+        )
+
+    @detail_route()
+    def facts(self, request, pk=None, slug=None):
+        deck = self.get_object()
+        if slug != deck.slug:
+            return redirect('shared-deck-facts', pk=deck.pk, slug=deck.slug)
+
+        response = self.redirect_to_owner_deck_if_subscriber('deck-facts')
+        if response:
+            return response
+
+        return Response(
+            DetailedDeckSerializer(deck).data,
+            template_name='flashcards/deck_facts.html',
+        )
