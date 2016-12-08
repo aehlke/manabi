@@ -38,6 +38,7 @@ class DeckSerializer(ManabiModelSerializer):
             'description',
             'card_count',
             'shared',
+            'share_url',
             'suspended',
             'is_synchronized',
         )
@@ -47,6 +48,7 @@ class DeckSerializer(ManabiModelSerializer):
             'original_author',
             'slug',
             'shared_at',
+            'share_url',
             'card_count',
             'is_synchronized',
             'created_at',
