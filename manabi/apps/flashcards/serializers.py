@@ -84,6 +84,7 @@ class SharedDeckSerializer(DeckSerializer):
             'card_count',
             'created_at',
             'modified_at',
+            'share_url',
         )
 
 
