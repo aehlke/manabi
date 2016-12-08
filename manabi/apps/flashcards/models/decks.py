@@ -2,6 +2,7 @@ import datetime
 
 from autoslug import AutoSlugField
 from cachecow.decorators import cached_function
+from django.conf import settings
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import (
@@ -89,7 +90,7 @@ class Deck(models.Model):
     def share_url(self):
         if not self.shared:
             return
-        return reverse(
+        return settings.DEFAULT_URL_PREFIX + reverse(
             'shared-deck-detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
     @transaction.atomic
