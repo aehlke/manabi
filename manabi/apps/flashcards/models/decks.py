@@ -87,8 +87,10 @@ class Deck(models.Model):
 
     @property
     def share_url(self):
-        if self.shared:
-            return reverse('shared-deck-detail', pk=self.pk, slug=self.slug)
+        if not self.shared:
+            return
+        return reverse(
+            'shared-deck-detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
     @transaction.atomic
     def delete(self, *args, **kwargs):
