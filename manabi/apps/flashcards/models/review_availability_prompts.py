@@ -5,8 +5,8 @@ from functools import wraps
 
 def _auto_secondary_prompt(f):
     @wraps(f)
-    def wrapper(secondary=False, *args, **kwargs):
-        prompt = f(secondary=secondary, *args, **kwargs)
+    def wrapper(review_availabilities, secondary=False):
+        prompt = f(review_availabilities, secondary=secondary)
         if secondary:
             parts = prompt.split(' ')
             prompt = parts[:1] + ['also'] + parts[1:]
