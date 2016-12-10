@@ -50,7 +50,11 @@ class DeckViewSet(viewsets.ModelViewSet):
     renderer_classes = [JSONRenderer]
 
     def get_queryset(self):
-        return Deck.objects.of_user(self.request.user)
+        return (
+            Deck.objects
+            .of_user(self.request.user)
+            .select_related('owner', 'synchronized_with')
+        )
 
     def perform_create(self, serializer):
         instance = serializer.save(owner=self.request.user)

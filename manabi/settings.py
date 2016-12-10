@@ -189,6 +189,11 @@ if DEBUG:
         'manabi.apps.utils.middleware.JsonDebugMiddleware',
     )
 
+SILKY_MAX_REQUEST_BODY_SIZE = 128  # kb
+SILKY_MAX_RESPONSE_BODY_SIZE = 128  # kb
+SILKY_META = True  # See what effect Silk had on DB time.
+SILKY_AUTHENTICATION = True
+SILKY_AUTHORISATION = True
 
 ROOT_URLCONF = 'manabi.urls'
 
