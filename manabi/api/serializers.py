@@ -21,4 +21,7 @@ class FilterRelatedMixin(object):
                 except AttributeError:
                     pass
                 else:
-                    field.queryset = func(field.queryset)
+                    try:
+                        field.queryset = func(field.queryset)
+                    except AttributeError:
+                        continue
