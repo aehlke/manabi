@@ -76,4 +76,4 @@ urlpatterns = [
 
 # if not settings.LIVE_HOST:
 #    urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
-# urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]
+urlpatterns += [url(r'^silk/', include('silk.urls', namespace='silk'))]

@@ -116,8 +116,9 @@ TEMPLATES = [
         'BACKEND': 'manabi.jinja2_backend.ManabiJinja2',
         'DIRS': [
             os.path.join(PROJECT_ROOT, 'templates'),
+            os.path.join(PROJECT_ROOT, 'apps'),
         ],
-        'APP_DIRS': True,
+        'APP_DIRS': False,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -154,7 +155,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
 
-    # 'silk.middleware.SilkyMiddleware',
+    'silk.middleware.SilkyMiddleware',
 
     'django.middleware.common.CommonMiddleware',
 
@@ -229,7 +230,7 @@ INSTALLED_APPS = (
     'cachecow',
     'django_rq',
     'djoser',
-    # 'silk',
+    'silk',
     'raven.contrib.django.raven_compat',
     'webpack_loader',
 
