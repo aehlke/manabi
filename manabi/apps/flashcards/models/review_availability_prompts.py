@@ -147,4 +147,4 @@ def review_availability_prompts(review_availabilities):
         if len(prompts) == 2:
             break
 
-    return tuple(*prompts)
+    return tuple(prompts)
