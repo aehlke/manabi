@@ -7,6 +7,8 @@ def _auto_secondary_prompt(f):
     @wraps(f)
     def wrapper(review_availabilities, secondary=False):
         prompt = f(review_availabilities, secondary=secondary)
+        if prompt is None:
+            return
         if secondary:
             parts = prompt.split(' ')
             prompt = u' '.join(parts[:1] + ['also'] + parts[1:])
@@ -146,5 +148,10 @@ def review_availability_prompts(review_availabilities):
             prompts.append(prompt)
         if len(prompts) == 2:
             break
+
+    if len(prompts) == 0:
+        return (None, None)
+    elif len(prompts) == 1:
+        return (prompts[0], None)
 
     return tuple(prompts)
