@@ -24,7 +24,7 @@
 - name: Configure PgHero
   command: 'pghero config:set {{ item }}'
   with_items:
-    - 'DATABASE_URL=postgres://{{ postgres_secrets.username }}:{{ postgres_secrets.password|urlencode() }}@localhost:5432/{{ postgres_secrets.db_name }}'
+    - 'DATABASE_URL=postgres://{{ pghero_secrets.db_username }}:{{ pghero_secrets.db_password|urlencode() }}@localhost:5432/{{ pghero_secrets.db_name }}'
     - 'PORT={{ pghero.port }}'
   become: yes
   notify: Restart PgHero
