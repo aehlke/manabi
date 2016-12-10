@@ -16,6 +16,12 @@ def _auto_secondary_prompt(f):
     return wrapper
 
 
+def _pluralize_cards(card_count):
+    if card_count == 1:
+        return 'card'
+    return 'cards'
+
+
 @_auto_secondary_prompt
 def _failed_due(review_availabilities, secondary=False):
     '''
@@ -26,8 +32,8 @@ def _failed_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} cards you had forgotten last time that are ready to be revisited."
-    ).format(count)
+        u"We have {} {} you had forgotten last time that are ready to be revisited."
+    ).format(count, _pluralize_cards(count))
 
 
 @_auto_secondary_prompt
@@ -40,8 +46,8 @@ def _mature_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} cards that you know well but may forget soon if left unused."
-    ).format(count)
+        u"We have {} {} that you know well but may forget soon if left unused."
+    ).format(count, _pluralize_cards(count))
 
 
 # TODO
@@ -62,8 +68,8 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You'll soon forget {} cards you're still learning—now's an effective time to reinforce them."
-    ).format(count)
+        u"You'll soon forget {} {} you're still learning—now's an effective time to reinforce them."
+    ).format(count, _pluralize_cards(count))
 
 
 @_auto_secondary_prompt
@@ -76,8 +82,8 @@ def _failed_not_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} cards you had forgotten last time that are ready to be revisited."
-    ).format(count)
+        u"We have {} {} you had forgotten last time that are ready to be revisited."
+    ).format(count, _pluralize_cards(count))
 
 
 @_auto_secondary_prompt
@@ -91,8 +97,8 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} new cards for you to learn."
-    ).format(count)
+        u"We have {} new {} for you to learn."
+    ).format(count, _pluralize_cards(count))
 
 
 @_auto_secondary_prompt
@@ -106,8 +112,8 @@ def _new_over_daily_limit(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You've already learned {} new cards today, but we have more if you're feeling ambitious."
-    ).format(count)
+        u"You've already learned {} new {} today, but we have more if you're feeling ambitious."
+    ).format(count, _pluralize_cards(count))
 
 
 @_auto_secondary_prompt
