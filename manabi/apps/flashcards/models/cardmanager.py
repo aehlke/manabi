@@ -293,7 +293,7 @@ class SchedulerFiltersMixin(object):
             due_at__isnull=False,
             due_at__lte=(review_time or datetime.utcnow()),
         )
-        return with_siblings_buried(cards, order_by=order_by)
+        return with_siblings_buried(due_cards, order_by=order_by)
 
 
 class CommonFiltersMixin(object):
