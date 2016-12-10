@@ -21,6 +21,10 @@ def _pluralize_cards(card_count):
         return 'card'
     return 'cards'
 
+def _pluralize(singular, plural, count):
+    if count == 1:
+        return singular
+    return plural
 
 @_auto_secondary_prompt
 def _failed_due(review_availabilities, secondary=False):
@@ -32,8 +36,8 @@ def _failed_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} you had forgotten last time that are ready to be revisited."
-    ).format(count, _pluralize_cards(count))
+        u"We have {} {} you had forgotten last time that {} ready to be revisited."
+    ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
 
 
 @_auto_secondary_prompt
@@ -68,8 +72,8 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You'll soon forget {} {} you're still learning—now's an effective time to reinforce them."
-    ).format(count, _pluralize_cards(count))
+        u"You'll soon forget {} {} you're still learning—now's an effective time to reinforce {}."
+    ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
 
 
 @_auto_secondary_prompt
@@ -82,8 +86,8 @@ def _failed_not_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} you had forgotten last time that are ready to be revisited."
-    ).format(count, _pluralize_cards(count))
+        u"We have {} {} you had forgotten last time that {} ready to be revisited."
+    ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
 
 
 @_auto_secondary_prompt
@@ -112,8 +116,13 @@ def _new_over_daily_limit(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You've already learned {} new {} today, but we have more if you're feeling ambitious."
-    ).format(count, _pluralize_cards(count))
+        u"You've already learned {already_learned} new {cards} today, but we have {next_new_count} more if you're feeling ambitious."
+    ).format(
+        next_new_count=count,
+        already_learned=(
+            review_availabilities.new_cards_limit.reviewed_today_count),
+        cards=_pluralize_cards(count),
+    )
 
 
 @_auto_secondary_prompt

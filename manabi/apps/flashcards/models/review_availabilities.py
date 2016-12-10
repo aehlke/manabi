@@ -46,7 +46,7 @@ class ReviewAvailabilities(object):
         self.excluded_card_ids = excluded_card_ids
         self._buffered_new_cards_count = buffered_new_cards_count
 
-        self._new_cards_limit = (
+        self.new_cards_limit = (
             new_cards_limit or
             NewCardsLimit(
                 user,
@@ -89,7 +89,7 @@ class ReviewAvailabilities(object):
         if self.new_cards_per_day_limit_reached:
             return NEW_CARDS_PER_DAY_LIMIT_OVERRIDE_INCREMENT
         else:
-            return self._new_cards_limit.next_new_cards_limit
+            return self.new_cards_limit.next_new_cards_limit
 
     @property
     @lru_cache(maxsize=None)
@@ -136,7 +136,7 @@ class ReviewAvailabilities(object):
 
     @property
     def new_cards_per_day_limit_reached(self):
-        return self._new_cards_limit.new_cards_per_day_limit_reached
+        return self.new_cards_limit.new_cards_per_day_limit_reached
 
     @property
     @lru_cache(maxsize=None)
@@ -149,7 +149,7 @@ class ReviewAvailabilities(object):
         if not self.new_cards_per_day_limit_reached:
             return None
         return (
-            self._new_cards_limit.reviewed_today_count +
+            self.new_cards_limit.reviewed_today_count +
             NEW_CARDS_PER_DAY_LIMIT_OVERRIDE_INCREMENT
         )
 
