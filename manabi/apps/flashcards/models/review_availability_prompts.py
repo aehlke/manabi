@@ -9,7 +9,7 @@ def _auto_secondary_prompt(f):
         prompt = f(review_availabilities, secondary=secondary)
         if secondary:
             parts = prompt.split(' ')
-            prompt = parts[:1] + ['also'] + parts[1:]
+            prompt = u' '.join(parts[:1] + ['also'] + parts[1:])
         return prompt
     return wrapper
 
