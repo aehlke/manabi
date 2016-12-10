@@ -60,7 +60,7 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You'll soon forget {} cards that you're still learning—now's the most effective time to reinforce them."
+        u"You'll soon forget {} cards you're still learning—now's an effective time to reinforce them."
     ).format(count)
 
 
