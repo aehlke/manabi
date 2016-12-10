@@ -1,5 +1,4 @@
-import datetime
-from datetime import timedelta
+from datetime import datetime, timedelta
 from itertools import chain
 
 from django.db import models
@@ -23,12 +22,10 @@ class SchedulerMixin(object):
         if not count:
             return []
 
-        # Don't space/bury these based on FactQuerySet.buried (Or should we?)
-        cards = initial_query.filter(
-            last_review_grade=GRADE_NONE,
-            due_at__isnull=False,
-            due_at__lte=review_time)
-        cards = with_siblings_buried(cards, 'due_at')
+        cards = initial_query.failed().due(
+            review_time=review_time,
+            order_by='due_at',
+        )
 
         return cards[:count]
 
@@ -43,20 +40,18 @@ class SchedulerMixin(object):
     ):
         '''
         Returns the first [count] cards from initial_query which are due,
-        weren't failed the last review, and  taking spacing of cards from
+        weren't failed the last review, and taking spacing of cards from
         the same fact into account.
 
-        review_time should be datetime.datetime.utcnow()
+        review_time should be datetime.utcnow()
         '''
         if not count:
             return []
 
         cards = initial_query.exclude(
-            last_review_grade=GRADE_NONE).filter(
-            due_at__isnull=False,
-            due_at__lte=review_time)
+            last_review_grade=GRADE_NONE,
+        ).due(review_time=review_time, order_by='-interval')
         cards = cards.exclude(fact__in=buried_facts)
-        cards = with_siblings_buried(cards, '-interval')
 
         #TODO-OLD Also get cards that aren't quite due yet, but will be soon,
         # and depending on their maturity
@@ -140,7 +135,7 @@ class SchedulerMixin(object):
         cards = initial_query.exclude(last_review_grade=GRADE_NONE)
         cards = cards.filter(due_at__gt=review_time)
 
-        priority_cutoff = review_time - datetime.timedelta(minutes=60)
+        priority_cutoff = review_time - timedelta(minutes=60)
         staler_cards = cards.filter(last_reviewed_at__gt=priority_cutoff)
         staler_cards = staler_cards.exclude(fact__in=buried_facts)
         staler_cards = staler_cards.order_by('due_at')
@@ -162,7 +157,7 @@ class SchedulerMixin(object):
         cards = initial_query.exclude(last_review_grade=GRADE_NONE)
         cards = cards.filter(due_at__gt=review_time)
 
-        priority_cutoff = review_time - datetime.timedelta(minutes=60)
+        priority_cutoff = review_time - timedelta(minutes=60)
         fresher_cards = cards.filter(
             last_reviewed_at__isnull=False,
             last_reviewed_at__lte=priority_cutoff)
@@ -234,7 +229,7 @@ class SchedulerMixin(object):
         #TODO-OLD somehow spread some new cards into the early review
         # cards if early_review==True
         #TODO-OLD use args instead, like *kwargs etc for these funcs
-        now = datetime.datetime.utcnow()
+        now = datetime.utcnow()
 
         card_funcs = self._next_card_funcs(
             early_review=early_review,
@@ -276,6 +271,29 @@ class SchedulerMixin(object):
         # new card per day limit
         #for now, we'll add new ones to the end
         return chain(*card_queries)
+
+
+class SchedulerFiltersMixin(object):
+    def failed(self):
+        return initial_query.filter(last_review_grade=GRADE_NONE)
+
+    def young(self, user):
+        return self.filter(
+            last_reviewed_at__isnull=False,
+            interval__isnull=False,
+            interval__lt=MATURE_INTERVAL_MIN,
+        )
+
+    def mature(self):
+        return self.filter(interval__gte=MATURE_INTERVAL_MIN)
+
+    def due(self, review_time=None, order_by=None):
+        # TODO: Include buried facts by default.
+        due_cards = self.filter(
+            due_at__isnull=False,
+            due_at__lte=(review_time or datetime.utcnow()),
+        )
+        return with_siblings_buried(cards, order_by=order_by)
 
 
 class CommonFiltersMixin(object):
@@ -348,44 +366,11 @@ class CommonFiltersMixin(object):
     #     '''
     #     local_query = self.new(user).available()
     #     desired_count = 999999 #TODO-OLD use more elegant solution.
-    #     now = datetime.datetime.utcnow()
+    #     now = datetime.utcnow()
 
     #     new_cards = self.new(user)
 
     #     return self._next_new_cards(user, local_query, desired_count, now).count()
-
-    def young(self, user):
-        return self.filter(
-            last_reviewed_at__isnull=False,
-            interval__isnull=False,
-            interval__lt=MATURE_INTERVAL_MIN
-        )
-
-    def mature(self, user):
-        return self.filter(
-            interval__gte=MATURE_INTERVAL_MIN
-        )
-
-    def due(self, user, _space_cards=False):
-        '''
-        TODO: `_space_cards` is whether to space out due cards before returning
-        them (which can result in fewer being returned).
-        '''
-        #TODO: Make _space_cards True by default.
-        now = datetime.datetime.utcnow()
-        due_cards = self.of_user(user).available().filter(
-            due_at__isnull=False,
-            due_at__lte=now,
-        )
-
-        if _space_cards:
-            self._space_cards(due_cards, due_cards.count(), now)
-
-            # Re-get them since some may have been spaced
-            due_cards = due_cards.filter(
-                due_at__lte=now)
-
-        return due_cards.order_by('-interval')
 
     def count_of_cards_due_tomorrow(self, user):
         '''
@@ -404,8 +389,7 @@ class CommonFiltersMixin(object):
         #            Fact, tags)
         #    cards = cards.filter(fact__in=facts)
 
-        this_time_tomorrow = (datetime.datetime.utcnow()
-                              + datetime.timedelta(days=1))
+        this_time_tomorrow = datetime.utcnow() + timedelta(days=1)
         cards = self.filter(
             due_at__isnull=False,
             due_at__lt=this_time_tomorrow,
@@ -429,7 +413,7 @@ class CommonFiltersMixin(object):
         return self.aggregate(Min('due_at'))['due_at__min']
 
     #def spaced_cards_new_count(self, user, deck=None):
-        #threshold_at = datetime.datetime.utcnow() - datetime.timedelta(minutes=30)
+        #threshold_at = datetime.utcnow() - timedelta(minutes=30)
         #recently_reviewed = self.filter(fact__deck__owner=user, fact__deck=deck, last_reviewed_at__lte=threshold_at)
         #facts = Fact.objects.filter(id__in=recently_reviewed.values_list('fact', flat=True))
         #new_cards_count = self.new_cards(user, deck).exclude(fact__in=facts).count()
@@ -455,14 +439,20 @@ class CardStatsMixin(object):
         '''The # of cards already due right now or later today.'''
         return self.filter(
             due_at__isnull=False,
-            due_at__lte=datetime.datetime.today()).count()
+            due_at__lte=datetime.today()).count()
 
     def future_due_counts(self):
         '''Same as `due_counts` but only for future, after today.'''
         return self.filter(
-            due_at__gt=datetime.datetime.today()).with_due_dates().values(
+            due_at__gt=datetime.today()).with_due_dates().values(
             'due_on').annotate(due_count=Count('id'))
 
 
-class CardQuerySet(CommonFiltersMixin, SchedulerMixin, CardStatsMixin, QuerySet):
+class CardQuerySet(
+    CommonFiltersMixin,
+    SchedulerFiltersMixin,
+    SchedulerMixin,
+    CardStatsMixin,
+    QuerySet,
+):
     pass

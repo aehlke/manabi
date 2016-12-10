@@ -10,6 +10,9 @@ from manabi.apps.flashcards.models.constants import (
 from manabi.apps.flashcards.models.new_cards_limit import (
     NewCardsLimit,
 )
+from manabi.apps.flashcards.models.review_availability_prompts import (
+    review_availability_prompts,
+)
 from manabi.apps.flashcards.models import (
     Deck,
     Fact,
@@ -55,7 +58,7 @@ class ReviewAvailabilities(object):
         )
 
     @property
-    def _base_cards_queryset(self):
+    def base_cards_queryset(self):
         cards = Card.objects.available().of_user(self.user)
 
         if self.deck:
@@ -72,7 +75,13 @@ class ReviewAvailabilities(object):
         if self.user.is_anonymous():
             return False
 
-        return self._base_cards_queryset.due(self.user).exists()
+        return (
+            self.base_cards_queryset
+                .of_user(self.user)
+                .available()
+                .due()
+                .exists()
+        )
 
     @property
     @lru_cache(maxsize=None)
@@ -92,7 +101,7 @@ class ReviewAvailabilities(object):
         if self.user.is_anonymous():
             return 0
 
-        available_count = self._base_cards_queryset.new_count(
+        available_count = self.base_cards_queryset.new_count(
             self.user,
             including_buried=False,
         )
@@ -114,7 +123,7 @@ class ReviewAvailabilities(object):
         if self.next_new_cards_count > 0:
             return None
 
-        available_count = self._base_cards_queryset.new_count(
+        available_count = self.base_cards_queryset.new_count(
             self.user,
             including_buried=True,
         )
@@ -150,17 +159,17 @@ class ReviewAvailabilities(object):
         if self.user.is_anonymous():
             return False
 
-        return self._base_cards_queryset.filter(
+        return self.base_cards_queryset.filter(
             due_at__gt=datetime.utcnow()
         ).exists()
 
     @lru_cache(maxsize=None)
     def _prompts(self):
         if self.user.is_anonymous():
-            return (
-                u"",
-                u"",
-            )
+            return ("", "")
+
+        if self.user.username in ['alex', 'alextest']:
+            return review_availability_prompts(self)
 
         return (
             u"This text will tell you about the cards ready for you to learn or review.",
