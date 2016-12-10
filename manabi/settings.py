@@ -154,7 +154,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
 
-    'silk.middleware.SilkyMiddleware',
+    # 'silk.middleware.SilkyMiddleware',
 
     'django.middleware.common.CommonMiddleware',
 
@@ -229,7 +229,7 @@ INSTALLED_APPS = (
     'cachecow',
     'django_rq',
     'djoser',
-    'silk',
+    # 'silk',
     'raven.contrib.django.raven_compat',
     'webpack_loader',
 
