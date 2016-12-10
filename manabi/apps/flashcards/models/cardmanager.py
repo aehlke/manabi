@@ -275,7 +275,7 @@ class SchedulerMixin(object):
 
 class SchedulerFiltersMixin(object):
     def failed(self):
-        return initial_query.filter(last_review_grade=GRADE_NONE)
+        return self.filter(last_review_grade=GRADE_NONE)
 
     def young(self, user):
         return self.filter(
