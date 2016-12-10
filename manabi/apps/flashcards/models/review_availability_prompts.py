@@ -3,8 +3,8 @@ from functools import wraps
 
 def _auto_secondary_prompt(f):
     @wraps(f)
-    def wrapper(*args, secondary=False, **kwargs):
-        prompt = f(*args, secondary=secondary, **kwargs)
+    def wrapper(secondary=False, *args, **kwargs):
+        prompt = f(secondary=secondary, *args, **kwargs)
         if secondary:
             parts = prompt.split(' ')
             prompt = parts[:1] + ['also'] + parts[1:]
