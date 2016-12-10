@@ -275,7 +275,7 @@ class SchedulerFiltersMixin(object):
     def failed(self):
         return self.filter(last_review_grade=GRADE_NONE)
 
-    def young(self, user):
+    def young(self):
         return self.filter(
             last_reviewed_at__isnull=False,
             interval__isnull=False,
