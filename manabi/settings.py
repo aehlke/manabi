@@ -116,7 +116,8 @@ TEMPLATES = [
         'BACKEND': 'manabi.jinja2_backend.ManabiJinja2',
         'DIRS': [
             os.path.join(PROJECT_ROOT, 'templates'),
-            os.path.join(PROJECT_ROOT, 'apps'),
+            os.path.join(PROJECT_ROOT, 'apps/flashcards/templates'),
+            os.path.join(PROJECT_ROOT, 'apps/profiles/templates'),
         ],
         'APP_DIRS': False,
         'OPTIONS': {
