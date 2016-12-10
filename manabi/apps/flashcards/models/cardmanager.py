@@ -74,11 +74,9 @@ class SchedulerMixin(object):
         #TODO-OLD we shouldn't show mature failed cards so soon though!
         #TODO-OLD randomize the order (once we fix the Undo)
 
-        # Don't space/bury these (Or should we?)
-        cards = initial_query.filter(
-            last_review_grade=GRADE_NONE, due_at__gt=review_time)
+        cards = initial_query.not_due(
+            review_time=review_time, order_by='due_at')
         cards = cards.exclude(fact__in=buried_facts)
-        cards = with_siblings_buried(cards, 'due_at')
 
         return cards[:count]
 
@@ -294,6 +292,11 @@ class SchedulerFiltersMixin(object):
             due_at__lte=(review_time or datetime.utcnow()),
         )
         return with_siblings_buried(due_cards, order_by=order_by)
+
+    def not_due(self, review_time=None, order_by=None):
+        cards = self.filter(
+            last_review_grade=GRADE_NONE, due_at__gt=review_time)
+        return with_siblings_buried(cards, order_by)
 
 
 class CommonFiltersMixin(object):

@@ -65,6 +65,20 @@ def _young_due(review_availabilities, secondary=False):
 
 
 @_auto_secondary_prompt
+def _failed_not_due(review_availabilities, secondary=False):
+    '''
+    Failed, not due.
+    '''
+    cards = review_availabilities.base_cards_queryset
+    count = cards.failed().due().count()
+    if count == 0:
+        return
+    return (
+        u"We have {} cards you had forgotten last time that are ready to be revisited."
+    ).format(count)
+
+
+@_auto_secondary_prompt
 def _new_under_daily_limit(review_availabilities, secondary=False):
     '''
     Next new cards, under daily limit.
@@ -117,8 +131,8 @@ def review_availability_prompts(review_availabilities):
         _failed_due,
         _mature_due,
         # TODO:  _far_over_due,
-        _failed_not_due,
         _young_due,
+        _failed_not_due,
         _new_under_daily_limit,
         _new_over_daily_limit,
         _early_review,
