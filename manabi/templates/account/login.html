@@ -11,8 +11,8 @@
 
     {% if socialaccount_providers %}
         <p>{% trans site_name=site.name %}Please sign in with one
-        of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-        for a {{ site_name }} account and sign in below:{% endtrans %}</p>
+        of your existing third party accounts. Or, {#<a href="{{ signup_url }}">sign up</a>
+        for a {{ site_name }} account and#} sign in below:{% endtrans %}</p>
 
         <div class="socialaccount_ballot">
 
@@ -29,8 +29,8 @@
         {% include "socialaccount/snippets/login_extra.html" %}
 
     {% else %}
-        <p>{% trans %}If you have not created an account yet, then please
-        <a href="{{ signup_url }}">sign up</a> first.{% endtrans %}</p>
+        {# <p>{% trans %}If you have not created an account yet, then please
+        <a href="{{ signup_url }}">sign up</a> first.{% endtrans %}</p> #}
     {% endif %}
 
     <form class="login" method="POST" action="{{ url('account_login') }}">
