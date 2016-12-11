@@ -38,8 +38,12 @@ def next_cards_to_review_filters(request):
 
     include_new_buried_siblings = _get_bool(
         request, 'include_new_buried_siblings')
+
     new_cards_per_day_limit_override = (
        request.query_params.get('new_cards_per_day_limit_override'))
+    if new_cards_per_day_limit_override is not None:
+        new_cards_per_day_limit_override = int(
+            new_cards_per_day_limit_override)
 
     return {
         'deck': deck,
