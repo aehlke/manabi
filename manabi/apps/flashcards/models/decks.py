@@ -9,6 +9,7 @@ from django.db import (
     models,
     transaction,
 )
+from django.db.models import Avg
 from django.db.models.query import QuerySet
 
 from manabi.apps.books.models import Textbook
@@ -77,7 +78,7 @@ class Deck(models.Model):
         return self.owner
 
     def facts_with_cards_prefeteched(self):
-        return self.fact_set.prefetch_related('card_set')
+        return self.facts.prefetch_related('card_set')
 
     @property
     def is_synchronized(self):
@@ -220,9 +221,6 @@ class Deck(models.Model):
         '''
         Includes suspended cards in the calcuation. Doesn't include inactive cards.
         '''
-        ease_factors = redis.zrange('ease_factor:deck:{0}'.format(self.id),
-                                    0, -1, withscores=True)
-        cardinality = len(ease_factors)
-        if cardinality:
-            return sum(score for val,score in ease_factors) / cardinality
-        return DEFAULT_EASE_FACTOR
+        average_ease_factor = self.card_set.filter(active=True).aggregate(
+            Avg('ease_factor'))['ease_factor__avg']
+        return average_ease_factor or DEFAULT_EASE_FACTOR

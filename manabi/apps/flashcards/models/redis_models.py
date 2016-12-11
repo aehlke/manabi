@@ -62,4 +62,3 @@ class RedisCard(object):
         redis.srem('cards:deck:%s' % deck_id, card.id)
         redis.zrem('ease_factor:deck:%s' % deck_id, card.id)
         redis.srem('cards:owner:%s' % card.fact.deck.owner_id, card.id)
-

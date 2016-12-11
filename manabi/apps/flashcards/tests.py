@@ -12,7 +12,9 @@ from django.conf import settings
 
 from manabi.apps.flashcards.models import Deck, Fact, Card
 from manabi.apps.flashcards.models.constants import (
-    GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY)
+    GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY,
+    DEFAULT_EASE_FACTOR,
+)
 from manabi.test_helpers import (
     ManabiTestCase,
     create_sample_data,
@@ -158,3 +160,12 @@ class SynchronizationTest(ManabiTestCase):
         target_subscribed_deck.facts.get(
             synchronized_with_id=moved_fact['id'],
         )
+
+
+class DeckTest(ManabiTestCase):
+    def after_setUp(self):
+        create_sample_data(facts=30)
+        self.deck = Deck.objects.all().last()
+
+    def test_average_ease_factor_on_new_deck_is_default(self):
+        self.assertEqual(self.deck.average_ease_factor(), DEFAULT_EASE_FACTOR)

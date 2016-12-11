@@ -5,6 +5,7 @@ from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.db import models, transaction
 from django.db.models import Q, F
+from django.utils.functional import cached_property
 from natto import MeCab
 
 from constants import MAX_NEW_CARD_ORDINAL
@@ -185,7 +186,7 @@ class Fact(models.Model):
     def card_count(self):
         return self.card_set.filter(active=True).count()
 
-    @property
+    @cached_property
     def active_card_templates(self):
         from manabi.apps.flashcards.models import PRODUCTION
 

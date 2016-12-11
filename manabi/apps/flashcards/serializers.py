@@ -159,6 +159,7 @@ class FactSerializer(ManabiModelSerializer):
 
 
 class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
+    card_count = serializers.SerializerMethodField()
     active_card_templates = serializers.MultipleChoiceField(
         choices=[
             ('recognition', 'Recognition'),
@@ -173,6 +174,9 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
         fields = FactSerializer.Meta.fields + (
             'active_card_templates',
         )
+
+    def get_card_count(self, obj):
+        return len(obj.active_card_templates)
 
     def filter_deck(self, queryset):
         try:
