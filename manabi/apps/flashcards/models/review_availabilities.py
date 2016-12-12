@@ -168,13 +168,7 @@ class ReviewAvailabilities(object):
         if self.user.is_anonymous():
             return ("", "")
 
-        if self.user.username in ['alex', 'alextest']:
-            return review_availability_prompts(self)
-
-        return (
-            u"This text will tell you about the cards ready for you to learn or review.",
-            u"I haven't built this part of the backend API yet—this is beta, it'll come before release!"
-        )
+        return review_availability_prompts(self)
 
     @property
     def primary_prompt(self):
