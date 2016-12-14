@@ -163,6 +163,14 @@ class ReviewAvailabilities(object):
             due_at__gt=datetime.utcnow()
         ).exists()
 
+    @property
+    def invalidated_upon_card_failure(self):
+        '''
+        Indicates that these availabilities ought to be eliminated from the UI
+        as soon as the user fails any reviews.
+        '''
+        return True
+
     @lru_cache(maxsize=None)
     def _prompts(self):
         if self.user.is_anonymous():

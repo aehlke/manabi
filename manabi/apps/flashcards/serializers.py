@@ -277,6 +277,8 @@ class ReviewAvailabilitiesSerializer(serializers.Serializer):
     new_cards_per_day_limit_reached = serializers.BooleanField()
     new_cards_per_day_limit_override = serializers.IntegerField()
 
+    invalidated_upon_card_failure = serializers.BooleanField()
+
     primary_prompt = serializers.CharField()
     secondary_prompt = serializers.CharField()
 
