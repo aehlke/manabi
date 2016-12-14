@@ -11,8 +11,8 @@
 {% endblock %}
 
 {% block content %}
-    {% set detail_url_name = 'deck-detail' if deck.owner == request.user else 'shared-deck-detail' %}
-    {% set facts_url_name = 'deck-facts' if deck.owner == request.user else 'shared-deck-facts' %}
+    {% set detail_url_name = 'deck-detail' if deck.owner.id == request.user.id else 'shared-deck-detail' %}
+    {% set facts_url_name = 'deck-facts' if deck.owner.id == request.user.id else 'shared-deck-facts' %}
 
     <div class="row shared-deck-header">
         <div class="col-sm-8">

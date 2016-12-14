@@ -165,8 +165,8 @@ class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
             return redirect('deck-facts', pk=deck.pk, slug=deck.slug)
 
         response = (
-            self._redirect_to_upstream_deck_if_unowned('shared-deck-facts')
-            or self._redirect_to_owner_deck_if_subscriber('deck-facts'))
+            self._redirect_to_appropriate_deck_if_unowned('shared-deck-facts')
+            or self.redirect_to_owner_deck_if_subscriber('deck-facts'))
         if response:
             return response
 
