@@ -149,7 +149,7 @@ class ReviewAvailabilities(object):
         if not self.new_cards_per_day_limit_reached:
             return None
         return (
-            self.new_cards_limit.reviewed_today_count +
+            self.new_cards_limit.learned_today_count +
             NEW_CARDS_PER_DAY_LIMIT_OVERRIDE_INCREMENT
         )
 

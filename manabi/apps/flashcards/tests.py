@@ -15,6 +15,7 @@ from manabi.apps.flashcards.models.constants import (
     GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY,
     DEFAULT_EASE_FACTOR,
 )
+from manabi.apps.flashcards.models.new_cards_limit import NewCardsLimit
 from manabi.test_helpers import (
     ManabiTestCase,
     create_sample_data,
@@ -169,3 +170,21 @@ class DeckTest(ManabiTestCase):
 
     def test_average_ease_factor_on_new_deck_is_default(self):
         self.assertEqual(self.deck.average_ease_factor(), DEFAULT_EASE_FACTOR)
+
+
+class NewCardsLimitTest(ManabiTestCase):
+    def after_setUp(self):
+        self.user = create_user()
+        create_sample_data(facts=4, user=self.user)
+
+    def _get_limit(self):
+        return NewCardsLimit(self.user)
+
+    def test_learned_today_count_begins_at_zero(self):
+        self.assertEqual(self._get_limit().learned_today_count, 0)
+
+    def test_learned_today_count_increases_with_review(self):
+        cards = self.api.next_cards_for_review(self.user)['cards']
+        for idx, card in enumerate(cards):
+            self.api.review_card(self.user, card, GRADE_GOOD)
+            self.assertEqual(idx + 1, self._get_limit().learned_today_count)

@@ -120,7 +120,7 @@ def _new_over_daily_limit(review_availabilities, secondary=False):
     ).format(
         next_new_count=count,
         already_learned=(
-            review_availabilities.new_cards_limit.reviewed_today_count),
+            review_availabilities.new_cards_limit.learned_today_count),
         cards=_pluralize_cards(count),
     )
 

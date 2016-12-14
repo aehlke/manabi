@@ -30,11 +30,11 @@ class NewCardsLimit(object):
     @property
     @lru_cache(maxsize=None)
     def new_cards_per_day_limit_reached(self):
-        return self._per_day_limit() - self.reviewed_today_count <= 0
+        return self._per_day_limit() - self.learned_today_count <= 0
 
     @property
     @lru_cache(maxsize=None)
-    def reviewed_today_count(self):
+    def learned_today_count(self):
         return (
             CardHistory.objects
             .of_day(self.user, self.time_zone or DEFAULT_TIME_ZONE)
@@ -47,7 +47,7 @@ class NewCardsLimit(object):
     def next_new_cards_limit(self):
         return max(
             0,
-            self._per_day_limit() - self.reviewed_today_count,
+            self._per_day_limit() - self.learned_today_count,
         )
 
     @property
@@ -61,7 +61,7 @@ class NewCardsLimit(object):
         remaining = max(
             0, min(
                 new_card_count,
-                self._per_day_limit() - self.reviewed_today_count
+                self._per_day_limit() - self.learned_today_count
             ),
         )
         return remaining
