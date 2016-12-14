@@ -20,10 +20,9 @@ from manabi.apps.manabi_auth.serializers import UserSerializer
 from rest_framework import serializers
 
 
-class DeckSerializer(ManabiModelSerializer):
+class _BaseDeckSerializer(ManabiModelSerializer):
     owner = UserSerializer(read_only=True)
     original_author = UserSerializer(read_only=True)
-    synchronized_with = SharedDeckSerializer(read_only=True)
 
     class Meta(object):
         model = Deck
@@ -58,21 +57,8 @@ class DeckSerializer(ManabiModelSerializer):
             'modified_at',
         )
 
-    def update(self, instance, validated_data):
-        shared = validated_data.pop('shared', None)
 
-        deck = super(DeckSerializer, self).update(instance, validated_data)
-
-        if shared is not None and shared != deck.shared:
-            if shared:
-                deck.share()
-            else:
-                deck.unshare()
-
-        return deck
-
-
-class SharedDeckSerializer(DeckSerializer):
+class SharedDeckSerializer(_BaseDeckSerializer):
     viewer_synchronized_deck = ViewerSynchronizedDeckField(read_only=True)
 
     class Meta(object):
@@ -89,6 +75,23 @@ class SharedDeckSerializer(DeckSerializer):
             'modified_at',
             'share_url',
         )
+
+
+class DeckSerializer(_BaseDeckSerializer):
+    synchronized_with = SharedDeckSerializer(read_only=True)
+
+    def update(self, instance, validated_data):
+        shared = validated_data.pop('shared', None)
+
+        deck = super(DeckSerializer, self).update(instance, validated_data)
+
+        if shared is not None and shared != deck.shared:
+            if shared:
+                deck.share()
+            else:
+                deck.unshare()
+
+        return deck
 
 
 class SynchronizedDeckSerializer(ManabiModelSerializer):
