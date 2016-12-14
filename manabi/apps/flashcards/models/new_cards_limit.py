@@ -37,7 +37,7 @@ class NewCardsLimit(object):
     def learned_today_count(self):
         return (
             CardHistory.objects
-            .of_day(self.user, self.time_zone or DEFAULT_TIME_ZONE)
+            .of_day_for_user(self.user, self.time_zone or DEFAULT_TIME_ZONE)
             .filter(was_new=True)
             .count()
         ) + self.buffered_new_cards_count

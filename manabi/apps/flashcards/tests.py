@@ -177,14 +177,20 @@ class NewCardsLimitTest(ManabiTestCase):
         self.user = create_user()
         create_sample_data(facts=4, user=self.user)
 
-    def _get_limit(self):
-        return NewCardsLimit(self.user)
+    def _get_limit(self, user=None):
+        return NewCardsLimit(user or self.user)
 
     def test_learned_today_count_begins_at_zero(self):
-        self.assertEqual(self._get_limit().learned_today_count, 0)
+        self.assertEqual(0, self._get_limit().learned_today_count)
 
     def test_learned_today_count_increases_with_review(self):
         cards = self.api.next_cards_for_review(self.user)['cards']
         for idx, card in enumerate(cards):
             self.api.review_card(self.user, card, GRADE_GOOD)
             self.assertEqual(idx + 1, self._get_limit().learned_today_count)
+
+    def test_other_user_reviews_dont_conflict(self):
+        cards = self.api.next_cards_for_review(self.user)['cards']
+        self.api.review_card(self.user, cards[0], GRADE_GOOD)
+
+        self.assertEqual(0, self._get_limit(user=create_user()).learned_today_count)

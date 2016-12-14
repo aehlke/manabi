@@ -31,7 +31,7 @@ class CardHistoryManagerMixin(object):
         '''
         return self.extra(select={'reviewed_on': 'date(reviewed_at)'})
 
-    def of_day(self, user, time_zone, date=None, field_name='reviewed_at'):
+    def of_day_for_user(self, user, time_zone, date=None, field_name='reviewed_at'):
         '''
         Filters on the start and end of day for `user` adjusted to UTC.
 
@@ -39,7 +39,7 @@ class CardHistoryManagerMixin(object):
         '''
         start, end = start_and_end_of_day(user, time_zone, date=date)
         kwargs = {field_name + '__range': (start, end)}
-        return self.filter(**kwargs)
+        return self.of_user(user).filter(**kwargs)
 
 
 class CardHistoryStatsMixin(object):
@@ -59,7 +59,7 @@ class CardHistoryStatsMixin(object):
         Returns the time spent reviewing on the given date
         (defaulting to today) for `user`, in seconds.
         '''
-        items = self.of_user(user).of_day(user, date=date)
+        items = self.of_user(user).of_day_for_user(user, date=date)
         return items.aggregate(Sum('duration'))['duration__sum']
 
 
