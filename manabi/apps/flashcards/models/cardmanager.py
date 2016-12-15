@@ -149,6 +149,9 @@ class SchedulerMixin(object):
         buried_facts,
         **kwargs
     ):
+        '''
+        Due soon, not yet, but next in the future.
+        '''
         if not count:
             return []
 
@@ -163,6 +166,24 @@ class SchedulerMixin(object):
         fresher_cards = fresher_cards.order_by('due_at')
 
         return fresher_cards[:count]
+
+    def _next_buried_cards(
+        self,
+        user,
+        initial_query,
+        count,
+        review_time,
+        buried_facts,
+        **kwargs
+    ):
+        '''
+        Cards buried due to sibling review.
+        '''
+        if not count:
+            return []
+
+        cards = initial_query.filter(fact__in=buried_facts)
+        return cards[:count]
 
     def _next_card_funcs(
             self,
@@ -182,6 +203,7 @@ class SchedulerMixin(object):
             card_funcs.extend([
                 self._next_due_soon_cards,
                 self._next_due_soon_cards2, # Due soon, not yet, but next in the future.
+                self._next_buried_cards,
             ])
         elif learn_more:
             # TODO: Only new cards, and ignore spacing.
