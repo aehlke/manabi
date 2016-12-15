@@ -131,7 +131,7 @@ class SchedulerMixin(object):
             return []
 
         cards = initial_query.exclude(last_review_grade=GRADE_NONE)
-        cards = cards.not_due()
+        cards = cards.not_due(review_time=review_time)
 
         priority_cutoff = review_time - timedelta(minutes=60)
         staler_cards = cards.filter(last_reviewed_at__gt=priority_cutoff)
@@ -294,7 +294,7 @@ class SchedulerFiltersMixin(object):
         return with_siblings_buried(due_cards, order_by=order_by)
 
     def not_due(self, review_time=None):
-        return self.filter(due_at__gt=review_time)
+        return self.filter(due_at__gt=(review_time or datetime.utcnow()))
 
 
 class CommonFiltersMixin(object):
