@@ -36,6 +36,7 @@ from manabi.apps.flashcards.serializers import (
     DetailedCardSerializer,
     DeckSerializer,
     DetailedFactSerializer,
+    DetailedFactWithPrefilledDeckSerializer,
     FactSerializer,
     FactWithCardsSerializer,
     NextCardsForReviewSerializer,
@@ -75,7 +76,17 @@ class DeckViewSet(viewsets.ModelViewSet):
         facts = Fact.objects.deck_facts(deck)
         facts = facts.select_related('deck')
         facts = facts.prefetch_related('card_set')
-        return Response(DetailedFactSerializer(facts, many=True).data)
+
+        deck_serializer = DeckSerializer(deck)
+
+        serializer = DetailedFactWithPrefilledDeckSerializer(
+            facts,
+            many=True,
+            context={
+                'deck_data': deck_serializer.data,
+            },
+        )
+        return Response(serializer.data)
 
 
 class SynchronizedDeckViewSet(viewsets.ModelViewSet):

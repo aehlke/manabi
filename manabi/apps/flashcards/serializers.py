@@ -212,6 +212,17 @@ class DetailedFactSerializer(FactWithCardsSerializer):
     deck = DeckSerializer()
 
 
+class DetailedFactWithPrefilledDeckSerializer(DetailedFactSerializer):
+    '''
+    Optimizes the case where all facts in a set come from the same deck.
+    '''
+    deck = serializers.SerializerMethodField()
+
+    def get_deck(self, obj):
+        return self.context['deck_data']
+
+
+
 class CardSerializer(ManabiModelSerializer):
     expression = serializers.CharField(source='fact.expression')
     reading = serializers.CharField(source='fact.reading')
