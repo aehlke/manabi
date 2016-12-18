@@ -43,6 +43,8 @@ class SchedulerMixin(object):
         weren't failed the last review, and taking spacing of cards from
         the same fact into account.
 
+        Disregards fact burial status.
+
         review_time should be datetime.utcnow()
         '''
         if not count:
@@ -51,7 +53,6 @@ class SchedulerMixin(object):
         cards = initial_query.exclude(
             last_review_grade=GRADE_NONE,
         ).due(review_time=review_time, order_by='-interval')
-        cards = cards.exclude(fact__in=buried_facts)
 
         #TODO-OLD Also get cards that aren't quite due yet, but will be soon,
         # and depending on their maturity
@@ -64,6 +65,9 @@ class SchedulerMixin(object):
         self, user, initial_query, count, review_time, buried_facts,
         **kwargs
     ):
+        '''
+        Disregards fact burial status.
+        '''
         if not count:
             return []
 
@@ -75,8 +79,10 @@ class SchedulerMixin(object):
         #TODO-OLD randomize the order (once we fix the Undo)
 
         cards = initial_query.failed().not_due(review_time=review_time)
+        # FIXME: This is excluding the card itself. Scenario: one card in the fact; fail this card; now this card doesn't show up here due to being counted as a sibling of itself having been reviewed recently! HMMMM....
+        # Maybe to fix this, add a failed-and-buried card func? I think that works.
+        # For now, I'm going to ignore buried facts here instead.
         cards = with_siblings_buried(cards, 'due_at')
-        cards = cards.exclude(fact__in=buried_facts)
 
         return cards[:count]
 

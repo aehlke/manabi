@@ -160,7 +160,7 @@ class ReviewAvailabilities(object):
             return False
 
         return self.base_cards_queryset.filter(
-            due_at__gt=datetime.utcnow()
+            due_at__gt=datetime.utcnow(),
         ).exists()
 
     @property
