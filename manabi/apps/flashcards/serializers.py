@@ -209,18 +209,13 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
 
 
 class DetailedFactSerializer(FactWithCardsSerializer):
-    deck = DeckSerializer()
-
-
-class DetailedFactWithPrefilledDeckSerializer(DetailedFactSerializer):
-    '''
-    Optimizes the case where all facts in a set come from the same deck.
-    '''
     deck = serializers.SerializerMethodField()
 
     def get_deck(self, obj):
-        return self.context['deck_data']
-
+        try:
+            return self.context['deck_data']
+        except KeyError:
+            return DeckSerializer(obj.deck).data
 
 
 class CardSerializer(ManabiModelSerializer):

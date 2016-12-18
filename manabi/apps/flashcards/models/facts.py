@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 import random
 
+from django.db.models import Prefetch
 from django.db.models.query import QuerySet
 from django.contrib.auth.models import User
 from django.db import models, transaction
@@ -49,6 +50,20 @@ class FactQuerySet(QuerySet):
                 | Q(card__id__in=excluded_card_ids)
                 # Sibling is failed. (Either sibling's due, or it's shown before new cards.)
                 | Q(card__last_review_grade=GRADE_NONE)
+            )
+        )
+
+    def prefetch_active_card_templates(self):
+        '''
+        Puts the active card templates into `available_cards`.
+        '''
+        from manabi.apps.flashcards.models import Card
+
+        return self.prefetch_related(
+            Prefetch(
+                'card_set',
+                queryset=Card.objects.available(),
+                to_attr='available_cards',
             )
         )
 
@@ -190,9 +205,14 @@ class Fact(models.Model):
     def active_card_templates(self):
         from manabi.apps.flashcards.models import PRODUCTION
 
-        template_ids = (
-            self.card_set.available().values_list('template', flat=True)
-        )
+        try:
+            template_ids = [
+                card.template for card in self.available_cards
+            ]
+        except AttributeError:
+            template_ids = (
+                self.card_set.available().values_list('template', flat=True)
+            )
 
         return {
             _card_template_id_to_string(id_) for id_ in template_ids
