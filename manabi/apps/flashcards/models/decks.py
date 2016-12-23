@@ -37,10 +37,19 @@ class DeckQuerySet(QuerySet):
         return self.filter(owner=user, synchronized_with__isnull=False)
 
     def shared_decks_owned_or_subcribed_by_user(self, user):
-        return self.filter(shared=True).filter(
-            Q(owner_id=user.id)
-            | Q(subscriber_decks__owner_id=user.id)
+        subscribed_decks = self.filter(
+            id__in=Deck.objects.synchronized_decks(user)
+            .values_list('synchronized_with_id', flat=True)
         )
+        return (
+            self.filter(shared=True, owner_id=user.id)
+            | subscribed_decks
+        )
+
+        # .filter(
+        #     Q(owner_id=user.id)
+        #     | Q(subscriber_decks__owner_id=user.id)
+        # )
 
 
 class Deck(models.Model):
@@ -79,6 +88,7 @@ class Deck(models.Model):
         #TODO-OLD unique_together = (('owner', 'name'), )
 
     def original_author(self):
+        # raise Exception("original author")
         if self.synchronized_with is not None:
             return self.synchronized_with.owner
         return self.owner
