@@ -122,7 +122,6 @@ class SharedDeckViewSet(viewsets.ModelViewSet):
         user_id = self.request.query_params.get('user_id')
         if user_id is not None:
             user = get_object_or_404(get_user_model(), id=user_id)
-            print 'before', decks, user
             decks = decks.shared_decks_owned_or_subcribed_by_user(user)
         elif self.request.user.is_authenticated():
             decks = decks.exclude(owner=self.request.user)
