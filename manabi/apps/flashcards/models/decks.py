@@ -9,7 +9,7 @@ from django.db import (
     models,
     transaction,
 )
-from django.db.models import Avg
+from django.db.models import Avg, Q
 from django.db.models.query import QuerySet
 
 from manabi.apps.books.models import Textbook
@@ -35,6 +35,12 @@ class DeckQuerySet(QuerySet):
             return self.none()
 
         return self.filter(owner=user, synchronized_with__isnull=False)
+
+    def shared_decks_owned_or_subcribed_by_user(self, user):
+        return self.filter(shared=True).filter(
+            Q(owner_id=user.id)
+            | Q(subscriber_decks__owner_id=user.id)
+        )
 
 
 class Deck(models.Model):

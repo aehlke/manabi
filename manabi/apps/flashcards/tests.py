@@ -163,6 +163,27 @@ class SynchronizationTest(ManabiTestCase):
         )
 
 
+class SharedDecksTest(ManabiTestCase):
+    def after_setUp(self):
+        self.user = create_user()
+        create_sample_data(facts=2, user=self.user)
+
+        self.shared_deck = Deck.objects.filter(owner=self.user).first()
+        self.shared_deck.share()
+
+        self.subscriber = create_user()
+        self.api.add_shared_deck(self.shared_deck, self.subscriber)
+
+    def test_shared_decks_by_author(self):
+        decks = self.api.shared_decks(of_user=self.user)
+        self.assertEqual(len(decks), 1)
+        self.assertEqual(decks[0]['owner']['username'], self.user.username)
+
+    def test_shared_decks_by_subscriber(self):
+        decks = self.api.shared_decks(of_user=self.subscriber)
+        self.assertEqual(len(decks), 1)
+        self.assertEqual(decks[0]['owner']['username'], self.user.username)
+
 class DeckTest(ManabiTestCase):
     def after_setUp(self):
         create_sample_data(facts=30)

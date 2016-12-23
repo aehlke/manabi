@@ -28,4 +28,7 @@ CACHES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-SILKY_PYTHON_PROFILER = True
+SILKY_PYTHON_PROFILER = False
+
+TWITTER_APP_KEY = None
+TWITTER_APP_SECRET = None

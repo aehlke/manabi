@@ -3,9 +3,8 @@ from itertools import chain
 
 from django.db import models
 from django.db.models.query import QuerySet
-from django.db.models import Q, F, Avg, Max, Min, Count
+from django.db.models import Min, Count
 
-from manabi.apps.manabi_redis.models import redis
 from manabi.apps.flashcards.models.constants import GRADE_NONE, MATURE_INTERVAL_MIN
 from manabi.apps.flashcards.models.burying import with_siblings_buried
 

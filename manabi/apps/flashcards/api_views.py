@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import IsAuthenticated
@@ -117,7 +119,11 @@ class SharedDeckViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         decks = Deck.objects.filter(active=True, shared=True)
 
-        if self.request.user.is_authenticated():
+        user_id = self.request.query_params.get('user_id')
+        if user_id is not None:
+            user = get_object_or_404(get_user_model(), id=user_id)
+            decks = decks.shared_decks_owned_or_subcribed_by_user(user)
+        elif self.request.user.is_authenticated():
             decks = decks.exclude(owner=self.request.user)
 
         return decks.order_by('name')
