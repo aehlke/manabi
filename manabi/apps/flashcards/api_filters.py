@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import get_object_or_404
 from rest_framework.exceptions import ValidationError
 
@@ -13,6 +15,16 @@ def _get_bool(request, field_name):
     elif value == 'false':
         return False
     else:
+        raise ValidationError(
+            "Invalid {} value.".format(field_name))
+
+def _get_timestamp(request, field_name):
+    value = request.query_params.get(field_name)
+    if value is None:
+        return
+    try:
+        datetime.fromtimestamp(float(value))
+    except ValueError:
         raise ValidationError(
             "Invalid {} value.".format(field_name))
 
@@ -35,6 +47,7 @@ def next_cards_to_review_filters(request):
         deck = get_object_or_404(Deck, pk=deck_id)
 
     early_review = _get_bool(request, 'early_review')
+    early_review_began_at = _get_timestamp(request, 'early_review_began_at')
 
     include_new_buried_siblings = _get_bool(
         request, 'include_new_buried_siblings')

@@ -16,7 +16,7 @@ class SchedulerMixin(object):
     '''
 
     def _next_failed_due_cards(
-        self, user, initial_query, count, review_time, buried_facts,
+        self, initial_query, count, review_time, buried_facts,
         **kwargs
     ):
         if not count:
@@ -31,7 +31,6 @@ class SchedulerMixin(object):
 
     def _next_not_failed_due_cards(
         self,
-        user,
         initial_query,
         count,
         review_time,
@@ -62,7 +61,7 @@ class SchedulerMixin(object):
         return cards[:count]
 
     def _next_failed_not_due_cards(
-        self, user, initial_query, count, review_time, buried_facts,
+        self, initial_query, count, review_time, buried_facts,
         **kwargs
     ):
         '''
@@ -88,7 +87,6 @@ class SchedulerMixin(object):
 
     def _next_new_cards(
         self,
-        user,
         initial_query,
         count,
         review_time,
@@ -123,11 +121,11 @@ class SchedulerMixin(object):
 
     def _next_due_soon_cards(
         self,
-        user,
         initial_query,
         count,
         review_time,
         buried_facts,
+        early_review_began_at=None,
         **kwargs
     ):
         '''
@@ -139,6 +137,9 @@ class SchedulerMixin(object):
         cards = initial_query.exclude(last_review_grade=GRADE_NONE)
         cards = cards.not_due(review_time=review_time)
 
+        if early_review_began_at is not None:
+            cards = cards.exclude(last_reviewed_at__gte=early_review_began_at)
+
         priority_cutoff = review_time - timedelta(minutes=60)
         staler_cards = cards.filter(last_reviewed_at__gt=priority_cutoff)
         staler_cards = staler_cards.exclude(fact__in=buried_facts)
@@ -148,11 +149,11 @@ class SchedulerMixin(object):
 
     def _next_due_soon_cards2(
         self,
-        user,
         initial_query,
         count,
         review_time,
         buried_facts,
+        early_review_began_at=None,
         **kwargs
     ):
         '''
@@ -163,6 +164,9 @@ class SchedulerMixin(object):
 
         cards = initial_query.exclude(last_review_grade=GRADE_NONE)
         cards = cards.filter(due_at__gt=review_time)
+
+        if early_review_began_at is not None:
+            cards = cards.exclude(last_reviewed_at__gte=early_review_began_at)
 
         priority_cutoff = review_time - timedelta(minutes=60)
         fresher_cards = cards.filter(
@@ -175,11 +179,11 @@ class SchedulerMixin(object):
 
     def _next_buried_cards(
         self,
-        user,
         initial_query,
         count,
         review_time,
         buried_facts,
+        early_review_began_at=None,
         **kwargs
     ):
         '''
@@ -189,6 +193,10 @@ class SchedulerMixin(object):
             return []
 
         cards = initial_query.filter(fact__in=buried_facts)
+
+        if early_review_began_at is not None:
+            cards = cards.exclude(last_reviewed_at__gte=early_review_began_at)
+
         return cards[:count]
 
     def _next_card_funcs(
@@ -228,6 +236,7 @@ class SchedulerMixin(object):
         new_cards_limit=None,
         excluded_ids=[],
         early_review=False,
+        early_review_began_at=None,
         include_new_buried_siblings=False,
         learn_more=False,
     ):
@@ -236,6 +245,9 @@ class SchedulerMixin(object):
         count should not be any more than a short session of cards
         set `early_review` to True for reviewing cards early
         (following any due cards)
+
+        `early_review_began_at` is used to avoid early review of the same
+        cards twice in the same review session.
 
         `include_new_buried_siblings` is used to allow learning
         cards whose siblings have already been learned recently.
@@ -277,11 +289,11 @@ class SchedulerMixin(object):
                 break
 
             cards = card_func(
-                user,
                 user_cards,
                 cards_left,
                 now,
                 early_review=early_review,
+                early_review_began_at=early_review_began_at,
                 include_new_buried_siblings=include_new_buried_siblings,
                 learn_more=learn_more,
                 buried_facts=buried_facts,
