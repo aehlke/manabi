@@ -6,6 +6,7 @@ from lazysignup.decorators import allow_lazy_user
 from rest_framework import routers
 
 import manabi.views
+from manabi.apps.manabi_auth.api_views import RegistrationWithTokenView
 from manabi.apps.flashcards.api_views import (
     DeckViewSet,
     SynchronizedDeckViewSet,
@@ -66,6 +67,8 @@ urlpatterns = [
 
     # API URLs.
     url(r'^api/', include(api_router.urls, namespace='api')),
+    url(r'^api/auth/register/$', RegistrationWithTokenView.as_view(),
+        name='register'),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
     url(r'^api/furigana/', include('manabi.apps.furigana.urls')),

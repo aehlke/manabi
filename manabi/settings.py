@@ -246,6 +246,7 @@ INSTALLED_APPS = (
     'manabi.apps.books',
     'manabi.apps.utils',
     'manabi.apps.jdic',
+    'manabi.apps.manabi_auth',
     'manabi.apps.manabi_redis',
     'manabi.apps.profiles',
     'manabi.apps.reading_level',
@@ -288,6 +289,13 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+DJOSER = {
+    'SERIALIZERS': {
+        'user_registration':
+        'manabi.apps.manabi_auth.serializers.UserRegistrationWithTokenSerializer',
+    }
+}
 
 # django-allauth
 ACCOUNT_EMAIL_REQUIRED = True

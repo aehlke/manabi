@@ -8,11 +8,11 @@ gunicorn==19.4.3
 redis==2.10.5
 hiredis==0.2.0
 pytz==2013d
-django-allauth==0.28.0
+django-allauth==0.29.0
 django-nose==1.4.4
 django-lazysignup==1.0.2  # TODO Remove?
 django-model-utils==2.4
-rq==0.6.0
+rq==0.7.1
 django-rq==0.9.2
 rq-dashboard
 natto-py==0.7.0
@@ -21,7 +21,7 @@ djangorestframework==3.5.3
 django-filter==0.14.0
 markdown==2.6.5
 django-crispy-forms==1.5.2
-requests[security]==2.7.0
+requests[security]==2.12.4
 humanize==0.5.1
 python-dateutil==2.5.2
 djoser==0.5.1

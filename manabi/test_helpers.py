@@ -62,7 +62,6 @@ class ManabiTestCase(APITestCase):
         if user is None:
             user = create_user()
         self.client.login(username=user.username, password=PASSWORD)
-        print self.client
         resp = getattr(self.client, verb)(
             url,
             user=user,
@@ -135,6 +134,12 @@ class APIShortcuts(object):
     def patch(self, *args, **kwargs):
         kwargs['method'] = 'patch'
         return self.call(*args, **kwargs)
+
+    def register(self, username, password):
+        resp = self.post('/api/auth/register/', {
+            'username': username, 'password': password,
+        })
+        return resp.json()
 
     def decks(self, user):
         resp = self.get('/api/flashcards/decks/', user=user)
