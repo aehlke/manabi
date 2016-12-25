@@ -229,6 +229,7 @@ INSTALLED_APPS = (
 
     # Other
     'rest_framework',
+    'rest_framework.authtoken',
     'crispy_forms',  # For browsable API.
     'django_nose',
     'lazysignup',
@@ -350,6 +351,7 @@ DEFAULT_URL_PREFIX = 'http://192.168.0.1:8000'
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ],
     'UNICODE_JSON': False,

@@ -65,10 +65,8 @@ urlpatterns = [
         template_name='credits.html'), name='credits'),
 
     # API URLs.
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^api/', include(api_router.urls, namespace='api')),
-
-    url(r'^api/auth/', include('djoser.urls')),
+    url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
     url(r'^api/furigana/', include('manabi.apps.furigana.urls')),
     url(r'^api/twitter_usages/', include('manabi.apps.twitter_usages.urls')),
