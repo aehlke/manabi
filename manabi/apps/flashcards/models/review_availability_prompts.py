@@ -11,7 +11,8 @@ def _auto_secondary_prompt(f):
             return
         if secondary:
             parts = prompt.split(' ')
-            prompt = u' '.join(parts[:1] + ['also'] + parts[1:])
+            if parts[0].lower() in ["we", "we'll", "you", "you'll"]:
+                prompt = u' '.join(parts[:1] + ['also'] + parts[1:])
         return prompt
     return wrapper
 
