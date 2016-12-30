@@ -138,7 +138,7 @@ def _early_review(review_availabilities, **kwargs):
             return
         return (
             u"Good news is you're caught up on reviews! Consider taking a "
-            u"break or go read something instead."
+            u"break or reading instead."
         )
     return u"You're caught up on reviews! Take a break or go read something."
 
