@@ -276,9 +276,10 @@ class SchedulerMixin(object):
         user_cards = self.common_filters(
             user, deck=deck, excluded_ids=excluded_ids)
 
-        facts = Fact.objects.deck_facts(deck)
-        buried_facts = facts.buried(
+        buried_facts = Fact.objects.buried(
             user, review_time=now, excluded_card_ids=excluded_ids)
+        if deck is not None:
+            buried_facts = buried_facts.deck_facts(deck)
 
         cards_left = count
         card_queries = []
