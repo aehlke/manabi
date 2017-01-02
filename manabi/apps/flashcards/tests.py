@@ -230,6 +230,7 @@ class NewCardsLimitTest(ManabiTestCase):
     def test_learned_today_count_increases_with_review(self):
         cards = self.api.next_cards_for_review(self.user)['cards']
         for idx, card in enumerate(cards):
+            self.assertTrue(Card.objects.get(id=card['id']).is_new)
             self.api.review_card(self.user, card, GRADE_GOOD)
             self.assertEqual(idx + 1, self._get_limit().learned_today_count)
 
@@ -237,4 +238,5 @@ class NewCardsLimitTest(ManabiTestCase):
         cards = self.api.next_cards_for_review(self.user)['cards']
         self.api.review_card(self.user, cards[0], GRADE_GOOD)
 
-        self.assertEqual(0, self._get_limit(user=create_user()).learned_today_count)
+        self.assertEqual(
+            0, self._get_limit(user=create_user()).learned_today_count)

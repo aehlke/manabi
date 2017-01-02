@@ -1,6 +1,5 @@
-#TODO-OLD from account.models import Account
 import pytz
-import datetime
+from datetime import datetime, time, timedelta
 
 from django.conf import settings
 
@@ -20,15 +19,24 @@ def start_and_end_of_day(user, time_zone, date=None):
     '''
     if date is None:
         # Today
-        date = datetime.datetime.now(time_zone).date()
+        local_time = datetime.now(time_zone)
+        date = local_time.date()
+        print 'today is', date
+        print 'today is', datetime.utcnow().date()
 
-    start = datetime.datetime.combine(date, datetime.time(
+    start_of_day_time = time(
         hour=settings.START_OF_DAY, minute=0, second=0, tzinfo=time_zone)
-    ).astimezone(pytz.utc)
 
-    #start = datetime.datetime.now(timezone).replace(
+    start_of_day_datetime = (
+        datetime.combine(date, start_of_day_time).astimezone(pytz.utc)
+    )
+
+    if local_time < start_of_day_time:
+        start_of_day_datetime -= timedelta(days=1)
+
+    #start = datetime.now(timezone).replace(
     #    hour=settings.START_OF_DAY, minute=0, second=0).astimezone(pytz.utc)
 
-    end = start + datetime.timedelta(hours=23, minutes=59, seconds=59)
+    end = start + timedelta(hours=23, minutes=59, seconds=59)
 
     return (start, end)
