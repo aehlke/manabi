@@ -110,7 +110,12 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
 def _new_over_daily_limit(review_availabilities, secondary=False):
     '''
     Next new cards, past daily limit.
+
+    Will never appear as the secondary prompt, since the "learn new cards"
+    button does not appear when there are any cards due.
     '''
+    if secondary:
+        return
     if not review_availabilities.new_cards_per_day_limit_reached:
         return
     count = review_availabilities.next_new_cards_count
