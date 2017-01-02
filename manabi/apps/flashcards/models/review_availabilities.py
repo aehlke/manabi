@@ -78,7 +78,6 @@ class ReviewAvailabilities(object):
         return (
             self.base_cards_queryset
                 .of_user(self.user)
-                .available()
                 .due()
                 .exists()
         )
@@ -156,7 +155,14 @@ class ReviewAvailabilities(object):
     @property
     @lru_cache(maxsize=None)
     def early_review_available(self):
+        '''
+        Mutually-exclusive with readiness for review (is false if any cards
+        are due).
+        '''
         if self.user.is_anonymous():
+            return False
+
+        if self.ready_for_review:
             return False
 
         return self.base_cards_queryset.filter(
