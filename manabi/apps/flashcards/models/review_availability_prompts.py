@@ -37,7 +37,7 @@ def _failed_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} you had forgotten last time that {} ready to be revisited."
+        u"We have {} {} you had forgotten that {} ready to be revisited."
     ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
 
 
@@ -102,9 +102,12 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
     count = review_availabilities.next_new_cards_count
     if count == 0:
         return
-    return (
-        u"We have {} new {} for you to learn."
-    ).format(count, _pluralize_cards(count))
+
+    if review_availabilities.new_cards_limit.learned_today_count > 0:
+        template = u"We have {} more new {} for you to learn."
+    else:
+        template = u"We have {} new {} for you to learn."
+    return template.format(count, _pluralize_cards(count))
 
 
 @_auto_secondary_prompt
