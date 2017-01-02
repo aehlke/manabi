@@ -31,7 +31,7 @@ def start_and_end_of_day(user, time_zone, date=None):
         datetime.combine(date, start_of_day_time).astimezone(pytz.utc)
     )
 
-    if local_time < start_of_day_time:
+    if local_time < start_of_day_time.time():
         start_of_day_datetime -= timedelta(days=1)
 
     #start = datetime.now(timezone).replace(
