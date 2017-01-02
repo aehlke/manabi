@@ -47,7 +47,7 @@ def _mature_due(review_availabilities, secondary=False):
     Mature, due.
     '''
     cards = review_availabilities.base_cards_queryset
-    count = cards.mature().due().count()
+    count = cards.mature().due().excluding_failed().count()
     if count == 0:
         return
     return (
@@ -66,14 +66,15 @@ def _mature_due(review_availabilities, secondary=False):
 @_auto_secondary_prompt
 def _young_due(review_availabilities, secondary=False):
     '''
-    Young, due.
+    Young, due, excluding failed cards.
     '''
     cards = review_availabilities.base_cards_queryset
-    count = cards.young().due().count()
+    count = cards.young().due().excluding_failed().count()
     if count == 0:
         return
     return (
-        u"You'll soon forget {} {} you're still learning—now's an effective time to reinforce {}."
+        u"You'll soon forget {} {} you're still learning—now's an effective "
+        u"time to reinforce {}."
     ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
 
 
