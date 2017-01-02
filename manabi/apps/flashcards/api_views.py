@@ -61,10 +61,6 @@ class DeckViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         instance = serializer.save(owner=self.request.user)
 
-    def perform_destroy(self, instance):
-        instance.active = False
-        instance.save()
-
     @detail_route()
     def cards(self, request, pk=None):
         deck = self.get_object()

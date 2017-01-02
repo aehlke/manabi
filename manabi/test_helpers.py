@@ -83,6 +83,9 @@ class ManabiTestCase(APITestCase):
     def patch(self, *args, **kwargs):
         return self._http_verb('patch', *args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        return self._http_verb('delete', *args, **kwargs)
+
     #def _api_verb(self, verb, url, user=None, *args, **kwargs):
     #    if user is None:
     #        user = create_user()
@@ -119,8 +122,9 @@ class APIShortcuts(object):
         user = kwargs.get('user')
         ret = getattr(self.tc, method)(*args, user=user)
         #self.tc.assertTrue(200 <= ret.status_code < 300, msg=ret.content)
-        self.tc.assertTrue(200 <= ret.status_code < 300,
-                           msg='{}\n{}\n{}'.format(ret.status_code, args[0], ret.content))
+        self.tc.assertTrue(
+            200 <= ret.status_code < 300,
+            msg='{}\n{}\n{}'.format(ret.status_code, args[0], ret.content))
         return ret
 
     def get(self, *args, **kwargs):
@@ -133,6 +137,10 @@ class APIShortcuts(object):
 
     def patch(self, *args, **kwargs):
         kwargs['method'] = 'patch'
+        return self.call(*args, **kwargs)
+
+    def delete(self, *args, **kwargs):
+        kwargs['method'] = 'delete'
         return self.call(*args, **kwargs)
 
     def register(self, username, password):

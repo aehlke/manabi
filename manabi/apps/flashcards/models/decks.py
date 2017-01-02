@@ -113,7 +113,7 @@ class Deck(models.Model):
     @transaction.atomic
     def delete(self, *args, **kwargs):
         '''
-        Soft deletes without propagating anything to subscribers.
+        Soft-deletes without propagating anything to subscribers.
         '''
         from manabi.apps.flashcards.models import Card
 

@@ -34,6 +34,20 @@ class DecksAPITest(ManabiTestCase):
         decks = self.api.decks(self.user)
         self.assertEqual(1, len(decks))
 
+    def test_deck_deletion_marks_cards_as_inactive(self):
+        sample_deck = Deck.objects.get(id=self.api.decks(self.user)[0]['id'])
+        self.assertTrue(sample_deck.active)
+
+        self.api.delete(
+            '/api/flashcards/decks/{}/'.format(sample_deck.id),
+            user=self.user,
+        )
+        self.assertFalse(Deck.objects.get(id=sample_deck.id).active)
+
+        print sample_deck.card_set.values_list('active', flat=True)
+        self.assertFalse(any(
+            sample_deck.card_set.values_list('active', flat=True)))
+
 
 class ReviewsAPITest(ManabiTestCase):
     def after_setUp(self):
@@ -184,13 +198,22 @@ class SharedDecksTest(ManabiTestCase):
         self.assertEqual(len(decks), 1)
         self.assertEqual(decks[0]['owner']['username'], self.user.username)
 
+
 class DeckTest(ManabiTestCase):
     def after_setUp(self):
-        create_sample_data(facts=30)
+        create_sample_data(facts=6)
         self.deck = Deck.objects.all().last()
 
     def test_average_ease_factor_on_new_deck_is_default(self):
         self.assertEqual(self.deck.average_ease_factor(), DEFAULT_EASE_FACTOR)
+
+    def test_deletion_marks_cards_inactive(self):
+        sample_card = self.deck.card_set.first()
+        self.assertTrue(sample_card.active)
+
+        self.deck.delete()
+        sample_card = Card.objects.get(pk=sample_card.pk)
+        self.assertFalse(sample_card.active)
 
 
 class NewCardsLimitTest(ManabiTestCase):
