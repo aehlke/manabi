@@ -246,6 +246,7 @@ INSTALLED_APPS = (
 
     # My own.
     'manabi.apps.flashcards',
+    'manabi.apps.featured_decks',
     'manabi.apps.books',
     'manabi.apps.utils',
     'manabi.apps.jdic',
