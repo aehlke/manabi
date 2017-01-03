@@ -1,8 +1,8 @@
 <div class="list-group">
+    <a href="{{ url('deck-creator') }}" class="list-group-item add-decks"><span class="list-group-item-add-icon"></span>Create deck…</a>
+    <a href="{{ url('shared-deck-list') }}" class="list-group-item add-decks"><span class="list-group-item-add-icon"></span>Add shared decks…</a>
+
     {% for deck in decks %}
         <a href="{{ url('deck-detail', args=[deck.id, deck.slug]) }}" class="list-group-item">{{ deck.name }}</a>
     {% endfor %}
-    {% if show_shared_decks_link_in_decks_list %}
-        <a href="{{ url('shared-deck-list') }}" class="list-group-item add-shared-decks"><span class="list-group-item-add-icon"></span>Add shared decks…</a>
-    {% endif %}
 </div>

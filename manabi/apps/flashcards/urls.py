@@ -16,6 +16,7 @@ router.register(r'shared-decks', views.SharedDeckViewSet, base_name='shared-deck
 router.register(r'facts', views.FactViewSet, base_name='fact')
 
 urlpatterns = [
+    url(r'^decks/creator/', views.deck_creator, name='deck-creator'),
     url(r'^decks/(?P<pk>\d+)/(?P<slug>[\w-]+)/$', deck_detail, name='deck-detail'),
     url(r'^decks/(?P<pk>\d+)/(?P<slug>[\w-]+)/facts/$', deck_facts, name='deck-facts'),
     url(r'^shared-decks/(?P<pk>\d+)/(?P<slug>[\w-]+)/$', shared_deck_detail, name='shared-deck-detail'),

@@ -1,0 +1,5 @@
+<div class="list-group">
+    {% for deck in decks %}
+        <a href="{{ url('deck-detail', args=[deck.id, deck.slug]) }}" class="list-group-item">{{ deck.name }}</a>
+    {% endfor %}
+</div>

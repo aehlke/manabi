@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ static('css/deck.css') }}">
+{% endblock %}
+
+{% block title %}Create Deck{% endblock %}
+
+{% block breadcrumbs %}
+    <li class="breadcrumb-item"><a href="{{ url('deck-list') }}">Decks</a></li>
+{% endblock %}
+
+{% block content %}
+    <h1>Create Deck</h1>
+
+    <form method="POST">
+        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+        {{ form.as_p() }}
+        <input type="submit" value="Create">
+    </form>
+{% endblock %}

@@ -9,10 +9,11 @@ from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from rest_framework import status, viewsets
 from rest_framework.decorators import detail_route, list_route
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.renderers import TemplateHTMLRenderer, HTMLFormRenderer
 from rest_framework.response import Response
 
 from manabi.api.renderers import ModelViewSetHTMLRenderer
+from manabi.apps.flashcards.forms import DeckForm
 from manabi.apps.flashcards import api_views
 from manabi.apps.flashcards.models import (
     Deck,
@@ -100,6 +101,7 @@ class _SubscriberDeckRedirectMixin(object):
                         pk=subscriber_deck_for_viewer.pk,
                         slug=subscriber_deck_for_viewer.slug)
 
+
 class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
     renderer_classes = [ModelViewSetHTMLRenderer]
 
@@ -174,6 +176,21 @@ class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
             DetailedDeckSerializer(deck).data,
             template_name='flashcards/deck_facts.html',
         )
+
+
+@login_required
+def deck_creator(request):
+    if request.method == 'GET':
+        form = DeckForm()
+    elif request.method == 'POST':
+        form = DeckForm(request.POST)
+        if form.is_valid():
+            deck = form.save(commit=False)
+            deck.owner = request.user
+            deck.save()
+            return redirect('deck-detail', pk=deck.pk, slug=deck.slug)
+
+    return render(request, 'flashcards/deck_form.html', {'form': form})
 
 
 class SharedDeckViewSet(_SubscriberDeckRedirectMixin, api_views.SharedDeckViewSet):
