@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
 
+from manabi.apps.featured_decks.models import FeaturedDeck
 from manabi.apps.flashcards.models import Deck, Fact, Card
 from manabi.apps.flashcards.models.constants import (
     GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY,
@@ -197,6 +198,12 @@ class SharedDecksTest(ManabiTestCase):
         decks = self.api.shared_decks(of_user=self.subscriber)
         self.assertEqual(len(decks), 1)
         self.assertEqual(decks[0]['owner']['username'], self.user.username)
+
+    def test_featured_decks(self):
+        FeaturedDeck.objects.create(deck=self.shared_deck)
+        featured_decks = self.api.suggested_shared_decks()['featured_decks']
+        self.assertTrue(len(featured_decks), 1)
+        self.assertEqual(featured_decks[0]['id'], self.shared_deck.id)
 
 
 class DeckTest(ManabiTestCase):

@@ -15,7 +15,10 @@ from django.db.models.query import QuerySet
 from manabi.apps.books.models import Textbook
 from manabi.apps.flashcards.cachenamespaces import deck_review_stats_namespace
 from manabi.apps.flashcards.models import cards
-from manabi.apps.flashcards.models.constants import DEFAULT_EASE_FACTOR
+from manabi.apps.flashcards.models.constants import (
+    DEFAULT_EASE_FACTOR,
+    LATEST_SHARED_DECKS_LIMIT,
+)
 from manabi.apps.flashcards.models.synchronization import copy_facts_to_subscribers
 from manabi.apps.manabi_redis.models import redis
 
@@ -29,6 +32,10 @@ class DeckQuerySet(QuerySet):
 
     def shared_decks(self):
         return self.filter(shared=True, active=True)
+
+    def latest_shared_decks(self):
+        decks = self.shared_decks().order_by('-created_at')
+        return decks[:LATEST_SHARED_DECKS_LIMIT]
 
     def synchronized_decks(self, user):
         if not user.is_authenticated():

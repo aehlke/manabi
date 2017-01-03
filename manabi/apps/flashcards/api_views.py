@@ -13,6 +13,7 @@ from rest_framework.views import APIView
 import pytz
 
 from manabi.api.viewsets import MultiSerializerViewSetMixin
+from manabi.apps.featured_decks.models import get_featured_decks
 from manabi.apps.flashcards.models import (
     Deck,
     Fact,
@@ -43,6 +44,7 @@ from manabi.apps.flashcards.serializers import (
     NextCardsForReviewSerializer,
     ReviewAvailabilitiesSerializer,
     SharedDeckSerializer,
+    SuggestedSharedDecksSerializer,
     SynchronizedDeckSerializer,
 )
 
@@ -101,6 +103,15 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         instance = serializer.save(owner=self.request.user)
+
+
+class SuggestedSharedDecksViewSet(viewsets.ViewSet):
+    def list(self, request, format=None):
+        serializer = SuggestedSharedDecksSerializer({
+            'featured_decks': get_featured_decks(),
+            'latest_shared_decks': Deck.objects.latest_shared_decks(),
+        })
+        return Response(serializer.data)
 
 
 class SharedDeckViewSet(viewsets.ModelViewSet):

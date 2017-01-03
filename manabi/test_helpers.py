@@ -153,14 +153,18 @@ class APIShortcuts(object):
         resp = self.get('/api/flashcards/decks/', user=user)
         return resp.json()
 
+    def suggested_shared_decks(self, viewer=None):
+        url = '/api/flashcards/suggested_shared_decks/'
+        return self.get(url, user=viewer).json()
+
     def shared_decks(self, viewer=None, of_user=None):
         url = '/api/flashcards/shared_decks/'
         if of_user is not None:
             url += '?user_id={}'.format(of_user.id)
-        resp = self.get(url, user=viewer)
-        return resp.json()
+        return self.get(url, user=viewer).json()
 
     def add_shared_deck(self, shared_deck, user):
+        print shared_deck.id
         return self.post(
             '/api/flashcards/synchronized_decks/',
             {'synchronized_with': shared_deck.id},

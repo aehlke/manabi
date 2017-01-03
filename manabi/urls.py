@@ -11,6 +11,7 @@ from manabi.apps.flashcards.api_views import (
     DeckViewSet,
     SynchronizedDeckViewSet,
     SharedDeckViewSet,
+    SuggestedSharedDecksViewSet,
     FactViewSet,
     ReviewAvailabilitiesViewSet,
     NextCardsForReviewViewSet,
@@ -25,6 +26,9 @@ api_router.register(r'flashcards/decks',
 api_router.register(r'flashcards/synchronized_decks',
     SynchronizedDeckViewSet,
     base_name='synchronized-deck')
+api_router.register(r'flashcards/suggested_shared_decks',
+    SuggestedSharedDecksViewSet,
+    base_name='suggested-shared-deck')
 api_router.register(r'flashcards/shared_decks',
     SharedDeckViewSet,
     base_name='shared-deck')

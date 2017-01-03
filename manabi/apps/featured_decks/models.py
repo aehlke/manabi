@@ -12,3 +12,10 @@ class FeaturedDeck(SortableMixin, models.Model):
 
     def __unicode__(self):
         return self.deck.name
+
+
+def get_featured_decks():
+    return [
+        feature.deck for feature in FeaturedDeck.objects.all()
+        if feature.deck.active and feature.deck.shared
+    ]

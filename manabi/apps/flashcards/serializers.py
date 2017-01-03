@@ -77,6 +77,11 @@ class SharedDeckSerializer(_BaseDeckSerializer):
         )
 
 
+class SuggestedSharedDecksSerializer(serializers.Serializer):
+    featured_decks = SharedDeckSerializer(many=True)
+    latest_shared_decks = SharedDeckSerializer(many=True)
+
+
 class DeckSerializer(_BaseDeckSerializer):
     synchronized_with = SharedDeckSerializer(read_only=True)
 

@@ -67,4 +67,6 @@ NEW_CARDS_PER_DAY_LIMIT_OVERRIDE_INCREMENT = 5
 MIN_CARD_SPACE = timedelta(hours=8)
 CARD_SPACE_FACTOR = .1 # * interval, used for card spacing if greater than MIN_CARD_SPACE.
 
+LATEST_SHARED_DECKS_LIMIT = 100
+
 DEFAULT_TIME_ZONE = pytz.timezone('America/New_York')
