@@ -21,8 +21,6 @@ def start_and_end_of_day(user, time_zone, date=None):
         # Today
         local_time = datetime.now(time_zone)
         date = local_time.date()
-        print 'today is', date
-        print 'today is', datetime.utcnow().date()
 
     start_of_day_time = time(
         hour=settings.START_OF_DAY, minute=0, second=0, tzinfo=time_zone)
