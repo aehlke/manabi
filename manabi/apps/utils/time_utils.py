@@ -37,6 +37,6 @@ def start_and_end_of_day(user, time_zone, date=None):
     #start = datetime.now(timezone).replace(
     #    hour=settings.START_OF_DAY, minute=0, second=0).astimezone(pytz.utc)
 
-    end = start + timedelta(hours=23, minutes=59, seconds=59)
+    end = start_of_day_datetime + timedelta(hours=23, minutes=59, seconds=59)
 
-    return (start, end)
+    return (start_of_day_datetime, end)
