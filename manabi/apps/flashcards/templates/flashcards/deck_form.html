@@ -13,10 +13,13 @@
 {% block content %}
     <h1>Create Deck</h1>
 
-    <form method="POST">
+    <form action="{{ request.get_full_path() }}" method="POST" enctype="multipart/form-data">
         <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
 
-        {{ form.as_p() }}
-        <input type="submit" value="Create">
+        <fieldset class="form-group">
+            {{ form.as_p() }}
+        </fieldset>
+
+        <button type="submit" class="btn btn-primary">Create Deck</button>
     </form>
 {% endblock %}
