@@ -12,14 +12,15 @@ def forwards(apps, schema_editor):
 
     # Ported from Deck#delete
     for deck in Deck.objects.filter(active=False).iterator():
-        self.facts.update(active=False)
-        self.card_set.update(active=False)
+        deck.facts.update(active=False)
+        deck.card_set.update(active=False)
 
         deck.subscriber_decks.clear()
 
         for fact in deck.facts.iterator():
             fact.subscriber_facts.clear()
         deck.facts.update(active=False)
+
 
 class Migration(migrations.Migration):
 
