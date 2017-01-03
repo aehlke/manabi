@@ -124,6 +124,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'manabi.context_processors.url_prefixes',
@@ -145,6 +146,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.template.context_processors.static',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
@@ -230,15 +232,16 @@ INSTALLED_APPS = (
     # Other
     'rest_framework',
     'rest_framework.authtoken',
+    'adminsortable',
+    'cachecow',
+    'catnap',
     'crispy_forms',  # For browsable API.
     'django_nose',
-    'lazysignup',
-    'catnap',
-    'cachecow',
     'django_rq',
     'djoser',
-    'silk',
+    'lazysignup',
     'raven.contrib.django.raven_compat',
+    'silk',
     'webpack_loader',
 
     # My own.
