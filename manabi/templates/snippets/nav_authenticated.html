@@ -4,7 +4,7 @@
         <button class="navbar-toggler hidden-sm-up collapsed" type="button" data-toggle="collapse" data-target="#navbar-header" aria-controls="navbar-header" aria-expanded="false" aria-label="Toggle navigation"></button>
 
         <div class="navbar navbar-dark bg-primary collapse navbar-toggleable-xs " id="navbar-header">
-            <a class="navbar-brand" href="/"><span class="logo">学</span> <span style="opacity:0.3;margin:0 0.3rem;">|</span> Manabi</a>
+            <a class="navbar-brand" href="/"><img src="{{ static('img/manabi-icon-transparent-bg-small.png') }}" alt="学" class="logo"> <span style="opacity:0.3;margin:0 0.3rem;">|</span> Manabi</a>
             <ul class="nav navbar-nav float-xs-right">
                 <li class="nav-item">
                     <a href="{{ url('user-profile', args=[request.user.username]) }}" class="nav-link">{{ request.user.username }}</a>

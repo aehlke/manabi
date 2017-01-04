@@ -17,6 +17,11 @@ body {
     font-size: 1.9rem;
     line-height: 1rem;
 }
+img.logo {
+    max-height: 1.9rem;
+    position: relative;
+    top: -.1rem;
+}
 
 h1 {
     font-weight: bolder;
