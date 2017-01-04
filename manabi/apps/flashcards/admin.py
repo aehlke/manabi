@@ -23,6 +23,8 @@ class FactAdmin(admin.ModelAdmin):
 
 @admin.register(Deck)
 class DeckAdmin(admin.ModelAdmin):
+    fields = ('name', 'description', 'suspended', 'active')
+    raw_id_fields = ('synchronized_with',)
     list_display = ('__unicode__', 'owner', 'synchronized_with')
     list_filter = ('owner',)
     readonly_fields = ('created_at', 'modified_at',)
