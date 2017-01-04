@@ -21,8 +21,9 @@ class FactAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'modified_at',)
 
 
+@admin.register(Deck)
 class DeckAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'owner',)
+    list_display = ('__unicode__', 'owner', 'synchronized_with')
     list_filter = ('owner',)
     readonly_fields = ('created_at', 'modified_at',)
 
