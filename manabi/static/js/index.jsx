@@ -481,7 +481,7 @@ class AnnotatedJapaneseInput extends React.Component {
 
         this.lastFetchedFuriganaText = plainText
 
-        let url = 'https://api.manabi.io/api/furigana/inject/'
+        let url = 'https://manabi.io/api/furigana/inject/'
         fetch(url, {
             method: 'POST',
             headers: {
