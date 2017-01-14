@@ -51,7 +51,7 @@ def _mature_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} that you know well but may forget soon if left unused."
+        u"We have {} {} that you know well but may forget if left unused much longer."
     ).format(count, _pluralize_cards(count))
 
 
