@@ -37,7 +37,7 @@ def _failed_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} you had forgotten that {} ready to be revisited."
+        u"You're ready to revisit {} {} that you had forgotten."
     ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
 
 
