@@ -52,6 +52,7 @@ from manabi.apps.flashcards.serializers import (
 class DeckViewSet(viewsets.ModelViewSet):
     serializer_class = DeckSerializer
     renderer_classes = [JSONRenderer]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     def get_queryset(self):
         return (
@@ -92,7 +93,7 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
     serializer_class = SynchronizedDeckSerializer
 
     permission_classes = [
-        IsAuthenticated,
+        IsAuthenticatedOrReadOnly,
         DeckSynchronizationPermission,
     ]
 
@@ -114,7 +115,7 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
-class SharedDeckViewSet(viewsets.ModelViewSet):
+class SharedDeckViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SharedDeckSerializer
 
     @detail_route()
@@ -273,6 +274,7 @@ class CardViewSet(viewsets.ModelViewSet):
     serializer_action_classes = {
         'retrieve': DetailedCardSerializer,
     }
+    permissions_classes = [IsOwnerPermission]
 
     def get_queryset(self):
         return Card.objects.of_user(self.request.user)
