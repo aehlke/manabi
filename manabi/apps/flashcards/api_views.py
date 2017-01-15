@@ -125,7 +125,12 @@ class SharedDeckViewSet(viewsets.ReadOnlyModelViewSet):
     def facts(self, request, pk=None):
         deck = self.get_object()
         facts = Fact.objects.deck_facts(deck)
-        return Response(FactSerializer(facts, many=True).data)
+        facts = facts.select_related('deck')
+        facts = facts.prefetch_active_card_templates()
+
+        return Response(
+            FactSerializer(facts, many=True).data
+        )
 
     def get_queryset(self):
         decks = Deck.objects.filter(active=True, shared=True)
