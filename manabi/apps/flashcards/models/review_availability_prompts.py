@@ -152,6 +152,21 @@ def _early_review(review_availabilities, **kwargs):
     return u"You're caught up on reviews! Take a break or go read something."
 
 
+@_auto_secondary_prompt
+def _done_early_review_of_all_cards(review_availabilities, secondary=False):
+    '''
+    When early review has finished and all cards have been reviewed at least
+    once.
+    '''
+    if secondary:
+        return
+    # TODO: Verify the user is in early_review mode.
+    return (
+        u"You've reviewed every card at least once now in this session. Go "
+        u"take a break or read something instead."
+    )
+
+
 def review_availability_prompts(review_availabilities):
     # Be sure to synchronize with Card manager's `_next_card_funcs`.
     prompt_funcs = [
@@ -163,6 +178,7 @@ def review_availability_prompts(review_availabilities):
         _new_under_daily_limit,
         _new_over_daily_limit,
         _early_review,
+        _done_early_review_of_all_cards,
     ]
 
     prompts = []
