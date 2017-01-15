@@ -162,8 +162,8 @@ def _done_early_review_of_all_cards(review_availabilities, secondary=False):
         return
     # TODO: Verify the user is in early_review mode.
     return (
-        u"You've reviewed every card at least once now in this session. Go "
-        u"take a break or read something instead."
+        u"You've reviewed every card at least once already now in this "
+        u"session. Go take a break or read something instead."
     )
 
 
