@@ -42,6 +42,7 @@ class NextCardsForReview(object):
         count,
         deck=None,
         early_review=False,
+        early_review_began_at=None,
         include_new_buried_siblings=False,
         new_cards_per_day_limit_override=None,
         excluded_card_ids=set(),
@@ -58,6 +59,7 @@ class NextCardsForReview(object):
             excluded_ids=excluded_card_ids,
             deck=deck,
             early_review=early_review,
+            early_review_began_at=early_review_began_at,
             include_new_buried_siblings=include_new_buried_siblings,
             new_cards_limit=new_cards_limit.next_new_cards_limit,
         )

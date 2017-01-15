@@ -61,6 +61,7 @@ def next_cards_to_review_filters(request):
     return {
         'deck': deck,
         'early_review': early_review,
+        'early_review_began_at': early_review_began_at,
         'include_new_buried_siblings': include_new_buried_siblings,
         'new_cards_per_day_limit_override': new_cards_per_day_limit_override,
     }
