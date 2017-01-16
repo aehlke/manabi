@@ -55,8 +55,9 @@ from manabi.apps.flashcards.serializers import (
 class _DeckMixin(object):
     def get_serializer_context(self):
         context = super(_DeckMixin, self).get_serializer_context()
+        queryset = self.filter_queryset(self.get_queryset())
         context.update({
-            'card_counts': self.get_object().card_counts(),
+            'card_counts': queryset.card_counts(),
         })
         return context
 
