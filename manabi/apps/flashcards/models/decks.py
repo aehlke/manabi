@@ -9,7 +9,7 @@ from django.db import (
     models,
     transaction,
 )
-from django.db.models import Avg, Q
+from django.db.models import Avg, Count, Q
 from django.db.models.query import QuerySet
 
 from manabi.apps.books.models import Textbook
@@ -57,6 +57,15 @@ class DeckQuerySet(QuerySet):
         #     Q(owner_id=user.id)
         #     | Q(subscriber_decks__owner_id=user.id)
         # )
+
+    def card_counts(self):
+        '''
+        Returns a dict mapping deck ID to card count for that deck.
+        '''
+        counts = cards.Card.objects.available().filter(
+            deck__in=self,
+        ).values('deck_id').annotate(card_count=Count('deck_id'))
+        return {count['deck_id']: count['card_count'] for count in counts}
 
 
 class Deck(models.Model):

@@ -23,6 +23,7 @@ from rest_framework import serializers
 class _BaseDeckSerializer(ManabiModelSerializer):
     owner = UserSerializer(read_only=True)
     original_author = UserSerializer(read_only=True)
+    card_count = serializers.SerializerMethodField()
 
     class Meta(object):
         model = Deck
@@ -56,6 +57,12 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             'created_at',
             'modified_at',
         )
+
+    def get_card_count(self, obj):
+        try:
+            return self.context['card_counts'][obj.id]
+        except KeyError:
+            return obj.card_count()
 
 
 class SharedDeckSerializer(_BaseDeckSerializer):
