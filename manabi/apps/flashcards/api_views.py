@@ -58,6 +58,7 @@ class _DeckMixin(object):
         queryset = self.filter_queryset(self.get_queryset())
         context.update({
             'card_counts': queryset.card_counts(),
+            'subscriber_counts': queryset.subscriber_counts(),
         })
         return context
 

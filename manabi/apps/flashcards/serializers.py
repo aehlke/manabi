@@ -24,6 +24,7 @@ class _BaseDeckSerializer(ManabiModelSerializer):
     owner = UserSerializer(read_only=True)
     original_author = UserSerializer(read_only=True)
     card_count = serializers.SerializerMethodField()
+    subscriber_count = serializers.SerializerMethodField()
 
     class Meta(object):
         model = Deck
@@ -37,6 +38,7 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             'name',
             'slug',
             'description',
+            'subscriber_count',
             'card_count',
             'shared',
             'share_url',
@@ -63,6 +65,12 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             return self.context['card_counts'][obj.id]
         except KeyError:
             return obj.card_count()
+
+    def get_subscriber_count(self, obj):
+        try:
+            return self.context['subscriber_counts'][obj.id]
+        except KeyError:
+            return obj.subscriber_count()
 
 
 class SharedDeckSerializer(_BaseDeckSerializer):

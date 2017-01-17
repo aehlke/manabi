@@ -67,6 +67,21 @@ class DeckQuerySet(QuerySet):
         ).values('deck_id').annotate(card_count=Count('deck_id'))
         return {count['deck_id']: count['card_count'] for count in counts}
 
+    def subscriber_counts(self):
+        '''
+        Returns a dict mapping deck ID to subscriber count for that deck.
+        '''
+        counts = self.model.objects.filter(
+            synchronized_with__in=self,
+            active=True,
+        ).values('synchronized_with_id').annotate(
+            subscriber_count=Count('synchronized_with_id'),
+        )
+        return {
+            count['synchronized_with_id']: count['subscriber_count']
+            for count in counts
+        }
+
 
 class Deck(models.Model):
     objects = DeckQuerySet.as_manager()
@@ -233,6 +248,9 @@ class Deck(models.Model):
 
     def card_count(self):
         return cards.Card.objects.of_deck(self).available().count()
+
+    def subscriber_count(self):
+        return self.subscriber_decks.count()
 
     #TODO-OLD kill - unused?
     #@property
