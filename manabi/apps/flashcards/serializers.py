@@ -53,6 +53,7 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             'slug',
             'shared_at',
             'share_url',
+            'subscriber_count',
             'card_count',
             'is_synchronized',
             'synchronized_with',
