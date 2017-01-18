@@ -239,7 +239,6 @@ INSTALLED_APPS = (
     'django_nose',
     'django_rq',
     'djoser',
-    'lazysignup',
     'raven.contrib.django.raven_compat',
     'silk',
     'webpack_loader',
@@ -315,8 +314,6 @@ ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
 
 BASIC_AUTH_CHALLENGE = 'Manabi'
 BASIC_AUTH_REALM = 'manabi'
-
-LAZYSIGNUP_ENABLE = False
 
 SITE_NAME = 'Manabi'
 

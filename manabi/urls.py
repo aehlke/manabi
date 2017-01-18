@@ -2,7 +2,6 @@ from django.conf import settings
 from django.conf.urls import *
 from django.contrib import admin
 from django.views.generic.base import TemplateView
-from lazysignup.decorators import allow_lazy_user
 from rest_framework import routers
 
 import manabi.views
