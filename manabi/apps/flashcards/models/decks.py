@@ -252,6 +252,11 @@ class Deck(models.Model):
     def subscriber_count(self):
         return self.subscriber_decks.count()
 
+    def subscribers(self):
+        return User.objects.filter(
+            id__in=self.subscriber_decks.filter(active=True).values('owner_id')
+        )
+
     #TODO-OLD kill - unused?
     #@property
     #def new_card_count(self):

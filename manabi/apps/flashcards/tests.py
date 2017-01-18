@@ -205,6 +205,11 @@ class SharedDecksTest(ManabiTestCase):
         self.assertTrue(len(featured_decks), 1)
         self.assertEqual(featured_decks[0]['id'], self.shared_deck.id)
 
+    def test_deck_subscribers(self):
+        subscribers = self.api.shared_deck_subscribers(self.shared_deck)
+        print subscribers
+        self.assertEqual(len(subscribers), 1)
+
 
 class DeckTest(ManabiTestCase):
     def after_setUp(self):

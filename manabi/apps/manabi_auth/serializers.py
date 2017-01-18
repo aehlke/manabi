@@ -14,6 +14,7 @@ class UserSerializer(ManabiModelSerializer):
             'date_joined',
         )
 
+
 class UserRegistrationWithTokenSerializer(UserRegistrationSerializer):
     auth_token = serializers.SerializerMethodField()
 

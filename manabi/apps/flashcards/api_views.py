@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
 from rest_framework.decorators import detail_route, list_route
@@ -50,6 +51,7 @@ from manabi.apps.flashcards.serializers import (
     SuggestedSharedDecksSerializer,
     SynchronizedDeckSerializer,
 )
+from manabi.apps.manabi_auth.serializers import UserSerializer
 
 
 class _DeckMixin(object):
@@ -61,6 +63,14 @@ class _DeckMixin(object):
             'subscriber_counts': queryset.subscriber_counts(),
         })
         return context
+
+    @detail_route()
+    def subscribers(self, request, pk=None):
+        deck = self.get_object()
+        if not (deck.shared and deck.active):
+            raise Http404()
+        subscribers = deck.subscribers()
+        return Response(UserSerializer(subscribers, many=True).data)
 
 
 class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):

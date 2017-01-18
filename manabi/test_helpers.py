@@ -164,11 +164,15 @@ class APIShortcuts(object):
         return self.get(url, user=viewer).json()
 
     def add_shared_deck(self, shared_deck, user):
-        print shared_deck.id
         return self.post(
             '/api/flashcards/synchronized_decks/',
             {'synchronized_with': shared_deck.id},
             user=user,
+        ).json()
+
+    def shared_deck_subscribers(self, deck):
+        return self.get(
+            '/api/flashcards/shared_decks/{}/subscribers/'.format(deck.id),
         ).json()
 
     def move_fact_to_deck(self, fact, deck, user):
