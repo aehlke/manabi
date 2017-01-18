@@ -69,7 +69,7 @@ class _DeckMixin(object):
         deck = self.get_object()
         if not (deck.shared and deck.active):
             raise Http404()
-        subscribers = deck.subscribers()
+        subscribers = deck.subscribers().order_by('username')
         return Response(UserSerializer(subscribers, many=True).data)
 
 
