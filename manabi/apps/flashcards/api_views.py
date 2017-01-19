@@ -115,6 +115,7 @@ class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):
 
 class SynchronizedDeckViewSet(viewsets.ModelViewSet):
     serializer_class = SynchronizedDeckSerializer
+    http_method_names = ['post']
 
     permission_classes = [
         IsAuthenticatedOrReadOnly,
