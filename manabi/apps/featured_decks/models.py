@@ -1,6 +1,8 @@
 from adminsortable.models import SortableMixin
 from django.db import models
 
+from manabi.apps.flashcards.models import Deck
+
 
 class FeaturedDeck(SortableMixin, models.Model):
     deck = models.OneToOneField('flashcards.Deck')
