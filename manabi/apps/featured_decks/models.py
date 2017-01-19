@@ -17,6 +17,6 @@ class FeaturedDeck(SortableMixin, models.Model):
 def get_featured_decks():
     return [
         feature.deck for feature
-        in FeaturedDeck.objects.all().select_related('owner')
+        in FeaturedDeck.objects.all().select_related('deck__owner')
         if feature.deck.active and feature.deck.shared
     ]
