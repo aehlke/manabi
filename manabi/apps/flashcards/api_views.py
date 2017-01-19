@@ -134,7 +134,7 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
 
 class SuggestedSharedDecksViewSet(viewsets.ViewSet):
     def list(self, request, format=None):
-        featured_decks = get_featured_decks()
+        featured_decks = get_featured_decks().select_related('owner')
         latest_decks = (
             Deck.objects.latest_shared_decks().select_related('owner'))
         all_suggested_decks = Deck.objects.filter(
