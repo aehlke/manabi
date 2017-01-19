@@ -2,6 +2,7 @@
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import viewsets, status
@@ -133,9 +134,18 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
 
 class SuggestedSharedDecksViewSet(viewsets.ViewSet):
     def list(self, request, format=None):
+        featured_decks = get_featured_decks().select_related('owner')
+        latest_decks = (
+            Deck.objects.latest_shared_decks().select_related('owner'))
+        all_suggested_decks = Deck.objects.filter(
+            Q(id__in=featured_decks.values('id'))
+            | Q(id__in=latest_decks.values('id'))
+        )
         serializer = SuggestedSharedDecksSerializer({
-            'featured_decks': get_featured_decks(),
-            'latest_shared_decks': Deck.objects.latest_shared_decks(),
+            'featured_decks': featured_decks,
+            'latest_shared_decks': latest_decks,
+        }, context={
+            'card_counts': all_suggested_decks.card_counts(),
         })
         return Response(serializer.data)
 
