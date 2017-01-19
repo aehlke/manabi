@@ -1,5 +1,4 @@
-# TODO: Django==1.11
-https://github.com/django/django/archive/master.zip
+django==1.11a1
 Fabric==1.8.0
 django-extensions==1.7.2
 lxml==3.5.0
