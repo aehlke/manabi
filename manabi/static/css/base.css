@@ -33,6 +33,11 @@ h2 {
     margin-bottom: 1rem;
 }
 
+p {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
 .authenticated .navbar-container {
     margin-bottom: 2.5em;
 }
@@ -62,11 +67,14 @@ h2 {
 }
 
 .footer {
-    font-size: .5em;
-    margin-top:2.5rem;
+    font-size: .7em;
+    margin-top:2.1rem;
     padding-top: .5rem;
-    color: #ccc;
+    color: #bbb;
     border-top: .05rem solid #e5e5e5;
+}
+.footer a, .footer a:visited {
+    color: #bbb;
 }
 
 /* Customize container */

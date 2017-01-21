@@ -286,8 +286,6 @@ ABSOLUTE_URL_OVERRIDES = {
 }
 
 
-ACCOUNT_EMAIL_VERIFICATION = False
-
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',

@@ -39,7 +39,7 @@ class SignupForm(PinaxSignupForm):
 #        kwargs.pop("no_duplicate_emails", False)
         
 #        super(PinaxOpenIDSignupForm, self).__init__(*args, **kwargs)
-#        self.fields["email"].label = "E-mail"
+#        self.fields["email"].label = "Email"
 #        self.fields["email"].required = True
 
 
