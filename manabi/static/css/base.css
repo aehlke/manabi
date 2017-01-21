@@ -83,6 +83,26 @@ p {
         max-width: 46rem;
     }
 }
+
+@media (max-width: 575px) {
+    body {
+        padding-top: .5rem;
+    }
+    h1 {
+        font-size: 2rem;
+    }
+    .navbar-container .header {
+        padding-left: .5rem;
+        padding-right: .3rem;
+        padding-bottom: 0;
+        border-bottom: none;
+    }
+    .nav-pills .nav-link {
+        font-size: .8rem;
+        padding: .65rem .3rem;
+    }
+}
+
 .container-narrow > hr {
     margin: 2rem 0;
 }
