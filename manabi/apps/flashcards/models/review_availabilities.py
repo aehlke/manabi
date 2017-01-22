@@ -50,7 +50,7 @@ class ReviewAvailabilities(object):
             new_cards_limit or
             NewCardsLimit(
                 user,
-                new_cards_per_day_limit_override = (
+                new_cards_per_day_limit_override=(
                     new_cards_per_day_limit_override),
                 buffered_new_cards_count=buffered_new_cards_count,
                 time_zone=time_zone,
@@ -146,6 +146,12 @@ class ReviewAvailabilities(object):
         off `next_new_cards_count`).
         '''
         if not self.new_cards_per_day_limit_reached:
+            return None
+        if (
+            self.next_new_cards_count == 0
+            and self.buried_new_cards_count == 0
+            and not self.base_cards_queryset.new(self.user).exists()
+        ):
             return None
         return (
             self.new_cards_limit.learned_today_count +
