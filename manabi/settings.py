@@ -315,7 +315,7 @@ BASIC_AUTH_REALM = 'manabi'
 
 SITE_NAME = 'Manabi'
 
-LOGIN_URL = '/account/login/'
+LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URLNAME = 'homepage'
 
 DEFAULT_FROM_EMAIL = 'Manabi <support@manabi.io>'
