@@ -146,6 +146,7 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
             'latest_shared_decks': latest_decks,
         }, context={
             'card_counts': all_suggested_decks.card_counts(),
+            'subscriber_counts': all_suggested_decks.subscriber_counts(),
         })
         return Response(serializer.data)
 
