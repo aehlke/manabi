@@ -63,9 +63,16 @@ class DeckQuerySet(QuerySet):
         Returns a dict mapping deck ID to card count for that deck.
         '''
         counts = cards.Card.objects.available().filter(
-            deck__in=self,
+            Q(deck__in=self) | Q(deck__subscriber_decks__in=self),
         ).values('deck_id').annotate(card_count=Count('deck_id'))
-        return {count['deck_id']: count['card_count'] for count in counts}
+        per_deck_counts = {
+            deck_id: 0
+            for deck_id in self.values_list('id', flat=True).iterator()
+        }
+        per_deck_counts.update({
+            count['deck_id']: count['card_count'] for count in counts
+        })
+        return per_deck_counts
 
     def subscriber_counts(self):
         '''
