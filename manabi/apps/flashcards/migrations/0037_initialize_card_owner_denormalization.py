@@ -9,7 +9,7 @@ def forwards(apps, schema_editor):
     Card = apps.get_model('flashcards', 'Card')
 
     for card in Card.objects.all().select_related('fact', 'deck').iterator():
-        if card.fact.owner_id != card.deck.owner_id:
+        if card.fact.deck_id != card.deck_id:
             raise Exception(
                 "Unexpected data integrity issue with card ID {}".format(
                     card.id))
