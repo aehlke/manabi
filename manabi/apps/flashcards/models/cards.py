@@ -81,6 +81,7 @@ class Card(models.Model):
 
     class Meta:
         app_label = 'flashcards'
+        index_together = ['owner', 'due_at']
 
     def __unicode__(self):
         return u'{} | {} [{}]'.format(self.fact.expression, self.fact.meaning, self.template)
