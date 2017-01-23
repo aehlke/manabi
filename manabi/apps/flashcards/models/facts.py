@@ -156,7 +156,7 @@ class Fact(models.Model):
 
         is_new = self.pk is None
 
-        super(Fact, self).save(*args, **kwargs)
+        super(Fact, self).save(update_fields=update_fields, *args, **kwargs)
 
         if update_fields is None or (
             set(update_fields) & {'expression', 'reading', 'meaning'}

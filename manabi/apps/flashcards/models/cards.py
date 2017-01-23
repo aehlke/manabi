@@ -85,6 +85,14 @@ class Card(models.Model):
     def __unicode__(self):
         return u'{} | {} [{}]'.format(self.fact.expression, self.fact.meaning, self.template)
 
+    def save(self, force_update=False, update_fields=None, *args, **kwargs):
+        if update_fields is None and not force_update:
+            self.owner_id = self.deck.owner_id
+
+        super(Card, self).save(
+            force_update=force_update, update_fields=update_fields,
+            *args, **kwargs)
+
     def copy(self, target_fact):
         '''
         Returns a new Card object. Copies for the purpose of subscribing.
