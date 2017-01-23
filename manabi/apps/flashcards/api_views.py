@@ -15,6 +15,7 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
 from rest_framework.views import APIView
+from rest_framework_extensions.cache.mixins import cache_response
 import pytz
 
 from manabi.api.viewsets import MultiSerializerViewSetMixin
@@ -133,6 +134,7 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
 
 
 class SuggestedSharedDecksViewSet(viewsets.ViewSet):
+    @cache_response(60, cache_errors=False)  # Seconds.
     def list(self, request, format=None):
         featured_decks = get_featured_decks().select_related('owner')
         latest_decks = (
