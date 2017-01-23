@@ -50,7 +50,7 @@ class Card(models.Model):
     objects = CardQuerySet.as_manager()
 
     # Denormalized fields:
-    owner = models.ForeignKey(User, db_index=True, editable=False)
+    owner = models.ForeignKey(User, editable=False)
     deck = models.ForeignKey('flashcards.Deck', db_index=True)
 
     fact = models.ForeignKey('flashcards.Fact', db_index=True)
@@ -82,8 +82,7 @@ class Card(models.Model):
     class Meta:
         app_label = 'flashcards'
         index_together = [
-            ['owner', 'due_at'],
-            ['owner', 'due_at', 'active', 'suspended'],
+            ['owner', 'active', 'suspended', 'due_at'],
         ]
 
     def __unicode__(self):
