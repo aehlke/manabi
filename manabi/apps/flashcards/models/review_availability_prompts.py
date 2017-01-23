@@ -171,7 +171,7 @@ def _new_buried_over_daily_limit(review_availabilities, secondary=False):
         return
 
     template = (
-        u"We have {} new {}, all material you've covered recently, "
+        u"We have {} new {} from material you've covered recently, "
         u"plus you've already learned {} today—better wait."
     )
     return template.format(
