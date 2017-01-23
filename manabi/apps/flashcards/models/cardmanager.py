@@ -357,7 +357,7 @@ class CommonFiltersMixin(object):
     def of_user(self, user):
         if not user.is_authenticated():
             return self.none()
-        return self.filter(deck__owner=user)
+        return self.filter(owner=user)
 
     def excluding_ids(self, excluded_ids):
         return self.exclude(id__in=excluded_ids)
@@ -371,7 +371,7 @@ class CommonFiltersMixin(object):
         if deck:
             cards = cards.of_deck(deck)
         else:
-            cards = cards.filter(deck__owner=user).exclude(deck__suspended=True)
+            cards = cards.filter(owner=user).exclude(deck__suspended=True)
 
         if excluded_ids:
             cards = cards.excluding_ids(excluded_ids)

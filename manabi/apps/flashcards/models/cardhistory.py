@@ -10,7 +10,7 @@ class CardHistoryManagerMixin(object):
     def of_user(self, user):
         if not user.is_authenticated():
             return self.none()
-        return self.filter(card__fact__deck__owner=user)
+        return self.filter(card__owner=user)
 
     def of_deck(self, deck):
         return self.filter(card__fact__deck=deck)

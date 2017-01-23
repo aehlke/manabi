@@ -38,7 +38,7 @@ class FactQuerySet(QuerySet):
             review_time = datetime.utcnow()
 
         return self.filter(
-            Q(card__deck__owner=user) & (
+            Q(card__owner=user) & (
                 # Sibling was reviewed too recently.
                 (
                     Q(card__last_reviewed_at__gte=(

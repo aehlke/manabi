@@ -48,8 +48,10 @@ class UndoCardReviewManager(models.Manager):
         '''
         user = card_history.card.fact.deck.owner
 
-        SKIP_FIELDS = {'new_card_ordinal', 'suspended', 'deck', 'fact',
-                       'template'}
+        SKIP_FIELDS = {
+            'new_card_ordinal', 'suspended', 'deck', 'fact', 'owner',
+            'template',
+        }
 
         snapshot = {
             field_name: getattr(card_history.card, field_name)
@@ -65,10 +67,10 @@ class UndoCardReviewManager(models.Manager):
                 snapshot[key] = value.isoformat()
 
         undo = UndoCardReview(
-            user = user,
-            card = card_history.card,
-            card_history = card_history,
-            card_snapshot = snapshot,
+            user=user,
+            card=card_history.card,
+            card_history=card_history,
+            card_snapshot=snapshot,
         )
 
         # Delete previous undo if it exists.
