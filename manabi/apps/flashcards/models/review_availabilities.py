@@ -120,6 +120,7 @@ class ReviewAvailabilities(object):
         )
 
     @property
+    @lru_cache(maxsize=None)
     def buried_new_cards_count(self):
         '''
         `None` means unspecified; not used if `next_new_cards_count` > 0.

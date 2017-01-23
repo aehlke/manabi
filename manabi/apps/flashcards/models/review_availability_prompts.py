@@ -136,6 +136,50 @@ def _new_over_daily_limit(review_availabilities, secondary=False):
 
 
 @_auto_secondary_prompt
+def _new_buried_under_daily_limit(review_availabilities, secondary=False):
+    '''
+    Buried new cards, under daily limit.
+    '''
+    if review_availabilities.new_cards_per_day_limit_reached:
+        return
+    count = review_availabilities.buried_new_cards_count
+    if count == 0:
+        return
+
+    template = (
+        u"We have {} new {}, all related to material you've "
+        u"covered recently in other cards—better to wait."
+    )
+    return template.format(count, _pluralize_cards(count))
+
+
+@_auto_secondary_prompt
+def _new_buried_over_daily_limit(review_availabilities, secondary=False):
+    '''
+    Buried new cards, past daily limit.
+
+    Will never appear as the secondary prompt, since the "learn new cards"
+    button does not appear when there are any cards due, nor when there are
+    buried cards available under the daily limit.
+    '''
+    if secondary:
+        return
+    if not review_availabilities.new_cards_per_day_limit_reached:
+        return
+    count = review_availabilities.buried_new_cards_count
+    if count == 0:
+        return
+
+    template = (
+        u"We have {} new {}, all from material you've covered recently—"
+        u"better to wait, plus you've already learned {} today."
+    )
+    return template.format(
+        count, _pluralize_cards(count),
+        review_availabilities.new_cards_limit.learned_today_count)
+
+
+@_auto_secondary_prompt
 def _early_review(review_availabilities, **kwargs):
     '''
     Early review.
@@ -177,6 +221,8 @@ def review_availability_prompts(review_availabilities):
         _failed_not_due,
         _new_under_daily_limit,
         _new_over_daily_limit,
+        _new_buried_under_daily_limit,
+        _new_buried_over_daily_limit,
         _early_review,
         _done_early_review_of_all_cards,
     ]
