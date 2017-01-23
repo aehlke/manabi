@@ -382,13 +382,18 @@ class CommonFiltersMixin(object):
         user_cards = self.available().of_user(user)
         return user_cards.filter(last_reviewed_at__isnull=True)
 
-    def new_count(self, user, including_buried=True):
+    def new_count(self, user, including_buried=True, buried_fact_ids=None):
         '''
         Use this rather than `new(user).count()` for future-proofing.
         '''
         new_cards = self.new(user)
         if not including_buried:
             new_cards = with_siblings_buried(new_cards)
+            if buried_fact_ids is None:
+                buried_fact_ids = Fact.objects.buried(
+                    self.user, excluded_card_ids=self.excluded_card_ids,
+                ).values_list('id', flat=True)
+            new_cards = new_cards.exclude(fact_id__in=buried_fact_ids)
         return new_cards.count()
 
     def approx_new_count(self, user=None, deck=None):

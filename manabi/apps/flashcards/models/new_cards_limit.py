@@ -20,12 +20,14 @@ class NewCardsLimit(object):
         new_cards_per_day_limit_override=None,
         buffered_new_cards_count=0,
         time_zone=None,
+        buried_fact_ids=None,
     ):
         self.user = user
         self.new_cards_per_day_limit_override = (
             new_cards_per_day_limit_override)
         self.buffered_new_cards_count = buffered_new_cards_count
         self.time_zone = time_zone
+        self.buried_fact_ids = buried_fact_ids
 
     @property
     @lru_cache(maxsize=None)
@@ -49,22 +51,6 @@ class NewCardsLimit(object):
             0,
             self._per_day_limit() - self.learned_today_count,
         )
-
-    @property
-    @lru_cache(maxsize=None)
-    def next_new_cards_count(self):
-        if self.user.is_anonymous():
-            return 0
-
-        new_card_count = self._base_cards_queryset.new_count(self.user)
-
-        remaining = max(
-            0, min(
-                new_card_count,
-                self._per_day_limit() - self.learned_today_count
-            ),
-        )
-        return remaining
 
     def _per_day_limit(self):
         if self.new_cards_per_day_limit_override is None:

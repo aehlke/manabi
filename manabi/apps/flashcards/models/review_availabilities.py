@@ -84,6 +84,13 @@ class ReviewAvailabilities(object):
 
     @property
     @lru_cache(maxsize=None)
+    def _buried_fact_ids(self):
+        return Fact.objects.buried(
+            self.user, excluded_card_ids=self.excluded_card_ids,
+        ).values_list('id', flat=True)
+
+    @property
+    @lru_cache(maxsize=None)
     def _next_new_cards_limit(self):
         if self.new_cards_per_day_limit_reached:
             return NEW_CARDS_PER_DAY_LIMIT_OVERRIDE_INCREMENT
@@ -103,6 +110,7 @@ class ReviewAvailabilities(object):
         available_count = self.base_cards_queryset.new_count(
             self.user,
             including_buried=False,
+            buried_fact_ids=self._buried_fact_ids,
         )
 
         return max(
