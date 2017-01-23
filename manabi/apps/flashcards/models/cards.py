@@ -82,7 +82,7 @@ class Card(models.Model):
     class Meta:
         app_label = 'flashcards'
         index_together = [
-            ['owner', 'active', 'suspended', 'due_at'],
+            ['owner', 'due_at', 'active', 'suspended'],
         ]
 
     def __unicode__(self):
