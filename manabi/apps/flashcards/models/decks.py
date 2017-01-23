@@ -79,8 +79,10 @@ class DeckQuerySet(QuerySet):
         Returns a dict mapping deck ID to subscriber count for that deck.
         '''
         counts = self.model.objects.filter(
-            synchronized_with__in=self,
+            Q(synchronized_with__in=self) | Q(subscriber_decks__in=self),
+        ).filter(
             active=True,
+            synchronized_with__isnull=True,
         ).values('synchronized_with_id').annotate(
             subscriber_count=Count('synchronized_with_id'),
         )
