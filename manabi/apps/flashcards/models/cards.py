@@ -50,7 +50,7 @@ class Card(models.Model):
     objects = CardQuerySet.as_manager()
 
     # Denormalized fields:
-    owner = models.ForeignKey(User, db_index=True, editable=False, null=True)
+    owner = models.ForeignKey(User, db_index=True, editable=False)
     deck = models.ForeignKey('flashcards.Deck', db_index=True)
 
     fact = models.ForeignKey('flashcards.Fact', db_index=True)
