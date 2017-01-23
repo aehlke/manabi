@@ -5,6 +5,7 @@ from datetime import (
 )
 
 from cachecow.decorators import cached_function
+from django.contrib.auth.models import User
 from django.core.cache import cache
 from django.db import models
 from django.db.models import (
@@ -48,7 +49,10 @@ class Card(models.Model):
     '''
     objects = CardQuerySet.as_manager()
 
-    deck = models.ForeignKey('flashcards.Deck', null=False, db_index=True)
+    # Denormalized fields:
+    owner = models.ForeignKey(User, db_index=True, editable=False, null=True)
+    deck = models.ForeignKey('flashcards.Deck', db_index=True)
+
     fact = models.ForeignKey('flashcards.Fact', db_index=True)
 
     template = models.SmallIntegerField(choices=CARD_TEMPLATE_CHOICES, blank=False)
@@ -86,6 +90,7 @@ class Card(models.Model):
         Returns a new Card object. Copies for the purpose of subscribing.
         '''
         return Card(
+            owner=target_fact.owner,
             deck=target_fact.deck,
             fact=target_fact,
             template=self.template,
@@ -98,10 +103,6 @@ class Card(models.Model):
     def redis(self):
         from manabi.apps.flashcards.models.redis_models import RedisCard
         return RedisCard(self)
-
-    @property
-    def owner(self):
-        return self.fact.owner
 
     @property
     def siblings(self):
