@@ -16,15 +16,18 @@
     mode: 0755
   become: yes
 
-- name: Create static files directory for nginx
+- name: Create files directories for nginx
   file:
-    path: '{{ app_static_files_path }}'
+    path: '{{ item }}'
     state: directory
     mode: 'u=rwx,g=rwx'
     owner: www-data
     group: www-data
     recurse: yes
   become: yes
+  with_items:
+    - '{{ app_static_files_path }}'
+    - '{{ app_media_path }}'
 
 - name: Add default nginx config
   template:
