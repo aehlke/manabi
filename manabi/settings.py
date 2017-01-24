@@ -108,8 +108,8 @@ STATICFILES_DIRS = [
     os.path.join(os.path.abspath(os.path.dirname(__file__)), 'static'),
 ]
 MEDIA_URL = '/media/'
-FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o755
-FILE_UPLOAD_PERMISSIONS = 0o755
+# FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o755
+# FILE_UPLOAD_PERMISSIONS = 0o755
 
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'

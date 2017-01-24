@@ -64,6 +64,13 @@
     append: yes
   become: yes
 
+- name: Add www-data to ubuntu group to be able to read uploaded media
+  user:
+    name: www-data
+    groups: ubuntu
+    append: yes
+  become: yes
+
 - name: Collect static files
   command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py collectstatic --noinput {{ manabi_collectstatic_extra_args }}'
   tags: collectstatic
