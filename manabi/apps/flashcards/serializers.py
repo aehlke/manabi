@@ -86,6 +86,7 @@ class SharedDeckSerializer(_BaseDeckSerializer):
             'owner',
             'name',
             'slug',
+            'image_url',
             'description',
             'viewer_synchronized_deck',
             'subscriber_count',
