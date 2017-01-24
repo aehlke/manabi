@@ -66,7 +66,7 @@ class DeckQuerySet(QuerySet):
         '''
         counts = cards.Card.objects.available().filter(
             Q(deck__in=self) | Q(deck__subscriber_decks__in=self),
-        ).values('deck_id').annotate(card_count=Count('deck_id'))
+        ).distinct().values('deck_id').annotate(card_count=Count('deck_id'))
         per_deck_counts = {
             deck_id: 0
             for deck_id in self.values_list('id', flat=True).iterator()
@@ -82,7 +82,7 @@ class DeckQuerySet(QuerySet):
         '''
         counts = self.model.objects.filter(
             Q(synchronized_with__in=self) | Q(subscriber_decks__in=self),
-        ).filter(
+        ).distinct().filter(
             active=True,
             synchronized_with__isnull=True,
         ).values('synchronized_with_id').annotate(
