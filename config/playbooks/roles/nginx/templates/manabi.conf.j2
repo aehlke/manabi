@@ -19,7 +19,7 @@ server {
         alias {{ app_static_files_path }};
     }
 
-    location /media/ {
+    location /media {
         autoindex off;
         alias {{ app_media_path }};
     }
