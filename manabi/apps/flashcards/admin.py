@@ -23,11 +23,15 @@ class FactAdmin(admin.ModelAdmin):
 
 @admin.register(Deck)
 class DeckAdmin(admin.ModelAdmin):
-    fields = ('name', 'description', 'suspended', 'active')
+    fields = ('name', 'description', 'suspended', 'active', 'image')
     raw_id_fields = ('synchronized_with',)
     list_display = ('__unicode__', 'owner', 'synchronized_with')
-    list_filter = ('owner',)
+    list_filter = ('shared',)
     readonly_fields = ('created_at', 'modified_at',)
+
+    def get_queryset(self, request):
+        queryset = super(DeckAdmin, self).get_queryset(request)
+        return queryset.filter(active=True)
 
 
 class TextbookAdmin(admin.ModelAdmin):

@@ -97,6 +97,7 @@ class Deck(models.Model):
 
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=False)
+    image = models.ImageField(blank=True)
     description = models.TextField(max_length=2000, blank=True)
     owner = models.ForeignKey(User, db_index=True, editable=False)
 

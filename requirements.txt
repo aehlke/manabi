@@ -34,6 +34,7 @@ django-webpack-loader==0.3.3
 mecab-python==0.996
 https://github.com/neithere/django-autoslug/archive/223771076e63c1b50f75fb2a576f2ea4c6bad514.zip # no pypi release yet.
 django-admin-sortable==2.0.21
+Pillow==4.0.0
 
 # django-devserver + optional dependencies
 https://github.com/dcramer/django-devserver/archive/master.zip
