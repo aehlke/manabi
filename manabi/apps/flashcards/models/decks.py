@@ -128,6 +128,16 @@ class Deck(models.Model):
         ordering = ('name',)
         #TODO-OLD unique_together = (('owner', 'name'), )
 
+    def get_absolute_image_url(self):
+        if self.image:
+            url = self.image.url
+        else:
+            url = '/static/waves-0.jpg'
+        return '{}/{}'.format(
+            settings.DEFAULT_URL_PREFIX,
+            settings.MEDIA_URL,
+        )
+
     def original_author(self):
         # raise Exception("original author")
         if self.synchronized_with is not None:
