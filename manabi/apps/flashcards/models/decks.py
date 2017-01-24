@@ -136,7 +136,7 @@ class Deck(models.Model):
             url = self.image.url
         else:
             url = '/static/img/deck_icons/waves-{}.jpg'.format(
-                random.randint(0, 3))
+                self.id % 4)
         return urljoin(settings.DEFAULT_URL_PREFIX, url)
 
     def original_author(self):
