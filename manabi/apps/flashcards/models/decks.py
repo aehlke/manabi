@@ -133,7 +133,7 @@ class Deck(models.Model):
     @property
     def image_url(self):
         if self.image:
-            url = settings.MEDIA_URL + self.image.url
+            url = self.image.url
         else:
             url = '/static/waves-{}.jpg'.format(random.randint(0, 3))
         return urljoin(settings.DEFAULT_URL_PREFIX, url)
