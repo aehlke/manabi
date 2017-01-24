@@ -1,5 +1,6 @@
 import datetime
 import random
+from urlparse import urljoin
 
 from autoslug import AutoSlugField
 from cachecow.decorators import cached_function
@@ -132,13 +133,10 @@ class Deck(models.Model):
     @property
     def image_url(self):
         if self.image:
-            url = self.image.url
+            url = settings.MEDIA_URL + self.image.url
         else:
             url = '/static/waves-{}.jpg'.format(random.randint(0, 3))
-        return '{}/{}'.format(
-            settings.DEFAULT_URL_PREFIX,
-            settings.MEDIA_URL,
-        )
+        return urljoin(settings.DEFAULT_URL_PREFIX, url)
 
     def original_author(self):
         # raise Exception("original author")
