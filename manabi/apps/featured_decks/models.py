@@ -21,4 +21,4 @@ def get_featured_decks():
         id__in=FeaturedDeck.objects.all().values('deck_id'),
         active=True,
         shared=True,
-    )
+    ).order_by('featureddeck__ordinal')
