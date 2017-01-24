@@ -15,6 +15,7 @@ CACHES = {
 }
 
 STATIC_ROOT = '/var/www/manabi'
+MEDIA_ROOT = '/var/www/manabi_media'
 
 EMAIL_BACKEND = 'sparkpost.django.email_backend.SparkPostEmailBackend'
 SPARKPOST_OPTIONS = {
