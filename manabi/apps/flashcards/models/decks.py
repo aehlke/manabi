@@ -135,7 +135,7 @@ class Deck(models.Model):
         if self.image:
             url = self.image.url
         else:
-            url = '/static/img/deck-icons/waves-{}.jpg'.format(
+            url = '/static/img/deck_icons/waves-{}.jpg'.format(
                 random.randint(0, 3))
         return urljoin(settings.DEFAULT_URL_PREFIX, url)
 
