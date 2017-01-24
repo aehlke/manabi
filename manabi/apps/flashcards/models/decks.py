@@ -1,4 +1,5 @@
 import datetime
+import random
 
 from autoslug import AutoSlugField
 from cachecow.decorators import cached_function
@@ -132,7 +133,7 @@ class Deck(models.Model):
         if self.image:
             url = self.image.url
         else:
-            url = '/static/waves-0.jpg'
+            url = '/static/waves-{}.jpg'.format(random.randint(0, 3))
         return '{}/{}'.format(
             settings.DEFAULT_URL_PREFIX,
             settings.MEDIA_URL,
