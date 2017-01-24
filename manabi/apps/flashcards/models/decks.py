@@ -129,7 +129,8 @@ class Deck(models.Model):
         ordering = ('name',)
         #TODO-OLD unique_together = (('owner', 'name'), )
 
-    def get_absolute_image_url(self):
+    @property
+    def image_url(self):
         if self.image:
             url = self.image.url
         else:
