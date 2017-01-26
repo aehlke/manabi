@@ -231,7 +231,7 @@ class SharedDecksTest(ManabiTestCase):
         with self.assertNumQueries(QUERY_COUNT):
             self.api.suggested_shared_decks()
 
-        for _ in range(5):
+        for _ in range(4):
             create_sample_data(facts=2)
         for deck in Deck.objects.filter(
                 shared=False, synchronized_with__isnull=True):
