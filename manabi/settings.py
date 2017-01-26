@@ -273,9 +273,19 @@ RQ_QUEUES = {
         'DEFAULT_TIMEOUT': 360,
     },
 }
+
+# Test runner config.
 if 'test' in sys.argv:
     for queue_config in RQ_QUEUES.values():
         queue_config['ASYNC'] = False
+    MIDDLEWARE_CLASSES = tuple(
+        cls_path for cls_path in MIDDLEWARE_CLASSES
+        if 'silk.middleware' not in cls_path
+    )
+    INSTALLED_APPS = tuple(
+        app_path for app_path in INSTALLED_APPS
+        if app_path != 'silk'
+    )
 
 
 #TODO fix, not working

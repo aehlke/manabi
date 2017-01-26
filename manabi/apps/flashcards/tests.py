@@ -210,6 +210,36 @@ class SharedDecksTest(ManabiTestCase):
         print subscribers
         self.assertEqual(len(subscribers), 1)
 
+    def test_card_counts_in_suggested_decks(self):
+        FeaturedDeck.objects.create(deck=self.shared_deck)
+        featured_decks = self.api.suggested_shared_decks()['featured_decks']
+        self.assertEqual(
+            featured_decks[0]['card_count'],
+            self.shared_deck.card_count())
+        self.assertEqual(
+            Deck.objects.filter(
+                id__in=[self.shared_deck.id],
+            ).card_counts()[self.shared_deck.id],
+            self.shared_deck.card_count())
+
+    def test_featured_decks_queries_do_not_increase_with_featured_count(self):
+        QUERY_COUNT = 18
+
+        FeaturedDeck.objects.create(deck=self.shared_deck)
+        with self.assertNumQueries(QUERY_COUNT):
+            self.api.suggested_shared_decks()
+        with self.assertNumQueries(QUERY_COUNT):
+            self.api.suggested_shared_decks()
+
+        for _ in range(5):
+            create_sample_data(facts=2)
+        for deck in Deck.objects.filter(
+                shared=False, synchronized_with__isnull=True):
+            deck.share()
+            FeaturedDeck.objects.create(deck=deck)
+        with self.assertNumQueries(QUERY_COUNT):
+            self.api.suggested_shared_decks()
+
 
 class DeckTest(ManabiTestCase):
     def after_setUp(self):

@@ -60,9 +60,13 @@ class _DeckMixin(object):
     def get_serializer_context(self):
         context = super(_DeckMixin, self).get_serializer_context()
         queryset = self.filter_queryset(self.get_queryset())
+        viewer_subscribed_queryset = Deck.objects.filter(
+            synchronized_with__in=queryset,
+        )
+        queryset_for_counts = queryset | viewer_subscribed_queryset
         context.update({
-            'card_counts': queryset.card_counts(),
-            'subscriber_counts': queryset.subscriber_counts(),
+            'card_counts': queryset_for_counts.card_counts(),
+            'subscriber_counts': queryset_for_counts.subscriber_counts(),
         })
         return context
 
@@ -139,15 +143,22 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
         featured_decks = get_featured_decks().select_related('owner')
         latest_decks = (
             Deck.objects.latest_shared_decks().select_related('owner'))
+
         all_suggested_decks = Deck.objects.filter(
             Q(id__in=featured_decks.values('id'))
             | Q(id__in=latest_decks.values('id'))
-        )
+        ).distinct()
+        viewer_subscribed_queryset = Deck.objects.filter(
+            synchronized_with__in=all_suggested_decks,
+        ).distinct()
+        queryset_for_counts = (
+            all_suggested_decks | viewer_subscribed_queryset)
+
         serializer = SuggestedSharedDecksSerializer({
             'featured_decks': featured_decks,
             'latest_shared_decks': latest_decks,
         }, context={
-            'card_counts': all_suggested_decks.card_counts(),
+            'card_counts': queryset_for_counts.card_counts(),
             'subscriber_counts': all_suggested_decks.subscriber_counts(),
         })
         return Response(serializer.data)

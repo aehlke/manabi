@@ -64,12 +64,12 @@ class DeckQuerySet(QuerySet):
         '''
         Returns a dict mapping deck ID to card count for that deck.
         '''
-        counts = cards.Card.objects.available().filter(
-            Q(deck__in=self) | Q(deck__subscriber_decks__in=self),
-        ).distinct().values('deck_id').annotate(card_count=Count('deck_id'))
+        counts = (
+            cards.Card.objects.available().filter(deck__in=self)
+            .values('deck_id').annotate(card_count=Count('deck_id'))
+        )
         per_deck_counts = {
-            deck_id: 0
-            for deck_id in self.values_list('id', flat=True).iterator()
+            deck_id: 0 for deck_id in self.values_list('id', flat=True)
         }
         per_deck_counts.update({
             count['deck_id']: count['card_count'] for count in counts
@@ -80,18 +80,20 @@ class DeckQuerySet(QuerySet):
         '''
         Returns a dict mapping deck ID to subscriber count for that deck.
         '''
-        counts = self.model.objects.filter(
-            Q(synchronized_with__in=self) | Q(subscriber_decks__in=self),
-        ).distinct().filter(
+        counts = self.model.objects.filter(synchronized_with__in=self).filter(
             active=True,
-            synchronized_with__isnull=True,
         ).values('synchronized_with_id').annotate(
             subscriber_count=Count('synchronized_with_id'),
         )
-        return {
+        subscriber_counts = {
             count['synchronized_with_id']: count['subscriber_count']
             for count in counts
         }
+        subscriber_counts.update({
+            deck_id: 0 for deck_id in self.values_list('id', flat=True)
+            if deck_id not in subscriber_counts
+        })
+        return subscriber_counts
 
 
 class Deck(models.Model):
