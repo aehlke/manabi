@@ -15,5 +15,7 @@ REDIS = {
     'db'  : 0,
 }
 
+SILKY_PYTHON_PROFILER = False
+
 TWITTER_APP_KEY = None
 TWITTER_APP_SECRET = None

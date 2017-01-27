@@ -5,6 +5,7 @@ import sys
 
 from django.conf import settings
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from rest_framework.test import APITestCase, APIClient
@@ -42,6 +43,7 @@ class ManabiTestCase(APITestCase):
         )
         self.api = APIShortcuts(self)
         settings.DEFAULT_URL_PREFIX = 'http://testserver'
+        cache.clear()
 
         self.after_setUp()
 
