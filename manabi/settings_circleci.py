@@ -15,6 +15,12 @@ REDIS = {
     'db'  : 0,
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+    }
+}
+
 SILKY_PYTHON_PROFILER = False
 
 TWITTER_APP_KEY = None
