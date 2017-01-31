@@ -100,9 +100,6 @@ def forwards(apps, schema_editor):
         if set(expression) & set(JLPT_N5_KANJI):
             templates.extend([KANJI_READING, KANJI_WRITING])
 
-        print 'Created fact: {} {} {} {}'.format(
-            fact.expression, fact.reading, fact.meaning, templates)
-
         for template in templates:
             Card.objects.create(
                 owner=owner,
