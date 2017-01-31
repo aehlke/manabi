@@ -24,6 +24,10 @@ from constants import (
     MAX_NEW_CARD_ORDINAL,
     MIN_CARD_SPACE,
     CARD_SPACE_FACTOR,
+    PRODUCTION,
+    RECOGNITION,
+    KANJI_READING,
+    KANJI_WRITING,
 )
 from manabi.apps.flashcards.cachenamespaces import (
     deck_review_stats_namespace,
@@ -32,8 +36,6 @@ from manabi.apps.flashcards.cachenamespaces import (
 from manabi.apps.flashcards.models.cardmanager import CardQuerySet
 from manabi.apps.flashcards.models.undo import UndoCardReview
 from repetitionscheduler import repetition_algo_dispatcher
-
-PRODUCTION, RECOGNITION, KANJI_READING, KANJI_WRITING = range(4)
 
 CARD_TEMPLATE_CHOICES = (
     (PRODUCTION, 'Production'),

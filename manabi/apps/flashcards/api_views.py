@@ -19,7 +19,10 @@ from rest_framework_extensions.cache.mixins import cache_response
 import pytz
 
 from manabi.api.viewsets import MultiSerializerViewSetMixin
-from manabi.apps.featured_decks.models import get_featured_decks
+from manabi.apps.featured_decks.models import (
+    get_featured_decks_tree,
+    get_featured_decks,
+)
 from manabi.apps.flashcards.models import (
     Deck,
     Fact,
@@ -27,6 +30,7 @@ from manabi.apps.flashcards.models import (
     ReviewAvailabilities,
     NextCardsForReview,
     UndoCardReview,
+    deck_trees,
 )
 from manabi.apps.flashcards.api_filters import (
     review_availabilities_filters,
@@ -138,14 +142,20 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
 
 
 class SuggestedSharedDecksViewSet(viewsets.ViewSet):
-    @cache_response(60, cache_errors=False)  # Seconds.
+    @cache_response(60 * 60, cache_errors=False)  # Seconds.
     def list(self, request, format=None):
+        featured_decks_tree = get_featured_decks_tree()
         featured_decks = get_featured_decks().select_related('owner')
         latest_decks = (
             Deck.objects.latest_shared_decks().select_related('owner'))
 
+        featured_deck_ids = [
+            item.deck.id for item in featured_decks_tree
+            if item.deck.id is not None
+        ]
+
         all_suggested_decks = Deck.objects.filter(
-            Q(id__in=featured_decks.values('id'))
+            Q(id__in=featured_deck_ids)
             | Q(id__in=latest_decks.values('id'))
         ).distinct()
         viewer_subscribed_queryset = Deck.objects.filter(
@@ -155,8 +165,9 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
             all_suggested_decks | viewer_subscribed_queryset)
 
         serializer = SuggestedSharedDecksSerializer({
-            'featured_decks': featured_decks,
+            'featured_decks_tree': get_featured_decks_tree,
             'latest_shared_decks': latest_decks,
+            'featured_decks': featured_decks,
         }, context={
             'card_counts': queryset_for_counts.card_counts(),
             'subscriber_counts': all_suggested_decks.subscriber_counts(),

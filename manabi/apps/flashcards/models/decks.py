@@ -105,6 +105,9 @@ class Deck(models.Model):
     description = models.TextField(max_length=2000, blank=True)
     owner = models.ForeignKey(User, db_index=True, editable=False)
 
+    collection = models.ForeignKey('flashcards.DeckCollection',
+        null=True, blank=True, related_name='decks')
+
     textbook_source = models.ForeignKey(Textbook, null=True, blank=True)
 
     priority = models.IntegerField(default=0, blank=True)
@@ -117,7 +120,7 @@ class Deck(models.Model):
     shared_at = models.DateTimeField(null=True, blank=True, editable=False)
     # or if not, whether it's synchronized with a shared deck
     synchronized_with = models.ForeignKey('self',
-            null=True, blank=True, related_name='subscriber_decks')
+        null=True, blank=True, related_name='subscriber_decks')
 
     # "active" is just a soft deletion flag. "suspended" is temporarily
     # disabled.

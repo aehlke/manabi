@@ -3,6 +3,7 @@ import pytz
 
 from manabi.apps.utils.time_utils import seconds_to_days
 
+PRODUCTION, RECOGNITION, KANJI_READING, KANJI_WRITING = range(4)
 
 # Grade IDs (don't change these once they're set)
 GRADE_NONE = 0

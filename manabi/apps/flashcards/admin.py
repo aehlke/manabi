@@ -5,6 +5,7 @@ from manabi.apps.flashcards.models import (
     Card,
     CardHistory,
     Deck,
+    DeckCollection,
     Fact,
 )
 
@@ -23,7 +24,7 @@ class FactAdmin(admin.ModelAdmin):
 
 @admin.register(Deck)
 class DeckAdmin(admin.ModelAdmin):
-    fields = ('name', 'description', 'suspended', 'active', 'image')
+    fields = ('name', 'description', 'suspended', 'active', 'image', 'collection')
     raw_id_fields = ('synchronized_with',)
     list_display = ('__unicode__', 'owner', 'synchronized_with')
     list_filter = ('shared',)
@@ -32,6 +33,12 @@ class DeckAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         queryset = super(DeckAdmin, self).get_queryset(request)
         return queryset.filter(active=True)
+
+
+@admin.register(DeckCollection)
+class DeckCollectionAdmin(admin.ModelAdmin):
+    fields = ('name', 'description', 'image')
+    readonly_fields = ('created_at', 'modified_at',)
 
 
 class TextbookAdmin(admin.ModelAdmin):

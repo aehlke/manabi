@@ -287,6 +287,14 @@ if 'test' in sys.argv:
         if app_path != 'silk'
     )
 
+    class DisableMigrations(object):
+        def __contains__(self, item):
+            return True
+
+        def __getitem__(self, item):
+            return None
+    MIGRATION_MODULES = DisableMigrations()
+
 
 #TODO fix, not working
 SHELL_PLUS_POST_IMPORTS = (

@@ -105,6 +105,7 @@ class Fact(models.Model):
     new_fact_ordinal = models.PositiveIntegerField(null=True, blank=True)
     active = models.BooleanField(default=True, blank=True)
 
+    # TODO Derive expression from reading..?
     expression = models.CharField(max_length=500)
     reading = models.CharField(max_length=1500, blank=True)
     meaning = models.CharField(max_length=1000)

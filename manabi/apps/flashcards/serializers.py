@@ -10,6 +10,7 @@ from manabi.api.serializers import (
 from manabi.apps.flashcards.models import (
     Card,
     Deck,
+    DeckCollection,
     Fact,
 )
 from manabi.apps.flashcards.models.constants import ALL_GRADES
@@ -97,11 +98,6 @@ class SharedDeckSerializer(_BaseDeckSerializer):
         )
 
 
-class SuggestedSharedDecksSerializer(serializers.Serializer):
-    featured_decks = SharedDeckSerializer(many=True)
-    latest_shared_decks = SharedDeckSerializer(many=True)
-
-
 class DeckSerializer(_BaseDeckSerializer):
     synchronized_with = SharedDeckSerializer(read_only=True)
 
@@ -141,6 +137,38 @@ class SynchronizedDeckSerializer(ManabiModelSerializer):
         upstream_deck = validated_data['synchronized_with']
         new_deck = upstream_deck.subscribe(validated_data['owner'])
         return new_deck
+
+
+class DeckCollectionSerializer(ManabiModelSerializer):
+    class Meta:
+        model = DeckCollection
+        fields = (
+            'id',
+            'name',
+            'image_url',
+            'description',
+            'created_at',
+            'modified_at',
+        )
+        read_only_fields = fields
+
+
+class SharedDeckTreeItemSerializer(serializers.Serializer):
+    '''
+    Trees are two levels deep at most: decks, and collections of decks.
+
+    Tree items contain either a deck, or a deck collection.
+    '''
+    deck_collection = DeckCollection()
+    deck = SharedDeckSerializer()
+
+
+class SuggestedSharedDecksSerializer(serializers.Serializer):
+    featured_decks_tree = SharedDeckTreeItemSerializer(many=True)
+    latest_shared_decks = SharedDeckSerializer(many=True)
+
+    # DEPRECATED.
+    featured_decks = SharedDeckSerializer(many=True)
 
 
 class FactSerializer(ManabiModelSerializer):

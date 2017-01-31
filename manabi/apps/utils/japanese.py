@@ -31,19 +31,19 @@ def _furiganaize_complex_compound_word(word, reading,
     Returns None if it's not of the proper form.
     '''
     # Make sure it begins and ends with kanji
-    if len(word) < 3 or _is_kana(word[0]) or _is_kana(word[-1]):
+    if len(word) < 3 or is_kana(word[0]) or is_kana(word[-1]):
         return None
 
     # Make sure it has hiragana in between the kanji
     if not any(_code_page(char) == 'hiragana' for char in word[1:-1]):
         return None
 
-    prefix_kanji, rest_of_word = _split_by(lambda char: not _is_hiragana(char), word)
-    postfix_kanji, middle_kana = _split_by(lambda char: not _is_hiragana(char), rest_of_word[::-1]) #split from end
+    prefix_kanji, rest_of_word = _split_by(lambda char: not is_hiragana(char), word)
+    postfix_kanji, middle_kana = _split_by(lambda char: not is_hiragana(char), rest_of_word[::-1]) #split from end
     postfix_kanji, middle_kana = postfix_kanji[::-1], middle_kana[::-1]
 
     # Make sure there is no kanji in between the hiragana
-    if not all(_is_hiragana(char) for char in middle_kana):
+    if not all(is_hiragana(char) for char in middle_kana):
         return None
 
     # Get the latest part of the reading, excluding the minimal length of kanji at the start/end,
@@ -69,10 +69,10 @@ def _furiganaize_complex_compound_word(word, reading,
 
 
 
-def _is_hiragana(char):
+def is_hiragana(char):
     return _code_page(char) == 'hiragana'
 
-def _is_kana(char):
+def is_kana(char):
     return _code_page(char) in ['hiragana', 'katakana']
 
 def _split_by(filter_func, word):
