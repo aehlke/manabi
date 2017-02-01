@@ -12,6 +12,7 @@ from rest_framework.test import APITestCase, APIClient
 
 from manabi.apps.flashcards.models import (
     Card,
+    DeckCollection,
     Deck,
     Fact,
 )
@@ -243,6 +244,14 @@ def create_deck(user=None):
         owner=owner,
     )
     return deck
+
+
+def create_deck_collection():
+    collection = DeckCollection.objects.create(
+        name=random_name().title(),
+        description='Example description',
+    )
+    return collection
 
 
 def create_fact(user=None, deck=None):

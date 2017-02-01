@@ -153,7 +153,7 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
 
         featured_deck_ids = [
             item.deck.id for item in featured_decks_tree
-            if item.deck.id is not None
+            if item.deck is not None
         ]
 
         all_suggested_decks = Deck.objects.filter(
@@ -165,9 +165,10 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
         ).distinct()
         queryset_for_counts = (
             all_suggested_decks | viewer_subscribed_queryset)
+        print featured_decks_tree
 
         serializer = SuggestedSharedDecksSerializer({
-            'featured_decks_tree': get_featured_decks_tree,
+            'featured_decks_tree': featured_decks_tree,
             'latest_shared_decks': latest_decks,
             'featured_decks': featured_decks,
         }, context={

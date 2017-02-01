@@ -11,7 +11,12 @@ from django.contrib.auth.models import User
 from django.conf import settings
 
 from manabi.apps.featured_decks.models import FeaturedDeck
-from manabi.apps.flashcards.models import Deck, Fact, Card
+from manabi.apps.flashcards.models import (
+    DeckCollection,
+    Deck,
+    Fact,
+    Card,
+)
 from manabi.apps.flashcards.models.constants import (
     GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY,
     DEFAULT_EASE_FACTOR,
@@ -21,6 +26,7 @@ from manabi.test_helpers import (
     ManabiTestCase,
     create_sample_data,
     create_user,
+    create_deck_collection,
     create_deck,
 )
 
@@ -227,6 +233,18 @@ class SharedDecksTest(ManabiTestCase):
                 id__in=[self.shared_deck.id],
             ).card_counts()[self.shared_deck.id],
             self.shared_deck.card_count())
+
+    def test_featured_decks_tree(self):
+        collection = create_deck_collection()
+        self.shared_deck.collection = collection
+        self.shared_deck.save(update_fields=['collection'])
+        FeaturedDeck.objects.create(
+            item=collection,
+        )
+        tree = self.api.suggested_shared_decks()['featured_decks_tree']
+        self.assertEqual(len(tree), 1)
+        self.assertEqual(tree[0]['deck_collection']['id'], collection.id)
+
 
     # def test_featured_decks_queries_do_not_increase_with_featured_count(self):
     #     QUERY_COUNT = 18

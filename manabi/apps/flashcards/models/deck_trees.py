@@ -1,7 +1,7 @@
 class TreeItem(object):
     def __init__(self, *args, **kwargs):
         self.deck = None
-        self.collection = None
+        self.deck_collection = None
 
 
 class DeckTreeItem(TreeItem):
@@ -12,5 +12,5 @@ class DeckTreeItem(TreeItem):
 
 class DeckCollectionTreeItem(TreeItem):
     def __init__(self, collection):
-        super(CollectionTreeItem, self).__init__()
-        self.collection = collection
+        super(DeckCollectionTreeItem, self).__init__()
+        self.deck_collection = collection

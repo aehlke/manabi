@@ -159,7 +159,7 @@ class SharedDeckTreeItemSerializer(serializers.Serializer):
 
     Tree items contain either a deck, or a deck collection.
     '''
-    deck_collection = DeckCollection()
+    deck_collection = DeckCollectionSerializer()
     deck = SharedDeckSerializer()
 
 
