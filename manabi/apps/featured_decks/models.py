@@ -16,8 +16,8 @@ class FeaturedDeck(SortableMixin, models.Model):
     item_content_type = models.ForeignKey(
         ContentType, on_delete=models.CASCADE,
         limit_choices_to=(
-            Q(app_label='flashcards', model='DeckCollection')
-            | Q(app_label='flashcards', model='Deck')
+            Q(app_label='flashcards', model='deckcollection')
+            | Q(app_label='flashcards', model='deck')
         )
     )
     item_id = models.PositiveIntegerField()

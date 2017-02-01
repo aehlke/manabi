@@ -10,4 +10,4 @@ from manabi.apps.flashcards.models import Deck
 class FeaturedDeckAdmin(SortableAdmin):
     model = FeaturedDeck
 
-    list_display = ['deck']
+    list_display = ['item', 'deck']

@@ -24,6 +24,7 @@ from manabi.apps.featured_decks.models import (
     get_featured_decks,
 )
 from manabi.apps.flashcards.models import (
+    DeckCollection,
     Deck,
     Fact,
     Card,
@@ -47,6 +48,7 @@ from manabi.apps.flashcards.serializers import (
     CardReviewSerializer,
     CardSerializer,
     DetailedCardSerializer,
+    DeckCollectionSerializer,
     DeckSerializer,
     DetailedFactSerializer,
     FactSerializer,
@@ -191,6 +193,10 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
 
     def get_queryset(self):
         decks = Deck.objects.filter(active=True, shared=True)
+
+        collection_id = self.request.query_params.get('deck_collection_id')
+        if collection_id is not None:
+            decks = decks.filter(collection_id=collection_id)
 
         user_id = self.request.query_params.get('user_id')
         if user_id is not None:
