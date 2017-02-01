@@ -211,7 +211,8 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
         context = super(SharedDeckViewSet, self).get_serializer_context()
 
         context['viewer_synchronized_decks'] = list(
-            Deck.objects.synchronized_decks(self.request.user).filter(active=True)
+            Deck.objects.synchronized_decks(self.request.user)
+            .filter(active=True)
         )
 
         return context

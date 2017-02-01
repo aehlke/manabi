@@ -64,8 +64,7 @@ def get_featured_decks_tree():
 # DEPRECATED.
 def get_featured_decks():
     return Deck.objects.filter(
-        id__in=FeaturedDeck.objects.all().values('deck_id'),
+        id__in=FeaturedDeck.objects.filter(deck__isnull=False).values('deck_id'),
         active=True,
         shared=True,
-        deck__isnull=False,
     ).order_by('featureddeck__ordinal')
