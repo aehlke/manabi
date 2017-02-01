@@ -27,7 +27,7 @@ class FeaturedDeck(SortableMixin, models.Model):
         default=0, editable=False, db_index=True)
 
     # DEPRECATED.
-    deck = models.OneToOneField('flashcards.Deck')
+    deck = models.OneToOneField('flashcards.Deck', blank=True, null=True)
 
     class Meta:
         ordering = ['ordinal']
@@ -67,4 +67,5 @@ def get_featured_decks():
         id__in=FeaturedDeck.objects.all().values('deck_id'),
         active=True,
         shared=True,
+        deck__isnull=False,
     ).order_by('featureddeck__ordinal')
