@@ -31,7 +31,6 @@ from manabi.apps.flashcards.models import (
     ReviewAvailabilities,
     NextCardsForReview,
     UndoCardReview,
-    deck_trees,
 )
 from manabi.apps.flashcards.api_filters import (
     review_availabilities_filters,
