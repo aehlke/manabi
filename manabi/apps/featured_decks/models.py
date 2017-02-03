@@ -24,7 +24,10 @@ class FeaturedDeck(SortableMixin, models.Model):
         try:
             return self.deck_collection.name
         except AttributeError:
-            return self.deck.name
+            try:
+                return self.deck.name
+            except AttributeError:
+                return '(none set)'
 
 
 def get_featured_decks_tree():
