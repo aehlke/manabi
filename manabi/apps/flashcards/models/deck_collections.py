@@ -2,6 +2,7 @@ import random
 from urlparse import urljoin
 
 from autoslug import AutoSlugField
+from django.conf import settings
 from django.db import models
 
 
