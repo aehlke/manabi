@@ -208,7 +208,6 @@ class SharedDecksTest(ManabiTestCase):
     def test_featured_decks(self):
         FeaturedDeck.objects.create(
             deck=self.shared_deck,
-            item=self.shared_deck,
         )
         featured_decks = self.api.suggested_shared_decks()['featured_decks']
         self.assertTrue(len(featured_decks), 1)
@@ -222,7 +221,6 @@ class SharedDecksTest(ManabiTestCase):
     def test_card_counts_in_suggested_decks(self):
         FeaturedDeck.objects.create(
             deck=self.shared_deck,
-            item=self.shared_deck,
         )
         featured_decks = self.api.suggested_shared_decks()['featured_decks']
         self.assertEqual(
@@ -239,7 +237,7 @@ class SharedDecksTest(ManabiTestCase):
         self.shared_deck.collection = collection
         self.shared_deck.save(update_fields=['collection'])
         FeaturedDeck.objects.create(
-            item=collection,
+            deck_collection=collection,
         )
         tree = self.api.suggested_shared_decks()['featured_decks_tree']
         self.assertEqual(len(tree), 1)
@@ -251,7 +249,6 @@ class SharedDecksTest(ManabiTestCase):
     #
     #     FeaturedDeck.objects.create(
     #         deck=self.shared_deck,
-    #         item=self.shared_deck,
     #     )
     #     with self.assertNumQueries(QUERY_COUNT):
     #         self.api.suggested_shared_decks()
@@ -265,7 +262,6 @@ class SharedDecksTest(ManabiTestCase):
     #         deck.share()
     #         FeaturedDeck.objects.create(
     #             deck=deck,
-    #             item=deck,
     #         )
     #     with self.assertNumQueries(QUERY_COUNT):
     #         self.api.suggested_shared_decks()

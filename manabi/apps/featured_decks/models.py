@@ -21,7 +21,10 @@ class FeaturedDeck(SortableMixin, models.Model):
         ordering = ['ordinal']
 
     def __unicode__(self):
-        return self.item.name
+        try:
+            return self.deck_collection.name
+        except AttributeError:
+            return self.deck.name
 
 
 def get_featured_decks_tree():
