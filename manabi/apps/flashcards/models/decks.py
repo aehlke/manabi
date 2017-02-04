@@ -167,6 +167,17 @@ class Deck(models.Model):
         return settings.DEFAULT_URL_PREFIX + reverse(
             'shared-deck-detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
+    def save(self, update_fields=None, *args, **kwargs):
+        super(Deck, self).save(update_fields=update_fields, *args, **kwargs)
+
+        update_kwargs = {}
+        if update_fields is None or 'image' in update_fields:
+            update_kwargs['image'] = self.image
+        if update_fields is None or 'collection' in update_fields:
+            update_kwargs['collection'] = self.collection
+        if update_kwargs:
+            self.subscriber_decks.update(**update_kwargs)
+
     @transaction.atomic
     def delete(self, *args, **kwargs):
         '''
