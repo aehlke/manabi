@@ -112,6 +112,8 @@ class Deck(models.Model):
 
     priority = models.IntegerField(default=0, blank=True)
 
+    randomize_card_order = models.BooleanField(default=True, blank=True)
+
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     modified_at = models.DateTimeField(auto_now=True, editable=False)
 

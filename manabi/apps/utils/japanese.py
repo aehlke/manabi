@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import subprocess
 import jcconv
 from itertools import takewhile
@@ -73,7 +75,10 @@ def is_hiragana(char):
     return _code_page(char) == 'hiragana'
 
 def is_kana(char):
-    return _code_page(char) in ['hiragana', 'katakana']
+    return _code_page(char) in ['hiragana', 'katakana'] or char in u'ヶァィェォゥ'
+
+def is_kanji(char):
+    return _code_page(char) == 'kanji'
 
 def _split_by(filter_func, word):
     '''

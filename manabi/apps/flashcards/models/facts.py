@@ -133,7 +133,7 @@ class Fact(models.Model):
         self.modified_at = datetime.utcnow()
         also_update_fields = {'modified_at'}
 
-        if self.roll_ordinal():
+        if self.deck.randomize_card_order and self.roll_ordinal():
             also_update_fields.add('new_fact_ordinal')
 
         if (
