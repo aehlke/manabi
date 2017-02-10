@@ -200,6 +200,9 @@ SILKY_MAX_RESPONSE_BODY_SIZE = 128  # kb
 SILKY_META = True  # See what effect Silk had on DB time.
 SILKY_AUTHENTICATION = True
 SILKY_AUTHORISATION = True
+def silk_intercept(request):
+    return not request.path.startswith('/admin/')
+SILKY_INTERCEPT_FUNC = silk_intercept
 
 ROOT_URLCONF = 'manabi.urls'
 
