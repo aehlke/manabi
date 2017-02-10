@@ -98,13 +98,15 @@ class Card(models.Model):
             force_update=force_update, update_fields=update_fields,
             *args, **kwargs)
 
-    def copy(self, target_fact):
+    def copy(self, target_fact, owner_id=None):
         '''
         Returns a new Card object. Copies for the purpose of subscribing.
         '''
+        if owner_id is None:
+            owner_id = target_fact.owner.id
         return Card(
-            owner=target_fact.owner,
-            deck=target_fact.deck,
+            owner_id=owner_id,
+            deck_id=target_fact.deck_id,
             fact=target_fact,
             template=self.template,
             active=self.active,

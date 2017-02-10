@@ -37,7 +37,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
         owner__in=subscribers,
         active=True,
     )
-    subscriber_deck_ids = subscriber_decks.values_list('id', flat=True)
+    subscriber_deck_values = subscriber_decks.values_list('id', 'owner_id')
     subscriber_decks_already_with_facts = (
         _subscriber_decks_already_with_facts(subscriber_decks, facts)
     )
@@ -56,7 +56,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
         ]
         fact_kwargs = {attr: getattr(shared_fact, attr) for attr in copy_attrs}
 
-        for subscriber_deck_id in subscriber_deck_ids:
+        for subscriber_deck_id, subscriber_id in subscriber_deck_ids:
             if _subscriber_deck_already_has_fact(
                 subscriber_deck_id,
                 shared_fact,
@@ -77,7 +77,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
                 shared_fact.card_set.filter(active=True, suspended=False)
                 .iterator()
             ):
-                card = shared_card.copy(fact)
+                card = shared_card.copy(fact, owner_id=subscriber_id)
                 copied_cards_for_fact.append(card)
             copied_cards.append(copied_cards_for_fact)
 
