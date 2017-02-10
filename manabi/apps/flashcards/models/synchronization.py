@@ -52,7 +52,6 @@ def _copy_facts_to_subscribers(facts, subscribers):
         facts = (
             facts.filter(active=True)
             .prefetch_related(fact_cards_prefetch)
-            .iterator()
         )
     except AttributeError:
         facts = [fact for fact in facts if fact.active]
@@ -84,7 +83,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
 
             # Copy the cards.
             copied_cards_for_fact = []
-            for shared_card in shared_fact.available_cards.iterator():
+            for shared_card in shared_fact.available_cards:
                 card = shared_card.copy(fact, owner_id=subscriber_id)
                 copied_cards_for_fact.append(card)
             copied_cards.append(copied_cards_for_fact)
