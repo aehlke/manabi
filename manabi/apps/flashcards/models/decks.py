@@ -110,8 +110,6 @@ class Deck(models.Model):
 
     textbook_source = models.ForeignKey(Textbook, null=True, blank=True)
 
-    priority = models.IntegerField(default=0, blank=True)
-
     randomize_card_order = models.BooleanField(default=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
@@ -276,7 +274,6 @@ class Deck(models.Model):
             synchronized_with=self,
             name=self.name,
             description=self.description,
-            priority=self.priority,  # TODO: Remove.
             textbook_source=self.textbook_source,
             owner_id=user.id,
         )
