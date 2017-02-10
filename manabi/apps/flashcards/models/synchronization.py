@@ -1,7 +1,7 @@
 import itertools
 
 from django.contrib.auth import get_user_model
-from django.db.models import prefetch_related_objects
+from django.db.models import prefetch_related_objects, Prefetch
 
 
 BULK_BATCH_SIZE = 2000
@@ -43,13 +43,20 @@ def _copy_facts_to_subscribers(facts, subscribers):
         _subscriber_decks_already_with_facts(subscriber_decks, facts)
     )
 
+    fact_cards_prefetch = Prefetch(
+        'card_set',
+        queryset=Card.objects.filter(active=True, suspended=False),
+        to_attr='available_cards',
+    )
     try:
         facts = (
-            facts.filter(active=True).prefetch_related('card_set').iterator()
+            facts.filter(active=True)
+            .prefetch_related(fact_cards_prefetch)
+            .iterator()
         )
     except AttributeError:
         facts = [fact for fact in facts if fact.active]
-        prefetch_related_objects(facts, 'card_set')
+        prefetch_related_objects(facts, fact_cards_prefetch)
 
     copied_facts = []
     copied_cards = []
@@ -77,10 +84,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
 
             # Copy the cards.
             copied_cards_for_fact = []
-            for shared_card in (
-                shared_fact.card_set.filter(active=True, suspended=False)
-                .iterator()
-            ):
+            for shared_card in shared_fact.available_cards.iterator():
                 card = shared_card.copy(fact, owner_id=subscriber_id)
                 copied_cards_for_fact.append(card)
             copied_cards.append(copied_cards_for_fact)
