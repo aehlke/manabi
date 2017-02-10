@@ -24,7 +24,10 @@ class FactAdmin(admin.ModelAdmin):
 
 @admin.register(Deck)
 class DeckAdmin(admin.ModelAdmin):
-    fields = ('name', 'description', 'suspended', 'active', 'image', 'collection')
+    fields = (
+        'name', 'description', 'suspended', 'active', 'image', 'collection',
+        'collection_ordinal', 'randomize_card_order',
+    )
     raw_id_fields = ('synchronized_with',)
     list_display = ('__unicode__', 'owner', 'synchronized_with')
     list_filter = ('shared',)

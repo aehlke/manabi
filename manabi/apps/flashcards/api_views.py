@@ -205,7 +205,7 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
         elif self.request.user.is_authenticated():
             decks = decks.exclude(owner=self.request.user)
 
-        return decks.order_by('name')
+        return decks.order_by('collection_ordinal', 'name')
 
     def get_serializer_context(self):
         context = super(SharedDeckViewSet, self).get_serializer_context()

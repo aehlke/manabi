@@ -107,6 +107,7 @@ class Deck(models.Model):
 
     collection = models.ForeignKey('flashcards.DeckCollection',
         null=True, blank=True, related_name='decks')
+    collection_ordinal = models.PositiveIntegerField(null=True, blank=True)
 
     textbook_source = models.ForeignKey(Textbook, null=True, blank=True)
 
@@ -273,7 +274,10 @@ class Deck(models.Model):
         deck = Deck.objects.create(
             synchronized_with=self,
             name=self.name,
+            slug=self.slug,
+            image=self.image,
             description=self.description,
+            randomize_card_order=self.randomize_card_order,
             textbook_source=self.textbook_source,
             owner_id=user.id,
         )
