@@ -1,6 +1,7 @@
 import itertools
 
 from django.contrib.auth import get_user_model
+from django.db.models import prefetch_related_objects
 
 
 BULK_BATCH_SIZE = 2000
@@ -43,9 +44,12 @@ def _copy_facts_to_subscribers(facts, subscribers):
     )
 
     try:
-        facts = facts.filter(active=True).iterator()
+        facts = (
+            facts.filter(active=True).prefetch_related('card_set').iterator()
+        )
     except AttributeError:
         facts = [fact for fact in facts if fact.active]
+        prefetch_related_objects(facts, 'card_set')
 
     copied_facts = []
     copied_cards = []
