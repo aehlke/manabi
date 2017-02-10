@@ -56,7 +56,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
         ]
         fact_kwargs = {attr: getattr(shared_fact, attr) for attr in copy_attrs}
 
-        for subscriber_deck_id, subscriber_id in subscriber_deck_ids:
+        for subscriber_deck_id, subscriber_id in subscriber_deck_values:
             if _subscriber_deck_already_has_fact(
                 subscriber_deck_id,
                 shared_fact,
