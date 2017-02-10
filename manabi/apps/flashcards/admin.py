@@ -12,7 +12,9 @@ from manabi.apps.flashcards.models import (
 
 class CardAdmin(admin.ModelAdmin):
     raw_id_fields = ('fact',)
-    list_display = ('__unicode__', 'last_due_at', 'due_at', 'last_reviewed_at',)
+    list_display = (
+        '__unicode__', 'last_due_at', 'due_at', 'last_reviewed_at',
+    )
 
 
 class FactAdmin(admin.ModelAdmin):
