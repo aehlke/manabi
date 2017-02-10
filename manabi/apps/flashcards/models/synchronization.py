@@ -16,12 +16,12 @@ def _subscriber_decks_already_with_facts(subscriber_decks, facts):
 
 
 def _subscriber_deck_already_has_fact(
-    subscriber_deck,
+    subscriber_deck_id,
     shared_fact,
     subscriber_decks_already_with_facts,
 ):
     return (
-        (subscriber_deck.id, shared_fact.id) in
+        (subscriber_deck_id, shared_fact.id) in
         subscriber_decks_already_with_facts
     )
 
@@ -37,6 +37,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
         owner__in=subscribers,
         active=True,
     )
+    subscriber_deck_ids = subscriber_decks.values_list('id', flat=True)
     subscriber_decks_already_with_facts = (
         _subscriber_decks_already_with_facts(subscriber_decks, facts)
     )
@@ -55,16 +56,16 @@ def _copy_facts_to_subscribers(facts, subscribers):
         ]
         fact_kwargs = {attr: getattr(shared_fact, attr) for attr in copy_attrs}
 
-        for subscriber_deck in subscriber_decks.iterator():
+        for subscriber_deck_id in subscriber_deck_ids:
             if _subscriber_deck_already_has_fact(
-                subscriber_deck,
+                subscriber_deck_id,
                 shared_fact,
                 subscriber_decks_already_with_facts,
             ):
                 continue
 
             fact = Fact(
-                deck=subscriber_deck,
+                deck_id=subscriber_deck_id,
                 synchronized_with=shared_fact,
                 **fact_kwargs
             )
