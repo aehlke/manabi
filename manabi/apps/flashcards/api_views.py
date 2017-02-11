@@ -61,9 +61,9 @@ from manabi.apps.flashcards.serializers import (
 from manabi.apps.manabi_auth.serializers import UserSerializer
 
 
-class _DeckMixin(object):
+class _SharedDeckMixin(object):
     def get_serializer_context(self):
-        context = super(_DeckMixin, self).get_serializer_context()
+        context = super(_SharedDeckMixin, self).get_serializer_context()
         queryset = self.filter_queryset(self.get_queryset())
         viewer_subscribed_queryset = Deck.objects.filter(
             synchronized_with__in=queryset,
@@ -75,6 +75,8 @@ class _DeckMixin(object):
         })
         return context
 
+
+class _DeckMixin(object):
     @detail_route()
     def subscribers(self, request, pk=None):
         deck = self.get_object()
@@ -95,6 +97,19 @@ class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):
             .of_user(self.request.user)
             .select_related('owner', 'synchronized_with')
         )
+
+    def get_serializer_context(self):
+        context = super(DeckViewSet, self).get_serializer_context()
+        queryset = self.filter_queryset(self.get_queryset())
+        upstream_queryset = Deck.objects.filter(
+            id__in=queryset.filter(synchronized_with__isnull=False).values_list('synchronized_with_id', flat=True),
+        )
+        queryset_for_counts = queryset | upstream_queryset
+        context.update({
+            'card_counts': queryset_for_counts.card_counts(),
+            'subscriber_counts': queryset_for_counts.subscriber_counts(),
+        })
+        return context
 
     def perform_create(self, serializer):
         instance = serializer.save(owner=self.request.user)
@@ -176,7 +191,7 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
-class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
+class SharedDeckViewSet(_DeckMixin, _SharedDeckMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = SharedDeckSerializer
 
     @detail_route()
