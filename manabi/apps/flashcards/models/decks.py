@@ -1,5 +1,6 @@
 import datetime
 import random
+from datetime import timedelta
 from urlparse import urljoin
 
 from autoslug import AutoSlugField
@@ -145,6 +146,10 @@ class Deck(models.Model):
                 (self.synchronized_with_id or self.id) % 8)
         return urljoin(settings.DEFAULT_URL_PREFIX, url)
 
+    @cached_function(
+        timeout=timedelta(weeks=1),
+        key=['Deck.original_author', lambda self: self.id],
+    )
     def original_author(self):
         # raise Exception("original author")
         if self.synchronized_with is not None:

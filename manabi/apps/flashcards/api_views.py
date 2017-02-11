@@ -164,7 +164,6 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
         ).distinct()
         queryset_for_counts = (
             all_suggested_decks | viewer_subscribed_queryset)
-        print featured_decks_tree
 
         serializer = SuggestedSharedDecksSerializer({
             'featured_decks_tree': featured_decks_tree,

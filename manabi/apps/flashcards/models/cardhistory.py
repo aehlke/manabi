@@ -83,3 +83,6 @@ class CardHistory(models.Model):
 
     class Meta:
         app_label = 'flashcards'
+        index_together = [
+            ['card', 'was_new', 'reviewed_at'],
+        ]
