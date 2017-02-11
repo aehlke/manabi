@@ -61,21 +61,6 @@ from manabi.apps.flashcards.serializers import (
 from manabi.apps.manabi_auth.serializers import UserSerializer
 
 
-class _SharedDeckMixin(object):
-    def get_serializer_context(self):
-        context = super(_SharedDeckMixin, self).get_serializer_context()
-        queryset = self.filter_queryset(self.get_queryset())
-        viewer_subscribed_queryset = Deck.objects.filter(
-            synchronized_with__in=queryset,
-        )
-        queryset_for_counts = queryset | viewer_subscribed_queryset
-        context.update({
-            'card_counts': queryset_for_counts.card_counts(),
-            'subscriber_counts': queryset_for_counts.subscriber_counts(),
-        })
-        return context
-
-
 class _DeckMixin(object):
     @detail_route()
     def subscribers(self, request, pk=None):
@@ -191,7 +176,7 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
-class SharedDeckViewSet(_DeckMixin, _SharedDeckMixin, viewsets.ReadOnlyModelViewSet):
+class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = SharedDeckSerializer
 
     @detail_route()
@@ -206,7 +191,11 @@ class SharedDeckViewSet(_DeckMixin, _SharedDeckMixin, viewsets.ReadOnlyModelView
         )
 
     def get_queryset(self):
-        decks = Deck.objects.filter(active=True, shared=True)
+        decks = (
+            Deck.objects
+            .filter(active=True, shared=True)
+            .select_related('owner')
+        )
 
         collection_id = self.request.query_params.get('deck_collection_id')
         if collection_id is not None:
@@ -223,12 +212,23 @@ class SharedDeckViewSet(_DeckMixin, _SharedDeckMixin, viewsets.ReadOnlyModelView
 
     def get_serializer_context(self):
         context = super(SharedDeckViewSet, self).get_serializer_context()
-
-        context['viewer_synchronized_decks'] = list(
-            Deck.objects.synchronized_decks(self.request.user)
-            .filter(active=True)
-        )
-
+        queryset_for_counts = self.filter_queryset(self.get_queryset())
+        if self.request.user.is_authenticated():
+            viewer_subscribed_decks = Deck.objects.filter(
+                synchronized_with_id__in=queryset_for_counts.values_list(
+                    'id', flat=True),
+                owner=self.request.user,
+            )
+            queryset_for_counts |= viewer_subscribed_decks
+        context.update({
+            'card_counts': queryset_for_counts.card_counts(),
+            'subscriber_counts': queryset_for_counts.subscriber_counts(),
+            'viewer_synchronized_decks': list(
+                Deck.objects.synchronized_decks(self.request.user)
+                .filter(active=True)
+                .select_related('owner', 'synchronized_with__owner')
+            )
+        })
         return context
 
 

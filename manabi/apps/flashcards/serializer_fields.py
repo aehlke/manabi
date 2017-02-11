@@ -26,4 +26,10 @@ class ViewerSynchronizedDeckField(serializers.Field):
         except StopIteration:
             return None
 
-        return DeckSerializer(synchronized_deck).data
+        return DeckSerializer(
+            synchronized_deck,
+            context={
+                'card_counts': self.context['card_counts'],
+                'subscriber_counts': self.context['subscriber_counts'],
+            },
+        ).data
