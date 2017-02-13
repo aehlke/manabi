@@ -205,7 +205,7 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
         if user_id is not None:
             user = get_object_or_404(get_user_model(), id=user_id)
             decks = decks.shared_decks_owned_or_subcribed_by_user(user)
-        elif self.request.user.is_authenticated():
+        elif self.request.user.is_authenticated() and self.action == 'list':
             decks = decks.exclude(owner=self.request.user)
 
         return decks.order_by('collection_ordinal', 'name')
