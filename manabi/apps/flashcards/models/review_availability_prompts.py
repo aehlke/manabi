@@ -143,7 +143,7 @@ def _new_buried_under_daily_limit(review_availabilities, secondary=False):
     if review_availabilities.new_cards_per_day_limit_reached:
         return
     count = review_availabilities.buried_new_cards_count
-    if count == 0:
+    if count == 0 or count is None:
         return
 
     template = (
@@ -167,7 +167,7 @@ def _new_buried_over_daily_limit(review_availabilities, secondary=False):
     if not review_availabilities.new_cards_per_day_limit_reached:
         return
     count = review_availabilities.buried_new_cards_count
-    if count == 0:
+    if count == 0 or count is None:
         return
 
     template = (
