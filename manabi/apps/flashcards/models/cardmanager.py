@@ -273,8 +273,10 @@ class SchedulerMixin(object):
             learn_more=learn_more,
         )
 
-        user_cards = self.common_filters(
-            user, deck=deck, excluded_ids=excluded_ids)
+        user_cards = (
+            self.common_filters(user, deck=deck, excluded_ids=excluded_ids)
+            .select_related('fact')
+        )
 
         buried_facts = Fact.objects.buried(
             user, review_time=now, excluded_card_ids=excluded_ids)
