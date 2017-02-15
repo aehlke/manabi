@@ -24,6 +24,14 @@ class FactAdmin(admin.ModelAdmin):
     readonly_fields = ('created_at', 'modified_at',)
 
 
+class FactInline(admin.TabularInline):
+    model = Fact
+    fields = (
+        'expression', 'reading', 'meaning',
+    )
+    readonly_fields = ('created_at', 'modified_at',)
+
+
 @admin.register(Deck)
 class DeckAdmin(admin.ModelAdmin):
     fields = (
@@ -34,6 +42,7 @@ class DeckAdmin(admin.ModelAdmin):
     list_display = ('__unicode__', 'owner', 'synchronized_with')
     list_filter = ('shared',)
     readonly_fields = ('created_at', 'modified_at',)
+    inlines = [FactInline]
 
     def get_queryset(self, request):
         queryset = super(DeckAdmin, self).get_queryset(request)
