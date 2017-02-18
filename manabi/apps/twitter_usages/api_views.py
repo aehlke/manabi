@@ -18,7 +18,8 @@ class TweetsForFactView(generics.ListAPIView):
     MAX_COUNT = 10
 
     def get_queryset(self):
-        fact = get_object_or_404(Fact, id=self.kwargs['fact_id'])
+        fact = get_object_or_404(
+            Fact.objects.select_related('deck'), id=self.kwargs['fact_id'])
 
         # TODO: Use DRF permissions.
         if fact.deck.owner_id != self.request.user.id:
