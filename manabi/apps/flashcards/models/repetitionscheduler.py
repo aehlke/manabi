@@ -3,6 +3,7 @@ from math import cos, pi
 import random
 
 from cachecow.decorators import cached_function
+from django.utils.lru_cache import lru_cache
 
 from constants import (GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY, MATURE_INTERVAL_MIN)
 from manabi.apps.flashcards.cachenamespaces import deck_review_stats_namespace
@@ -108,7 +109,7 @@ class RepetitionAlgo(object):
                                         self.grade,
                                         self.reviewed_at,)],
                      namespace=lambda a, *args, **kwargs:
-                            deck_review_stats_namespace(a.card.deck))
+                            deck_review_stats_namespace(a.card.deck_id))
     def next_repetition(self):
         '''
         Returns an instance of `NextRepetition` containing the updated
@@ -232,6 +233,7 @@ class RepetitionAlgo(object):
         '''
         return self.reviewed_at - self.card.last_reviewed_at
 
+    @lru_cache(maxsize=None)
     def _percent_waited(self):
         '''
         Returns the percent of the last repetition the user waited before

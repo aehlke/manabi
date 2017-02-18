@@ -39,4 +39,4 @@ def nuke_human_readable_field(sender, instance, created, **kwargs):
 @receiver(card_active_field_changed, dispatch_uid='deck_review_stats_cafc')
 @receiver(pre_delete, sender=Card, dispatch_uid='deck_review_stats_cpd')
 def nuke_deck_review_stats_namespace(sender, instance, **kwargs):
-    invalidate_namespace(deck_review_stats_namespace(instance.deck))
+    invalidate_namespace(deck_review_stats_namespace(instance.deck_id))
