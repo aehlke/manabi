@@ -86,6 +86,7 @@ class Card(models.Model):
         app_label = 'flashcards'
         index_together = [
             ['owner', 'due_at', 'active', 'suspended'],
+            ['deck', 'owner'],
         ]
 
     def __unicode__(self):
