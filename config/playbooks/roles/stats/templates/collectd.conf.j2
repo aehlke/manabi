@@ -1221,7 +1221,7 @@ LoadPlugin write_graphite
 <Plugin write_graphite>
         <Node "graphite">
                 Host "localhost"
-                Port "{{ graphite_api.line_receiver_port }}"
+                Port "{{ carbon.line_receiver_port }}"
                 Protocol "tcp"
                 LogSendErrors true
                 Prefix "collectd."
