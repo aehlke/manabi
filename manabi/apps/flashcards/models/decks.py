@@ -135,7 +135,7 @@ class Deck(models.Model):
     class Meta:
         app_label = 'flashcards'
         ordering = ('name',)
-        unique_together = [('owner', 'name', 'synchronized_with')]
+        unique_together = [('owner', 'name', 'synchronized_with', 'active')]
 
     @property
     def image_url(self):

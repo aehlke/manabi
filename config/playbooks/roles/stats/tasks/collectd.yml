@@ -11,3 +11,9 @@
 - name: Disable Ubuntu's own automatic startup of collectd since we use Supervisor
   command: 'update-rc.d -f collectd disable'
   become: yes
+
+- name: Stop any running collectd outside Supervisor
+  service:
+    name: collectd
+    state: stopped
+  become: yes
