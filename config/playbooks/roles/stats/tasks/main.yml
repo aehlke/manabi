@@ -9,7 +9,6 @@
     - graphite-web
     - graphite-carbon
     - libpq-dev
-    - python-psycopg2
 
 - include: carbon.yml
 - include: grafana.yml

@@ -1,9 +1,21 @@
 ---
 
+- name: Disable Ubuntu's own automatic startup of Carbon Cache since we use Supervisor
+  command: 'update-rc.d -f carbon-cache disable'
+  become: yes
+
 - name: Configure Carbon storage schemas
   template:
     src: carbon-storage-schemas.conf.j2
     dest: /etc/carbon/storage-schemas.conf
+    mode: 0644
+  become: yes
+  notify: Restart Carbon Cache
+
+- name: Configure Carbon storage aggregation
+  template:
+    src: carbon-storage-aggregation.conf.j2
+    dest: /etc/carbon/storage-aggregation.conf
     mode: 0644
   become: yes
   notify: Restart Carbon Cache

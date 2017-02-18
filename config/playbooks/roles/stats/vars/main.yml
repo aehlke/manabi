@@ -3,6 +3,7 @@
 carbon:
   user: ubuntu
   group: ubuntu
+  config_path: /etc/carbon/carbon.conf
 
 grafana:
   user: grafana
