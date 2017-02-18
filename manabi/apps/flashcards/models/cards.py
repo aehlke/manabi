@@ -95,7 +95,7 @@ class Card(models.Model):
         if update_fields is None and not force_update:
             self.owner_id = self.deck.owner_id
 
-        if update_fields is None or {'deck', 'deck_id'} & update_fields:
+        if update_fields is None or {'deck', 'deck_id'} & set(update_fields):
             self.deck_suspended = self.deck.suspended
 
         super(Card, self).save(
