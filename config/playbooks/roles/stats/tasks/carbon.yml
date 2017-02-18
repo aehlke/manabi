@@ -1,0 +1,9 @@
+---
+
+- name: Configure Carbon storage schemas
+  template:
+      src: carbon-storage-schemas.conf.j2
+    dest: /etc/carbon/storage-schemas.conf
+    mode: 0644
+  become: yes
+  notify: Restart Carbon Cache

@@ -14,7 +14,7 @@
 
 - name: Configure Grafana
   template:
-    src: grafana.ini.js
+    src: grafana.ini.j2
     dest: /etc/grafana/grafana.ini
     owner: '{{ grafana.user }}'
     group: '{{ grafana.group }}'

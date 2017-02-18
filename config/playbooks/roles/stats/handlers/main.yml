@@ -3,3 +3,7 @@
 - name: Restart Grafana
   command: supervisorctl restart grafana
   become: yes
+
+- name: Restart Carbon Cache
+    command: supervisorctl restart carbon-cache
+  become: yes

@@ -2,6 +2,11 @@
 
 dependencies:
   - role: ansible-supervisor_task
+    name: carbon-cache
+    command: /opt/graphite/bin/carbon-cache.py --pidfile /var/run/carbon-cache-a.pid --debug start
+    numprocs: 1
+
+  - role: ansible-supervisor_task
     name: grafana
     command: grafana-server
     user: '{{ grafana.user }}'
