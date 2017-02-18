@@ -1,14 +1,5 @@
 ---
 
-- name: Install Graphite and related packages
-  apt:
-    name: '{{ item }}'
-  become: yes
-  with_items:
-    - build-essential
-    - graphite-web
-    - graphite-carbon
-    - libpq-dev
-
 - include: carbon.yml
+- include: graphite.yml
 - include: grafana.yml

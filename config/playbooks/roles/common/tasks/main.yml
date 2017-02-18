@@ -40,6 +40,16 @@
     - virtualenv
   become: yes
 
+- name: Configure Supervisor
+  template:
+    src: supervisor.conf.j2
+    dest: /etc/supervisor/supervisor.conf
+    user: root
+    owner: root
+    mode: 0644
+  become: yes
+  notify: Reload Supervisor configuration
+
 - include: byobu.yml
 
 # Security.

@@ -7,3 +7,7 @@
 - name: Restart Carbon Cache
   command: supervisorctl restart carbon-cache
   become: yes
+
+- name: Restart Graphite-API
+  command: supervisorctl restart graphite-api
+  become: yes

@@ -8,6 +8,16 @@ dependencies:
     numprocs: 1
 
   - role: ansible-supervisor_task
+    name: graphite-api
+    command: 'uwsgi --socket="{{ graphite_api.uwsgi_socket }}" --chmod-socket=666 -w graphite_api.app:app --processes=2 --enable-threads --max-requests=10000 --vacuum'
+    env_vars:
+      PRODUCTION: 1
+    process_name: uwsgi
+    user: ubuntu
+    tags: uwsgi
+    numprocs: 1
+
+  - role: ansible-supervisor_task
     name: grafana
     command: "grafana-server --config='{{ grafana.config_path }}' cfg:default.paths.data='{{ grafana.data_dir }}' cfg:default.paths.plugins='{{ grafana.plugins_dir }}'"
     user: '{{ grafana.user }}'

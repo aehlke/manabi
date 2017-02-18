@@ -11,3 +11,7 @@
     name: ufw
     state: restarted
   become: yes
+
+- name: Reload Superivsor configuration
+  shell: supervisorctl reread && supervisorctl update
+  become: yes

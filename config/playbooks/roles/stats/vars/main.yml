@@ -1,9 +1,13 @@
 ---
 
 carbon:
-  user: ubuntu
-  group: ubuntu
+  user: _graphite
+  group: _graphite
   config_path: /etc/carbon/carbon.conf
+
+graphite_api:
+  uwsgi_socket: /tmp/graphite_api_uwsgi.socket
+  config_path: /etc/graphite-api.yaml
 
 grafana:
   user: grafana
