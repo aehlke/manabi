@@ -363,7 +363,10 @@ class CardViewSet(viewsets.ModelViewSet):
     permissions_classes = [IsOwnerPermission]
 
     def get_queryset(self):
-        return Card.objects.of_user(self.request.user)
+        return (
+            Card.objects.of_user(self.request.user)
+            .select_related('fact', 'deck')
+        )
 
     @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
     def reviews(self, request, pk=None):
