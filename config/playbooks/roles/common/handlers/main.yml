@@ -12,6 +12,6 @@
     state: restarted
   become: yes
 
-- name: Reload Superivsor configuration
+- name: Reload Supervisor configuration
   shell: supervisorctl reread && supervisorctl update
   become: yes
