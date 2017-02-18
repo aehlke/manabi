@@ -8,6 +8,7 @@ carbon:
 graphite_api:
   uwsgi_socket: /tmp/graphite_api_uwsgi.socket
   config_path: /etc/graphite-api.yaml
+  port: 8280
 
 grafana:
   user: grafana

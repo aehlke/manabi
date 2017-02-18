@@ -1,0 +1,16 @@
+# {{ ansible_managed }}
+
+upstream uwsgi {
+    server unix://{{ graphite_api.uwsgi_socket }}; # for a file socket
+}
+
+server {
+    listen {{ graphite_api.port }};
+
+    server_name localhost;
+
+    location / {
+        include uwsgi_params;
+        uwsgi_pass uwsgi;
+    }
+}

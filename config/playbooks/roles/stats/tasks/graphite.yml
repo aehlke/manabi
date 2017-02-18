@@ -24,3 +24,10 @@
     mode: 0644
   become: yes
   notify: Restart Graphite-API
+
+- name: Add Graphite-API nginx site
+  template:
+    src: nginx-graphite-api.conf.j2
+    dest: /etc/nginx/sites-enabled/graphite-api.conf
+  become: yes
+  notify: Reload nginx
