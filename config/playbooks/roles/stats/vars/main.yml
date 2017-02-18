@@ -1,8 +1,16 @@
 ---
 
+carbon:
+  user: ubuntu
+  group: ubuntu
+
 grafana:
-  user: www-data
-  group: www-data
+  user: grafana
+  group: grafana
+  home_dir: /usr/share/grafana
+  data_dir: /var/lib/grafana
+  plugins_dir: /var/lib/grafana/plugins
+  config_path: /etc/grafana/grafana.ini
   port: 8180
   oauth2_proxy_port: 8181
   hostname: grafana.manabi.io

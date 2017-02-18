@@ -4,12 +4,14 @@ dependencies:
   - role: ansible-supervisor_task
     name: carbon-cache
     command: /opt/graphite/bin/carbon-cache.py --pidfile /var/run/carbon-cache-a.pid --debug start
+    user: '{{ carbon.user }}'
     numprocs: 1
 
   - role: ansible-supervisor_task
     name: grafana
-    command: grafana-server
+    command: "grafana-server --config='{{ grafana.config_path }}' cfg:default.paths.data='{{ grafana.data_dir }}' cfg:default.paths.plugins='{{ grafana.plugins_dir }}'"
     user: '{{ grafana.user }}'
+    directory: '{{ grafana.home_dir }}'
     numprocs: 1
 
   - role: oauth2_proxy

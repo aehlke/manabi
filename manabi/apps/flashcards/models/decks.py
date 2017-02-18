@@ -181,6 +181,8 @@ class Deck(models.Model):
             update_kwargs['image'] = self.image
         if update_fields is None or 'collection' in update_fields:
             update_kwargs['collection'] = self.collection
+        if update_fields is None or 'suspended' in update_fields:
+            self.card_set.update(deck_suspended=True)
         if update_kwargs:
             self.subscriber_decks.update(**update_kwargs)
 

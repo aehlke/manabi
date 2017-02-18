@@ -54,6 +54,7 @@ class Card(models.Model):
     # Denormalized fields:
     owner = models.ForeignKey(User, editable=False)
     deck = models.ForeignKey('flashcards.Deck', db_index=True)
+    deck_suspended = models.BooleanField(default=False, db_index=True)
 
     fact = models.ForeignKey('flashcards.Fact', db_index=True)
 
@@ -93,6 +94,9 @@ class Card(models.Model):
     def save(self, force_update=False, update_fields=None, *args, **kwargs):
         if update_fields is None and not force_update:
             self.owner_id = self.deck.owner_id
+
+        if update_fields is None or {'deck', 'deck_id'} & update_fields:
+            self.deck_suspended = self.deck.suspended
 
         super(Card, self).save(
             force_update=force_update, update_fields=update_fields,

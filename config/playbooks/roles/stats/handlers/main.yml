@@ -5,5 +5,5 @@
   become: yes
 
 - name: Restart Carbon Cache
-    command: supervisorctl restart carbon-cache
+  command: supervisorctl restart carbon-cache
   become: yes

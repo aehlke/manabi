@@ -12,6 +12,12 @@
     update_cache: yes
   become: yes
 
+- name: Install Grafana
+  apt:
+    pkg: grafana
+  become: yes
+  notify: Restart Grafana
+
 - name: Configure Grafana
   template:
     src: grafana.ini.j2
@@ -22,8 +28,9 @@
   become: yes
   notify: Restart Grafana
 
-- name: Install Grafana
-  apt:
-    pkg: grafana
+- name: Add Grafana nginx site
+  template:
+    src: nginx-grafana.conf.j2
+    dest: /etc/nginx/sites-enabled/grafana.conf
   become: yes
-  notify: Restart Grafana
+  notify: Reload nginx

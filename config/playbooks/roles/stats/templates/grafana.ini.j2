@@ -1,3 +1,5 @@
+# {{ ansible_managed }}
+
 ##################### Grafana Configuration Example #####################
 #
 # Everything has defaults so you only need to uncomment things you want to
@@ -13,15 +15,15 @@
 [paths]
 # Path to where grafana can store temp files, sessions, and the sqlite3 db (if that is used)
 #
-;data = /var/lib/grafana
+data = /var/lib/grafana
 #
 # Directory where grafana can store logs
 #
-;logs = /var/log/grafana
+logs = /var/log/grafana
 #
 # Directory where grafana will automatically scan and look for plugins
 #
-;plugins = /var/lib/grafana/plugins
+plugins = /var/lib/grafana/plugins
 
 #
 #################################### Server ####################################
@@ -36,7 +38,7 @@ protocol = http
 http_port = {{ grafana.port }}
 
 # The public facing domain name used to access grafana from a browser
-domain = localhost
+domain = {{ grafana.hostname }}
 
 # Redirect to correct domain if host header does not match domain
 # Prevents DNS rebinding attacks
@@ -65,7 +67,7 @@ root_url = https://{{ grafana.hostname }}
 # as seperate properties or as on string using the url propertie.
 
 # Either "mysql", "postgres" or "sqlite3", it's your choice
-;type = sqlite3
+type = sqlite3
 ;host = 127.0.0.1:3306
 ;name = grafana
 ;user = root
@@ -80,7 +82,7 @@ root_url = https://{{ grafana.hostname }}
 ;ssl_mode = disable
 
 # For "sqlite3" only, path relative to data_path setting
-;path = grafana.db
+path = grafana.db
 
 # Max conn setting default is 0 (mean not set)
 ;max_conn =
@@ -91,7 +93,7 @@ root_url = https://{{ grafana.hostname }}
 #################################### Session ####################################
 [session]
 # Either "memory", "file", "redis", "mysql", "postgres", default is "file"
-;provider = file
+provider = file
 
 # Provider config options
 # memory: not have any config yet
@@ -191,18 +193,18 @@ root_url = https://{{ grafana.hostname }}
 
 [auth]
 # Set to true to disable (hide) the login form, useful if you use OAuth, defaults to false
-;disable_login_form = false
+disable_login_form = true
 
 #################################### Anonymous Auth ##########################
 [auth.anonymous]
 # enable anonymous access
-;enabled = false
+enabled = true
 
 # specify organization name that should be used for unauthenticated users
-;org_name = Main Org.
+org_name = Manabi
 
 # specify role for unauthenticated users
-;org_role = Viewer
+org_role = Editor
 
 #################################### Github Auth ##########################
 [auth.github]
@@ -263,7 +265,7 @@ root_url = https://{{ grafana.hostname }}
 
 #################################### Basic Auth ##########################
 [auth.basic]
-;enabled = true
+enabled = false
 
 #################################### Auth LDAP ##########################
 [auth.ldap]
