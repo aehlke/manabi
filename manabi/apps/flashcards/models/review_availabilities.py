@@ -223,7 +223,7 @@ class ReviewAvailabilities(object):
             .count()
         )
         prompt = (
-            "You have {} out of {) cards left today. "
+            "You have {} out of {} cards left today. "
             "Purchase to unlock unlimited daily reviews."
         ).format(
             max(0, TRIAL_DAILY_REVIEW_CAP - reviewed_today_count),
