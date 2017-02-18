@@ -44,8 +44,8 @@
   template:
     src: supervisor.conf.j2
     dest: /etc/supervisor/supervisor.conf
-    user: root
     owner: root
+    group: root
     mode: 0644
   become: yes
   notify: Reload Supervisor configuration
