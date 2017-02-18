@@ -341,6 +341,8 @@ class ReviewAvailabilitiesSerializer(serializers.Serializer):
     primary_prompt = serializers.CharField()
     secondary_prompt = serializers.CharField()
 
+    trial_prompt = serializers.CharField()
+
     class Meta:
         read_only_fields = (
             'ready_for_review',

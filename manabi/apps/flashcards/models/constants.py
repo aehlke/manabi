@@ -71,3 +71,5 @@ CARD_SPACE_FACTOR = .1 # * interval, used for card spacing if greater than MIN_C
 LATEST_SHARED_DECKS_LIMIT = 40
 
 DEFAULT_TIME_ZONE = pytz.timezone('America/New_York')
+
+TRIAL_DAILY_REVIEW_CAP = 10

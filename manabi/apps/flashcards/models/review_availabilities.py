@@ -6,6 +6,7 @@ from django.utils.lru_cache import lru_cache
 
 from manabi.apps.flashcards.models.constants import (
     NEW_CARDS_PER_DAY_LIMIT_OVERRIDE_INCREMENT,
+    TRIAL_DAILY_REVIEW_CAP,
 )
 from manabi.apps.flashcards.models.new_cards_limit import (
     NewCardsLimit,
@@ -17,6 +18,7 @@ from manabi.apps.flashcards.models import (
     Deck,
     Fact,
     Card,
+    CardHistory,
 )
 
 
@@ -206,3 +208,24 @@ class ReviewAvailabilities(object):
     @property
     def secondary_prompt(self):
         return self._prompts()[1]
+
+    @property
+    @lru_cache(maxsize=None)
+    def trial_prompt(self):
+        if self.user.is_anonymous():
+            return
+        if self.user.username not in ['alex', 'alextest']:
+            return  # FIXME
+
+        reviewed_today_count = (
+            CardHistory.objects
+            .of_day_for_user(self.user, self.time_zone or DEFAULT_TIME_ZONE)
+            .count()
+        )
+        prompt = (
+            "You have {} out of {) cards left today. "
+            "Purchase to unlock unlimited daily reviews."
+        ).format(
+            max(0, TRIAL_DAILY_REVIEW_CAP - reviewed_today_count),
+            TRIAL_DAILY_REVIEW_CAP,
+        )
