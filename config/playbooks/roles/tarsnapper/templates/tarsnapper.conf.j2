@@ -16,3 +16,6 @@ jobs:
     source: {{ postgres_backup_file }}
     exec_before: sudo -u postgres pg_dumpall --file={{ postgres_backup_file }} | gzip -f
     target: production-db-$date.sql.gz
+  grafana:
+    source: {{ grafana.data_dir }}/grafana.db
+    target: grafana-$date.db

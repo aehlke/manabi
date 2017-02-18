@@ -1,0 +1,13 @@
+---
+
+- name: Install collectd and related packages
+  apt:
+    name: '{{ item }}'
+  become: yes
+  with_items:
+    - collectd
+    - collectd-utils
+
+- name: Disable Ubuntu's own automatic startup of collectd since we use Supervisor
+  command: 'update-rc.d -f collectd disable'
+  become: yes

@@ -1,0 +1,28 @@
+# {{ ansible_managed }}
+
+# Allow collectd to log
+LoadPlugin syslog
+
+LoadPlugin cpu
+LoadPlugin df
+LoadPlugin disk
+LoadPlugin interface
+LoadPlugin load
+LoadPlugin memory
+LoadPlugin postgresql
+LoadPlugin processes
+LoadPlugin uptime
+LoadPlugin write_graphite
+
+<Plugin write_graphite>
+    <Node "graphite">
+        Host "localhost"
+        Port "{{ graphite_api.line_receiver_port }}"
+        Protocol "tcp"
+        LogSendErrors true
+        Prefix "collectd."
+        StoreRates true
+        AlwaysAppendDS false
+        EscapeCharacter "_"
+    </Node>
+</Plugin>

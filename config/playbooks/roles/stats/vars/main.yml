@@ -4,6 +4,9 @@ carbon:
   user: _graphite
   group: _graphite
   config_path: /etc/carbon/carbon.conf
+  line_receiver_port: 8380
+  upd_receiver_port: 8380
+  pickle_receiver_port: 8381
 
 graphite_api:
   uwsgi_socket: /tmp/graphite_api_uwsgi.socket

@@ -4,6 +4,14 @@
   command: 'update-rc.d -f carbon-cache disable'
   become: yes
 
+- name: Configure Carbon
+  template:
+    src: carbon.conf.j2
+    dest: /etc/carbon/carbon.conf
+    mode: 0644
+  become: yes
+  notify: Restart Carbon Cache
+
 - name: Configure Carbon storage schemas
   template:
     src: carbon-storage-schemas.conf.j2
@@ -19,3 +27,4 @@
     mode: 0644
   become: yes
   notify: Restart Carbon Cache
+
