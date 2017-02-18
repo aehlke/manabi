@@ -5,7 +5,7 @@ carbon:
   group: _graphite
   config_path: /etc/carbon/carbon.conf
   line_receiver_port: 8380
-  upd_receiver_port: 8380
+  udp_receiver_port: 8380
   pickle_receiver_port: 8381
 
 graphite_api:
