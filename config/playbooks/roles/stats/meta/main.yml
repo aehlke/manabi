@@ -3,7 +3,7 @@
 dependencies:
   - role: ansible-supervisor_task
     name: carbon-cache
-    command: "carbon-cache --config='{{ carbon.config_path }}' --pidfile /var/run/carbon-cache.pid --nodaemon start"
+    command: "carbon-cache --config='{{ carbon.config_path }}' --pidfile /tmp/carbon-cache.pid --nodaemon start"
     user: '{{ carbon.user }}'
     numprocs: 1
 
