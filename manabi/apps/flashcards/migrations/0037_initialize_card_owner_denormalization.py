@@ -17,6 +17,7 @@ def forwards(apps, schema_editor):
         card.owner_id = card.deck.owner_id
         card.save(update_fields=['owner_id'])
 
+
 class Migration(migrations.Migration):
 
     dependencies = [
