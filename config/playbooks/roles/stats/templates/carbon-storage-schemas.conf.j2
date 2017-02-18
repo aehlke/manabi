@@ -1,0 +1,15 @@
+[carbon]
+pattern = ^carbon\.
+retentions = 60:90d
+
+[test]
+pattern = ^test\.
+retentions = 5s:3h,1m:1d
+
+[collectd]
+pattern = ^collectd.*
+retentions = 10s:1h,1m:1d,10m:1y
+
+[default_1min_for_1day]
+pattern = .*
+retentions = 60s:1d

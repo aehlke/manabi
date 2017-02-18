@@ -1,0 +1,5 @@
+---
+
+- name: Restart Grafana
+  command: supervisorctl restart grafana
+  become: yes

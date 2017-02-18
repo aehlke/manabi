@@ -1,0 +1,29 @@
+---
+
+- name: Import Grafana apt key
+  apt_key:
+    url: https://packagecloud.io/gpg.key
+  become: yes
+
+- name: Add Grafana repository
+  apt_repository:
+    repo: "deb https://packagecloud.io/grafana/stable/debian/ jessie main
+"
+    update_cache: yes
+  become: yes
+
+- name: Configure Grafana
+  template:
+    src: grafana.ini.js
+    dest: /etc/grafana/grafana.ini
+    owner: '{{ grafana.user }}'
+    group: '{{ grafana.group }}'
+    mode: 0644
+  become: yes
+  notify: Restart Grafana
+
+- name: Install Grafana
+  apt:
+    pkg: grafana
+  become: yes
+  notify: Restart Grafana

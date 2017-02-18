@@ -1,0 +1,8 @@
+---
+
+grafana:
+  user: www-data
+  group: www-data
+  port: 8180
+  oauth2_proxy_port: 8181
+  hostname: grafana.manabi.io
