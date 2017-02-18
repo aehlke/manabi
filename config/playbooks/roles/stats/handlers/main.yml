@@ -11,3 +11,9 @@
 - name: Restart Graphite-API
   command: supervisorctl restart graphite-api
   become: yes
+
+- name: Restart collectd
+  service:
+    name: collectd
+    state: restarted
+  become: yes

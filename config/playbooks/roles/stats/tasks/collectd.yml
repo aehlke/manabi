@@ -8,12 +8,16 @@
     - collectd
     - collectd-utils
 
-- name: Disable Ubuntu's own automatic startup of collectd since we use Supervisor
-  command: 'update-rc.d -f collectd disable'
+- name: Configure Carbon
+  template:
+    src: collectd.conf.j2
+    dest: /etc/collectd/collectd.conf
+    mode: 0644
   become: yes
+  notify: Restart collectd
 
-- name: Stop any running collectd outside Supervisor
+- name: Ensure collectd daemon is running
   service:
     name: collectd
-    state: stopped
+    state: started
   become: yes
