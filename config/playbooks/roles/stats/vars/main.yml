@@ -5,6 +5,9 @@ prometheus:
   oauth2_proxy_port: 9099
   hostname: prometheus.manabi.io
 
+postgres_exporter:
+  port: 9187
+
 carbon:
   user: _graphite
   group: _graphite

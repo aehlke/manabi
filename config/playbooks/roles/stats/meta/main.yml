@@ -15,6 +15,12 @@ dependencies:
     oauth2_proxy_cookie_domain: '{{ prometheus.hostname }}'
 
   - role: ansible-supervisor_task
+    name: postgres_exporter
+    command: 'docker run -e DATA_SOURCE_NAME="postgresql://{{ postgres_exporter_secrets.postgres_username }}:{{ postgres_exporter_secrets.postgres_password }}@{{ postgres_host }}:{{ postgres_port }}/?sslmode=disable" -p {{ postgres_exporter.port }}:{{ postgres_exporter.port }} wrouesnel/postgres_exporter'
+    user: ubuntu
+    numprocs: 1
+
+  - role: ansible-supervisor_task
     name: carbon-cache
     command: "carbon-cache --config='{{ carbon.config_path }}' --pidfile /tmp/carbon-cache.pid --nodaemon start"
     user: '{{ carbon.user }}'
