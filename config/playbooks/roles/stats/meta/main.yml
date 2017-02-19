@@ -9,7 +9,7 @@ dependencies:
 
   - role: ansible-supervisor_task
     name: graphite-api
-    command: 'uwsgi --socket="{{ graphite_api.uwsgi_socket }}" --chmod-socket=666 -w graphite_api.app:app --processes=2 --enable-threads --max-requests=10000 --vacuum'
+    command: 'uwsgi --socket="{{ graphite_api.uwsgi_socket }}" --chmod-socket=666 -w graphite_api.app:app --processes=2 --ignore-sigpipe --enable-threads --max-requests=10000 --vacuum'
     process_name: uwsgi
     user: ubuntu
     tags: uwsgi
