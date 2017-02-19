@@ -46,9 +46,9 @@
     <script>
         window.annotatedJapaneseInputInitialValue = {{ json(serializer.reading.value or serializer.expression.value or '')|safe }}
 
-        function factAction(url, method, data, message, redirectPath) {
+        function factAction(method, data, message, redirectPath) {
             apiRequest(
-                url,
+                'flashcards/facts/{{ fact.id }}/',
                 method,
                 data,
                 true,
