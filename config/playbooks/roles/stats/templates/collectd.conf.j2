@@ -41,11 +41,11 @@ FQDNLookup true
 #       Interval 60                                                          #
 #   </LoadPlugin>                                                            #
 #----------------------------------------------------------------------------#
-#Interval 10
+Interval 10
 
 #MaxReadInterval 86400
-#Timeout         2
-#ReadThreads     5
+Timeout         2
+ReadThreads     5
 #WriteThreads    5
 
 # Limit the size of the write queue. Default is no limit. Setting up a limit
@@ -87,7 +87,7 @@ LoadPlugin syslog
 # Specify what features to activate.                                         #
 ##############################################################################
 
-#LoadPlugin aggregation
+LoadPlugin aggregation
 #LoadPlugin amqp
 #LoadPlugin apache
 #LoadPlugin apcups
@@ -1229,17 +1229,17 @@ LoadPlugin write_graphite
 #</Plugin>
 
 <Plugin write_graphite>
-        <Node "graphite">
-                Host "localhost"
-                Port "{{ carbon.line_receiver_port }}"
-                Protocol "tcp"
-                LogSendErrors true
-                Prefix "collectd."
-#               Postfix "collectd"
-                StoreRates true
-                AlwaysAppendDS false
-                EscapeCharacter "_"
-        </Node>
+    <Node "graphite">
+        Host "localhost"
+        Port "{{ carbon.line_receiver_port }}"
+        Protocol "tcp"
+        LogSendErrors true
+        Prefix "collectd."
+        #               Postfix "collectd"
+        StoreRates true
+        AlwaysAppendDS false
+        EscapeCharacter "_"
+    </Node>
 </Plugin>
 
 #<Plugin write_http>
