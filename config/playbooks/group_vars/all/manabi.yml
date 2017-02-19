@@ -10,3 +10,6 @@ app_virtualenv_path: /home/ubuntu/.virtualenvs/manabi
 uwsgi_socket: /tmp/manabi_uwsgi.socket
 
 locale: 'en_US.UTF-8'
+
+postgres_host: localhost
+postgres_port: 5432
