@@ -1,5 +1,10 @@
 ---
 
+prometheus:
+  port: 9090
+  oauth2_proxy_port: 9099
+  hostname: prometheus.manabi.io
+
 carbon:
   user: _graphite
   group: _graphite

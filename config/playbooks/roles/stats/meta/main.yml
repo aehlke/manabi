@@ -1,8 +1,18 @@
 ---
 
 dependencies:
-  - role: williamyeh.prometheus
+  - role: ansible-prometheus
     prometheus_components: [ "prometheus", "node_exported" ]
+    become: yes
+
+  - role: oauth2_proxy
+    oauth2_proxy_app_name: prometheus
+    oauth2_proxy_client_id: '{{ prometheus_secrets.github_client_id }}'
+    oauth2_proxy_client_secret: '{{ prometheus_secrets.github_client_secret }}'
+    oauth2_proxy_port: '{{ prometheus.oauth2_proxy_port }}'
+    oauth2_proxy_upstream: 'http://localhost:{{ prometheus.port }}'
+    oauth2_proxy_redirect_url: 'https://{{ prometheus.hostname }}/oauth2/callback'
+    oauth2_proxy_cookie_domain: '{{ prometheus.hostname }}'
 
   - role: ansible-supervisor_task
     name: carbon-cache
