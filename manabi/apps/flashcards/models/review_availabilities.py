@@ -222,7 +222,7 @@ class ReviewAvailabilities(object):
             .of_day_for_user(self.user, self.time_zone or DEFAULT_TIME_ZONE)
             .count()
         )
-        prompt = (
+        return (
             "You have {} out of {} cards left today. "
             "Purchase to unlock unlimited daily reviews."
         ).format(
