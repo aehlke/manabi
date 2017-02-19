@@ -1,4 +1,5 @@
 # {{ ansible_managed }}
+
 # 2003 - Jay Bonci <jaybonci@debian.org>
 # This configuration file is read by the start-memcached script provided as
 # part of the Debian GNU/Linux distribution.
@@ -23,7 +24,7 @@ logfile /var/log/memcached.log
 -m 64
 
 # Default connection port is 11211
--p 11211
+-p {{ memcached.port }}
 
 # Run the daemon as root. The start-memcached will default to running as root if no
 # -u command is present in this config file

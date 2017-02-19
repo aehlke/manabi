@@ -132,7 +132,7 @@ LoadPlugin load
 #LoadPlugin mbmon
 #LoadPlugin md
 #LoadPlugin memcachec
-#LoadPlugin memcached
+LoadPlugin memcached
 LoadPlugin memory
 #LoadPlugin modbus
 #LoadPlugin multimeter
@@ -629,14 +629,14 @@ LoadPlugin write_graphite
 #       </Page>
 #</Plugin>
 
-#<Plugin memcached>
-#       <Instance "local">
-#               Socket "/var/run/memcached.sock"
-# or:
-#               Host "127.0.0.1"
-#               Port "11211"
-#       </Instance>
-#</Plugin>
+<Plugin memcached>
+    <Instance "local">
+        #               Socket "/var/run/memcached.sock"
+        # or:
+        Host "{{ memcached.ip }}"
+        Port "{{ memcached.port }}"
+    </Instance>
+</Plugin>
 
 #<Plugin memory>
 #       ValuesAbsolute true
