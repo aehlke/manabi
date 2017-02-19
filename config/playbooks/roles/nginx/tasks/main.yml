@@ -2,7 +2,7 @@
 
 - name: Install nginx
   apt:
-    name: nginx
+    name: nginx-full
   become: yes
 
 - name: Disable Ubuntu's own automatic startup of nginx since we use Supervisor
