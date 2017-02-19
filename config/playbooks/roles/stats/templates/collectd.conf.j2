@@ -152,7 +152,7 @@ LoadPlugin memory
 #LoadPlugin perl
 #LoadPlugin pinba
 #LoadPlugin ping
-LoadPlugin postgresql
+#LoadPlugin postgresql
 #LoadPlugin powerdns
 LoadPlugin processes
 #LoadPlugin protocols
@@ -824,14 +824,14 @@ LoadPlugin write_graphite
 #</Plugin>
 
 
-<Plugin postgresql>
-    <Database {{ postgres_secrets.db_name }}>
-        Host "{{ postgres_host }}"
-        Port "{{ postgres_port }}"
-        User "{{ postgres_secrets.username }}"
-        Password "{{ postgres_secrets.password }}"
-    </Database>
-</Plugin>
+#<Plugin postgresql>
+#    <Database {{ postgres_secrets.db_name }}>
+#        Host "{{ postgres_host }}"
+#        Port "{{ postgres_port }}"
+#        User "{{ postgres_secrets.username }}"
+#        Password "{{ postgres_secrets.password }}"
+#    </Database>
+#</Plugin>
 
 #<Plugin postgresql>
 #       <Query magic>

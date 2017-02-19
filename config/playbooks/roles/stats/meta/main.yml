@@ -1,6 +1,9 @@
 ---
 
 dependencies:
+  - role: williamyeh.prometheus
+    prometheus_components: [ "prometheus", "node_exported" ]
+
   - role: ansible-supervisor_task
     name: carbon-cache
     command: "carbon-cache --config='{{ carbon.config_path }}' --pidfile /tmp/carbon-cache.pid --nodaemon start"
