@@ -119,7 +119,7 @@ LoadPlugin entropy
 #LoadPlugin fscache
 #LoadPlugin gmond
 #LoadPlugin hddtemp
-#LoadPlugin interface
+LoadPlugin interface
 #LoadPlugin ipc
 #LoadPlugin ipmi
 #LoadPlugin iptables
@@ -225,6 +225,16 @@ LoadPlugin write_graphite
 #               CalculateStddev false
 #       </Aggregation>
 #</Plugin>
+
+<Plugin "aggregation">
+    <Aggregation>
+        Plugin "cpu"
+        Type "cpu"
+        GroupBy "Host"
+        GroupBy "TypeInstance"
+        CalculateAverage true
+    </Aggregation>
+</Plugin>
 
 #<Plugin amqp>
 #       <Publish "name">
@@ -332,11 +342,11 @@ LoadPlugin write_graphite
 #       IgnoreSelected false
 #</Plugin>
 
-#<Plugin cpu>
-#       ReportByCpu true
-#       ReportByState true
-#       ValuesPercentage false
-#</Plugin>
+<Plugin cpu>
+    ReportByCpu true
+    ReportByState true
+    ValuesPercentage false
+</Plugin>
 
 #<Plugin csv>
 #       DataDir "/var/lib/collectd/csv"
@@ -543,10 +553,10 @@ LoadPlugin write_graphite
 #       Port 7634
 #</Plugin>
 
-#<Plugin interface>
-#       Interface "eth0"
-#       IgnoreSelected false
-#</Plugin>
+<Plugin interface>
+    Interface "ens3"
+    IgnoreSelected false
+</Plugin>
 
 #<Plugin ipmi>
 #       Sensor "some_sensor"
@@ -936,8 +946,8 @@ LoadPlugin write_graphite
 #       XFF 0.1
 #</Plugin>
 
-<Plugin rrdtool>
-        DataDir "/var/lib/collectd/rrd"
+#<Plugin rrdtool>
+#        DataDir "/var/lib/collectd/rrd"
 #       CacheTimeout 120
 #       CacheFlush 900
 #       WritesPerSecond 30
@@ -951,7 +961,7 @@ LoadPlugin write_graphite
 #       RRARows 1200
 #       RRATimespan 158112000
 #       XFF 0.1
-</Plugin>
+#</Plugin>
 
 #<Plugin sensors>
 #       SensorConfigFile "/etc/sensors3.conf"
