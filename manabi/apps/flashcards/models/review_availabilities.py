@@ -65,6 +65,8 @@ class ReviewAvailabilities(object):
 
         if self.deck:
             cards = cards.of_deck(self.deck)
+        else:
+            cards = cards.exclude(deck_suspended=True)
 
         if self.excluded_card_ids:
             cards = cards.excluding_ids(self.excluded_card_ids)
@@ -223,7 +225,7 @@ class ReviewAvailabilities(object):
             .count()
         )
         return (
-            "You have {} out of {} cards left today. "
+            "You have {} out of {} cards left today.\n"
             "Purchase to unlock unlimited daily reviews!"
         ).format(
             max(0, TRIAL_DAILY_REVIEW_CAP - reviewed_today_count),
