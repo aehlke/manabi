@@ -267,6 +267,7 @@ def create_fact(user=None, deck=None):
     for template, template_name in CARD_TEMPLATE_CHOICES:
         card = Card(
             deck=deck,
+            owner_id=deck.owner_id,
             fact=fact,
             template=template,
         )

@@ -274,17 +274,21 @@ class Fact(models.Model):
         for template_id in template_ids:
             facts_without_template = self.syncing_subscriber_facts.exclude(
                 card__in=subscriber_cards.filter(template=template_id),
-            )
+            ).select_related('deck')
 
             missing_cards = [
                 Card(
+                    owner_id=owner_id,
                     deck_id=deck_id,
+                    deck_suspended=deck_suspended,
                     fact_id=fact_id,
                     template=template_id,
                     new_card_ordinal=Card.random_card_ordinal(),
                 )
-                for fact_id, deck_id in
-                facts_without_template.values_list('id', 'deck_id').iterator()
+                for fact_id, deck_id, deck_suspended, owner_id in
+                facts_without_template.values_list(
+                    'id', 'deck_id', 'deck__suspended', 'deck__owner_id',
+                ).iterator()
             ]
 
             Card.objects.bulk_create(missing_cards)
