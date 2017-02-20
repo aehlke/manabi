@@ -8,6 +8,7 @@ class SubscriptionProduct(serializers.Serializer):
 
 class PurchasingOptionsSerializer(serializers.Serializer):
     primary_prompt = serializers.CharField()
+    student_prompt = serializers.CharField()
     monthly_product = SubscriptionProduct()
     annual_product = SubscriptionProduct()
     student_monthly_product = SubscriptionProduct()
