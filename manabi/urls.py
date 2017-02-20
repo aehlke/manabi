@@ -74,6 +74,7 @@ urlpatterns = [
         name='register'),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
+    url(r'^api/subscriptions/', include('manabi.apps.subscriptions.api_urls')),
     url(r'^api/furigana/', include('manabi.apps.furigana.urls')),
     url(r'^api/twitter_usages/', include('manabi.apps.twitter_usages.urls')),
 ]

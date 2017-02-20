@@ -259,6 +259,7 @@ INSTALLED_APPS = (
     'manabi.apps.manabi_redis',
     'manabi.apps.profiles',
     'manabi.apps.reading_level',
+    'manabi.apps.subscriptions',
     'manabi.apps.twitter_usages',
 )
 
