@@ -343,7 +343,7 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
 
         next_cards_for_review = NextCardsForReview(
             self.request.user,
-            7, # FIXME
+            10, # FIXME
             excluded_card_ids=excluded_card_ids,
             time_zone=time_zone,
             **next_cards_to_review_filters(self.request)

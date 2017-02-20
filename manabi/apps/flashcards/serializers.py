@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 
 from django.shortcuts import get_object_or_404
+from rest_framework import serializers
 
 from manabi.api.serializers import (
     ManabiModelSerializer,
@@ -18,7 +19,6 @@ from manabi.apps.flashcards.serializer_fields import (
     ViewerSynchronizedDeckField,
 )
 from manabi.apps.manabi_auth.serializers import UserSerializer
-from rest_framework import serializers
 
 
 class _BaseDeckSerializer(ManabiModelSerializer):
