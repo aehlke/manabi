@@ -1,9 +1,9 @@
 ---
 
 dependencies:
-  - role: ansible-prometheus
-    prometheus_components: [ "prometheus", "node_exported" ]
-    become: yes
+  #- role: ansible-prometheus
+  #  prometheus_components: [ "prometheus", "node_exported" ]
+  #  become: yes
 
   - role: oauth2_proxy
     oauth2_proxy_app_name: prometheus
