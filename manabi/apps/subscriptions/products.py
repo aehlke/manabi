@@ -1,4 +1,5 @@
-PRIMARY_PROMPT = "Manabi adapts to how you learn each individual term, tracking your strength of memory to determine the optimal time for you to refresh right before you forget. Subscribe to unlock unlimited personalized reviews."
+_NON_BREAKING_SPACE = unichr(160)
+PRIMARY_PROMPT = "Manabi adapts to how you learn, tracking your strength of memory to determine the optimal time for you to refresh right before you forget.\n\nSubscribe to unlock unlimited" + _NON_BREAKING_SPACE + "personalized" + _NON_BREAKING_SPACE + "reviews."
 
 STUDENT_PROMPT = "Are you a student, educator, or parent of a student? Manabi is available to you at a discount."
 
