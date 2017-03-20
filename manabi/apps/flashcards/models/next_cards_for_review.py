@@ -15,6 +15,7 @@ class ReviewInterstitial(object):
         excluded_card_ids=set(),
         time_zone=None,
         new_cards_limit=None,
+        buffered_cards_count=None,
         buffered_new_cards_count=None,
     ):
         '''
@@ -31,6 +32,7 @@ class ReviewInterstitial(object):
             new_cards_per_day_limit_override=new_cards_per_day_limit_override,
             time_zone=time_zone,
             new_cards_limit=new_cards_limit,
+            buffered_cards_count=buffered_cards_count,
             buffered_new_cards_count=buffered_new_cards_count,
         )
 
@@ -79,6 +81,7 @@ class NextCardsForReview(object):
             deck=deck,
             time_zone=time_zone,
             excluded_card_ids=excluded_card_ids,
+            buffered_cards_count=len(self.cards),
             buffered_new_cards_count=buffered_new_cards_count,
             new_cards_per_day_limit_override=new_cards_per_day_limit_override,
             new_cards_limit=new_cards_limit,

@@ -28,6 +28,7 @@ class ReviewAvailabilities(object):
         user,
         deck=None,
         new_cards_per_day_limit_override=None,
+        buffered_cards_count=0,
         buffered_new_cards_count=0,
         excluded_card_ids=set(),
         time_zone=None,
@@ -46,6 +47,7 @@ class ReviewAvailabilities(object):
         self.time_zone = time_zone
         self.deck = deck
         self.excluded_card_ids = excluded_card_ids
+        self._buffered_cards_count = buffered_cards_count
         self._buffered_new_cards_count = buffered_new_cards_count
 
         self.new_cards_limit = (
@@ -228,6 +230,9 @@ class ReviewAvailabilities(object):
             "You have {} out of {} cards left today.\n"
             "Purchase to unlock unlimited daily reviews!"
         ).format(
-            max(0, TRIAL_DAILY_REVIEW_CAP - reviewed_today_count),
+            max(0,
+                TRIAL_DAILY_REVIEW_CAP
+                - reviewed_today_count
+                - self._buffered_cards_count),
             TRIAL_DAILY_REVIEW_CAP,
         )
