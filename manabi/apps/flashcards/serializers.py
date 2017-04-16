@@ -305,6 +305,7 @@ class DetailedCardSerializer(CardSerializer):
 
 class DetailedDeckSerializer(DeckSerializer):
     facts = FactWithCardsSerializer(
+        source='facts.prefetch_active_card_templates',
         many=True,
         read_only=True,
     )
@@ -317,6 +318,7 @@ class DetailedDeckSerializer(DeckSerializer):
 
 class DetailedSharedDeckSerializer(SharedDeckSerializer):
     facts = FactWithCardsSerializer(
+        source='facts.prefetch_active_card_templates',
         many=True,
         read_only=True,
     )
