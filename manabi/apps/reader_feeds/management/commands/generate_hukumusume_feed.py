@@ -9,7 +9,7 @@ from lxml import html
 
 
 def _month_urls(section):
-    for month in range(1, 2):#13):
+    for month in range(1, 13):
         yield (section, month, 'http://hukumusume.com/douwa/pc/{}/itiran/{:02}gatu.htm'.format(section, month))
 
 
