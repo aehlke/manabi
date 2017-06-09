@@ -1,8 +1,7 @@
-django==1.11a1
+django==1.11.1
 Fabric==1.8.0
 django-extensions==1.7.2
 drf-extensions==0.3.1
-lxml==3.5.0
 jcconv==0.2.3
 gunicorn==19.4.3
 redis==2.10.5
@@ -35,6 +34,11 @@ mecab-python==0.996
 https://github.com/neithere/django-autoslug/archive/223771076e63c1b50f75fb2a576f2ea4c6bad514.zip # no pypi release yet.
 django-admin-sortable==2.0.21
 Pillow==4.0.0
+lxml==3.7.3
+beautifulsoup4==4.6.0
+html5lib==0.999999999
+cssselect==1.0.1
+feedgen==0.5.1
 
 # django-devserver + optional dependencies
 https://github.com/dcramer/django-devserver/archive/master.zip
@@ -57,7 +61,6 @@ WebOb==1.0.3
 
 # Deprecated, but used for migration to v2:
 django-timezones==0.2
-BeautifulSoup==3.2.0
 https://github.com/aehlke/django-catnap/archive/master.zip
 
 # Not sure if used anymore?
