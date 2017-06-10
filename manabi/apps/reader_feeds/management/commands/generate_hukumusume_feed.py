@@ -58,7 +58,8 @@ def execute():
                     try:
                         image_url = urljoin(month_url, table.cssselect('img')[0].get('src'))
                     except IndexError:
-                        image_url = None
+                        # Every one has an image.
+                        continue
 
                     feed_items[section].append({
                         'url': url,
