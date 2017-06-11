@@ -73,28 +73,34 @@ categories:
         rss_url: https://manabi.io/static/reader/feeds/hukumusume-jap.rss
         icon_url: http://hukumusume.com/douwa/new/s_gazou/LUC014.JPG
         description: Japanese Classical Stories
+        entry_thumbnail_content_mode: scale_aspect_fit
 
       - title: 日本の民話
         rss_url: https://manabi.io/static/reader/feeds/hukumusume-minwa.rss
         icon_url: http://hukumusume.com/douwa/new/s_gazou/CUT_794.gif
         description: Japanese Folktales
+        entry_thumbnail_content_mode: scale_aspect_fit
 
       - title: 百物語
         rss_url: https://manabi.io/static/reader/feeds/hukumusume-kaidan.rss
         icon_url: http://hukumusume.com/douwa/new/s_gazou/CUT_799.GIF
         description: Japanese Ghost Stories
+        entry_thumbnail_content_mode: scale_aspect_fit
 
       - title: イソップ童話
         rss_url: https://manabi.io/static/reader/feeds/hukumusume-aesop.rss
         icon_url: http://hukumusume.com/douwa/koe/aesop/gazou/gazou/14322308.gif
         description: Aesop's Fables
+        entry_thumbnail_content_mode: scale_aspect_fit
 
       - title: 江戸小話
         rss_url: https://manabi.io/static/reader/feeds/hukumusume-kobanashi.rss
         icon_url: http://hukumusume.com/douwa/0_6/gakkou_gazou/kobanashi/CUT_453.GIF
         description: Edo Short Stories
+        entry_thumbnail_content_mode: scale_aspect_fit
 
       - title: 世界の昔話
         rss_url: https://manabi.io/static/reader/feeds/hukumusume-world.rss
         icon_url: http://hukumusume.com/douwa/0_6/gakkou_gazou/world/AC_10ILBC14.jpg
         description: World Folktales
+        entry_thumbnail_content_mode: scale_aspect_fit

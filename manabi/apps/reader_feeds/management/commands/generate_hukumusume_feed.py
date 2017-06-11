@@ -60,7 +60,7 @@ def execute():
                         # Avoid weird case with "001", "002" links in Aesop feed (and maybe elsewhere).
                         if 'corner' in image_relative_url:
                             continue
-                        image_url = urljoin(month_url, )
+                        image_url = urljoin(month_url, image_relative_url)
                     except IndexError:
                         # Every one has an image.
                         continue
@@ -87,7 +87,7 @@ def execute():
             entry.summary(item['description'])
             entry.content('<img src="{}" />'.format(item['image_url']), type='CDATA')
 
-        fg.atom_file('manabi/static/reader_feeds/hukumusume-{}.rss'.format(section))
+        fg.atom_file('manabi/static/reader/feeds/hukumusume-{}.rss'.format(section))
 
 
 class Command(BaseCommand):
