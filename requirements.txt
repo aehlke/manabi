@@ -1,4 +1,4 @@
-django==1.11.1
+django==1.11.2
 Fabric==1.8.0
 django-extensions==1.7.2
 drf-extensions==0.3.1
