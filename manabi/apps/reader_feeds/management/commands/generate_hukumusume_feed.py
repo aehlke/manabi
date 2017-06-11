@@ -56,7 +56,11 @@ def execute():
                             description = (text1 + text2)[len(u'内容 :'):]
 
                     try:
-                        image_url = urljoin(month_url, table.cssselect('img')[0].get('src'))
+                        image_relative_url = table.cssselect('img')[0].get('src')
+                        # Avoid weird case with "001", "002" links in Aesop feed (and maybe elsewhere).
+                        if 'corner' in image_relative_url:
+                            continue
+                        image_url = urljoin(month_url, )
                     except IndexError:
                         # Every one has an image.
                         continue
