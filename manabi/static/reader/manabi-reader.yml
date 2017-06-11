@@ -1,0 +1,100 @@
+beginner_feeds:
+  - title: Hiragana Times
+    rss_url: http://www.hiraganatimes.com/ja/feed/
+    icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+    description: Monthly publication written for foreigners residing in Japan.
+
+  - title: Matcha – Japan Travel Magazine
+    rss_url: https://matcha-jp.com/easy/feed
+    icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
+    description: The "easy edition" of a Japanese travel magazine, with furigana in all its articles. Written for foreigner visitors to Japan.
+
+categories:
+  - title: News
+    background_image_url: https://manabi.io/static/reader/category_images/news.png
+    feeds:
+      - title: Hiragana Times
+        rss_url: http://www.hiraganatimes.com/ja/feed/
+        icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+        description: Monthly publication written for foreigners residing in Japan.
+
+      - title: Slashdot Japan
+        rss_url: http://rss.rssad.jp/rss/slashdot/slashdot.rss
+        icon_url: https://images.srad.jp/favicon.ico
+
+      - title: National Geographic News
+        rss_url: http://natgeo.nikkeibp.co.jp/nng/rss/news.rdf
+        icon_url: http://natgeo.nikkeibp.co.jp/favicon.ico
+
+      - title: 2ch News
+        rss_url: http://blog.livedoor.jp/dqnplus/index.rdf
+        icon_url: http://livedoor.4.blogimg.jp/dqnplus/imgs/4/c/4cdbfd58.gif
+        description: News articles with curated commentary from the 2channel message board.
+
+      - title: Huffington Post
+        rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
+        icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
+        description: Breaking news from HuffPo Japan.
+
+      - title: NHK News Easy
+        rss_url: https://www.reddit.com/r/NHKEasyNews.rss
+        icon_url: http://www3.nhk.or.jp/favicon.ico
+        description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
+
+  - title: Blogs
+    background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
+    feeds:
+      - title: Medium
+        rss_url: https://medium.com/feed/japan
+        icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
+
+      - title: Lifehacker
+        rss_url: http://feeds.lifehacker.jp/rss/lifehacker/index.xml
+        icon_url: https://www.lifehacker.jp/assets/common/img/favicon.ico
+
+      - title: Gizmodo
+        rss_url: http://feeds.gizmodo.jp/rss/gizmodo/index.xml
+        icon_url: http://www.gizmodo.jp/assets/favicon/favicon-32x32.png
+
+      - title: Matcha – Japan Travel Magazine
+        rss_url: https://matcha-jp.com/jp/feed
+        icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
+        description: Travel magazine, Written for foreigner visitors to Japan.
+
+      - title: Huffington Post – Blog
+        rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
+        icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
+        description: Blog articles from HuffPo Japan.
+
+  - title: Folktales
+    background_image_url: https://manabi.io/static/reader/category_images/folktales.png
+    feeds:
+      - title: 日本の昔話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-jap.rss
+        icon_url: http://hukumusume.com/douwa/new/s_gazou/LUC014.JPG
+        description: Japanese Classical Stories
+
+      - title: 日本の民話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-minwa.rss
+        icon_url: http://hukumusume.com/douwa/new/s_gazou/CUT_794.gif
+        description: Japanese Folktales
+
+      - title: 百物語
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-kaidan.rss
+        icon_url: http://hukumusume.com/douwa/new/s_gazou/CUT_799.GIF
+        description: Japanese Ghost Stories
+
+      - title: イソップ童話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-aesop.rss
+        icon_url: http://hukumusume.com/douwa/koe/aesop/gazou/gazou/14322308.gif
+        description: Aesop's Fables
+
+      - title: 江戸小話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-kobanashi.rss
+        icon_url: http://hukumusume.com/douwa/0_6/gakkou_gazou/kobanashi/CUT_453.GIF
+        description: Edo Short Stories
+
+      - title: 世界の昔話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-world.rss
+        icon_url: http://hukumusume.com/douwa/0_6/gakkou_gazou/world/AC_10ILBC14.jpg
+        description: World Folktales
