@@ -41,6 +41,21 @@ categories:
         icon_url: http://www3.nhk.or.jp/favicon.ico
         description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
+      - title: Nippon.com
+        rss_url: http://nippon.com/ja/feed/
+        icon_url: http://www.nippon.com/img/favicon.ico
+        description: Scholarly analysis and entertaining articles on Japan's society, economy, and politics.
+
+      - title: Business Insider Japan
+        rss_url: https://www.businessinsider.jp/feed/index.xml
+        icon_url: https://www.businessinsider.jp/favicon.ico
+        description: New Tokyo-headquartered offshoot of Business Insider launched in 2017.
+
+      - title: RocketNews24
+        rss_url: http://feeds.rocketnews24.com/rocketnews24
+        icon_url: https://s0.wp.com/wp-content/themes/vip/rocketnews/img/pts_logo.png
+        description: Reporting the interesting, strange, and random. Covers a wide variety of topics.
+
   - title: Blogs
     background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
     feeds:
@@ -65,6 +80,11 @@ categories:
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
         icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
         description: Blog articles from HuffPo Japan.
+
+      - title: Z TOKYO
+        rss_url: https://ztokyo.net/feed/ja.rss
+        icon_url: https://ztokyo.net/favicon.ico
+        description: Online bilingual magazine bringing contemporary Tokyo culture to the world.
 
   - title: Folktales
     background_image_url: https://manabi.io/static/reader/category_images/folktales.png
