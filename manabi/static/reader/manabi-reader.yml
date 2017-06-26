@@ -56,6 +56,11 @@ categories:
         icon_url: https://s0.wp.com/wp-content/themes/vip/rocketnews/img/pts_logo.png
         description: Reporting the interesting, strange, and random. Covers a wide variety of topics.
 
+      - title: TechCrunch Japan
+        rss_url: http://jp.techcrunch.com/feed/
+        icon_url: https://s0.wp.com/wp-content/themes/vip/techcrunch-jp-2015/assets/images/favicon.ico
+        description: The latest technology news and information on startups.
+
   - title: Blogs
     background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
     feeds:
