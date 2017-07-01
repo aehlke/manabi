@@ -1,6 +1,7 @@
 beginner_feeds:
   - title: Hiragana Times
     rss_url: http://www.hiraganatimes.com/ja/feed/
+    rss_contains_full_content: true
     icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
     description: Monthly publication written for foreigners residing in Japan.
 
@@ -15,6 +16,7 @@ categories:
     feeds:
       - title: Hiragana Times
         rss_url: http://www.hiraganatimes.com/ja/feed/
+        rss_contains_full_content: true
         icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
         description: Monthly publication written for foreigners residing in Japan.
 
