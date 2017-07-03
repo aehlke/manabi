@@ -36,7 +36,7 @@ categories:
       - title: Huffington Post
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
         icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
-        description: Breaking news from HuffPo Japan.
+        description: Breaking news from HuffPost Japan.
 
       - title: NHK News Easy
         rss_url: https://www.reddit.com/r/NHKEasyNews.rss
@@ -78,15 +78,42 @@ categories:
         rss_url: http://feeds.gizmodo.jp/rss/gizmodo/index.xml
         icon_url: http://www.gizmodo.jp/assets/favicon/favicon-32x32.png
 
+      - title: One Day One Rail!
+        rss_url: http://www.ichitetsu.com/atom.xml
+        icon_url: http://railman.cocolog-nifty.com/prof.jpg
+        description: One railway-related photo per day, with a brief note attached in both Japanese and English.
+
       - title: Matcha – Japan Travel Magazine
         rss_url: https://matcha-jp.com/jp/feed
         icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
-        description: Travel magazine, Written for foreigner visitors to Japan.
+        description: Travel magazine, written for foreigner visitors to Japan.
+
+      - title: Melon Cafe
+        rss_url: http://meloncafe.blog.jp/atom.xml
+        icon_url: http://livedoor.blogimg.jp/meloncafe/imgs/8/8/favicon.ico
+        description: Simple and delicious recipes for sweets and snacks, with cheerful photos of food and colorful "character bento".
+
+      - title: Homecooking, Sweets, and Cat
+        rss_url: http://jolijoli.blog.jp/atom.xml
+        rss_contains_full_content: true
+        icon_url: http://jolijoli.blog.jp/img/profile.jpg
+        description: Recipes, with gratuitous amounts of photos of the author's cats. Each post is made up of photos with short captions—easy to digest.
 
       - title: Huffington Post – Blog
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
         icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
-        description: Blog articles from HuffPo Japan.
+        description: Blog articles from HuffPost Japan.
+
+      - title: Tedium Museum
+        rss_url: http://rssblog.ameba.jp/art00art/rss20.xml
+        icon_url: https://stat.profile.ameba.jp/profile_images/20160921/10/1e/NR/j/o064006401474420140354.jpg?cpd=120
+        description: In spite of the absurdity of its name, this daily sketch blog is full of whimsy. The author, しらかわさん, writes short posts about daily life curiousities, accompanied by charming drawings of cats.
+
+      - title: Seasonal Photo Notebook
+        rss_url: http://shikiphotonote.blog.fc2.com/?xml
+        rss_contains_full_content: true
+        icon_url: http://blog-imgs-82.fc2.com/s/h/i/shikiphotonote/_MG_9786_3s.jpg
+        description: Gorgeous landscape photography from around Osaka, Kyoto, and Nara.
 
       - title: Z TOKYO
         rss_url: https://ztokyo.net/feed/ja.rss
