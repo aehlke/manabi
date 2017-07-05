@@ -35,6 +35,7 @@ categories:
 
       - title: Huffington Post
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
+        rss_contains_full_content: true
         icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
         description: Breaking news from HuffPost Japan.
 
@@ -68,6 +69,7 @@ categories:
     feeds:
       - title: Medium
         rss_url: https://medium.com/feed/japan
+        rss_contains_full_content: true
         icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
 
       - title: Lifehacker
@@ -101,11 +103,13 @@ categories:
 
       - title: Huffington Post – Blog
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
+        rss_contains_full_content: true
         icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
         description: Blog articles from HuffPost Japan.
 
       - title: Tedium Museum
         rss_url: http://rssblog.ameba.jp/art00art/rss20.xml
+        rss_contains_full_content: true
         icon_url: https://stat.profile.ameba.jp/profile_images/20160921/10/1e/NR/j/o064006401474420140354.jpg?cpd=120
         description: In spite of the absurdity of its name, this daily sketch blog is full of whimsy. The author, しらかわさん, writes short posts about daily life curiousities, accompanied by charming drawings of cats.
 
