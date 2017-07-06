@@ -99,7 +99,7 @@ categories:
         rss_url: http://jolijoli.blog.jp/atom.xml
         rss_contains_full_content: true
         icon_url: http://jolijoli.blog.jp/img/profile.jpg
-        description: Recipes, with gratuitous amounts of photos of the author's cats. Each post is made up of photos with short captions—easy to digest.
+        description: Recipes & copious photos of the author's cats. Each post is made up of photos with short captions—easy to digest.
 
       - title: Huffington Post – Blog
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
