@@ -32,6 +32,7 @@ categories:
         rss_url: http://blog.livedoor.jp/dqnplus/index.rdf
         icon_url: http://livedoor.4.blogimg.jp/dqnplus/imgs/4/c/4cdbfd58.gif
         description: News articles with curated commentary from the 2channel message board.
+        malformed_encoding: true
 
       - title: Huffington Post
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
