@@ -1,0 +1,196 @@
+beginner_feeds:
+  - title: Hiragana Times
+    rss_url: http://www.hiraganatimes.com/ja/feed/
+    rss_contains_full_content: true
+    icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+    description: Monthly publication written for foreigners residing in Japan.
+
+  - title: Matcha – Japan Travel Magazine
+    rss_url: https://matcha-jp.com/easy/feed
+    icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
+    description: The "easy edition" of a Japanese travel magazine, with furigana in all its articles. Written for foreigner visitors to Japan.
+
+categories:
+  - title: News
+    background_image_url: https://manabi.io/static/reader/category_images/news.png
+    feeds:
+      - title: Hiragana Times
+        rss_url: http://www.hiraganatimes.com/ja/feed/
+        rss_contains_full_content: true
+        icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+        description: Monthly publication written for foreigners residing in Japan.
+
+      - title: Slashdot Japan
+        rss_url: http://rss.rssad.jp/rss/slashdot/slashdot.rss
+        icon_url: https://images.srad.jp/favicon.ico
+
+      - title: National Geographic News
+        rss_url: http://natgeo.nikkeibp.co.jp/nng/rss/news.rdf
+        icon_url: http://natgeo.nikkeibp.co.jp/favicon.ico
+
+      - title: 2ch News
+        rss_url: http://blog.livedoor.jp/dqnplus/index.rdf
+        icon_url: http://livedoor.4.blogimg.jp/dqnplus/imgs/4/c/4cdbfd58.gif
+        description: News articles with curated commentary from the 2channel message board.
+        malformed_encoding: true
+
+      - title: Huffington Post
+        rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
+        rss_contains_full_content: true
+        icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
+        description: Breaking news from HuffPost Japan.
+
+      - title: NHK News Easy
+        rss_url: https://www.reddit.com/r/NHKEasyNews.rss
+        icon_url: http://www3.nhk.or.jp/favicon.ico
+        description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
+
+      - title: Nippon.com
+        rss_url: http://nippon.com/ja/feed/
+        icon_url: http://www.nippon.com/img/favicon.ico
+        description: Scholarly analysis and entertaining articles on Japan's society, economy, and politics.
+
+      - title: Business Insider Japan
+        rss_url: https://www.businessinsider.jp/feed/index.xml
+        icon_url: https://www.businessinsider.jp/favicon.ico
+        description: New Tokyo-headquartered offshoot of Business Insider launched in 2017.
+
+      - title: RocketNews24
+        rss_url: http://feeds.rocketnews24.com/rocketnews24
+        icon_url: https://s0.wp.com/wp-content/themes/vip/rocketnews/img/pts_logo.png
+        description: Reporting the interesting, strange, and random. Covers a wide variety of topics.
+
+      - title: TechCrunch Japan
+        rss_url: http://jp.techcrunch.com/feed/
+        icon_url: https://s0.wp.com/wp-content/themes/vip/techcrunch-jp-2015/assets/images/favicon.ico
+        description: The latest technology news and information on startups.
+
+  - title: Blogs
+    background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
+    feeds:
+      - title: Medium
+        rss_url: https://medium.com/feed/japan
+        rss_contains_full_content: true
+        icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
+
+      - title: Lifehacker
+        rss_url: http://feeds.lifehacker.jp/rss/lifehacker/index.xml
+        icon_url: https://www.lifehacker.jp/assets/common/img/favicon.ico
+
+      - title: Gizmodo
+        rss_url: http://feeds.gizmodo.jp/rss/gizmodo/index.xml
+        icon_url: http://www.gizmodo.jp/assets/favicon/favicon-32x32.png
+
+      - title: One Day One Rail!
+        rss_url: http://www.ichitetsu.com/atom.xml
+        icon_url: http://railman.cocolog-nifty.com/prof.jpg
+        description: One railway-related photo per day, with a brief note attached in both Japanese and English.
+
+      - title: Matcha – Japan Travel Magazine
+        rss_url: https://matcha-jp.com/jp/feed
+        icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
+        description: Travel magazine, written for foreigner visitors to Japan.
+
+      - title: Melon Cafe
+        rss_url: http://meloncafe.blog.jp/atom.xml
+        icon_url: http://livedoor.blogimg.jp/meloncafe/imgs/8/8/favicon.ico
+        description: Simple and delicious recipes for sweets and snacks, with cheerful photos of food and colorful "character bento".
+
+      - title: Homecooking, Sweets, and Cat
+        rss_url: http://jolijoli.blog.jp/atom.xml
+        rss_contains_full_content: true
+        icon_url: http://jolijoli.blog.jp/img/profile.jpg
+        description: Recipes & copious photos of the author's cats. Each post is made up of photos with short captions—easy to digest.
+
+      - title: Huffington Post – Blog
+        rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
+        rss_contains_full_content: true
+        icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
+        description: Blog articles from HuffPost Japan.
+
+      - title: Tedium Museum
+        rss_url: http://rssblog.ameba.jp/art00art/rss20.xml
+        rss_contains_full_content: true
+        icon_url: https://stat.profile.ameba.jp/profile_images/20160921/10/1e/NR/j/o064006401474420140354.jpg?cpd=120
+        description: In spite of the absurdity of its name, this daily sketch blog is full of whimsy. The author, しらかわさん, writes short posts about daily life curiousities, accompanied by charming drawings of cats.
+
+      - title: Seasonal Photo Notebook
+        rss_url: http://shikiphotonote.blog.fc2.com/?xml
+        rss_contains_full_content: true
+        icon_url: http://blog-imgs-82.fc2.com/s/h/i/shikiphotonote/_MG_9786_3s.jpg
+        description: Gorgeous landscape photography from around Osaka, Kyoto, and Nara.
+
+      - title: Z TOKYO
+        rss_url: https://ztokyo.net/feed/ja.rss
+        icon_url: https://ztokyo.net/favicon.ico
+        description: Online bilingual magazine bringing contemporary Tokyo culture to the world.
+
+  - title: Folktales
+    background_image_url: https://manabi.io/static/reader/category_images/folktales.png
+    feeds:
+      - title: 日本の昔話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-jap.rss
+        icon_url: http://hukumusume.com/douwa/new/s_gazou/LUC014.JPG
+        description: Japanese Classical Stories
+        entry_thumbnail_content_mode: scale_aspect_fit
+
+      - title: 日本の民話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-minwa.rss
+        icon_url: http://hukumusume.com/douwa/new/s_gazou/CUT_794.gif
+        description: Japanese Folktales
+        entry_thumbnail_content_mode: scale_aspect_fit
+
+      - title: 百物語
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-kaidan.rss
+        icon_url: http://hukumusume.com/douwa/new/s_gazou/CUT_799.GIF
+        description: Japanese Ghost Stories
+        entry_thumbnail_content_mode: scale_aspect_fit
+
+      - title: イソップ童話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-aesop.rss
+        icon_url: http://hukumusume.com/douwa/koe/aesop/gazou/gazou/14322308.gif
+        description: Aesop's Fables
+        entry_thumbnail_content_mode: scale_aspect_fit
+
+      - title: 江戸小話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-kobanashi.rss
+        icon_url: http://hukumusume.com/douwa/0_6/gakkou_gazou/kobanashi/CUT_453.GIF
+        description: Edo Short Stories
+        entry_thumbnail_content_mode: scale_aspect_fit
+
+      - title: 世界の昔話
+        rss_url: https://manabi.io/static/reader/feeds/hukumusume-world.rss
+        icon_url: http://hukumusume.com/douwa/0_6/gakkou_gazou/world/AC_10ILBC14.jpg
+        description: World Folktales
+        entry_thumbnail_content_mode: scale_aspect_fit
+
+  - title: Reddit
+    background_image_url: https://manabi.io/static/reader/category_images/reddit.png
+    minimum_app_version: 1.2.1
+    feeds:
+        - title: newsokur
+          rss_url: https://www.reddit.com/r/newsokur/.rss
+          icon_url: https://manabi.io/static/reader/category_images/feed_images/newsokur.png
+          description: A popular haven for former 2ch message board posters looking to add more advanced features to their discussions, this subreddit brings the pseudoanonymous textboard culture of 2ch to Reddit.
+
+  - title: Gaming
+    background_image_url: https://manabi.io/static/reader/category_images/gaming.png
+    feeds:
+      - title: Dengeki Online
+        rss_url: http://dengekionline.com/cate/11/rss.xml
+        icon_url: http://dengekionline.com/img/favicon.ico
+        description: Online Japanese gaming magazine, covering console, PC, and mobile games.
+
+      - title: Famitsu
+        rss_url: https://www.famitsu.com/rss/fcom_all.rdf
+        icon_url: https://www.famitsu.com/favicon.ico
+        description: The largest and most popular gaming news publication in Japan.
+
+      - title: 4Gamer.net
+        rss_url: http://www.4gamer.net/rss/index.xml
+        icon_url: http://www.4gamer.net/favicon.ico
+    
+      - title: My Game News Flash @JIN
+        rss_url: http://jin115.com/index.rdf
+        icon_url: http://jin115.com/favicon.ico
+        description: Japanese gaming blog known to break news later picked up by outlets. Each article is accompanied by amusing text art.
