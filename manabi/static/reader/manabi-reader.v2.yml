@@ -174,7 +174,7 @@ categories:
           description: A popular haven for former 2ch message board posters looking to add more advanced features to their discussions, this subreddit brings the pseudoanonymous textboard culture of 2ch to Reddit.
 
   - title: Gaming
-    background_image_url: https://manabi.io/static/reader/category_images/gaming.png
+    background_image_url: https://manabi.io/static/reader/category_images/gaming.jpg
     feeds:
       - title: Dengeki Online
         rss_url: http://dengekionline.com/cate/11/rss.xml
