@@ -168,10 +168,65 @@ categories:
     background_image_url: https://manabi.io/static/reader/category_images/reddit.png
     minimum_app_version: 1.2.1
     feeds:
-        - title: newsokur
-          rss_url: https://www.reddit.com/r/newsokur/.rss
-          icon_url: https://manabi.io/static/reader/category_images/feed_images/newsokur.png
-          description: A popular haven for former 2ch message board posters looking to add more advanced features to their discussions, this subreddit brings the pseudoanonymous textboard culture of 2ch to Reddit.
+      - title: newsokur
+        rss_url: https://www.reddit.com/r/newsokur/.rss
+        icon_url: https://manabi.io/static/reader/category_images/feed_images/newsokur.png
+        description: A popular haven for former 2ch message board posters looking to add more advanced features to their discussions, this subreddit brings the pseudoanonymous textboard culture of 2ch to Reddit.
+
+      - title: BakaNewsJP
+        rss_url: https://www.reddit.com/r/BakaNewsJP/.rss
+        icon_url: https://b.thumbs.redditmedia.com/DT2HJ3cr8cUouM95rp9qgEJZVBse8MLvWMWSW2lqocg.png
+        description: Funny news, pics, GIFs, and more.
+
+      - title: FoodPorn_ja
+        rss_url: https://www.reddit.com/r/FoodPorn_ja/.rss
+        icon_url: https://b.thumbs.redditmedia.com/d1mkJlolXKNBnbrIjs3UuRJCkny39VIJFX6oFylsRHs.png
+        description: Simply pictures of food to get your hunger going.
+
+      - title: Software_ja
+        rss_url: https://www.reddit.com/r/software_ja/.rss
+        icon_url: https://b.thumbs.redditmedia.com/sqUB4v3p6DRaJStRY_cCizAatJ9nQf4necosM5Gk6tI.png
+        description: Windows, Mac, Linux software information and discussion.
+
+      - title: newsokunomoral
+        rss_url: https://www.reddit.com/r/newsokunomoral/.rss
+        icon_url: https://a.thumbs.redditmedia.com/rpWxWUJxUB-vYyoB1LP7iOFKK42mMKCa6WNKlLGpF-0.png
+        description: A place for chatting about cool news and funny things in Japanese.
+
+      - title: occult_ja
+        rss_url: https://www.reddit.com/r/occult_ja/.rss
+        icon_url: https://a.thumbs.redditmedia.com/okUHJsCg4XMsw7TaFTaSIy1eTEkvexgthhnFUBJQej4.png
+        description: Occult and generally spooky subject matters.
+
+      - title: manhole_jp
+        rss_url: https://www.reddit.com/r/manhole_jp/.rss
+        icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        description: Manholes in Japan are often decorated with stunning designs that evoke some aspect of their local surroundings. This subreddit collects photos and information on artistic manhole covers from all over Japan.
+
+      - title: EIGANEWS
+        rss_url: https://www.reddit.com/r/eiganews/.rss
+        icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        description: Movie news.
+
+      - title: apple_jp
+        rss_url: https://www.reddit.com/r/apple_jp/.rss
+        icon_url: https://b.thumbs.redditmedia.com/rt9iMdOGzROC5mvVtWNGta3LT0qotzKMDGdVw4Yk0Nw.png
+        description: Discussions around iPhone, Mac, and various Apple products and services.
+
+      - title: PokemonGo_Ja
+        rss_url: https://www.reddit.com/r/PokemonGo_Ja/.rss
+        icon_url: https://b.thumbs.redditmedia.com/XgpSITLa-RTUMVXMAQuLHf_6eOqEF7fxvfvjIdxLWcQ.png
+        description: Pokemon Go news.
+
+      - title: whistory_ja
+        rss_url: https://www.reddit.com/r/whistory_ja/.rss
+        icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        description: World history.
+
+      - title: RUINS_JP
+        rss_url: https://www.reddit.com/r/ruins_jp/.rss
+        icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        description: Abandoned building photography and news.
 
   - title: Gaming
     background_image_url: https://manabi.io/static/reader/category_images/gaming.jpg
@@ -194,3 +249,8 @@ categories:
         rss_url: http://jin115.com/index.rdf
         icon_url: http://jin115.com/favicon.ico
         description: Japanese gaming blog known to break news later picked up by outlets. Each article is accompanied by amusing text art.
+
+    - title: STEAMR Subreddit
+        rss_url: https://www.reddit.com/r/streamr/.rss
+        icon_url: https://b.thumbs.redditmedia.com/HEveML44twbIl4nG91F6XwUHa5vDvCtXXHIsB2V2mqM.png
+        description: Steam PC game news and discussion.
