@@ -7,6 +7,7 @@ beginner_feeds:
 
   - title: Matcha – Japan Travel Magazine
     rss_url: https://matcha-jp.com/easy/feed
+    rss_contains_full_content: true
     icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
     description: The "easy edition" of a Japanese travel magazine, with furigana in all its articles. Written for foreigner visitors to Japan.
 
@@ -88,6 +89,7 @@ categories:
 
       - title: Matcha – Japan Travel Magazine
         rss_url: https://matcha-jp.com/jp/feed
+        rss_contains_full_content: true
         icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
         description: Travel magazine, written for foreigner visitors to Japan.
 
