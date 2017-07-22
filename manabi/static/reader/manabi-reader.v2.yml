@@ -183,7 +183,7 @@ categories:
       - title: FoodPorn_ja
         rss_url: https://www.reddit.com/r/FoodPorn_ja/.rss
         icon_url: https://b.thumbs.redditmedia.com/d1mkJlolXKNBnbrIjs3UuRJCkny39VIJFX6oFylsRHs.png
-        description: Simply pictures of food to get your hunger going.
+        description: Food pictures to get your hunger going.
 
       - title: Software_ja
         rss_url: https://www.reddit.com/r/software_ja/.rss
@@ -203,7 +203,7 @@ categories:
       - title: manhole_jp
         rss_url: https://www.reddit.com/r/manhole_jp/.rss
         icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
-        description: Manholes in Japan are often decorated with stunning designs that evoke some aspect of their local surroundings. This subreddit collects photos and information on artistic manhole covers from all over Japan.
+        description: Manhole covers in Japan are often decorated with stunning designs evoking something of their locality. This subreddit has photos and info on artistic manhole covers all over Japan.
 
       - title: EIGANEWS
         rss_url: https://www.reddit.com/r/eiganews/.rss
@@ -213,7 +213,7 @@ categories:
       - title: apple_jp
         rss_url: https://www.reddit.com/r/apple_jp/.rss
         icon_url: https://b.thumbs.redditmedia.com/rt9iMdOGzROC5mvVtWNGta3LT0qotzKMDGdVw4Yk0Nw.png
-        description: Discussions around iPhone, Mac, and various Apple products and services.
+        #description: Discussions around iPhone, Mac, and various Apple products and services.
 
       - title: PokemonGo_Ja
         rss_url: https://www.reddit.com/r/PokemonGo_Ja/.rss
