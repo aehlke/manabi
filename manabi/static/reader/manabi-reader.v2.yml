@@ -58,11 +58,13 @@ categories:
 
       - title: RocketNews24
         rss_url: http://feeds.rocketnews24.com/rocketnews24
+        rss_contains_full_content: true
         icon_url: https://s0.wp.com/wp-content/themes/vip/rocketnews/img/pts_logo.png
         description: Reporting the interesting, strange, and random. Covers a wide variety of topics.
 
       - title: TechCrunch Japan
         rss_url: http://jp.techcrunch.com/feed/
+        rss_contains_full_content: true
         icon_url: https://s0.wp.com/wp-content/themes/vip/techcrunch-jp-2015/assets/images/favicon.ico
         description: The latest technology news and information on startups.
 
@@ -93,6 +95,7 @@ categories:
 
       - title: One Day One Rail!
         rss_url: http://www.ichitetsu.com/atom.xml
+        rss_contains_full_content: true
         icon_url: http://railman.cocolog-nifty.com/prof.jpg
         description: One railway-related photo per day, with a brief note attached in both Japanese and English.
 
@@ -104,6 +107,7 @@ categories:
 
       - title: Melon Cafe
         rss_url: http://meloncafe.blog.jp/atom.xml
+        rss_contains_full_content: true
         icon_url: http://livedoor.blogimg.jp/meloncafe/imgs/8/8/favicon.ico
         description: Simple and delicious recipes for sweets and snacks, with cheerful photos of food and colorful "character bento".
 
@@ -133,6 +137,7 @@ categories:
 
       - title: Z TOKYO
         rss_url: https://ztokyo.net/feed/ja.rss
+        rss_contains_full_content: true
         icon_url: https://ztokyo.net/favicon.ico
         description: Online bilingual magazine bringing contemporary Tokyo culture to the world.
 
