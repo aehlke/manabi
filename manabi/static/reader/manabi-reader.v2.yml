@@ -66,6 +66,10 @@ categories:
         icon_url: https://s0.wp.com/wp-content/themes/vip/techcrunch-jp-2015/assets/images/favicon.ico
         description: The latest technology news and information on startups.
 
+      - title: CNN Japan
+        rss_url: http://feeds.cnn.co.jp/rss/cnn/cnn.rdf
+        icon_url: https://www.cnn.co.jp/media/cnn/images/icons/favicon.ico
+
   - title: Blogs
     background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
     feeds:
