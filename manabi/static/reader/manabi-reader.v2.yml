@@ -70,6 +70,11 @@ categories:
         rss_url: http://feeds.cnn.co.jp/rss/cnn/cnn.rdf
         icon_url: https://www.cnn.co.jp/media/cnn/images/icons/favicon.ico
 
+      - title: Engadget Japan
+        rss_url: http://japanese.engadget.com/rss.xml
+        icon_url: https://www.cnn.co.jp/media/cnn/images/icons/favicon.ico
+        description: Technology news and reviews.
+
   - title: Blogs
     background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
     feeds:
