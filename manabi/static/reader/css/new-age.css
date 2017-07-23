@@ -392,3 +392,9 @@ header.masthead .device-container .screen iframe {
 
     margin: 1em;
 }
+header.masthead .header-content .header-content-inner h1 {
+    font-weight: bold;
+}
+#mainNav .navbar-brand {
+    font-weight: bold;
+}
