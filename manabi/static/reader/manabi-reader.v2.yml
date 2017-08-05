@@ -96,6 +96,7 @@ categories:
       - title: One Day One Rail!
         rss_url: http://www.ichitetsu.com/atom.xml
         rss_contains_full_content: true
+        meaningful_content_min_length: 25
         icon_url: http://railman.cocolog-nifty.com/prof.jpg
         description: One railway-related photo per day, with a brief note attached in both Japanese and English.
 
