@@ -38,6 +38,7 @@ categories:
       - title: Huffington Post
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
         rss_contains_full_content: true
+        extract_entry_image_from_content: true
         icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
         description: Breaking news from HuffPost Japan.
 
@@ -98,7 +99,7 @@ categories:
         # The embedded HTML unfortunately breaks Readability: rss_contains_full_content: true
         meaningful_content_min_length: 10
         icon_url: http://railman.cocolog-nifty.com/prof.jpg
-        description: One railway-related photo per day, with a brief note attached in both Japanese and English.
+        description: One railway-related photo per day, with a brief note attached in Japanese and English.
 
       - title: Matcha – Japan Travel Magazine
         rss_url: https://matcha-jp.com/jp/feed
@@ -121,6 +122,7 @@ categories:
       - title: Huffington Post – Blog
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
         rss_contains_full_content: true
+        extract_entry_image_from_content: true
         icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
         description: Blog articles from HuffPost Japan.
 
