@@ -96,7 +96,7 @@ categories:
       - title: One Day One Rail!
         rss_url: http://www.ichitetsu.com/atom.xml
         rss_contains_full_content: true
-        meaningful_content_min_length: 25
+        meaningful_content_min_length: 10
         icon_url: http://railman.cocolog-nifty.com/prof.jpg
         description: One railway-related photo per day, with a brief note attached in both Japanese and English.
 
@@ -271,5 +271,3 @@ categories:
         rss_url: https://www.reddit.com/r/streamr/.rss
         icon_url: https://b.thumbs.redditmedia.com/HEveML44twbIl4nG91F6XwUHa5vDvCtXXHIsB2V2mqM.png
         description: Steam PC game news and discussion.
-
-# http://junami-sakusima.cocolog-nifty.com/blog/
