@@ -200,7 +200,7 @@ categories:
       - title: FoodPorn_ja
         rss_url: https://www.reddit.com/r/FoodPorn_ja/.rss
         icon_url: https://b.thumbs.redditmedia.com/d1mkJlolXKNBnbrIjs3UuRJCkny39VIJFX6oFylsRHs.png
-        description: Food pictures to get your hunger going.
+        #description: Food pictures to get your hunger going.
 
       - title: Software_ja
         rss_url: https://www.reddit.com/r/software_ja/.rss
@@ -210,7 +210,7 @@ categories:
       - title: newsokunomoral
         rss_url: https://www.reddit.com/r/newsokunomoral/.rss
         icon_url: https://a.thumbs.redditmedia.com/rpWxWUJxUB-vYyoB1LP7iOFKK42mMKCa6WNKlLGpF-0.png
-        description: A place for chatting about cool news and funny things in Japanese.
+        description: Chat about cool and funny news.
 
       - title: occult_ja
         rss_url: https://www.reddit.com/r/occult_ja/.rss
@@ -220,7 +220,7 @@ categories:
       - title: manhole_jp
         rss_url: https://www.reddit.com/r/manhole_jp/.rss
         icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
-        description: Manhole covers in Japan are often decorated with stunning designs evoking something of their locality. This subreddit has photos and info on artistic manhole covers all over Japan.
+        description: Manhole covers in Japan are often decorated with stunning designs evoking something of their locality.
 
       - title: EIGANEWS
         rss_url: https://www.reddit.com/r/eiganews/.rss
