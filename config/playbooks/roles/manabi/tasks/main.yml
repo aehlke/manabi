@@ -26,6 +26,7 @@
     repo: git@github.com:aehlke/manabi.git
     dest: '{{ app_root_path }}'
     version: master
+    depth: 1
     accept_hostkey: yes
     force: yes
   notify:
