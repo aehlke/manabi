@@ -12,7 +12,7 @@
     src: bash_profile.j2
     dest: '{{ ansible_env.HOME }}/.profile'
 
-- name: Get Python user base's binary directory
+- name: Get Python user base's directory
   command: python -m site --user-base
   register: python_user_base_dir
 
@@ -20,7 +20,7 @@
   lineinfile:
     dest: '{{ ansible_env.HOME }}/.profile'
     regexp: "^PATH=.*# Python user bin"
-    line: "PATH=$PATH:{{ python_user_base_dir.stdout }} # Python user bin"
+    line: "PATH=$PATH:{{ python_user_base_dir.stdout }}/bin # Python user bin"
 
 - name: Install aptitude for certain apt module commands
   apt:
