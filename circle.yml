@@ -7,6 +7,8 @@ machine:
     version: v8.2.0
 
 dependencies:
+  cache_directories:
+    - ~/.local
   pre:
     - sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
     - pip install pipenv
