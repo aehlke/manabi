@@ -75,6 +75,6 @@
 - include: byobu.yml
 
 # Security.
-- include: allow_only_ssh_login.yml
-- include: ufw.yml
-- include: fail2ban.yml
+- import_tasks: allow_only_ssh_login.yml
+- import_tasks: ufw.yml
+- import_tasks: fail2ban.yml

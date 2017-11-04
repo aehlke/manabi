@@ -1,7 +1,7 @@
 ---
 
-- include: prometheus.yml
-- include: carbon.yml
-- include: graphite.yml
-- include: collectd.yml
-- include: grafana.yml
+- import_tasks: prometheus.yml
+- import_tasks: carbon.yml
+- import_tasks: graphite.yml
+- import_tasks: collectd.yml
+- import_tasks: grafana.yml

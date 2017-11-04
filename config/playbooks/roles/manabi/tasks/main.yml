@@ -1,6 +1,6 @@
 ---
 
-- include: mecab.yml
+- import_tasks: mecab.yml
 
 - name: Machine-level configuration directory for Manabi
   file:
