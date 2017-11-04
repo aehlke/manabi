@@ -35,7 +35,7 @@
   tags: git-pull
 
 - name: Install python dependencies
-  command: pipenv install --ignore-pipfile --two --deploy
+  shell: pipenv install --ignore-pipfile --two --deploy
   args:
     chdir: '{{ app_root_path }}'
   notify:
@@ -52,7 +52,7 @@
     - Restart RQ workers
 
 - name: Migrate database
-  command: 'pipenv run python manage.py migrate --noinput'
+  shell: 'pipenv run python manage.py migrate --noinput'
   args:
     chdir: '{{ app_root_path }}'
 
@@ -73,7 +73,7 @@
   become: yes
 
 - name: Collect static files
-  command: 'pipenv run python manage.py collectstatic --noinput {{ manabi_collectstatic_extra_args }}'
+  shell: 'pipenv run python manage.py collectstatic --noinput {{ manabi_collectstatic_extra_args }}'
   args:
     chdir: '{{ app_root_path }}'
   tags: collectstatic
