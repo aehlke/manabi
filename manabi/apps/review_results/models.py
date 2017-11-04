@@ -34,15 +34,18 @@ class ReviewResults(object):
             start_of_today -= timedelta(days=1)
         start_of_today = start_of_today.replace(hour=settings.START_OF_DAY)
 
-        if now.isoweekday() == 7:
-            week_sunday = now
+        if start_of_today.isoweekday() == 7:
+            week_sunday = start_of_today
         else:
-            week_sunday = now - timedelta(days=now.isoweekday())
+            week_sunday = (
+                start_of_today
+                - timedelta(days=start_of_today.isoweekday())
+            )
 
         week_sunday_utc = week_sunday.astimezone(pytz.utc)
 
         review_days = set(self._card_history
-            .filter(reviewed_at__day__gte=(
+            .filter(reviewed_at__gte=(
                 week_sunday_utc - timedelta(weeks=_WEEKS_TO_REPORT)))
             .annotate(reviewed_day=
                 TruncDay('reviewed_at', tzinfo=self.user_timezone))
