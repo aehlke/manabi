@@ -32,7 +32,7 @@ class ReviewResults(object):
         start_of_today = datetime.now(self.user_timezone)
         if start_of_today.hour < settings.START_OF_DAY:
             start_of_today -= timedelta(days=1)
-        start_of_today.hour = settings.START_OF_DAY
+        start_of_today = start_of_today.replace(hour=settings.START_OF_DAY)
 
         if now.isoweekday() == 7:
             week_sunday = now

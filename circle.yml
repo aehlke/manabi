@@ -9,6 +9,13 @@ machine:
 dependencies:
   pre:
     - sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
+    - pip install pipenv
+  override:
+    - pipenv install --dev
+
+test:
+  override:
+    - pipenv run python manage.py test
 
 deployment:
   production:

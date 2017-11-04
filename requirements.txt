@@ -1,3 +1,5 @@
+# UNUSED - see Pipfile
+
 django==1.11.2
 Fabric==1.8.0
 django-extensions==1.9.6
