@@ -4,7 +4,7 @@ dependencies:
   - role: ansible-supervisor_task
     name: uwsgi
     directory: '{{ app_root_path }}'
-    command: 'uwsgi --socket="{{ uwsgi_socket }}" --chmod-socket=666 -H "{{ app_virtualenv_path }}" -w manabi.wsgi:application --processes=3 --ignore-sigpipe --die-on-term --enable-threads --max-requests=10000 --stats=/tmp/manabi_uwsgi_stats.socket --vacuum'
+    command: 'pipenv run uwsgi --socket="{{ uwsgi_socket }}" --chmod-socket=666 -w manabi.wsgi:application --processes=3 --ignore-sigpipe --die-on-term --enable-threads --max-requests=10000 --stats=/tmp/manabi_uwsgi_stats.socket --vacuum'
     env_vars:
       PRODUCTION: 1
     process_name: uwsgi

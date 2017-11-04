@@ -165,12 +165,14 @@ MIDDLEWARE_CLASSES = (
 
     'django.middleware.common.CommonMiddleware',
 
+    'manabi.middleware.UserTimezoneMiddleware',
+
     'catnap.middleware.HttpExceptionMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 
-    'catnap.basic_auth.BasicAuthMiddleware',
+    'catnap.basic_auth.BasicAuthMiddleware',  # TODO: Delete
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',

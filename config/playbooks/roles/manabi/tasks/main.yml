@@ -35,11 +35,9 @@
   tags: git-pull
 
 - name: Install python dependencies
-  pip:
-    requirements: '{{ app_root_path }}/requirements.txt'
-    virtualenv: '{{ app_virtualenv_path }}'
-    virtualenv_python: python2.7
-    virtualenv_site_packages: no
+  command: pipenv install --ignore-pipfile --two --deploy
+  args:
+    chdir: '{{ app_root_path }}'
   notify:
     - Reload uwsgi
     - Restart RQ workers
@@ -54,7 +52,9 @@
     - Restart RQ workers
 
 - name: Migrate database
-  command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py migrate --noinput'
+  command: 'pipenv run python manage.py migrate --noinput'
+  args:
+    chdir: '{{ app_root_path }}'
 
 - include: webpack.yml
 
@@ -73,7 +73,9 @@
   become: yes
 
 - name: Collect static files
-  command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py collectstatic --noinput {{ manabi_collectstatic_extra_args }}'
+  command: 'pipenv run python manage.py collectstatic --noinput {{ manabi_collectstatic_extra_args }}'
+  args:
+    chdir: '{{ app_root_path }}'
   tags: collectstatic
 
 - name: Assign ownership of static files to www-data

@@ -27,6 +27,7 @@ class ReviewResultsView(APIView):
 
         review_results = ReviewResults(
             request.user,
+            request.user_timezone,
             review_began_at,
         )
         return Response(ReviewResultsSerializer(review_results).data)

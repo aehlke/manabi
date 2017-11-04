@@ -2,7 +2,7 @@
 
 ## Local development
 ```
-brew install mecab mecab-ipadic
-pip install -r requirements.txt
+brew install mecab mecab-ipadic pipenv
+pip install --pipfile
 python manage.py runserver
 ```

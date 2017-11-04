@@ -7,11 +7,12 @@ name = "pypi"
 
 [dev-packages]
 
+freezegun = "==0.3.9"
 
 
 [packages]
 
-Django = "==1.11.2"
+Django = "==1.11.7"
 Fabric = "==1.8.0"
 django-extensions = "==1.9.6"
 drf-extensions = "==0.3.1"

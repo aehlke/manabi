@@ -272,12 +272,9 @@ class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
         if settings.USE_TEST_STUBS:
             return self._test_helper_get(request, format=format)
 
-        time_zone = pytz.timezone(
-            self.request.META.get('HTTP_X_TIME_ZONE', 'America/New_York'))
-
         availabilities = ReviewAvailabilities(
             request.user,
-            time_zone=time_zone,
+            time_zone=request.user_timezone,
             **review_availabilities_filters(self.request)
         )
 
@@ -338,14 +335,11 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
             return self._test_helper_get(
                 request, format=format, excluded_card_ids=excluded_card_ids)
 
-        time_zone = pytz.timezone(
-            self.request.META.get('HTTP_X_TIME_ZONE', 'America/New_York'))
-
         next_cards_for_review = NextCardsForReview(
             self.request.user,
             10, # FIXME
             excluded_card_ids=excluded_card_ids,
-            time_zone=time_zone,
+            time_zone=request.user_timezone,
             **next_cards_to_review_filters(self.request)
         )
 
