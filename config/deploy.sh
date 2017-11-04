@@ -4,13 +4,8 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-if [ ! -d .virtualenv ]; then
-    virtualenv .virtualenv --no-site-packages
-fi
-source .virtualenv/bin/activate
-pip install -q --upgrade pip
-pip install -q -r requirements.txt
+pipenv install --ignore-pipfile --two
 
 cd playbooks
-ansible-galaxy install -r requirements.yml
-ansible-playbook deploy.yml "$@"
+pipenv run ansible-galaxy install -r requirements.yml
+pipenv run ansible-playbook deploy.yml "$@"
