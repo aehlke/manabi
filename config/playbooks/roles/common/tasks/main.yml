@@ -13,7 +13,7 @@
     dest: '{{ ansible_env.HOME }}/.profile'
 
 - name: Source .profile
-  shell: . .profile
+  shell: '. {{ ansible_env.HOME }}/.profile'
 
 - name: Get Python user base's directory
   command: python -m site --user-base
