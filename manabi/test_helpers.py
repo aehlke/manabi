@@ -23,7 +23,7 @@ from manabi.apps.flashcards.models.constants import (
     GRADE_HARD,
     GRADE_NONE,
 )
-from manabi.apps.utils import unix_time
+from manabi.apps.utils.utils import unix_time
 
 PASSWORD = 'whatever'
 
