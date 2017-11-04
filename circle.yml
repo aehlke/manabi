@@ -3,6 +3,8 @@ machine:
     dev.manabi.io: 127.0.0.1
   services:
     - redis
+  node:
+    version: v8.2.0
 
 dependencies:
   pre:
