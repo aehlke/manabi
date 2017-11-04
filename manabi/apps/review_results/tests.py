@@ -2,6 +2,9 @@ from datetime import datetime
 
 from django.test import Client
 
+from manabi.apps.flashcards.models.constants import (
+    GRADE_EASY,
+)
 from manabi.test_helpers import (
     ManabiTestCase,
     create_sample_data,

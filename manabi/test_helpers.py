@@ -205,14 +205,14 @@ class APIShortcuts(object):
             '/api/flashcards/review_availabilities/',
             {'deck': deck},
             user=user,
-        )
+        ).json()
 
     def review_results(self, user, review_began_at):
         return self.get(
             '/api/flashcards/review_results/',
             {'review_began_at': unix_time(review_began_at)},
             user=user,
-        )
+        ).json()
 
     def inject_furigana(self, expression):
         return self.post('/api/furigana/inject/', {'text': expression}).json()['text_with_furigana']
