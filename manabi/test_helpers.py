@@ -23,6 +23,7 @@ from manabi.apps.flashcards.models.constants import (
     GRADE_HARD,
     GRADE_NONE,
 )
+from manabi.apps.utils import unix_time
 
 PASSWORD = 'whatever'
 
@@ -203,6 +204,13 @@ class APIShortcuts(object):
         return self.get(
             '/api/flashcards/review_availabilities/',
             {'deck': deck},
+            user=user,
+        )
+
+    def review_results(self, user, review_began_at):
+        return self.get(
+            '/api/flashcards/review_results/',
+            {'review_began_at': unix_time(review_began_at)},
             user=user,
         )
 

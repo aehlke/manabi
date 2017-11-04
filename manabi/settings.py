@@ -260,6 +260,7 @@ INSTALLED_APPS = (
     'manabi.apps.profiles',
     'manabi.apps.reader_feeds',
     'manabi.apps.reading_level',
+    'manabi.apps.review_results',
     'manabi.apps.subscriptions',
     'manabi.apps.twitter_usages',
 )
@@ -411,4 +412,4 @@ else:
         from manabi.settings_development_secrets import *
         from manabi.settings_development import *
     except ImportError:
-        pass
+        raise Exception("Couldn't import development settings.")

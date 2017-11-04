@@ -16,6 +16,7 @@ from manabi.apps.flashcards.api_views import (
     NextCardsForReviewViewSet,
     CardViewSet,
 )
+from manabi.apps.review_results.api_views import ReviewResultsView
 
 
 api_router = routers.DefaultRouter()
@@ -43,6 +44,9 @@ api_router.register(r'flashcards/review_availabilities',
 api_router.register(r'flashcards/next_cards_for_review',
     NextCardsForReviewViewSet,
     base_name='next-card-for-review')
+api_router.register(r'flashcards/review_results',
+    ReviewResultsView,
+    base_name='review-results')
 
 urlpatterns = [
     url(r'^apple-app-site-association$', TemplateView.as_view(
@@ -74,6 +78,7 @@ urlpatterns = [
         name='register'),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
+    url(r'^api/flashcards/review_results/', include('manabi.apps.review_results.api_urls')),
     url(r'^api/subscriptions/', include('manabi.apps.subscriptions.api_urls')),
     url(r'^api/furigana/', include('manabi.apps.furigana.urls')),
     url(r'^api/twitter_usages/', include('manabi.apps.twitter_usages.urls')),
