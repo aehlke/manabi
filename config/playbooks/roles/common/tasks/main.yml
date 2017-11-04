@@ -1,5 +1,12 @@
 ---
 
+- name: Set LC_ALL locale
+  lineinfile:
+    dest: /etc/default/locale
+    regexp: "^LC_ALL="
+    line: "LC_ALL=en_US.UTF-8"
+  become: yes
+
 - name: Install aptitude for certain apt module commands
   apt:
     name: aptitude
