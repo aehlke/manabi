@@ -1,5 +1,5 @@
 import dateutil.tz
-from datetime import datetime, timedelta
+from datetime import datetime, date, timedelta
 
 import pytz
 from django.conf import settings
@@ -38,7 +38,16 @@ class ReviewResults(object):
 
     @property
     def current_daily_streak(self):
-        return 0
+        start_of_today = _start_of_today(self.user_timezone)
+        day_to_check = start_of_today.date()
+
+        streak = 0
+        while True:
+            if day_to_check not in self._days_reviewed():
+                return streak
+            day_to_check -= timedelta(days=1)
+            streak += 1
+
 
     @lru_cache(maxsize=None)
     def _days_reviewed(self):
