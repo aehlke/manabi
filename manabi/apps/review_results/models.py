@@ -27,14 +27,14 @@ class ReviewResults(object):
         self.user = user
         self.user_timezone = user_timezone
         self.review_began_at = review_began_at
-        self._card_history = (CardHistory.objects
-            .of_user(user)
-            .filter(reviewed_at__gte=review_began_at)
-        )
+        self._card_history = CardHistory.objects .of_user(user)
 
     @property
     def cards_reviewed(self):
-        return self._card_history.count()
+        return (self._card_history
+            .filter(reviewed_at__gte=self.review_began_at)
+            .count()
+        )
 
     @property
     def current_daily_streak(self):
