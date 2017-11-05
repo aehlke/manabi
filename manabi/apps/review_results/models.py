@@ -1,13 +1,22 @@
+import dateutil.tz
 from datetime import datetime, timedelta
 
+import pytz
 from django.conf import settings
 from django.db.models.functions import TruncDay
-import pytz
+from django.utils.lru_cache import lru_cache
 
 from manabi.apps.flashcards.models import CardHistory
 
 
 _WEEKS_TO_REPORT = 9
+
+
+def _start_of_today(user_timezone):
+    start_of_today = datetime.now(user_timezone)
+    if start_of_today.hour < settings.START_OF_DAY:
+        start_of_today -= timedelta(days=1)
+    return start_of_today.replace(hour=settings.START_OF_DAY)
 
 
 class ReviewResults(object):
@@ -28,11 +37,24 @@ class ReviewResults(object):
         return self._card_history.count()
 
     @property
+    def current_daily_streak(self):
+        return 0
+
+    @lru_cache(maxsize=None)
+    def _days_reviewed(self):
+        return set(self._card_history
+            .annotate(reviewed_day=
+                TruncDay('reviewed_at', tzinfo=dateutil.tz.tzoffset(
+                    self.user_timezone, settings.START_OF_DAY)))
+            .values('reviewed_day')
+            .distinct()
+            .order_by('reviewed_day')
+            .values_list('reviewed_day', flat=True)
+        )
+
+    @property
     def days_reviewed_by_week(self):
-        start_of_today = datetime.now(self.user_timezone)
-        if start_of_today.hour < settings.START_OF_DAY:
-            start_of_today -= timedelta(days=1)
-        start_of_today = start_of_today.replace(hour=settings.START_OF_DAY)
+        start_of_today = _start_of_today(self.user_timezone)
 
         if start_of_today.isoweekday() == 7:
             week_sunday = start_of_today
@@ -42,19 +64,7 @@ class ReviewResults(object):
                 - timedelta(days=start_of_today.isoweekday())
             )
 
-        week_sunday_utc = week_sunday.astimezone(pytz.utc)
-
-        review_days = set(self._card_history
-            .filter(reviewed_at__gte=(
-                week_sunday_utc - timedelta(weeks=_WEEKS_TO_REPORT)))
-            .annotate(reviewed_day=
-                TruncDay('reviewed_at', tzinfo=self.user_timezone))
-            .values('reviewed_day')
-            .distinct()
-            .order_by('reviewed_day')
-            .values_list('reviewed_day', flat=True)
-        )
-
+        review_days = self._days_reviewed()
         weeks = []
         for week_delta in range(0, _WEEKS_TO_REPORT):
             days_reviewed = sum(

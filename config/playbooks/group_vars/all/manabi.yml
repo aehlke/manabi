@@ -12,3 +12,5 @@ locale: 'en_US.UTF-8'
 
 postgres_host: localhost
 postgres_port: 5432
+
+user_local_bin_path: /home/ubuntu/.local/bin
