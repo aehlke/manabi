@@ -48,10 +48,13 @@ class ReviewResults(object):
             day_to_check -= timedelta(days=1)
             streak += 1
 
-
     @lru_cache(maxsize=None)
     def _days_reviewed(self):
-        return set(self._card_history
+        '''
+        Returns a set of date objects.
+        '''
+        return set(dt.date() for dt in
+            self._card_history
             .annotate(reviewed_day=
                 TruncDay('reviewed_at', tzinfo=dateutil.tz.tzoffset(
                     self.user_timezone, settings.START_OF_DAY)))
@@ -72,22 +75,25 @@ class ReviewResults(object):
                 start_of_today
                 - timedelta(days=start_of_today.isoweekday())
             )
+        week_sunday = week_sunday.date()
 
         review_days = self._days_reviewed()
         weeks = []
-        for week_delta in range(0, _WEEKS_TO_REPORT):
+        for _ in range(0, _WEEKS_TO_REPORT):
             days_reviewed = sum(
                 1 for day in [
-                    (week_sunday + timedelta(days=day_offset))
+                    week_sunday + timedelta(days=day_offset)
                     for day_offset
                     in range(0, 7)
                 ]
                 if day in review_days
             )
 
-            week = {
+            weeks.insert(0, {
                 'week': '{}/{}'.format(week_sunday.month, week_sunday.day),
                 'days_reviewed': days_reviewed,
-            }
+            })
+
+            week_sunday -= timedelta(weeks=1)
 
         return weeks
