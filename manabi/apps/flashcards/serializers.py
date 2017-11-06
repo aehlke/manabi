@@ -370,6 +370,8 @@ class NextCardsForReviewSerializer(serializers.Serializer):
     # requesting the next cards for review.
     interstitial = ReviewInterstitialSerializer(required=False)
 
+    server_datetime = serializers.DateTimeField()
+
     class Meta:
         read_only_fields = (
             'cards',

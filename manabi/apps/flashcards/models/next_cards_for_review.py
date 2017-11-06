@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from manabi.apps.flashcards.models import (
     Card,
 )
@@ -86,3 +88,5 @@ class NextCardsForReview(object):
             new_cards_per_day_limit_override=new_cards_per_day_limit_override,
             new_cards_limit=new_cards_limit,
         )
+
+        self.server_datetime = datetime.utcnow()

@@ -42,6 +42,9 @@ class ReviewResults(object):
 
     @property
     def cards_reviewed(self):
+        '''
+        Non-unique card reviews.
+        '''
         return (self._card_history
             .filter(reviewed_at__gte=self.review_began_at)
             .exclude(was_new=True)
