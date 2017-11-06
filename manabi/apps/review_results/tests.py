@@ -47,10 +47,14 @@ class ReviewResultsAPITest(ManabiTestCase):
             results = self.api.review_results(self.user, datetime.utcnow())
             self.assertEqual(results['current_daily_streak'], 0)
 
-            for _ in range(2):
+            for was_review_first_of_today in [True, False]:
                 self._review_card()
                 results = self.api.review_results(self.user, datetime.utcnow())
                 self.assertEqual(results['current_daily_streak'], 1)
+                self.assertEqual(
+                    results['was_review_first_of_today'],
+                    was_review_first_of_today)
+                frozen_datetime.tick(delta=timedelta(hours=1))
 
             frozen_datetime.tick(delta=timedelta(days=1))
             results = self.api.review_results(self.user, datetime.utcnow())

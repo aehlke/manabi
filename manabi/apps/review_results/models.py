@@ -27,7 +27,7 @@ class ReviewResults(object):
         self.user = user
         self.user_timezone = user_timezone
         self.review_began_at = review_began_at
-        self._card_history = CardHistory.objects .of_user(user)
+        self._card_history = CardHistory.objects.of_user(user)
 
     @property
     def cards_reviewed(self):
@@ -63,6 +63,16 @@ class ReviewResults(object):
             .order_by('reviewed_day')
             .values_list('reviewed_day', flat=True)
         )
+
+    @property
+    def was_review_first_of_today(self):
+        '''
+        Was this review session the first of today?
+        '''
+        return not self._card_history.filter(
+            reviewed_at__gte=_start_of_today(self.user_timezone),
+            reviewed_at__lt=self.review_began_at,
+        ).exists()
 
     @property
     def days_reviewed_by_week(self):
