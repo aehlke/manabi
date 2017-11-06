@@ -19,6 +19,17 @@ def _start_of_today(user_timezone):
     return start_of_today.replace(hour=settings.START_OF_DAY)
 
 
+def _start_of_this_week(user_timezone):
+    start_of_today = _start_of_today(user_timezone)
+    if start_of_today.isoweekday() == 7:
+        return start_of_today
+    else:
+        return (
+            start_of_today
+            - timedelta(days=start_of_today.isoweekday())
+        )
+
+
 class ReviewResults(object):
     '''
     Results for the last review session.
@@ -33,6 +44,24 @@ class ReviewResults(object):
     def cards_reviewed(self):
         return (self._card_history
             .filter(reviewed_at__gte=self.review_began_at)
+            .exclude(was_new=True)
+            .count()
+        )
+
+    @property
+    def cards_learned(self):
+        return (self._card_history
+            .filter(
+                reviewed_at__gte=self.review_began_at,
+                was_new=True,
+            )
+            .count()
+        )
+
+    @property
+    def cards_learned_or_reviewed_this_week(self):
+        return (self._card_history
+            .filter(reviewed_at__gte=_start_of_this_week(self.user_timezone))
             .count()
         )
 
@@ -76,16 +105,7 @@ class ReviewResults(object):
 
     @property
     def days_reviewed_by_week(self):
-        start_of_today = _start_of_today(self.user_timezone)
-
-        if start_of_today.isoweekday() == 7:
-            week_sunday = start_of_today
-        else:
-            week_sunday = (
-                start_of_today
-                - timedelta(days=start_of_today.isoweekday())
-            )
-        week_sunday = week_sunday.date()
+        week_sunday = _start_of_this_week(self.user_timezone).date()
 
         review_days = self._days_reviewed()
         weeks = []

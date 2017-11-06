@@ -27,16 +27,16 @@ class ReviewResultsAPITest(ManabiTestCase):
         next_card = next_cards[0]
         return self.api.review_card(self.user, next_card, GRADE_EASY)
 
-    def test_cards_reviewed(self):
+    def test_cards_learned(self):
         review_began_at = datetime.utcnow()
 
         results = self.api.review_results(self.user, review_began_at)
-        self.assertEqual(results['cards_reviewed'], 0)
+        self.assertEqual(results['cards_learned'], 0)
 
         self._review_card()
 
         results = self.api.review_results(self.user, review_began_at)
-        self.assertEqual(results['cards_reviewed'], 1)
+        self.assertEqual(results['cards_learned'], 1)
 
     def test_current_streak(self):
         est = timezone('US/Eastern')
