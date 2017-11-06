@@ -1,3 +1,4 @@
+import pytz
 from datetime import datetime
 
 from manabi.apps.flashcards.models import (
@@ -89,4 +90,4 @@ class NextCardsForReview(object):
             new_cards_limit=new_cards_limit,
         )
 
-        self.server_datetime = datetime.utcnow()
+        self.server_datetime = datetime.now(pytz.utc)
