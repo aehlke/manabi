@@ -248,7 +248,8 @@ class Deck(models.Model):
         If multiple exist, even though this shouldn't happen,
         we just return the first one.
         '''
-        subscriber_decks = self.subscriber_decks.filter(owner=user, active=True)
+        subscriber_decks = self.subscriber_decks.filter(
+            owner=user, active=True)
         return subscriber_decks.first()
 
     #TODO implement subscribing with new stuff.

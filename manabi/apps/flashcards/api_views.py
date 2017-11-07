@@ -143,7 +143,6 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
 
 
 class SuggestedSharedDecksViewSet(viewsets.ViewSet):
-    @cache_response(60 * 60, cache_errors=False)  # Seconds.
     def list(self, request, format=None):
         featured_decks_tree = get_featured_decks_tree()
         featured_decks = get_featured_decks().select_related('owner')
@@ -165,14 +164,23 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
         queryset_for_counts = (
             all_suggested_decks | viewer_subscribed_queryset)
 
+        context = {
+            'card_counts': queryset_for_counts.card_counts(),
+            'subscriber_counts': all_suggested_decks.subscriber_counts(),
+        }
+
+        if self.request.user.is_authenticated():
+            context['viewer_synchronized_decks'] = list(
+                Deck.objects.synchronized_decks(self.request.user)
+                .filter(active=True)
+                .select_related('owner', 'synchronized_with__owner')
+            )
+
         serializer = SuggestedSharedDecksSerializer({
             'featured_decks_tree': featured_decks_tree,
             'latest_shared_decks': latest_decks,
             'featured_decks': featured_decks,
-        }, context={
-            'card_counts': queryset_for_counts.card_counts(),
-            'subscriber_counts': all_suggested_decks.subscriber_counts(),
-        })
+        }, context=context)
         return Response(serializer.data)
 
 

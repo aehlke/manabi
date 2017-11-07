@@ -206,9 +206,8 @@ class SharedDecksTest(ManabiTestCase):
         self.assertEqual(decks[0]['owner']['username'], self.user.username)
 
     def test_featured_decks(self):
-        FeaturedDeck.objects.create(
-            deck=self.shared_deck,
-        )
+        FeaturedDeck.objects.create(deck=self.shared_deck)
+
         featured_decks = self.api.suggested_shared_decks()['featured_decks']
         self.assertTrue(len(featured_decks), 1)
         self.assertEqual(featured_decks[0]['id'], self.shared_deck.id)
@@ -217,6 +216,27 @@ class SharedDecksTest(ManabiTestCase):
         subscribers = self.api.shared_deck_subscribers(self.shared_deck)
         print subscribers
         self.assertEqual(len(subscribers), 1)
+
+    def test_subscribed_shared_deck_has_viewer_synchronized_deck_field(self):
+        featured_deck = create_deck()
+        featured_deck.share()
+        FeaturedDeck.objects.create(deck=featured_deck)
+
+        featured_decks = self.api.suggested_shared_decks(
+            viewer=self.subscriber)['featured_decks']
+        self.assertIsNone(featured_decks[0]['viewer_synchronized_deck'])
+
+        subscribed_deck = self.api.add_shared_deck(
+            featured_deck, self.subscriber)
+
+        featured_decks = self.api.suggested_shared_decks(
+            viewer=self.subscriber)['featured_decks']
+        self.assertIsNotNone(
+            featured_decks[0]['viewer_synchronized_deck']['id'])
+        self.assertEqual(
+            featured_decks[0]['viewer_synchronized_deck']['id'],
+            subscribed_deck['id'],
+        )
 
     def test_card_counts_in_suggested_decks(self):
         FeaturedDeck.objects.create(
