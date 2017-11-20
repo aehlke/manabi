@@ -7,6 +7,7 @@
 
 - name: Add PostgreSQL repository key
   apt_key:
+    # From https://www.postgresql.org/media/keys/ACCC4CF8.asc
     data: |
       -----BEGIN PGP PUBLIC KEY BLOCK-----
       mQINBE6XR8IBEACVdDKT2HEH1IyHzXkb4nIWAY7echjRxo7MTcj4vbXAyBKOfjja
