@@ -190,10 +190,10 @@ def _early_review(review_availabilities, **kwargs):
         if not review_availabilities.new_cards_per_day_limit_reached:
             return
         return (
-            u"Good news is you're caught up on reviews! Consider taking a "
-            u"break or reading instead."
+            u'''Good news is you're caught up on reviews! Consider taking a '''
+            u'''break or <a href="itms-apps://itunes.apple.com/app/id1247286380">reading</a> instead.'''
         )
-    return u"You're caught up on reviews! Take a break or go read something."
+    return u'''You're caught up on reviews! Take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">go read something</a>.'''
 
 
 @_auto_secondary_prompt
@@ -207,7 +207,7 @@ def _done_early_review_of_all_cards(review_availabilities, secondary=False):
     # TODO: Verify the user is in early_review mode.
     return (
         u"You've reviewed every card at least once already now in this "
-        u"session. Go take a break or read something instead."
+        u'''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
     )
 
 
