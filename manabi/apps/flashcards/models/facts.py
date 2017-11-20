@@ -171,6 +171,12 @@ class Fact(models.Model):
         if is_new and self.deck.shared:
             copy_facts_to_subscribers([self])
 
+        if (
+            update_fields is None
+            or {'deck', 'deck_id', 'suspended', 'active'} & set(update_fields)
+        ):
+            self.deck.refresh_card_count()
+
         if is_new:
             harvest_tweets.delay(self)
 

@@ -190,10 +190,24 @@ class APIShortcuts(object):
         return self.get(
             '/api/flashcards/next_cards_for_review/', user=user).json()
 
-    def review_card(self, user, card, grade):
+    def review_card(self, user, card_id, grade):
         return self.post(
-            '/api/flashcards/cards/{}/reviews/'.format(card['id']),
+            '/api/flashcards/cards/{}/reviews/'.format(card_id),
             {'grade': grade},
+            user=user,
+        ).json()
+
+    def suspend_fact(self, user, fact_id):
+        return self.patch(
+            '/api/flashcards/facts/{}/'.format(fact_id),
+            {'suspended': True},
+            user=user,
+        ).json()
+
+    def suspend_deck(self, user, deck_id):
+        return self.patch(
+            '/api/flashcards/decks/{}/'.format(deck_id),
+            {'suspended': True},
             user=user,
         ).json()
 

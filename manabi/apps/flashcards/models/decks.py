@@ -117,6 +117,9 @@ class Deck(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     modified_at = models.DateTimeField(auto_now=True, editable=False)
 
+    # Denormalization.
+    card_count = models.PositiveIntegerField(default=0, editable=False)
+
     # whether this is a publicly shared deck
     shared = models.BooleanField(default=False, blank=True)
     shared_at = models.DateTimeField(null=True, blank=True, editable=False)
@@ -173,10 +176,18 @@ class Deck(models.Model):
         return settings.DEFAULT_URL_PREFIX + reverse(
             'shared-deck-detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
+    def refresh_card_count(self, save=True):
+        self.card_count = cards.Card.objects.of_deck(self).available().count()
+        if save:
+            self.save(update_fields=['card_count'])
+        return self.card_count
+
     def save(self, update_fields=None, *args, **kwargs):
         super(Deck, self).save(update_fields=update_fields, *args, **kwargs)
 
         update_kwargs = {}
+        if update_fields is None or 'card_count' in update_fields:
+            update_kwargs['card_count'] = self.refresh_card_count(save=False)
         if update_fields is None or 'image' in update_fields:
             update_kwargs['image'] = self.image
         if update_fields is None or 'collection' in update_fields:
@@ -293,9 +304,6 @@ class Deck(models.Model):
         copy_facts_to_subscribers(self.facts.all(), subscribers=[user])
 
         return deck
-
-    def card_count(self):
-        return cards.Card.objects.of_deck(self).available().count()
 
     def subscriber_count(self):
         return self.subscriber_decks.count()

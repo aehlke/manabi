@@ -99,9 +99,20 @@ class Card(models.Model):
         if update_fields is None or {'deck', 'deck_id'} & set(update_fields):
             self.deck_suspended = self.deck.suspended
 
+        if (
+            update_fields is not None  # Too slow to do this on every save.
+            and {'deck', 'deck_id', 'suspended', 'active'} & set(update_fields)
+        ):
+            self.deck.refresh_card_count()
+
+        is_new = self.pk is None
+
         super(Card, self).save(
             force_update=force_update, update_fields=update_fields,
             *args, **kwargs)
+
+        if is_new:
+            self.deck.refresh_card_count()
 
     def copy(self, target_fact, owner_id=None):
         '''

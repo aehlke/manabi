@@ -93,7 +93,8 @@ class ReviewsAPITest(ManabiTestCase):
                 card.save()
 
         for card in self.next_cards_for_review(self.user):
-            card_review = self.api.review_card(self.user, card, GRADE_GOOD)
+            card_review = self.api.review_card(
+                self.user, card['id'], GRADE_GOOD)
 
     def test_new_cards_appear_after_due_cards(self):
         NEW_COUNT = 2
@@ -102,7 +103,7 @@ class ReviewsAPITest(ManabiTestCase):
         cards = self.api.next_cards_for_review(self.user)['cards']
         self.assertTrue(NEW_COUNT < len(cards))
         for card in cards[:-NEW_COUNT]:
-            self.api.review_card(self.user, card, GRADE_GOOD)
+            self.api.review_card(self.user, card['id'], GRADE_GOOD)
 
         # Make sure there are still new cards at end.
         cards = self.api.next_cards_for_review(self.user)['cards']
@@ -116,7 +117,8 @@ class ReviewsAPITest(ManabiTestCase):
         next_card = next_cards[0]
 
         due_at_before_review = next_card['due_at']
-        card_review = self.api.review_card(self.user, next_card, GRADE_EASY)
+        card_review = self.api.review_card(
+            self.user, next_card['id'], GRADE_EASY)
         self.assertNotEqual(card_review['next_due_at'], due_at_before_review)
 
         undone_card = self.api.undo_review(self.user)
@@ -289,7 +291,8 @@ class SharedDecksTest(ManabiTestCase):
 
 class DeckTest(ManabiTestCase):
     def after_setUp(self):
-        create_sample_data(facts=6)
+        self.user = create_user()
+        create_sample_data(facts=6, user=self.user)
         self.deck = Deck.objects.all().last()
 
     def test_average_ease_factor_on_new_deck_is_default(self):
@@ -302,6 +305,28 @@ class DeckTest(ManabiTestCase):
         self.deck.delete()
         sample_card = Card.objects.get(pk=sample_card.pk)
         self.assertFalse(sample_card.active)
+
+    def test_denormalized_card_count(self):
+        deck = Deck.objects.filter(owner=self.user)[0]
+
+        def assert_card_count():
+            actual_count = Card.objects.of_deck(deck).available().count()
+            self.assertEqual(
+                actual_count,
+                Deck.objects.get(id=deck.id).card_count)
+            return actual_count
+
+        original_count = assert_card_count()
+
+        fact_to_suspend = deck.facts.filter(active=True, suspended=False)[0]
+        fact_card_count = fact_to_suspend.card_set.count()
+        self.assertTrue(fact_card_count > 0)
+
+        self.assertFalse(Fact.objects.get(id=fact_to_suspend.id).suspended)
+        self.api.suspend_fact(self.user, fact_to_suspend.id)
+        self.assertTrue(Fact.objects.get(id=fact_to_suspend.id).suspended)
+        new_count = assert_card_count()
+        self.assertEqual(original_count - fact_card_count, new_count)
 
 
 class NewCardsLimitTest(ManabiTestCase):
@@ -319,12 +344,12 @@ class NewCardsLimitTest(ManabiTestCase):
         cards = self.api.next_cards_for_review(self.user)['cards']
         for idx, card in enumerate(cards):
             self.assertTrue(Card.objects.get(id=card['id']).is_new)
-            self.api.review_card(self.user, card, GRADE_GOOD)
+            self.api.review_card(self.user, card['id'], GRADE_GOOD)
             self.assertEqual(idx + 1, self._get_limit().learned_today_count)
 
     def test_other_user_reviews_dont_conflict(self):
         cards = self.api.next_cards_for_review(self.user)['cards']
-        self.api.review_card(self.user, cards[0], GRADE_GOOD)
+        self.api.review_card(self.user, cards[0]['id'], GRADE_GOOD)
 
         self.assertEqual(
             0, self._get_limit(user=create_user()).learned_today_count)
