@@ -8,7 +8,7 @@
 - name: Add PostgreSQL repository key
   apt_key:
     # From https://www.postgresql.org/media/keys/ACCC4CF8.asc
-      data: "{{ lookup: 'file', 'postgresql-apt.key' }}"
+    data: "{{ lookup: 'file', 'postgresql-apt.key' }}"
   become: yes
 
 - name: Update apt cache
