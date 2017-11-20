@@ -25,7 +25,7 @@ class ReviewResultsAPITest(ManabiTestCase):
     def _review_card(self):
         next_cards = self.api.next_cards_for_review(self.user)['cards']
         next_card = next_cards[0]
-        return self.api.review_card(self.user, next_card, GRADE_EASY)
+        return self.api.review_card(self.user, next_card.id, GRADE_EASY)
 
     def test_cards_learned(self):
         review_began_at = datetime.utcnow()
