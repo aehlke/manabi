@@ -113,7 +113,7 @@ class ManabiTestCase(APITestCase):
         '''
         cards = self.api.next_cards_for_review(user)['cards']
         for card in cards:
-            self.api.review_card(self.user, card, GRADE_GOOD)
+            self.api.review_card(self.user, card['id'], GRADE_GOOD)
         return cards
 
 

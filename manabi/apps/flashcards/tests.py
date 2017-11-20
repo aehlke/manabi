@@ -247,12 +247,12 @@ class SharedDecksTest(ManabiTestCase):
         featured_decks = self.api.suggested_shared_decks()['featured_decks']
         self.assertEqual(
             featured_decks[0]['card_count'],
-            self.shared_deck.card_count())
+            self.shared_deck.refresh_card_count())
         self.assertEqual(
             Deck.objects.filter(
                 id__in=[self.shared_deck.id],
             ).card_counts()[self.shared_deck.id],
-            self.shared_deck.card_count())
+            self.shared_deck.refresh_card_count())
 
     def test_featured_decks_tree(self):
         collection = create_deck_collection()

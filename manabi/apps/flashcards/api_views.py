@@ -91,7 +91,6 @@ class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):
         )
         queryset_for_counts = queryset | upstream_queryset
         context.update({
-            'card_counts': queryset_for_counts.card_counts(),
             'subscriber_counts': queryset_for_counts.subscriber_counts(),
         })
         return context
@@ -158,14 +157,8 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
             Q(id__in=featured_deck_ids)
             | Q(id__in=latest_decks.values('id'))
         ).distinct()
-        viewer_subscribed_queryset = Deck.objects.filter(
-            synchronized_with__in=all_suggested_decks,
-        ).distinct()
-        queryset_for_counts = (
-            all_suggested_decks | viewer_subscribed_queryset)
 
         context = {
-            'card_counts': queryset_for_counts.card_counts(),
             'subscriber_counts': all_suggested_decks.subscriber_counts(),
         }
 
@@ -229,7 +222,6 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
             )
             queryset_for_counts |= viewer_subscribed_decks
         context.update({
-            'card_counts': queryset_for_counts.card_counts(),
             'subscriber_counts': queryset_for_counts.subscriber_counts(),
             'viewer_synchronized_decks': list(
                 Deck.objects.synchronized_decks(self.request.user)

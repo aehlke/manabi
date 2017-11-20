@@ -64,12 +64,6 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             'modified_at',
         )
 
-    def get_card_count(self, obj):
-        try:
-            return self.context['card_counts'][obj.id]
-        except KeyError:
-            return obj.card_count()
-
     def get_subscriber_count(self, obj):
         try:
             return self.context['subscriber_counts'][obj.id]

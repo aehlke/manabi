@@ -15,6 +15,7 @@ class DeckResource(RestModelResource):
         'created_at',
         'modified_at',
         'suspended',
+        'card_count',
     ]
 
     def get_url_path(self):
@@ -24,7 +25,6 @@ class DeckResource(RestModelResource):
         data = super(DeckResource, self).get_data()
         data.update({
             'owner': UserResource(self.obj.owner).get_data(),
-            'card_count': self.obj.card_count(),
             'status_url': '', #TODO reverse('rest-deck_status', args=[self.obj.id]),
         })
         return data
