@@ -29,7 +29,6 @@ class ViewerSynchronizedDeckField(serializers.Field):
         return DeckSerializer(
             synchronized_deck,
             context={
-                'card_counts': self.context['card_counts'],
                 'subscriber_counts': self.context['subscriber_counts'],
             },
         ).data

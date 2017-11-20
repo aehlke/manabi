@@ -24,7 +24,6 @@ from manabi.apps.manabi_auth.serializers import UserSerializer
 class _BaseDeckSerializer(ManabiModelSerializer):
     owner = UserSerializer(read_only=True)
     original_author = UserSerializer(read_only=True)
-    card_count = serializers.SerializerMethodField()
     subscriber_count = serializers.SerializerMethodField()
 
     class Meta(object):
