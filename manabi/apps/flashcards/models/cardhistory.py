@@ -76,7 +76,7 @@ class CardHistory(models.Model):
     reviewed_at = models.DateTimeField()
 
     ease_factor = models.FloatField(null=True, blank=True)
-    interval = models.DurationField(null=True, blank=True, db_index=True)
+    interval = models.DurationField(null=True, blank=True)
 
     # Was the card new when it was reviewed this time?
     was_new = models.BooleanField(default=False, db_index=True)

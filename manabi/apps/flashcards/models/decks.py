@@ -154,7 +154,6 @@ class Deck(models.Model):
         key=['Deck.original_author', lambda self: self.id],
     )
     def original_author(self):
-        # raise Exception("original author")
         if self.synchronized_with is not None:
             return self.synchronized_with.owner
         return self.owner
