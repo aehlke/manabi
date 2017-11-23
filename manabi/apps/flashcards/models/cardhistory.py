@@ -71,6 +71,7 @@ class CardHistory(models.Model):
     objects = CardHistoryQuerySet.as_manager()
 
     card = models.ForeignKey('Card')
+    # TODO: Denormalize card owner here.
 
     response = models.PositiveIntegerField(editable=False)
     reviewed_at = models.DateTimeField()
