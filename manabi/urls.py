@@ -35,6 +35,9 @@ api_router.register(r'flashcards/shared_decks',
 api_router.register(r'flashcards/facts',
     FactViewSet,
     base_name='fact')
+api_router.register(r'flashcards/manabi_reader_facts',
+    ManabiReaderFactViewSet,
+    base_name='fact')
 api_router.register(r'flashcards/cards',
     CardViewSet,
     base_name='card')

@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, status
+from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import (
     IsAuthenticated,
@@ -52,6 +52,7 @@ from manabi.apps.flashcards.serializers import (
     DetailedFactSerializer,
     FactSerializer,
     FactWithCardsSerializer,
+    ManabiReaderFactWithCardsSerializer,
     NextCardsForReviewSerializer,
     ReviewAvailabilitiesSerializer,
     SharedDeckSerializer,
@@ -255,6 +256,15 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
         return facts
 
     # TODO Special code for getting a specific object, for speed.
+
+
+class ManabiReaderFactViewSet(
+    mixins.CreateModelMixin, viewsets.GenericViewSet,
+):
+    serializer_class = ManabiReaderFactWithCardsSerializer
+    permissions_classes = [
+        IsAuthenticated,
+    ]
 
 
 class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
