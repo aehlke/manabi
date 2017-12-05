@@ -273,7 +273,7 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 NOSE_PLUGINS = [
     'manabi.nose_plugins.SilenceSouth',
 ]
-NOSE_ARGS = ['--logging-level=WARNING']
+NOSE_ARGS = ['--logging-level=WARNING', '--verbosity=3']
 
 RQ_QUEUES = {
     'default': {

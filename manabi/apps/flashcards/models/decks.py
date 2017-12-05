@@ -157,6 +157,7 @@ class Deck(models.Model):
     def image_url(self):
         if self.is_manabi_reader_deck:
             return 'https://reader.manabi.io/img/iTunesArtwork@1x.png'
+
         if self.image:
             url = self.image.url
         else:
@@ -166,7 +167,7 @@ class Deck(models.Model):
 
     @property
     def is_manabi_reader_deck(self):
-        return name == 'Manabi Reader'
+        return self.name == 'Manabi Reader'
 
     @cached_function(
         timeout=timedelta(weeks=1),
