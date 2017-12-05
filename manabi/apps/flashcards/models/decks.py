@@ -99,7 +99,8 @@ class DeckQuerySet(QuerySet):
 
 class DeckManager(models.Manager):
     def get_or_create_manabi_reader_deck(self, user):
-        deck, created = Deck.objects.get_or_create(name='Manabi Reader')
+        deck, created = Deck.objects.get_or_create(
+            name='Manabi Reader', owner=user)
         if created:
             deck.description = (
                 "Get in the habit of reading native materials daily "

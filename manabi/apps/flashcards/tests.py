@@ -353,3 +353,22 @@ class NewCardsLimitTest(ManabiTestCase):
 
         self.assertEqual(
             0, self._get_limit(user=create_user()).learned_today_count)
+
+
+class ManabiReaderFactsTest(ManabiTestCase):
+    def after_setUp(self):
+        self.user = create_user()
+
+    def test_valid_creation(self):
+        fact = self.post(
+            '/api/flashcards/manabi_reader_facts/',
+            {
+                'expression': u'食べる',
+                'reading': u'たべる',
+                'meaning': 'To eat',
+                'active_card_templates': ['recognition'],
+            },
+            user=self.user,
+        ).json()
+        self.assertEqual(
+            Deck.objects.get(id=fact['deck']).name, 'Manabi Reader')
