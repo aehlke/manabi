@@ -71,6 +71,7 @@ categories:
 
       - title: CNN Japan
         rss_url: http://feeds.cnn.co.jp/rss/cnn/cnn.rdf
+        meaningful_content_min_length: 100
         icon_url: https://www.cnn.co.jp/media/cnn/images/icons/favicon.ico
 
       - title: Engadget Japan

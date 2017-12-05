@@ -254,6 +254,29 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
         return fact
 
 
+class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
+    class Meta:
+        model = Fact
+        fields = (
+            'id',
+            'expression',
+            'reading',
+            'meaning',
+        )
+        read_only_fields = (
+            'id',
+            'deck',
+        )
+
+    def create(self, validated_data):
+        data = validated_data.copy()
+        data['deck'] = Deck.objects.get_or_create_manabi_reader_deck(
+            self.context['request'].user)
+        data['suspended'] = False
+        fact = super(ManabiReaderFactWithCardsSerializer, self).create(data)
+        return fact
+
+
 class DetailedFactSerializer(FactWithCardsSerializer):
     deck = serializers.SerializerMethodField()
 

@@ -97,8 +97,21 @@ class DeckQuerySet(QuerySet):
         return subscriber_counts
 
 
+class DeckManager(models.Manager):
+    def get_or_create_manabi_reader_deck(self, user):
+        deck, created = Deck.objects.get_or_create(name='Manabi Reader')
+        if created:
+            deck.description = (
+                "Get in the habit of reading native materials daily "
+                "with Manabi Reader. Pick up new vocabulary from a variety of "
+                "curated reading material, then use Manabi to make it stick."
+            )
+            deck.save(update_fields=['description'])
+        return deck
+
+
 class Deck(models.Model):
-    objects = DeckQuerySet.as_manager()
+    objects = DeckManager.from_queryset(DeckQuerySet)()
 
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=False)
@@ -142,12 +155,18 @@ class Deck(models.Model):
 
     @property
     def image_url(self):
+        if self.is_manabi_reader_deck:
+            return 'https://reader.manabi.io/img/iTunesArtwork@1x.png'
         if self.image:
             url = self.image.url
         else:
             url = '/static/img/deck_icons/waves-{}.jpg'.format(
                 (self.synchronized_with_id or self.id) % 8)
         return urljoin(settings.DEFAULT_URL_PREFIX, url)
+
+    @property
+    def is_manabi_reader_deck(self):
+        return name == 'Manabi Reader'
 
     @cached_function(
         timeout=timedelta(weeks=1),
