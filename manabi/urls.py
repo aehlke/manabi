@@ -11,6 +11,7 @@ from manabi.apps.flashcards.api_views import (
     SynchronizedDeckViewSet,
     SharedDeckViewSet,
     SuggestedSharedDecksViewSet,
+    ManabiReaderFactViewSet,
     FactViewSet,
     ReviewAvailabilitiesViewSet,
     NextCardsForReviewViewSet,
