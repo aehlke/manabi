@@ -240,7 +240,7 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
         'update': FactWithCardsSerializer,
         'partial_update': FactWithCardsSerializer,
     }
-    permissions_classes = [
+    permission_classes = [
         IsAuthenticated,
         IsOwnerPermission,
     ]
@@ -262,7 +262,7 @@ class ManabiReaderFactViewSet(
     mixins.CreateModelMixin, viewsets.GenericViewSet,
 ):
     serializer_class = ManabiReaderFactWithCardsSerializer
-    permissions_classes = [
+    permission_classes = [
         IsAuthenticated,
     ]
 
@@ -364,7 +364,7 @@ class CardViewSet(viewsets.ModelViewSet):
     serializer_action_classes = {
         'retrieve': DetailedCardSerializer,
     }
-    permissions_classes = [IsOwnerPermission]
+    permission_classes = [IsOwnerPermission]
 
     def get_queryset(self):
         return (
