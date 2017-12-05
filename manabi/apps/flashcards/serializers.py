@@ -273,6 +273,7 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
         data['deck'] = Deck.objects.get_or_create_manabi_reader_deck(
             self.context['request'].user)
         data['suspended'] = False
+        data['owner'] = self.context['request'].user
         fact = super(ManabiReaderFactWithCardsSerializer, self).create(data)
         return fact
 
