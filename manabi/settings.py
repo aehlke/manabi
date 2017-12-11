@@ -263,6 +263,7 @@ INSTALLED_APPS = (
     'manabi.apps.manabi_redis',
     'manabi.apps.profiles',
     'manabi.apps.reader_feeds',
+    'manabi.apps.reader_sources',
     'manabi.apps.reading_level',
     'manabi.apps.review_results',
     'manabi.apps.subscriptions',

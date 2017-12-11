@@ -103,9 +103,9 @@ class DeckManager(models.Manager):
             name='Manabi Reader', owner=user)
         if created:
             deck.description = (
-                "Get in the habit of reading native materials daily "
+                "Get in the daily habit of reading native content "
                 "with Manabi Reader. Pick up new vocabulary from a variety of "
-                "curated reading material, then use Manabi to make it stick."
+                "curated reading materials, then use Manabi to make it stick."
             )
             deck.save(update_fields=['description'])
         return deck

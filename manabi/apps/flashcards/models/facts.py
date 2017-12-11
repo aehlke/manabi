@@ -110,6 +110,11 @@ class Fact(models.Model):
     reading = models.CharField(max_length=1500, blank=True)
     meaning = models.CharField(max_length=1000)
 
+    example_sentence = models.TextField(blank=True)
+    reader_source = models.ForeignKey(
+        'reader_sources.ReaderSource',
+        null=True, blank=True, related_name='facts')
+
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     modified_at = models.DateTimeField(blank=True, null=True)
 

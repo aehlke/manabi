@@ -19,6 +19,7 @@ from manabi.apps.flashcards.serializer_fields import (
     ViewerSynchronizedDeckField,
 )
 from manabi.apps.manabi_auth.serializers import UserSerializer
+from manabi.apps.reader_sources.serializers import ReaderSourceSerializer
 
 
 class _BaseDeckSerializer(ManabiModelSerializer):
@@ -255,6 +256,8 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
 
 
 class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
+    reader_source = ReaderSourceSerializer()
+
     class Meta:
         model = Fact
         fields = (
@@ -263,6 +266,8 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
             'expression',
             'reading',
             'meaning',
+            'example_sentence',
+            'reader_source',
             'active_card_templates',
         )
         read_only_fields = (
