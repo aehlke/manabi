@@ -218,7 +218,13 @@ class FactSerializer(ManabiModelSerializer):
         reader_source = None
         reader_source_data = validated_data.pop('reader_source', None)
         if reader_source_data is not None:
-            reader_source = ReaderSource.objects.create(**reader_source_data)
+            (reader_source, _) = ReaderSource.objects.get_or_create(
+                source_url=reader_source_data['source_url'],
+                defaults={
+                    'title': reader_source_data['title'],
+                    'thumbnail_url': reader_source_data['thumbnail_url'],
+                },
+            )
         fact = Fact.objects.create(**validated_data)
         return fact
 
