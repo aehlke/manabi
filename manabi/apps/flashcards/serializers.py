@@ -19,6 +19,7 @@ from manabi.apps.flashcards.serializer_fields import (
     ViewerSynchronizedDeckField,
 )
 from manabi.apps.manabi_auth.serializers import UserSerializer
+from manabi.apps.reader_sources.models import ReaderSource
 from manabi.apps.reader_sources.serializers import ReaderSourceSerializer
 
 
@@ -168,6 +169,7 @@ class SuggestedSharedDecksSerializer(serializers.Serializer):
 class FactSerializer(ManabiModelSerializer):
     card_count = serializers.ReadOnlyField()
     suspended = serializers.BooleanField()
+    reader_source = ReaderSourceSerializer(required=False)
 
     class Meta:
         model = Fact
@@ -183,6 +185,8 @@ class FactSerializer(ManabiModelSerializer):
             'expression',
             'reading',
             'meaning',
+
+            'reader_source',
         )
         read_only_fields = (
             'id',
@@ -209,6 +213,15 @@ class FactSerializer(ManabiModelSerializer):
                 fact.unsuspend()
 
         return fact
+
+    def create(self, validated_data):
+        reader_source = None
+        reader_source_data = validated_data.pop('reader_source', None)
+        if reader_source_data is not None:
+            reader_source = ReaderSource.objects.create(**reader_source_data)
+        fact = Fact.objects.create(**validated_data)
+        return fact
+
 
 
 class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
@@ -256,8 +269,6 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
 
 
 class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
-    reader_source = ReaderSourceSerializer(required=False)
-
     class Meta:
         model = Fact
         fields = (
@@ -267,8 +278,8 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
             'reading',
             'meaning',
             'example_sentence',
-            'reader_source',
             'active_card_templates',
+            'reader_source',
         )
         read_only_fields = (
             'id',
