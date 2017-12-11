@@ -7,3 +7,4 @@ class ReaderSource(models.Model):
     thumbnail_url = models.URLField(max_length=700)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+    modified_at = models.DateTimeField(blank=True, null=True)
