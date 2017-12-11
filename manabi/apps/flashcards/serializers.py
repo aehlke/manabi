@@ -256,7 +256,7 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
 
 
 class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
-    reader_source = ReaderSourceSerializer()
+    reader_source = ReaderSourceSerializer(required=False)
 
     class Meta:
         model = Fact

@@ -370,5 +370,6 @@ class ManabiReaderFactsTest(ManabiTestCase):
             },
             user=self.user,
         ).json()
+        print fact
         self.assertEqual(
             Deck.objects.get(id=fact['deck']).name, 'Manabi Reader')
