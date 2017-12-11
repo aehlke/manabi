@@ -39,7 +39,7 @@ categories:
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
         rss_contains_full_content: true
         extract_entry_image_from_content: true
-        icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
+        icon_url: http://www.blogsmithmedia.com/www.huffingtonpost.jp/assets-h841e5e7318b4d261a8a0ba058f196230/favicon.ico?h=cf339f2d96daf6c7aecc6bf0eba0cdac
         description: Breaking news from HuffPost Japan.
 
       - title: NHK News Easy
@@ -111,7 +111,7 @@ categories:
       - title: Melon Cafe
         rss_url: http://meloncafe.blog.jp/atom.xml
         rss_contains_full_content: true
-        icon_url: http://livedoor.blogimg.jp/meloncafe/imgs/8/8/favicon.ico
+        icon_url: http://image.profile.livedoor.jp/icon/meloncafe_60.gif
         description: Simple and delicious recipes for sweets and snacks, with cheerful photos of food and colorful "character bento".
 
       - title: Homecooking, Sweets, and Cat
@@ -124,7 +124,7 @@ categories:
         rss_url: http://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
         rss_contains_full_content: true
         extract_entry_image_from_content: true
-        icon_url: http://www.huffingtonpost.jp/favicon.ico?v=2
+        icon_url: http://www.blogsmithmedia.com/www.huffingtonpost.jp/assets-h841e5e7318b4d261a8a0ba058f196230/favicon.ico?h=cf339f2d96daf6c7aecc6bf0eba0cdac
         description: Blog articles from HuffPost Japan.
 
       - title: Tedium Museum
