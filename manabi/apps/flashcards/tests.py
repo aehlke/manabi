@@ -373,21 +373,21 @@ class ManabiReaderFactsTest(ManabiTestCase):
         self.assertEqual(
             Deck.objects.get(id=fact['deck']).name, 'Manabi Reader')
 
-        def test_multiple_from_same_source(self):
-            for suffix in ['1', '2']:
-                fact = self.post(
-                    '/api/flashcards/manabi_reader_facts/',
-                    {
-                        'expression': u'食べる' + suffix,
-                        'reading': u'たべる',
-                        'meaning': 'To eat',
-                        'active_card_templates': ['recognition'],
-                        'reader_source': {
-                            'source_url': 'http://foo.example/bar',
-                            'thumbnail_url': 'http://foo.example/baz.jpg',
-                            'title': 'Example title',
-                        },
+    def test_multiple_from_same_source(self):
+        for suffix in ['1', '2']:
+            resp = self.post(
+                '/api/flashcards/manabi_reader_facts/',
+                {
+                    'expression': u'食べる' + suffix,
+                    'reading': u'たべる',
+                    'meaning': 'To eat',
+                    'active_card_templates': ['recognition'],
+                    'reader_source': {
+                        'source_url': 'http://foo.example/bar',
+                        'thumbnail_url': 'http://foo.example/baz.jpg',
+                        'title': 'Example title' + suffix,
                     },
-                    user=self.user,
-                ).json()
-                self.assertTrue(suffix in fact['expression'])
+                },
+                user=self.user,
+            )
+            self.assertEqual(resp.status_code, 201)
