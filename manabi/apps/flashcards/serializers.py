@@ -185,8 +185,6 @@ class FactSerializer(ManabiModelSerializer):
             'expression',
             'reading',
             'meaning',
-
-            'reader_source',
         )
         read_only_fields = (
             'id',
@@ -283,8 +281,8 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
             'expression',
             'reading',
             'meaning',
-            'example_sentence',
             'active_card_templates',
+            'example_sentence',
             'reader_source',
         )
         read_only_fields = (
@@ -303,6 +301,12 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
 
 class DetailedFactSerializer(FactWithCardsSerializer):
     deck = serializers.SerializerMethodField()
+
+    class Meta(FactSerializer.Meta):
+        fields = FactWithCardsSerializer.Meta.fields + (
+            'example_sentence',
+            'reader_source',
+        )
 
     def get_deck(self, obj):
         try:
