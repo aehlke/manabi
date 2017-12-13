@@ -320,6 +320,9 @@ class CardSerializer(ManabiModelSerializer):
     reading = serializers.CharField(source='fact.reading')
     meaning = serializers.CharField(source='fact.meaning')
 
+    example_sentence = serializers.CharField(source='fact.example_sentence')
+    reader_source = ReaderSourceSerializer(source='fact.reader_source')
+
     class Meta(object):
         model = Card
 
@@ -339,6 +342,9 @@ class CardSerializer(ManabiModelSerializer):
             'reading',
             'meaning',
             'is_new',
+
+            'example_sentence',
+            'reader_source',
         )
 
 
