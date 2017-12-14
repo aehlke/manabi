@@ -223,6 +223,7 @@ class FactSerializer(ManabiModelSerializer):
                     'thumbnail_url': reader_source_data['thumbnail_url'],
                 },
             )
+            validated_data['reader_source_id'] = reader_source.id
         fact = Fact.objects.create(**validated_data)
         return fact
 
