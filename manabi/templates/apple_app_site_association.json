@@ -4,7 +4,7 @@
         "details": [
             {
                 "appID": "8Y769YTXHF.io.manabi.Manabi",
-                "paths": ["/flashcards/decks/*", "/flashcards/facts/*"]
+                "paths": ["/flashcards/decks/*", "/flashcards/shared-decks/*", "/flashcards/facts/*"]
             }
         ]
     }
