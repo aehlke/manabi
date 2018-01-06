@@ -185,6 +185,7 @@ class FactSerializer(ManabiModelSerializer):
             'expression',
             'reading',
             'meaning',
+            'reader_source',
         )
         read_only_fields = (
             'id',
