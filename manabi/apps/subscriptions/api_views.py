@@ -1,4 +1,7 @@
 import itunesiap
+from django.http import HttpResponse
+from django.conf import settings
+from django.core.exceptions import PermissionDenied
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -20,7 +23,7 @@ def purchasing_options(request):
 
 
 class SubscriptionViewSet(viewsets.ViewSet):
-    serializer_class = PurchasingSubscriptionProduct
+    serializer_class = PurchasedSubscriptionProduct
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
@@ -38,3 +41,15 @@ class SubscriptionViewSet(viewsets.ViewSet):
                 "Invalid iTunes receipt; please contact support.")
 
         return Response(serializer.data)
+
+
+@api_view(['POST'])
+def subscription_update_notification(request):
+    try:
+        Subscription.objects.process_itunes_subscription_update_notification(
+            request.user, serializer.data)
+    except itunesiap.exc.InvalidReceipt:
+        raise ValidationError(
+            "Invalid iTunes receipt; please contact support.")
+
+    return HttpResponse('')
