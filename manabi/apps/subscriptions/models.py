@@ -9,6 +9,17 @@ def _receipt_date_to_datetime(receipt_date):
     return datetime.fromtimestamp(int(receipt_date) / 1000.0)
 
 
+def user_is_active_subscriber(user):
+    try:
+        subscription = Subscription.objects.get(
+            subscriber=user,
+            active=True,
+        )
+        return subscription.expires_date >= datetime.utcnow()
+    except Subscription.DoesNotExist:
+        return False
+
+
 class SubscriptionManager(models.Manager):
     def subscribe(self, user, expires_date):
         subscription, created = Subscription.objects.get_or_create(
@@ -70,6 +81,7 @@ class SubscriptionManager(models.Manager):
             subscription = Subscription.objects.get(subscriber=user)
             subscription.active = False
 
+        subscription.sandbox = environment == itunesiap.env.sandbox
         subscription.latest_itunes_receipt = receipt
         subscription.expires_date = _receipt_date_to_datetime(
             receipt_info['expires_date'])

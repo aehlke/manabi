@@ -396,13 +396,21 @@ class ReviewAvailabilitiesSerializer(serializers.Serializer):
     secondary_prompt = serializers.CharField()
 
     trial_prompt = serializers.CharField()
+    trial_limit_reached = serializers.BooleanField()
 
     class Meta:
         read_only_fields = (
             'ready_for_review',
+            'early_review_available',
             'next_new_cards_count',
             'buried_new_cards_count',
-            'early_review_available',
+            'next_new_cards_per_day_limit_reached',
+            'next_new_cards_per_day_limit_override',
+            'invalidated_upon_card_failure',
+            'primary_prompt',
+            'secondary_prompt',
+            'trial_prompt',
+            'trial_limit_reached',
         )
 
 
