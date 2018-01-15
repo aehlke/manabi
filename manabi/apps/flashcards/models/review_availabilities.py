@@ -18,7 +18,6 @@ from manabi.apps.flashcards.models import (
     Deck,
     Fact,
     Card,
-    CardHistory,
 )
 from manabi.apps.flashcards.models.trial_limits import (
     cards_remaining_in_daily_trial,
@@ -219,7 +218,8 @@ class ReviewAvailabilities(object):
     @property
     @lru_cache(maxsize=None)
     def _cards_remaining_in_daily_trial(self):
-        cards_remaining = cards_remaining_in_daily_trial(self.user)
+        cards_remaining = cards_remaining_in_daily_trial(
+            self.user, timezone=self.time_zone)
         if cards_remaining is None:
             return None
 

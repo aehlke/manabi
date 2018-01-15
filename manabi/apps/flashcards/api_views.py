@@ -350,7 +350,9 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
 
         card_limit = 10
         trial_cards_remaining = cards_remaining_in_daily_trial(
-            self.request.user)
+            self.request.user,
+            time_zone=request.user_timezone,
+        )
         if trial_cards_remaining is not None:
             card_limit = min(card_limit, trial_cards_remaining)
 
