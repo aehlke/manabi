@@ -32,6 +32,9 @@ from manabi.apps.flashcards.models import (
     NextCardsForReview,
     UndoCardReview,
 )
+from manabi.apps.flashcards.models.trial_limits import (
+    cards_remaining_in_daily_trial,
+)
 from manabi.apps.flashcards.api_filters import (
     review_availabilities_filters,
     next_cards_to_review_filters,
@@ -345,9 +348,15 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
             return self._test_helper_get(
                 request, format=format, excluded_card_ids=excluded_card_ids)
 
+        card_limit = 10
+        trial_cards_remaining = cards_remaining_in_daily_trial(
+            self.request.user)
+        if trial_cards_remaining is not None:
+            card_limit = min(card_limit, trial_cards_remaining)
+
         next_cards_for_review = NextCardsForReview(
             self.request.user,
-            10, # FIXME
+            card_limit,
             excluded_card_ids=excluded_card_ids,
             time_zone=request.user_timezone,
             **next_cards_to_review_filters(self.request)
