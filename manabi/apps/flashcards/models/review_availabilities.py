@@ -219,7 +219,7 @@ class ReviewAvailabilities(object):
     @lru_cache(maxsize=None)
     def _cards_remaining_in_daily_trial(self):
         cards_remaining = cards_remaining_in_daily_trial(
-            self.user, timezone=self.time_zone)
+            self.user, time_zone=self.time_zone)
         if cards_remaining is None:
             return None
 
