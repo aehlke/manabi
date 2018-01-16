@@ -235,7 +235,7 @@ class ReviewAvailabilities(object):
             "You have {} out of {} cards left today.\n"
             "Purchase to unlock unlimited daily reviews!"
         ).format(
-            self._cards_remaining_in_daily_trial(),
+            self._cards_remaining_in_daily_trial,
             TRIAL_DAILY_REVIEW_CAP,
         )
 
@@ -244,5 +244,5 @@ class ReviewAvailabilities(object):
     def trial_limit_reached(self):
         if self.user.is_anonymous():
             return False
-        cards_remaining = self._cards_remaining_in_daily_trial()
+        cards_remaining = self._cards_remaining_in_daily_trial
         return cards_remaining == 0
