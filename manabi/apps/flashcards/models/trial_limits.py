@@ -24,7 +24,4 @@ def cards_remaining_in_daily_trial(user, time_zone=None):
         .count()
     )
 
-    return max(0,
-               TRIAL_DAILY_REVIEW_CAP
-               - reviewed_today_count
-               - self._buffered_cards_count)
+    return max(0, TRIAL_DAILY_REVIEW_CAP - reviewed_today_count)
