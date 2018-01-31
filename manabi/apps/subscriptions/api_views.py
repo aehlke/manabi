@@ -22,7 +22,7 @@ def purchasing_options(request):
     return Response(serializer.data)
 
 
-class SubscriptionViewSet(viewsets.ViewSet):
+class SubscriptionViewSet(viewsets.GenericViewSet):
     serializer_class = PurchasedSubscriptionProduct
     permission_classes = [IsAuthenticated]
 
