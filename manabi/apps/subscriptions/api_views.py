@@ -27,7 +27,7 @@ class SubscriptionViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
-        serializer = self.get_serializer(request.data)
+        serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
             return Response(
                 serializer.errors,
