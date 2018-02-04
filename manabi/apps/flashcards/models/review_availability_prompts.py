@@ -84,7 +84,7 @@ def _failed_not_due(review_availabilities, secondary=False):
     Failed, not due.
     '''
     cards = review_availabilities.base_cards_queryset
-    count = cards.failed().due().count()
+    count = cards.failed().not_due().count()
     if count == 0:
         return
     return (
