@@ -230,6 +230,9 @@ class ReviewAvailabilities(object):
     def trial_prompt(self):
         if self.user.is_anonymous():
             return
+        # FIXME
+        if self.user.username not in ['alex', 'alextest']:
+            return
 
         return (
             "You have {} out of {} cards left today.\n"
@@ -243,6 +246,9 @@ class ReviewAvailabilities(object):
     @lru_cache(maxsize=None)
     def trial_limit_reached(self):
         if self.user.is_anonymous():
+            return False
+        # FIXME
+        if self.user.username not in ['alex', 'alextest']:
             return False
         cards_remaining = self._cards_remaining_in_daily_trial
         return cards_remaining == 0
