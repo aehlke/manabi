@@ -231,7 +231,7 @@ class ReviewAvailabilities(object):
         if self.user.is_anonymous():
             return
         # FIXME
-        if self.user.username not in ['alex', 'alextest']:
+        if self.user.username not in ['alextest']:
             return
 
         return (
@@ -248,7 +248,7 @@ class ReviewAvailabilities(object):
         if self.user.is_anonymous():
             return False
         # FIXME
-        if self.user.username not in ['alex', 'alextest']:
+        if self.user.username not in ['alextest']:
             return False
         cards_remaining = self._cards_remaining_in_daily_trial
         return cards_remaining == 0
