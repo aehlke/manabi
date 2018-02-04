@@ -44,7 +44,7 @@ class SubscriptionManager(models.Manager):
         latest_receipt_info = response.latest_receipt_info[-1]
         self.model.objects.subscribe(
             user,
-            _receipt_date_to_datetime(latest_receipt_info['expires_date']))
+            _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']))
 
     def process_itunes_subscription_update_notification(
         self, user, notification,
@@ -86,7 +86,7 @@ class SubscriptionManager(models.Manager):
         subscription.sandbox = environment == itunesiap.env.sandbox
         subscription.latest_itunes_receipt = receipt
         subscription.expires_date = _receipt_date_to_datetime(
-            receipt_info['expires_date'])
+            receipt_info['expires_date_ms'])
         subscription.save()
 
 
