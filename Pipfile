@@ -34,7 +34,7 @@ djangorestframework = "*"
 django-filter = "==0.14.0"
 markdown = "==2.6.5"
 django-crispy-forms = "==1.5.2"
-requests = {extras = ["security"], version = "==2.12.4"}
+requests = {extras = ["security"]}
 humanize = "==0.5.1"
 python-dateutil = "==2.5.2"
 djoser = "==0.5.1"
