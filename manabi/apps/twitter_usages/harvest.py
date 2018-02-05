@@ -123,6 +123,6 @@ def harvest_tweets_for_facts(fact_count):
     facts = facts[:fact_count]
 
     for fact in facts.iterator():
-        print u'Fact {}:'.format(fact.id), fact
+        print u'Fact {}:'.format(fact.id), fact.expression
 
         harvest_tweets(fact)

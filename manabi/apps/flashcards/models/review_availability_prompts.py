@@ -73,7 +73,7 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You'll soon forget {} {} you're still learning—now's an effective "
+        u"You'll soon forget {} {} you're still learning—it's an effective "
         u"time to reinforce {}."
     ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
 
@@ -88,7 +88,8 @@ def _failed_not_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} you had forgotten last time that {} ready to be revisited."
+        u"We have {} {} you forgot last time that you could wait a bit "
+        u"to revisit."
     ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
 
 
