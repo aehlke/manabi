@@ -19,12 +19,20 @@ dependencies:
     command: 'docker run -e DATA_SOURCE_NAME="postgresql://{{ postgres_exporter_secrets.postgres_username }}:{{ postgres_exporter_secrets.postgres_password }}@{{ postgres_host }}:{{ postgres_port }}/?sslmode=disable" -p {{ postgres_exporter.port }}:{{ postgres_exporter.port }} wrouesnel/postgres_exporter'
     user: ubuntu
     numprocs: 1
+    stdout_logfile_maxbytes: '5MB'
+    stdout_logfile_backups: 0
+    stderr_logfile_maxbytes: '5MB'
+    stderr_logfile_backups: 0
 
   - role: ansible-supervisor_task
     name: carbon-cache
     command: "carbon-cache --config='{{ carbon.config_path }}' --pidfile /tmp/carbon-cache.pid --nodaemon start"
     user: '{{ carbon.user }}'
     numprocs: 1
+    stdout_logfile_maxbytes: '5MB'
+    stdout_logfile_backups: 0
+    stderr_logfile_maxbytes: '5MB'
+    stderr_logfile_backups: 0
 
   - role: ansible-supervisor_task
     name: graphite-api
@@ -33,6 +41,10 @@ dependencies:
     user: ubuntu
     tags: uwsgi
     numprocs: 1
+    stdout_logfile_maxbytes: '5MB'
+    stdout_logfile_backups: 0
+    stderr_logfile_maxbytes: '5MB'
+    stderr_logfile_backups: 0
 
   - role: ansible-supervisor_task
     name: grafana
@@ -40,6 +52,10 @@ dependencies:
     user: '{{ grafana.user }}'
     directory: '{{ grafana.home_dir }}'
     numprocs: 1
+    stdout_logfile_maxbytes: '5MB'
+    stdout_logfile_backups: 0
+    stderr_logfile_maxbytes: '5MB'
+    stderr_logfile_backups: 0
 
   - role: oauth2_proxy
     oauth2_proxy_app_name: grafana
