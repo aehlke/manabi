@@ -73,7 +73,7 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You'll soon forget {} {} you're still learning—it's an effective "
+        u"You'll soon forget {} {} you're still learning—reinforce it now for maximum effectiveness."
         u"time to reinforce {}."
     ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
 
@@ -194,7 +194,7 @@ def _early_review(review_availabilities, **kwargs):
             u'''Good news is you're caught up on reviews! Consider taking a '''
             u'''break or <a href="itms-apps://itunes.apple.com/app/id1247286380">reading</a> instead.'''
         )
-    return u'''You're caught up on reviews! Take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">go read something</a>.'''
+    return u'''You're caught up on reviews! Take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">go read something in Japanese</a>.'''
 
 
 @_auto_secondary_prompt
