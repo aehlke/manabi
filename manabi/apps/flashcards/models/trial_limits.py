@@ -15,9 +15,6 @@ def cards_remaining_in_daily_trial(user, time_zone=None):
     if user.is_anonymous():
         raise ValueError("Requires authenticated user.")
 
-    if user.username not in ['alextest']:
-        return None
-
     if user_is_active_subscriber(user):
         return None
 
