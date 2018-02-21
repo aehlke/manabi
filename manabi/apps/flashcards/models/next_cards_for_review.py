@@ -1,3 +1,6 @@
+import pytz
+from datetime import datetime
+
 from manabi.apps.flashcards.models import (
     Card,
 )
@@ -69,7 +72,11 @@ class NextCardsForReview(object):
         card_ids = [card.id for card in next_cards]
 
         # FIXME don't need 2 queries here...
-        self.cards = Card.objects.filter(pk__in=card_ids)
+        self.cards = (
+            Card.objects
+            .filter(pk__in=card_ids)
+            .select_related('fact')
+        )
 
         excluded_card_ids.update(card_ids)
         buffered_new_cards_count = len([
@@ -86,3 +93,5 @@ class NextCardsForReview(object):
             new_cards_per_day_limit_override=new_cards_per_day_limit_override,
             new_cards_limit=new_cards_limit,
         )
+
+        self.server_datetime = datetime.now(pytz.utc)

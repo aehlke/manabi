@@ -1,6 +1,6 @@
 ---
 
-- include: install.yml
+- import_tasks: install.yml
 
 - name: Place Redis configuration
   template:

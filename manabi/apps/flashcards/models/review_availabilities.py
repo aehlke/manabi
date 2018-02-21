@@ -18,7 +18,9 @@ from manabi.apps.flashcards.models import (
     Deck,
     Fact,
     Card,
-    CardHistory,
+)
+from manabi.apps.flashcards.models.trial_limits import (
+    cards_remaining_in_daily_trial,
 )
 
 
@@ -215,24 +217,38 @@ class ReviewAvailabilities(object):
 
     @property
     @lru_cache(maxsize=None)
+    def _cards_remaining_in_daily_trial(self):
+        cards_remaining = cards_remaining_in_daily_trial(
+            self.user, time_zone=self.time_zone)
+        if cards_remaining is None:
+            return None
+
+        return max(0, cards_remaining - self._buffered_cards_count)
+
+    @property
+    @lru_cache(maxsize=None)
     def trial_prompt(self):
         if self.user.is_anonymous():
             return
-        if self.user.username not in ['alex', 'alextest']:
-            return  # FIXME
+        # FIXME
+        if self.user.username not in ['alextest']:
+            return
 
-        reviewed_today_count = (
-            CardHistory.objects
-            .of_day_for_user(self.user, self.time_zone or DEFAULT_TIME_ZONE)
-            .count()
-        )
         return (
             "You have {} out of {} cards left today.\n"
             "Purchase to unlock unlimited daily reviews!"
         ).format(
-            max(0,
-                TRIAL_DAILY_REVIEW_CAP
-                - reviewed_today_count
-                - self._buffered_cards_count),
+            self._cards_remaining_in_daily_trial,
             TRIAL_DAILY_REVIEW_CAP,
         )
+
+    @property
+    @lru_cache(maxsize=None)
+    def trial_limit_reached(self):
+        if self.user.is_anonymous():
+            return False
+        # FIXME
+        if self.user.username not in ['alextest']:
+            return False
+        cards_remaining = self._cards_remaining_in_daily_trial
+        return cards_remaining == 0

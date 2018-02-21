@@ -3,6 +3,7 @@
 - name: Install uwsgi and utilities
   pip:
     name: '{{ item }}'
+    state: latest
   with_items:
     - uwsgi
     - uwsgitop

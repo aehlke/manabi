@@ -93,7 +93,8 @@ class ReviewsAPITest(ManabiTestCase):
                 card.save()
 
         for card in self.next_cards_for_review(self.user):
-            card_review = self.api.review_card(self.user, card, GRADE_GOOD)
+            card_review = self.api.review_card(
+                self.user, card['id'], GRADE_GOOD)
 
     def test_new_cards_appear_after_due_cards(self):
         NEW_COUNT = 2
@@ -102,7 +103,7 @@ class ReviewsAPITest(ManabiTestCase):
         cards = self.api.next_cards_for_review(self.user)['cards']
         self.assertTrue(NEW_COUNT < len(cards))
         for card in cards[:-NEW_COUNT]:
-            self.api.review_card(self.user, card, GRADE_GOOD)
+            self.api.review_card(self.user, card['id'], GRADE_GOOD)
 
         # Make sure there are still new cards at end.
         cards = self.api.next_cards_for_review(self.user)['cards']
@@ -116,7 +117,8 @@ class ReviewsAPITest(ManabiTestCase):
         next_card = next_cards[0]
 
         due_at_before_review = next_card['due_at']
-        card_review = self.api.review_card(self.user, next_card, GRADE_EASY)
+        card_review = self.api.review_card(
+            self.user, next_card['id'], GRADE_EASY)
         self.assertNotEqual(card_review['next_due_at'], due_at_before_review)
 
         undone_card = self.api.undo_review(self.user)
@@ -206,9 +208,8 @@ class SharedDecksTest(ManabiTestCase):
         self.assertEqual(decks[0]['owner']['username'], self.user.username)
 
     def test_featured_decks(self):
-        FeaturedDeck.objects.create(
-            deck=self.shared_deck,
-        )
+        FeaturedDeck.objects.create(deck=self.shared_deck)
+
         featured_decks = self.api.suggested_shared_decks()['featured_decks']
         self.assertTrue(len(featured_decks), 1)
         self.assertEqual(featured_decks[0]['id'], self.shared_deck.id)
@@ -218,6 +219,27 @@ class SharedDecksTest(ManabiTestCase):
         print subscribers
         self.assertEqual(len(subscribers), 1)
 
+    def test_subscribed_shared_deck_has_viewer_synchronized_deck_field(self):
+        featured_deck = create_deck()
+        featured_deck.share()
+        FeaturedDeck.objects.create(deck=featured_deck)
+
+        featured_decks = self.api.suggested_shared_decks(
+            viewer=self.subscriber)['featured_decks']
+        self.assertIsNone(featured_decks[0]['viewer_synchronized_deck'])
+
+        subscribed_deck = self.api.add_shared_deck(
+            featured_deck, self.subscriber)
+
+        featured_decks = self.api.suggested_shared_decks(
+            viewer=self.subscriber)['featured_decks']
+        self.assertIsNotNone(
+            featured_decks[0]['viewer_synchronized_deck']['id'])
+        self.assertEqual(
+            featured_decks[0]['viewer_synchronized_deck']['id'],
+            subscribed_deck['id'],
+        )
+
     def test_card_counts_in_suggested_decks(self):
         FeaturedDeck.objects.create(
             deck=self.shared_deck,
@@ -225,12 +247,12 @@ class SharedDecksTest(ManabiTestCase):
         featured_decks = self.api.suggested_shared_decks()['featured_decks']
         self.assertEqual(
             featured_decks[0]['card_count'],
-            self.shared_deck.card_count())
+            self.shared_deck.refresh_card_count())
         self.assertEqual(
             Deck.objects.filter(
                 id__in=[self.shared_deck.id],
             ).card_counts()[self.shared_deck.id],
-            self.shared_deck.card_count())
+            self.shared_deck.refresh_card_count())
 
     def test_featured_decks_tree(self):
         collection = create_deck_collection()
@@ -269,7 +291,8 @@ class SharedDecksTest(ManabiTestCase):
 
 class DeckTest(ManabiTestCase):
     def after_setUp(self):
-        create_sample_data(facts=6)
+        self.user = create_user()
+        create_sample_data(facts=6, user=self.user)
         self.deck = Deck.objects.all().last()
 
     def test_average_ease_factor_on_new_deck_is_default(self):
@@ -282,6 +305,28 @@ class DeckTest(ManabiTestCase):
         self.deck.delete()
         sample_card = Card.objects.get(pk=sample_card.pk)
         self.assertFalse(sample_card.active)
+
+    def test_denormalized_card_count(self):
+        deck = Deck.objects.filter(owner=self.user)[0]
+
+        def assert_card_count():
+            actual_count = Card.objects.of_deck(deck).available().count()
+            self.assertEqual(
+                actual_count,
+                Deck.objects.get(id=deck.id).card_count)
+            return actual_count
+
+        original_count = assert_card_count()
+
+        fact_to_suspend = deck.facts.filter(active=True, suspended=False)[0]
+        fact_card_count = fact_to_suspend.card_set.count()
+        self.assertTrue(fact_card_count > 0)
+
+        self.assertFalse(Fact.objects.get(id=fact_to_suspend.id).suspended)
+        self.api.suspend_fact(self.user, fact_to_suspend.id)
+        self.assertTrue(Fact.objects.get(id=fact_to_suspend.id).suspended)
+        new_count = assert_card_count()
+        self.assertEqual(original_count - fact_card_count, new_count)
 
 
 class NewCardsLimitTest(ManabiTestCase):
@@ -299,12 +344,50 @@ class NewCardsLimitTest(ManabiTestCase):
         cards = self.api.next_cards_for_review(self.user)['cards']
         for idx, card in enumerate(cards):
             self.assertTrue(Card.objects.get(id=card['id']).is_new)
-            self.api.review_card(self.user, card, GRADE_GOOD)
+            self.api.review_card(self.user, card['id'], GRADE_GOOD)
             self.assertEqual(idx + 1, self._get_limit().learned_today_count)
 
     def test_other_user_reviews_dont_conflict(self):
         cards = self.api.next_cards_for_review(self.user)['cards']
-        self.api.review_card(self.user, cards[0], GRADE_GOOD)
+        self.api.review_card(self.user, cards[0]['id'], GRADE_GOOD)
 
         self.assertEqual(
             0, self._get_limit(user=create_user()).learned_today_count)
+
+
+class ManabiReaderFactsTest(ManabiTestCase):
+    def after_setUp(self):
+        self.user = create_user()
+
+    def test_valid_creation(self):
+        fact = self.post(
+            '/api/flashcards/manabi_reader_facts/',
+            {
+                'expression': u'食べる',
+                'reading': u'たべる',
+                'meaning': 'To eat',
+                'active_card_templates': ['recognition'],
+            },
+            user=self.user,
+        ).json()
+        self.assertEqual(
+            Deck.objects.get(id=fact['deck']).name, 'Manabi Reader')
+
+    def test_multiple_from_same_source(self):
+        for suffix in ['1', '2']:
+            resp = self.post(
+                '/api/flashcards/manabi_reader_facts/',
+                {
+                    'expression': u'食べる' + suffix,
+                    'reading': u'たべる',
+                    'meaning': 'To eat',
+                    'active_card_templates': ['recognition'],
+                    'reader_source': {
+                        'source_url': 'http://foo.example/bar',
+                        'thumbnail_url': 'http://foo.example/baz.jpg',
+                        'title': 'Example title' + suffix,
+                    },
+                },
+                user=self.user,
+            )
+            self.assertEqual(resp.status_code, 201)

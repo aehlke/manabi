@@ -1,5 +1,27 @@
 ---
 
+- name: Set LC_ALL locale
+  lineinfile:
+    dest: /etc/default/locale
+    regexp: "^LC_ALL="
+    line: "LC_ALL=en_US.UTF-8"
+  become: yes
+
+- name: Place bash profile
+  template:
+    src: bash_profile.j2
+    dest: '{{ ansible_env.HOME }}/.profile'
+
+- name: Get Python user base's directory
+  command: python -m site --user-base
+  register: python_user_base_dir
+
+- name: Add Python user base's binary directory to PATH
+  lineinfile:
+    dest: '{{ ansible_env.HOME }}/.profile'
+    regexp: "^PATH=.*# Python user bin"
+    line: "PATH=$PATH:{{ python_user_base_dir.stdout }}/bin # Python user bin"
+
 - name: Install aptitude for certain apt module commands
   apt:
     name: aptitude
@@ -33,12 +55,12 @@
     - zlib1g-dev
   become: yes
 
-- name: Install common system Python packages
+- name: Install common system Python packages for local user
   pip:
     name: '{{ item }}'
+    extra_args: --user
   with_items:
-    - virtualenv
-  become: yes
+    - pipenv
 
 - name: Configure Supervisor
   template:
@@ -53,6 +75,6 @@
 - include: byobu.yml
 
 # Security.
-- include: allow_only_ssh_login.yml
-- include: ufw.yml
-- include: fail2ban.yml
+- import_tasks: allow_only_ssh_login.yml
+- import_tasks: ufw.yml
+- import_tasks: fail2ban.yml

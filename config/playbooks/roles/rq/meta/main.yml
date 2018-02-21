@@ -5,7 +5,7 @@ dependencies:
 
   - role: ansible-supervisor_task
     name: rq
-    command: '{{ app_virtualenv_path }}/bin/python {{ app_root_path }}/manage.py rqworker --worker-class "manabi.rq_worker.ManabiWorker"'
+    command: '{{ user_local_bin_path }}/pipenv run python manage.py rqworker --worker-class "manabi.rq_worker.ManabiWorker"'
     directory: '{{ app_root_path }}'
     # RQ requires the TERM signal to perform a warm shutdown. If RQ does not die
     # within 10 seconds, supervisor will forcefully kill it
@@ -25,7 +25,7 @@ dependencies:
 
   - role: ansible-supervisor_task
     name: rq-dashboard
-    command: '{{ app_virtualenv_path }}/bin/rq-dashboard --bind 127.0.0.1 --port {{ rq_dashboard.port }} --redis-host 127.0.0.1 --redis-port 6379 --redis-database 9 --interval 1000'
+    command: '{{ user_local_bin_path }}/pipenv run rq-dashboard --bind 127.0.0.1 --port {{ rq_dashboard.port }} --redis-host 127.0.0.1 --redis-port 6379 --redis-database 9 --interval 1000'
     directory: '{{ app_root_path }}'
     # RQ requires the TERM signal to perform a warm shutdown. If RQ does not die
     # within 10 seconds, supervisor will forcefully kill it

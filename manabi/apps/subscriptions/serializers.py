@@ -6,6 +6,10 @@ class SubscriptionProduct(serializers.Serializer):
     subtitle = serializers.CharField()
 
 
+class PurchasedSubscriptionProduct(serializers.Serializer):
+    itunes_receipt = serializers.CharField()
+
+
 class PurchasingOptionsSerializer(serializers.Serializer):
     primary_prompt = serializers.CharField()
     student_prompt = serializers.CharField()

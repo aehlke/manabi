@@ -1,3 +1,3 @@
 ---
 
-pg_ctl_path: /usr/lib/postgresql/9.6/bin/pg_ctl
+pg_ctl_path: /usr/lib/postgresql/10/bin/pg_ctl

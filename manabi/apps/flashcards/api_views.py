@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, status
+from rest_framework import mixins, viewsets, status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import (
     IsAuthenticated,
@@ -32,6 +32,9 @@ from manabi.apps.flashcards.models import (
     NextCardsForReview,
     UndoCardReview,
 )
+from manabi.apps.flashcards.models.trial_limits import (
+    cards_remaining_in_daily_trial,
+)
 from manabi.apps.flashcards.api_filters import (
     review_availabilities_filters,
     next_cards_to_review_filters,
@@ -52,6 +55,7 @@ from manabi.apps.flashcards.serializers import (
     DetailedFactSerializer,
     FactSerializer,
     FactWithCardsSerializer,
+    ManabiReaderFactWithCardsSerializer,
     NextCardsForReviewSerializer,
     ReviewAvailabilitiesSerializer,
     SharedDeckSerializer,
@@ -91,7 +95,6 @@ class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):
         )
         queryset_for_counts = queryset | upstream_queryset
         context.update({
-            'card_counts': queryset_for_counts.card_counts(),
             'subscriber_counts': queryset_for_counts.subscriber_counts(),
         })
         return context
@@ -143,7 +146,6 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
 
 
 class SuggestedSharedDecksViewSet(viewsets.ViewSet):
-    @cache_response(60 * 60, cache_errors=False)  # Seconds.
     def list(self, request, format=None):
         featured_decks_tree = get_featured_decks_tree()
         featured_decks = get_featured_decks().select_related('owner')
@@ -159,20 +161,23 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
             Q(id__in=featured_deck_ids)
             | Q(id__in=latest_decks.values('id'))
         ).distinct()
-        viewer_subscribed_queryset = Deck.objects.filter(
-            synchronized_with__in=all_suggested_decks,
-        ).distinct()
-        queryset_for_counts = (
-            all_suggested_decks | viewer_subscribed_queryset)
+
+        context = {
+            'subscriber_counts': all_suggested_decks.subscriber_counts(),
+        }
+
+        if self.request.user.is_authenticated():
+            context['viewer_synchronized_decks'] = list(
+                Deck.objects.synchronized_decks(self.request.user)
+                .filter(active=True)
+                .select_related('owner', 'synchronized_with__owner')
+            )
 
         serializer = SuggestedSharedDecksSerializer({
             'featured_decks_tree': featured_decks_tree,
             'latest_shared_decks': latest_decks,
             'featured_decks': featured_decks,
-        }, context={
-            'card_counts': queryset_for_counts.card_counts(),
-            'subscriber_counts': all_suggested_decks.subscriber_counts(),
-        })
+        }, context=context)
         return Response(serializer.data)
 
 
@@ -221,7 +226,6 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
             )
             queryset_for_counts |= viewer_subscribed_decks
         context.update({
-            'card_counts': queryset_for_counts.card_counts(),
             'subscriber_counts': queryset_for_counts.subscriber_counts(),
             'viewer_synchronized_decks': list(
                 Deck.objects.synchronized_decks(self.request.user)
@@ -239,7 +243,7 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
         'update': FactWithCardsSerializer,
         'partial_update': FactWithCardsSerializer,
     }
-    permissions_classes = [
+    permission_classes = [
         IsAuthenticated,
         IsOwnerPermission,
     ]
@@ -257,6 +261,15 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
     # TODO Special code for getting a specific object, for speed.
 
 
+class ManabiReaderFactViewSet(
+    mixins.CreateModelMixin, viewsets.GenericViewSet,
+):
+    serializer_class = ManabiReaderFactWithCardsSerializer
+    permission_classes = [
+        IsAuthenticated,
+    ]
+
+
 class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
     def _test_helper_get(self, request, format=None):
         from manabi.apps.flashcards.test_stubs import NEXT_CARDS_TO_REVIEW_STUBS
@@ -272,12 +285,9 @@ class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
         if settings.USE_TEST_STUBS:
             return self._test_helper_get(request, format=format)
 
-        time_zone = pytz.timezone(
-            self.request.META.get('HTTP_X_TIME_ZONE', 'America/New_York'))
-
         availabilities = ReviewAvailabilities(
             request.user,
-            time_zone=time_zone,
+            time_zone=request.user_timezone,
             **review_availabilities_filters(self.request)
         )
 
@@ -338,14 +348,19 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
             return self._test_helper_get(
                 request, format=format, excluded_card_ids=excluded_card_ids)
 
-        time_zone = pytz.timezone(
-            self.request.META.get('HTTP_X_TIME_ZONE', 'America/New_York'))
+        card_limit = 10
+        trial_cards_remaining = cards_remaining_in_daily_trial(
+            self.request.user,
+            time_zone=request.user_timezone,
+        )
+        if trial_cards_remaining is not None:
+            card_limit = min(card_limit, trial_cards_remaining)
 
         next_cards_for_review = NextCardsForReview(
             self.request.user,
-            10, # FIXME
+            card_limit,
             excluded_card_ids=excluded_card_ids,
-            time_zone=time_zone,
+            time_zone=request.user_timezone,
             **next_cards_to_review_filters(self.request)
         )
 
@@ -360,7 +375,7 @@ class CardViewSet(viewsets.ModelViewSet):
     serializer_action_classes = {
         'retrieve': DetailedCardSerializer,
     }
-    permissions_classes = [IsOwnerPermission]
+    permission_classes = [IsOwnerPermission]
 
     def get_queryset(self):
         return (

@@ -19,12 +19,13 @@ from manabi.apps.flashcards.serializer_fields import (
     ViewerSynchronizedDeckField,
 )
 from manabi.apps.manabi_auth.serializers import UserSerializer
+from manabi.apps.reader_sources.models import ReaderSource
+from manabi.apps.reader_sources.serializers import ReaderSourceSerializer
 
 
 class _BaseDeckSerializer(ManabiModelSerializer):
     owner = UserSerializer(read_only=True)
     original_author = UserSerializer(read_only=True)
-    card_count = serializers.SerializerMethodField()
     subscriber_count = serializers.SerializerMethodField()
 
     class Meta(object):
@@ -63,12 +64,6 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             'created_at',
             'modified_at',
         )
-
-    def get_card_count(self, obj):
-        try:
-            return self.context['card_counts'][obj.id]
-        except KeyError:
-            return obj.card_count()
 
     def get_subscriber_count(self, obj):
         try:
@@ -174,6 +169,7 @@ class SuggestedSharedDecksSerializer(serializers.Serializer):
 class FactSerializer(ManabiModelSerializer):
     card_count = serializers.ReadOnlyField()
     suspended = serializers.BooleanField()
+    reader_source = ReaderSourceSerializer(required=False)
 
     class Meta:
         model = Fact
@@ -189,6 +185,7 @@ class FactSerializer(ManabiModelSerializer):
             'expression',
             'reading',
             'meaning',
+            'reader_source',
         )
         read_only_fields = (
             'id',
@@ -215,6 +212,22 @@ class FactSerializer(ManabiModelSerializer):
                 fact.unsuspend()
 
         return fact
+
+    def create(self, validated_data):
+        reader_source = None
+        reader_source_data = validated_data.pop('reader_source', None)
+        if reader_source_data is not None:
+            (reader_source, _) = ReaderSource.objects.get_or_create(
+                source_url=reader_source_data['source_url'],
+                defaults={
+                    'title': reader_source_data['title'],
+                    'thumbnail_url': reader_source_data['thumbnail_url'],
+                },
+            )
+            validated_data['reader_source_id'] = reader_source.id
+        fact = Fact.objects.create(**validated_data)
+        return fact
+
 
 
 class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
@@ -261,8 +274,41 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
         return fact
 
 
+class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
+    class Meta:
+        model = Fact
+        fields = (
+            'id',
+            'deck',
+            'expression',
+            'reading',
+            'meaning',
+            'active_card_templates',
+            'example_sentence',
+            'reader_source',
+        )
+        read_only_fields = (
+            'id',
+            'deck',
+        )
+
+    def create(self, validated_data):
+        data = validated_data.copy()
+        data['deck'] = Deck.objects.get_or_create_manabi_reader_deck(
+            self.context['request'].user)
+        data['suspended'] = False
+        fact = super(ManabiReaderFactWithCardsSerializer, self).create(data)
+        return fact
+
+
 class DetailedFactSerializer(FactWithCardsSerializer):
     deck = serializers.SerializerMethodField()
+
+    class Meta(FactSerializer.Meta):
+        fields = FactWithCardsSerializer.Meta.fields + (
+            'example_sentence',
+            'reader_source',
+        )
 
     def get_deck(self, obj):
         try:
@@ -275,6 +321,9 @@ class CardSerializer(ManabiModelSerializer):
     expression = serializers.CharField(source='fact.expression')
     reading = serializers.CharField(source='fact.reading')
     meaning = serializers.CharField(source='fact.meaning')
+
+    example_sentence = serializers.CharField(source='fact.example_sentence')
+    reader_source = ReaderSourceSerializer(source='fact.reader_source')
 
     class Meta(object):
         model = Card
@@ -295,6 +344,9 @@ class CardSerializer(ManabiModelSerializer):
             'reading',
             'meaning',
             'is_new',
+
+            'example_sentence',
+            'reader_source',
         )
 
 
@@ -344,13 +396,21 @@ class ReviewAvailabilitiesSerializer(serializers.Serializer):
     secondary_prompt = serializers.CharField()
 
     trial_prompt = serializers.CharField()
+    trial_limit_reached = serializers.BooleanField()
 
     class Meta:
         read_only_fields = (
             'ready_for_review',
+            'early_review_available',
             'next_new_cards_count',
             'buried_new_cards_count',
-            'early_review_available',
+            'next_new_cards_per_day_limit_reached',
+            'next_new_cards_per_day_limit_override',
+            'invalidated_upon_card_failure',
+            'primary_prompt',
+            'secondary_prompt',
+            'trial_prompt',
+            'trial_limit_reached',
         )
 
 
@@ -369,6 +429,8 @@ class NextCardsForReviewSerializer(serializers.Serializer):
     # `None` means it should not display an interstitial, and should continue
     # requesting the next cards for review.
     interstitial = ReviewInterstitialSerializer(required=False)
+
+    server_datetime = serializers.DateTimeField()
 
     class Meta:
         read_only_fields = (

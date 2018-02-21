@@ -71,12 +71,13 @@ class CardHistory(models.Model):
     objects = CardHistoryQuerySet.as_manager()
 
     card = models.ForeignKey('Card')
+    # TODO: Denormalize card owner here.
 
     response = models.PositiveIntegerField(editable=False)
     reviewed_at = models.DateTimeField()
 
     ease_factor = models.FloatField(null=True, blank=True)
-    interval = models.DurationField(null=True, blank=True, db_index=True)
+    interval = models.DurationField(null=True, blank=True)
 
     # Was the card new when it was reviewed this time?
     was_new = models.BooleanField(default=False, db_index=True)

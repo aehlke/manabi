@@ -110,6 +110,11 @@ class Fact(models.Model):
     reading = models.CharField(max_length=1500, blank=True)
     meaning = models.CharField(max_length=1000)
 
+    example_sentence = models.TextField(blank=True)
+    reader_source = models.ForeignKey(
+        'reader_sources.ReaderSource',
+        null=True, blank=True, related_name='facts')
+
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     modified_at = models.DateTimeField(blank=True, null=True)
 
@@ -170,6 +175,12 @@ class Fact(models.Model):
 
         if is_new and self.deck.shared:
             copy_facts_to_subscribers([self])
+
+        if (
+            update_fields is None
+            or {'deck', 'deck_id', 'suspended', 'active'} & set(update_fields)
+        ):
+            self.deck.refresh_card_count()
 
         if is_new:
             harvest_tweets.delay(self)

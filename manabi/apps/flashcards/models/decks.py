@@ -97,8 +97,22 @@ class DeckQuerySet(QuerySet):
         return subscriber_counts
 
 
+class DeckManager(models.Manager):
+    def get_or_create_manabi_reader_deck(self, user):
+        deck, created = Deck.objects.get_or_create(
+            name='Manabi Reader', owner=user)
+        if created:
+            deck.description = (
+                "Get in the daily habit of reading native content "
+                "with Manabi Reader. Pick up new vocabulary from a variety of "
+                "curated reading materials, then use Manabi to make it stick."
+            )
+            deck.save(update_fields=['description'])
+        return deck
+
+
 class Deck(models.Model):
-    objects = DeckQuerySet.as_manager()
+    objects = DeckManager.from_queryset(DeckQuerySet)()
 
     name = models.CharField(max_length=100)
     slug = AutoSlugField(populate_from='name', always_update=True, unique=False)
@@ -116,6 +130,9 @@ class Deck(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     modified_at = models.DateTimeField(auto_now=True, editable=False)
+
+    # Denormalization.
+    card_count = models.PositiveIntegerField(default=0, editable=False)
 
     # whether this is a publicly shared deck
     shared = models.BooleanField(default=False, blank=True)
@@ -139,6 +156,9 @@ class Deck(models.Model):
 
     @property
     def image_url(self):
+        if self.is_manabi_reader_deck:
+            return 'https://reader.manabi.io/img/iTunesArtwork@1x.png'
+
         if self.image:
             url = self.image.url
         else:
@@ -146,12 +166,15 @@ class Deck(models.Model):
                 (self.synchronized_with_id or self.id) % 8)
         return urljoin(settings.DEFAULT_URL_PREFIX, url)
 
+    @property
+    def is_manabi_reader_deck(self):
+        return self.name == 'Manabi Reader'
+
     @cached_function(
         timeout=timedelta(weeks=1),
         key=['Deck.original_author', lambda self: self.id],
     )
     def original_author(self):
-        # raise Exception("original author")
         if self.synchronized_with is not None:
             return self.synchronized_with.owner
         return self.owner
@@ -173,10 +196,18 @@ class Deck(models.Model):
         return settings.DEFAULT_URL_PREFIX + reverse(
             'shared-deck-detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
+    def refresh_card_count(self, save=True):
+        self.card_count = cards.Card.objects.of_deck(self).available().count()
+        if save:
+            self.save(update_fields=['card_count'])
+        return self.card_count
+
     def save(self, update_fields=None, *args, **kwargs):
         super(Deck, self).save(update_fields=update_fields, *args, **kwargs)
 
         update_kwargs = {}
+        if update_fields is None or 'card_count' in update_fields:
+            update_kwargs['card_count'] = self.refresh_card_count(save=False)
         if update_fields is None or 'image' in update_fields:
             update_kwargs['image'] = self.image
         if update_fields is None or 'collection' in update_fields:
@@ -248,7 +279,8 @@ class Deck(models.Model):
         If multiple exist, even though this shouldn't happen,
         we just return the first one.
         '''
-        subscriber_decks = self.subscriber_decks.filter(owner=user, active=True)
+        subscriber_decks = self.subscriber_decks.filter(
+            owner=user, active=True)
         return subscriber_decks.first()
 
     #TODO implement subscribing with new stuff.
@@ -292,9 +324,6 @@ class Deck(models.Model):
         copy_facts_to_subscribers(self.facts.all(), subscribers=[user])
 
         return deck
-
-    def card_count(self):
-        return cards.Card.objects.of_deck(self).available().count()
 
     def subscriber_count(self):
         return self.subscriber_decks.count()

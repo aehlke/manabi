@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+
+server {
+    listen 80;
+
+    # the domain name it will serve for
+    server_name reader.{{ app_hostname }};
+    charset     utf-8;
+
+    # max upload size
+    client_max_body_size 15M;
+
+    # location = /apple-touch-icon.png {
+    #     rewrite (.*) /static/img/apple-touch-icon.png;
+    # }
+
+    location / {
+        autoindex off;
+        alias {{ app_static_files_path }}/reader/;
+    }
+}

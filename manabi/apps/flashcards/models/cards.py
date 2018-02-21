@@ -54,7 +54,7 @@ class Card(models.Model):
     # Denormalized fields:
     owner = models.ForeignKey(User, editable=False)
     deck = models.ForeignKey('flashcards.Deck', db_index=True)
-    deck_suspended = models.BooleanField(default=False, db_index=True)
+    deck_suspended = models.BooleanField(default=False)
 
     fact = models.ForeignKey('flashcards.Fact', db_index=True)
 
@@ -62,10 +62,10 @@ class Card(models.Model):
 
     # False when the card is removed from the Fact. This way, we can keep
     # card statistics if enabled later.
-    active = models.BooleanField(default=True, db_index=True)
+    active = models.BooleanField(default=True)
 
     ease_factor = models.FloatField(null=True, blank=True)
-    interval = models.DurationField(null=True, blank=True, db_index=True)
+    interval = models.DurationField(null=True, blank=True)
     due_at = models.DateTimeField(null=True, blank=True, db_index=True)
     last_ease_factor = models.FloatField(null=True, blank=True)
     last_interval = models.DurationField(null=True, blank=True)
@@ -80,11 +80,12 @@ class Card(models.Model):
 
     new_card_ordinal = models.PositiveIntegerField(null=True, blank=True)
 
-    suspended = models.BooleanField(default=False, db_index=True)
+    suspended = models.BooleanField(default=False)
 
     class Meta:
         app_label = 'flashcards'
         index_together = [
+            ['owner', 'due_at', 'active', 'suspended', 'due_at', 'fact'],
             ['owner', 'due_at', 'active', 'suspended'],
             ['deck', 'owner'],
         ]
@@ -99,9 +100,20 @@ class Card(models.Model):
         if update_fields is None or {'deck', 'deck_id'} & set(update_fields):
             self.deck_suspended = self.deck.suspended
 
+        if (
+            update_fields is not None  # Too slow to do this on every save.
+            and {'deck', 'deck_id', 'suspended', 'active'} & set(update_fields)
+        ):
+            self.deck.refresh_card_count()
+
+        is_new = self.pk is None
+
         super(Card, self).save(
             force_update=force_update, update_fields=update_fields,
             *args, **kwargs)
+
+        if is_new:
+            self.deck.refresh_card_count()
 
     def copy(self, target_fact, owner_id=None):
         '''

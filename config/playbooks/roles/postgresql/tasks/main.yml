@@ -7,7 +7,8 @@
 
 - name: Add PostgreSQL repository key
   apt_key:
-    url: https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    # From https://www.postgresql.org/media/keys/ACCC4CF8.asc
+    data: "{{ lookup('file', 'postgresql-apt.key') }}"
   become: yes
 
 - name: Update apt cache
@@ -21,14 +22,14 @@
     LC_MESSAGES={{ locale }} LC_MONETARY={{ locale }}
     LC_NUMERIC={{ locale }} LC_TIME={{ locale }}
     LC_ALL={{ locale }}
-    apt-get install -y postgresql-9.6
+    apt-get install -y postgresql-10
   become: yes
   notify: Restart PostgreSQL server
 
 - name: Add PostgreSQL configuration
   template:
     src: postgresql.conf.j2
-    dest: /etc/postgresql/9.6/main/postgresql.conf
+    dest: /etc/postgresql/10/main/postgresql.conf
     owner: postgres
     group: postgres
   become: yes

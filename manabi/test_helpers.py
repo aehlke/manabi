@@ -23,6 +23,7 @@ from manabi.apps.flashcards.models.constants import (
     GRADE_HARD,
     GRADE_NONE,
 )
+from manabi.apps.utils.utils import unix_time
 
 PASSWORD = 'whatever'
 
@@ -112,7 +113,7 @@ class ManabiTestCase(APITestCase):
         '''
         cards = self.api.next_cards_for_review(user)['cards']
         for card in cards:
-            self.api.review_card(self.user, card, GRADE_GOOD)
+            self.api.review_card(self.user, card['id'], GRADE_GOOD)
         return cards
 
 
@@ -189,10 +190,24 @@ class APIShortcuts(object):
         return self.get(
             '/api/flashcards/next_cards_for_review/', user=user).json()
 
-    def review_card(self, user, card, grade):
+    def review_card(self, user, card_id, grade):
         return self.post(
-            '/api/flashcards/cards/{}/reviews/'.format(card['id']),
+            '/api/flashcards/cards/{}/reviews/'.format(card_id),
             {'grade': grade},
+            user=user,
+        ).json()
+
+    def suspend_fact(self, user, fact_id):
+        return self.patch(
+            '/api/flashcards/facts/{}/'.format(fact_id),
+            {'suspended': True},
+            user=user,
+        ).json()
+
+    def suspend_deck(self, user, deck_id):
+        return self.patch(
+            '/api/flashcards/decks/{}/'.format(deck_id),
+            {'suspended': True},
             user=user,
         ).json()
 
@@ -204,7 +219,14 @@ class APIShortcuts(object):
             '/api/flashcards/review_availabilities/',
             {'deck': deck},
             user=user,
-        )
+        ).json()
+
+    def review_results(self, user, review_began_at):
+        return self.get(
+            '/api/flashcards/review_results/',
+            {'review_began_at': unix_time(review_began_at)},
+            user=user,
+        ).json()
 
     def inject_furigana(self, expression):
         return self.post('/api/furigana/inject/', {'text': expression}).json()['text_with_furigana']

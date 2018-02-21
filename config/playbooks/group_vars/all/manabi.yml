@@ -5,7 +5,6 @@ app_hostname: manabi.io
 app_root_path: /home/ubuntu/manabi
 app_static_files_path: /var/www/manabi
 app_media_path: /var/www/manabi_media
-app_virtualenv_path: /home/ubuntu/.virtualenvs/manabi
 
 uwsgi_socket: /tmp/manabi_uwsgi.socket
 
@@ -13,3 +12,5 @@ locale: 'en_US.UTF-8'
 
 postgres_host: localhost
 postgres_port: 5432
+
+user_local_bin_path: /home/ubuntu/.local/bin

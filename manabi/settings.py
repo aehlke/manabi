@@ -158,6 +158,8 @@ TEMPLATES = [
 ]
 
 MIDDLEWARE_CLASSES = (
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
 
@@ -165,12 +167,14 @@ MIDDLEWARE_CLASSES = (
 
     'django.middleware.common.CommonMiddleware',
 
+    'manabi.middleware.UserTimezoneMiddleware',
+
     'catnap.middleware.HttpExceptionMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 
-    'catnap.basic_auth.BasicAuthMiddleware',
+    'catnap.basic_auth.BasicAuthMiddleware',  # TODO: Delete
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -259,7 +263,9 @@ INSTALLED_APPS = (
     'manabi.apps.manabi_redis',
     'manabi.apps.profiles',
     'manabi.apps.reader_feeds',
+    'manabi.apps.reader_sources',
     'manabi.apps.reading_level',
+    'manabi.apps.review_results',
     'manabi.apps.subscriptions',
     'manabi.apps.twitter_usages',
 )
@@ -411,4 +417,4 @@ else:
         from manabi.settings_development_secrets import *
         from manabi.settings_development import *
     except ImportError:
-        pass
+        raise Exception("Couldn't import development settings.")

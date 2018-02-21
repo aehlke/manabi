@@ -6,3 +6,7 @@ dependencies:
     command: /usr/sbin/nginx
     process_name: nginx
     user: root
+    stdout_logfile_maxbytes: '50MB'
+    stdout_logfile_backups: 2
+    stderr_logfile_maxbytes: '50MB'
+    stderr_logfile_backups: 2

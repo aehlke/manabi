@@ -43,9 +43,16 @@
   become: yes
   notify: Reload nginx
 
-- name: Add manabi nginx site
+- name: Add Manabi nginx site
   template:
     src: templates/manabi.conf.j2
     dest: /etc/nginx/sites-enabled/manabi.conf
+  become: yes
+  notify: Reload nginx
+
+- name: Add Manabi Reader nginx site
+  template:
+    src: templates/manabi-reader.conf.j2
+    dest: /etc/nginx/sites-enabled/manabi-reader.conf
   become: yes
   notify: Reload nginx

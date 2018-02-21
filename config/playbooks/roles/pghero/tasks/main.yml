@@ -41,4 +41,4 @@
     state: started
   become: yes
 
-- include: nginx.yml
+- import_tasks: nginx.yml
