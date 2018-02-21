@@ -56,6 +56,9 @@ categories:
         icon_url: https://s0.wp.com/wp-content/themes/vip/rocketnews/img/pts_logo.png
         description: Reporting the interesting, strange, and random. Covers a wide variety of topics.
 
+      #- title: Hiragana News Channel
+      #  rss_url: http://hiragana-news.com/feed
+
   - title: Blogs
     background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
     feeds:
