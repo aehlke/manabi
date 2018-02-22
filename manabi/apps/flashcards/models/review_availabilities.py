@@ -230,6 +230,9 @@ class ReviewAvailabilities(object):
     def trial_prompt(self):
         if self.user.is_anonymous():
             return
+        # FIXME
+        if self.user.username in ['alextest']:
+            return
 
         return (
             "You have {} out of {} cards left today.\n"
