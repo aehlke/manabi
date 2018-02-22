@@ -30,6 +30,7 @@ class ReviewAvailabilities(object):
         user,
         deck=None,
         new_cards_per_day_limit_override=None,
+        early_review_began_at=None,
         buffered_cards_count=0,
         buffered_new_cards_count=0,
         excluded_card_ids=set(),
@@ -49,6 +50,7 @@ class ReviewAvailabilities(object):
         self.time_zone = time_zone
         self.deck = deck
         self.excluded_card_ids = excluded_card_ids
+        self.early_review_began_at = early_review_began_at
         self._buffered_cards_count = buffered_cards_count
         self._buffered_new_cards_count = buffered_new_cards_count
 

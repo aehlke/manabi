@@ -205,7 +205,8 @@ def _done_early_review_of_all_cards(review_availabilities, secondary=False):
     '''
     if secondary:
         return
-    # TODO: Verify the user is in early_review mode.
+    if review_availabilities.early_review_began_at is None:
+        return
     return (
         u"You've reviewed every card at least once already now in this "
         u'''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''

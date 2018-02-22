@@ -15,6 +15,7 @@ class ReviewInterstitial(object):
         user,
         deck=None,
         new_cards_per_day_limit_override=None,
+        early_review_began_at=None,
         excluded_card_ids=set(),
         time_zone=None,
         new_cards_limit=None,
@@ -33,6 +34,7 @@ class ReviewInterstitial(object):
             deck=deck,
             excluded_card_ids=excluded_card_ids,
             new_cards_per_day_limit_override=new_cards_per_day_limit_override,
+            early_review_began_at=early_review_began_at,
             time_zone=time_zone,
             new_cards_limit=new_cards_limit,
             buffered_cards_count=buffered_cards_count,
@@ -92,6 +94,7 @@ class NextCardsForReview(object):
             buffered_new_cards_count=buffered_new_cards_count,
             new_cards_per_day_limit_override=new_cards_per_day_limit_override,
             new_cards_limit=new_cards_limit,
+            early_review_began_at=early_review_began_at,
         )
 
         self.server_datetime = datetime.now(pytz.utc)
