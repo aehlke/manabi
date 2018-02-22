@@ -39,7 +39,7 @@ def get_featured_decks_tree():
     return (
         FeaturedDeck.objects.all()
         .select_related('deck_collection', 'deck')
-        .filter(deck__shared=True, active=True)
+        .filter(deck__shared=True, deck__active=True)
         .order_by('ordinal')
         .only('deck_collection', 'deck')
     )
