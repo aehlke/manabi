@@ -7,4 +7,4 @@ name = "pypi"
 
 [packages]
 
-ansible = "*"
+ansible = "==2.5.0b1"
