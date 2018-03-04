@@ -12,7 +12,7 @@ def forwards(apps, schema_editor):
 
     for expression_tweet in ExpressionTweet.objects.all().iterator():
         if tweet_is_spammy(expression_tweet.tweet):
-            print 'Deleting spammy tweet', expression_tweet.tweet['text']
+            print 'Deleting spammy tweet', unicode(expression_tweet.tweet['text'])
             expression_tweet.delete()
 
 
