@@ -23,13 +23,45 @@ def _search_tweets(term, count):
     )['statuses']
 
 
-def _cull_spammy_tweets(tweets, desired_count):
+def tweet_is_spammy(tweet):
+    display_name = tweet['user']['name'].lower()
+
+    if tweet['text'].strip()[:1] == u'【':
+        return True
+
+    if tweet['text'].strip().startswith(u'定期自己紹介'):
+        return True
+
+    for ad_word in [
+        u'[定期]', u'(定期)', u'【定期】', u'《定期》', u'定期：',
+        u'※定期※ ', u'〈定期〉', u'↓続く', u'【迷言定期】',
+        u'☆定期☆', u'『定期』',
+    ]:
+        if ad_word in tweet['text'] or ad_word in display_name:
+            return True
+
+    if tweet['user']['screen_name'].lower().endswith('_bot'):
+        return True
+
+    if (
+        '(bot)' in display_name
+        or u'（BOT）' in display_name
+        or display_name.endswith('bot')
+        or display_name.endswith(u'ボット')
+    ):
+        return True
+
+    return False
+
+
+def cull_spammy_tweets(tweets, desired_count):
     good_tweets = []
     tweet_texts = set()
 
     for tweet in tweets:
-        if tweet['text'].strip()[:1] == u'【':
+        if tweet_is_spammy(tweet):
             continue
+
         if tweet['text'] in tweet_texts:
             continue
 
@@ -46,7 +78,12 @@ def sorted_by_usefulness_estimate(tweets_with_frequencies):
     def sort_key(item):
         frequency, tweet = item
 
-        maybe_spam = '|' in tweet['text']
+        maybe_spam = (
+            '|' in tweet['text'] 
+            or u'①' in tweet['text']
+            or 'RT:' in tweet['text']
+            or '#RT' in tweet['text']
+        )
 
         return (0 if maybe_spam else 1, -frequency)
 
@@ -78,7 +115,7 @@ def harvest_tweets(fact, tweets_per_fact=10):
     for expression in search_expressions(fact):
         SEARCH_COUNT = 100
         tweets = _search_tweets(expression, SEARCH_COUNT)
-        tweets = _cull_spammy_tweets(tweets, SEARCH_COUNT)
+        tweets = cull_spammy_tweets(tweets, SEARCH_COUNT)
 
         tweets_with_frequencies = []
         for tweet in tweets:
