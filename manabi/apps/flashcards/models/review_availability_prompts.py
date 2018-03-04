@@ -74,7 +74,6 @@ def _young_due(review_availabilities, secondary=False):
         return
     return (
         u"You'll soon forget {} {} you're still learning—reinforce it now for maximum effectiveness."
-        u"time to reinforce {}."
     ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
 
 
