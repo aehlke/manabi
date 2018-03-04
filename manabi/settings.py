@@ -205,6 +205,10 @@ SILKY_META = True  # See what effect Silk had on DB time.
 SILKY_AUTHENTICATION = True
 SILKY_AUTHORISATION = True
 def silk_intercept(request):
+    if request.user.is_anonymous():
+        return False
+    if request.user.username not in ['alextest', 'alex']:
+        return False
     return not request.path.startswith('/admin/') and request.path != '/'
 SILKY_INTERCEPT_FUNC = silk_intercept
 
