@@ -73,7 +73,7 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You'll soon forget {} {} you're still learning—reinforce it now for maximum effectiveness."
+        u"You'll soon forget {} {} you're still learning—reinforce {} now for maximum effectiveness."
     ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
 
 
