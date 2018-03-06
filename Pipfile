@@ -59,7 +59,6 @@ werkzeug = "*"
 guppy = "*"
 line-profiler = "*"
 bpython = "*"
-"psycopg2" = "*"
 unidecode = "*"
 "99c08fe" = {file = "https://github.com/aehlke/django-cachecow/archive/master.zip"}
 "e39c1a3" = {file = "https://github.com/aehlke/django-snippetscream/archive/master.zip"}
@@ -70,3 +69,4 @@ django-timezones = "==0.2"
 whitenoise = "*"
 nose = "*"
 itunes-iap = "*"
+"psycopg2-binary" = "*"
