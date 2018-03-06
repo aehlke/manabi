@@ -204,6 +204,8 @@ SILKY_MAX_RESPONSE_BODY_SIZE = 128  # kb
 SILKY_META = True  # See what effect Silk had on DB time.
 SILKY_AUTHENTICATION = True
 SILKY_AUTHORISATION = True
+SILKY_MAX_RECORDED_REQUESTS = 9000
+SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 1
 def silk_intercept(request):
     if request.user.is_anonymous():
         return False
