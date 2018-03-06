@@ -163,8 +163,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.gzip.GZipMiddleware',
     'django.middleware.http.ConditionalGetMiddleware',
 
-    'silk.middleware.SilkyMiddleware',
-
     'django.middleware.common.CommonMiddleware',
 
     'manabi.middleware.UserTimezoneMiddleware',
@@ -176,6 +174,8 @@ MIDDLEWARE_CLASSES = (
 
     'catnap.basic_auth.BasicAuthMiddleware',  # TODO: Delete
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+
+    'silk.middleware.SilkyMiddleware',
 
     'django.contrib.messages.middleware.MessageMiddleware',
     #'account.middleware.LocaleMiddleware', #Enable when we add more translations.
