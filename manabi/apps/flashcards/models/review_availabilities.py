@@ -235,6 +235,8 @@ class ReviewAvailabilities(object):
         # FIXME
         if self.user.username in ['alextest']:
             return
+        if self._cards_remaining_in_daily_trial is None:
+            return
 
         return (
             "You have {} out of {} cards left today.\n"
