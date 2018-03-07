@@ -25,8 +25,13 @@ class SubscriptionManager(models.Manager):
     def subscribe(self, user, expires_date):
         subscription, created = Subscription.objects.get_or_create(
             subscriber=user,
+            defaults={
+                'expires_date': expires_date,
+            },
         )
-        if not created and not subscription.active:
+        if not created and (
+            not subscription.active or subscription.expires_date < expires_date
+        ):
             subscription.active = True
             subscription.expires_date = expires_date
             subscription.save()
