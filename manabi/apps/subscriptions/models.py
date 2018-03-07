@@ -24,7 +24,7 @@ def user_is_active_subscriber(user):
 class SubscriptionManager(models.Manager):
     def subscribe(self, user, expires_date):
         subscription, created = Subscription.objects.get_or_create(
-            subscriber=request.user,
+            subscriber=user,
         )
         if not created and not subscription.active:
             subscription.active = True
