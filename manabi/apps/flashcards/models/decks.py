@@ -22,7 +22,9 @@ from manabi.apps.flashcards.models.constants import (
     DEFAULT_EASE_FACTOR,
     LATEST_SHARED_DECKS_LIMIT,
 )
-from manabi.apps.flashcards.models.synchronization import copy_facts_to_subscribers
+from manabi.apps.flashcards.models.synchronization import (
+    copy_facts_to_subscribers,
+)
 from manabi.apps.manabi_redis.models import redis
 
 
