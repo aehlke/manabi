@@ -22,10 +22,12 @@ def _pluralize_cards(card_count):
         return 'card'
     return 'cards'
 
+
 def _pluralize(singular, plural, count):
     if count == 1:
         return singular
     return plural
+
 
 @_auto_secondary_prompt
 def _failed_due(review_availabilities, secondary=False):
@@ -212,6 +214,25 @@ def _done_early_review_of_all_cards(review_availabilities, secondary=False):
     )
 
 
+@_auto_secondary_prompt
+def _all_cards_buffered(review_availabilities, secondary=False):
+    '''
+    When review has finished and all cards have been reviewed at least
+    once (including excluded cards).
+    '''
+    if secondary:
+        return
+    if (
+        review_availabilities.base_cards_queryset.exists()
+        or not excluded_card_ids
+    ):
+        return
+    return (
+        u"You've reviewed every card at least once already now in this "
+        u'''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
+    )
+
+
 def review_availability_prompts(review_availabilities):
     # Be sure to synchronize with Card manager's `_next_card_funcs`.
     prompt_funcs = [
@@ -226,6 +247,7 @@ def review_availability_prompts(review_availabilities):
         _new_buried_over_daily_limit,
         _early_review,
         _done_early_review_of_all_cards,
+        _all_cards_buffered,
     ]
 
     prompts = []

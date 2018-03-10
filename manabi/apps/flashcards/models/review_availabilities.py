@@ -85,12 +85,7 @@ class ReviewAvailabilities(object):
         if self.user.is_anonymous():
             return False
 
-        return (
-            self.base_cards_queryset
-                .of_user(self.user)
-                .due()
-                .exists()
-        )
+        return self.base_cards_queryset.due().exists()
 
     @property
     @lru_cache(maxsize=None)
