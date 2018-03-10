@@ -206,7 +206,6 @@ class ReviewAvailabilities(object):
     def _prompts(self):
         if self.user.is_anonymous():
             return ("", "")
-
         return review_availability_prompts(self)
 
     @property

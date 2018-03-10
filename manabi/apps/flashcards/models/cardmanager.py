@@ -388,6 +388,8 @@ class CommonFiltersMixin(object):
         '''
         Use this rather than `new(user).count()` for future-proofing.
         '''
+        from manabi.apps.flashcards.models.facts import Fact
+
         new_cards = self.new(user)
         if not including_buried:
             new_cards = with_siblings_buried(new_cards)

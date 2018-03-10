@@ -59,10 +59,16 @@ class DecksAPITest(ManabiTestCase):
 class ReviewsAPITest(ManabiTestCase):
     def after_setUp(self):
         self.user = create_user()
-        self.facts = create_sample_data(facts=10, user=self.user)
+        self.facts = create_sample_data(facts=12, user=self.user)
 
     def test_next_cards_for_review(self):
         self.assertTrue(self.api.next_cards_for_review(self.user))
+
+    def test_next_cards_for_review_includes_interstitial_with_prompt(self):
+        next_cards_for_review = self.api.next_cards_for_review(self.user)
+        interstitial = next_cards_for_review['interstitial']
+        review_availabilities = interstitial['review_availabilities']
+        self.assertTrue(review_availabilities['trial_prompt'])
 
     def test_review_cards(self):
         count = 0
