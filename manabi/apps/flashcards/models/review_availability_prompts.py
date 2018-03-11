@@ -224,7 +224,7 @@ def _all_cards_buffered(review_availabilities, secondary=False):
         return
     if (
         review_availabilities.base_cards_queryset.exists()
-        or not excluded_card_ids
+        or not review_availabilities.excluded_card_ids
     ):
         return
     return (
