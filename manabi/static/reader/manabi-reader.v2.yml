@@ -1,4 +1,9 @@
 beginner_feeds:
+  - title: NHK News Easy
+    rss_url: https://www.reddit.com/r/NHKEasyNews.rss
+    icon_url: http://www3.nhk.or.jp/favicon.ico
+    description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
+
   - title: Hiragana Times
     rss_url: http://www.hiraganatimes.com/ja/feed/
     rss_contains_full_content: true

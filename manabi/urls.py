@@ -67,6 +67,7 @@ urlpatterns = [
 
     url(r'^$', manabi.views.homepage, name='homepage'),
     url(r'^flashcards/', include('manabi.apps.flashcards.urls')),
+    url(r'^reader_feeds/', include('manabi.apps.reader_feeds.urls')),
     url(r'^users/', include('manabi.apps.profiles.urls')),
 
     url(r'^terms-of-service/$', TemplateView.as_view(
