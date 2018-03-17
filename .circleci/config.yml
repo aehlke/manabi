@@ -79,11 +79,16 @@ jobs:
     machine:
       enabled: true
     working_directory: ~/manabi
+    environment:
+        PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
       - run:
           command: |
-            echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && config/deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
+            sudo pip install pipenv
+            cd config
+            pipenv install --dev
+            echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
             rm ~/.vault_password.txt
             curl https://manabi.io
 
