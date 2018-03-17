@@ -1,6 +1,7 @@
 beginner_feeds:
   - title: NHK News Easy
-    rss_url: https://www.reddit.com/r/NHKEasyNews.rss
+    rss_url: https://manabi.io/reader_feeds/nhk_easy_news.rss
+    rss_contains_full_content: true
     icon_url: http://www3.nhk.or.jp/favicon.ico
     description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
@@ -48,7 +49,8 @@ categories:
         description: Breaking news from HuffPost Japan.
 
       - title: NHK News Easy
-        rss_url: https://www.reddit.com/r/NHKEasyNews.rss
+        rss_url: https://manabi.io/reader_feeds/nhk_easy_news.rss
+        rss_contains_full_content: true
         icon_url: http://www3.nhk.or.jp/favicon.ico
         description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 

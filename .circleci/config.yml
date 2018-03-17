@@ -1,36 +1,3 @@
-#machine:
-#  hosts:
-#    dev.manabi.io: 127.0.0.1
-#  services:
-#    - redis
-#  node:
-#    version: v8.2.0
-#
-#dependencies:
-#  cache_directories:
-#    - ~/.local
-#  pre:
-#    - sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
-#    - pip install pipenv
-#  override:
-#    - pipenv install --dev
-#
-#test:
-#  override:
-#    - pipenv run python manage.py test
-#
-#deployment:
-#  production:
-#    branch: master
-#    commands:
-#      - eval `ssh-agent`
-#      - ssh-add /home/ubuntu/.ssh/id_circleci_github
-#      - echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && config/deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
-#      - rm ~/.vault_password.txt
-#      - curl https://manabi.io
-
-
-
 version: 2
 
 jobs:
