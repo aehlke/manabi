@@ -57,19 +57,19 @@ jobs:
           # Default branch if not
           - v1-dep-master-{{ checksum "Pipfile.lock" }}
       - run:
-        command: |
-          sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
-          sudo pip install pipenv
-          pipenv install --dev
+          command: |
+            sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
+            sudo pip install pipenv
+            pipenv install --dev
       - save_cache:
-        key: v1-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
-        paths:
-          - ".venv"
-          - "/usr/local/bin"
-          - "/usr/local/lib/python2.7/site-packages"
+          key: v1-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python2.7/site-packages"
       - run:
-        command: |
-          pipenv run python manage.py test
+          command: |
+            pipenv run python manage.py test
       - store_test_results:
           path: test-results
       - store_artifacts:
