@@ -79,6 +79,8 @@ jobs:
     machine:
       enabled: true
     working_directory: ~/manabi
+    docker:
+      - image: circleci/python:2.7.14
     environment:
         PIPENV_VENV_IN_PROJECT: true
     steps:
