@@ -83,6 +83,9 @@ jobs:
         PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
+      - add_ssh_keys:
+          fingerprints:
+            - "bf:20:b7:40:57:cb:2f:0c:c6:a2:15:f9:e1:93:f3:0f" # VPS
       - run:
           command: |
             sudo pip install pipenv
