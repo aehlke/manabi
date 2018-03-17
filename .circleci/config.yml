@@ -83,16 +83,12 @@ jobs:
         PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - "bf:20:b7:40:57:cb:2f:0c:c6:a2:15:f9:e1:93:f3:0f" # VPS
       - run:
           command: |
             sudo pip install pipenv
             cd config
             pipenv install --dev
-            pwd
-            ls
+            ssh-keyscan vps98220.vps.ovh.ca >> ~/.ssh/known_hosts
             echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && ./deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
             rm ~/.vault_password.txt
             curl https://manabi.io
