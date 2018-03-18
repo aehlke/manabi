@@ -110,6 +110,7 @@ STATICFILES_DIRS = [
 MEDIA_URL = '/media/'
 # FILE_UPLOAD_DIRECTORY_PERMISSIONS = 0o755
 # FILE_UPLOAD_PERMISSIONS = 0o755
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'

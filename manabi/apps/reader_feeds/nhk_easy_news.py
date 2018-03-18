@@ -58,8 +58,8 @@ def _clean_content(content):
     for _ in range(2):
         content_tree.remove(content_tree[-1])
 
-    return u'<article class="article">{}</article>'.format(lxml.html.tostring(
-        content_tree, pretty_print=True, encoding='unicode'))
+    return lxml.html.tostring(
+        content_tree, pretty_print=True, encoding='unicode')
 
 
 def generate_nhk_easy_news_feed():
@@ -101,6 +101,9 @@ def generate_nhk_easy_news_feed():
 
         cleaned_content = _inject_comments(
             reddit, post, cleaned_content)
+
+        cleaned_content = u'<article class="article">{}</article>'.format(
+            cleaned_content)
 
         entry = fg.add_entry()
         entry.id(post.link)
