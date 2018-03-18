@@ -2,6 +2,7 @@ beginner_feeds:
   - title: NHK News Easy
     rss_url: https://manabi.io/reader_feeds/nhk_easy_news.rss
     rss_contains_full_content: true
+    meaningful_content_min_length: 10
     icon_url: http://www3.nhk.or.jp/favicon.ico
     description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
@@ -51,6 +52,7 @@ categories:
       - title: NHK News Easy
         rss_url: https://manabi.io/reader_feeds/nhk_easy_news.rss
         rss_contains_full_content: true
+        meaningful_content_min_length: 10
         icon_url: http://www3.nhk.or.jp/favicon.ico
         description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
