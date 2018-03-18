@@ -427,4 +427,4 @@ else:
         raise Exception("Couldn't import development settings.")
 
 
-CACHES['default']['KEY_PREFIX'] = '1'
+CACHES['default']['KEY_PREFIX'] = '2'
