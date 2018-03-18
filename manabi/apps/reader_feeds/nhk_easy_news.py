@@ -38,8 +38,7 @@ def _inject_comments(reddit, post, content):
         return content
 
     content = (
-        (u'<p>Translation discussion: '
-         u'<a href="{}" target="_blank">{} comment{}</a></p>')
+         u'<p><a href="{}" target="_blank">{} translation comment{}</a></p>'
         .format(
             comments_url, comments_count, 's' if comments_count > 1 else '')
     ) + content
