@@ -424,3 +424,6 @@ else:
         from manabi.settings_development import *
     except ImportError:
         raise Exception("Couldn't import development settings.")
+
+
+CACHES['default']['KEY_PREFIX'] = '1'
