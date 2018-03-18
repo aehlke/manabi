@@ -58,7 +58,7 @@ def _clean_content(content):
     for _ in range(2):
         content_tree.remove(content_tree[-1])
 
-    return u'<article class="article"">{}</article>'.format(lxml.html.tostring(
+    return u'<article class="article">{}</article>'.format(lxml.html.tostring(
         content_tree, pretty_print=True, encoding='unicode'))
 
 
