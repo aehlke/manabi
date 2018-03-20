@@ -12,7 +12,7 @@ from feedgen.feed import FeedGenerator
 from lxml.cssselect import CSSSelector
 
 
-ENTRY_COUNT = 50
+ENTRY_COUNT = 12
 
 
 def _get_image_url(page_tree, nhk_url):
