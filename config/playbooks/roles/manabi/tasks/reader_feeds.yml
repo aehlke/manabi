@@ -1,0 +1,13 @@
+---
+
+- name: Generate Manabi Reader RSS feeds on cron
+  cron:
+    name: "Generate feed {{ item }}"
+    minute: 10
+    hour: '*/8'
+    user: ubuntu
+    job: 'bash -lc "cd {{ app_root_path }} && pipenv run python manage.py {{ item }}"'
+    cron_file: manabi_reader_feeds
+  become: yes
+  with_items:
+      - generate_nhk_easy_news

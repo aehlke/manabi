@@ -1,3 +1,6 @@
 *.swp
+*.swj
+*.swi
 *.egg-info
 settings_production_secrets.py
+media/

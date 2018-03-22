@@ -26,6 +26,8 @@ CACHES = {
     }
 }
 
+MEDIA_ROOT = 'media'
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 SILKY_PYTHON_PROFILER = False

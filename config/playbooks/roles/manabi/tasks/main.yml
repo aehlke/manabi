@@ -87,3 +87,5 @@
     group: www-data
     recurse: yes
   become: yes
+
+- import_tasks: reader_feeds.yml

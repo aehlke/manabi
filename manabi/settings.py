@@ -112,6 +112,17 @@ MEDIA_URL = '/media/'
 # FILE_UPLOAD_PERMISSIONS = 0o755
 DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
 
+def whitenoise_add_headers(headers, path, url):
+    if path.endswith('.rss'):
+        MAX_AGE = 60 * 60 * 4
+        STALE_WHILE_REVALIDATE = 60 * 60 * 24 * 2
+        headers['Cache-Control'] = (
+            'max-age={}, stale-while-revalidate={}, stale-if-error={}, public'
+            .format(MAX_AGE, STALE_WHILE_REVALIDATE, STALE_WHILE_REVALIDATE))
+WHITENOISE_ADD_HEADERS_FUNCTION = whitenoise_add_headers
+WHITENOISE_MIMETYPES = {'.rss': 'application/rss+xml'}
+WHITENOISE_CHARSET = 'utf-8'
+
 ADMIN_MEDIA_PREFIX = posixpath.join(STATIC_URL, 'admin/')
 SECRET_KEY = 'secret-key-only-used-for-development-do-not-use-in-production'
 
