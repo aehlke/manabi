@@ -221,7 +221,7 @@ class FactSerializer(ManabiModelSerializer):
                 source_url=reader_source_data['source_url'],
                 defaults={
                     'title': reader_source_data['title'],
-                    'thumbnail_url': reader_source_data['thumbnail_url'],
+                    'thumbnail_url': reader_source_data.get('thumbnail_url'),
                 },
             )
             validated_data['reader_source_id'] = reader_source.id
