@@ -15,6 +15,7 @@ apps/dojango/media/dojo
 *.svn
 *.swl
 *.swk
+*.sw*
 .svn
 *svn-base
 settings_development_secrets.py

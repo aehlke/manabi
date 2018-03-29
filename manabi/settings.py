@@ -143,6 +143,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'manabi.context_processors.url_prefixes',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
             'environment': 'manabi.jinja2_environment.environment',
             'extensions': [
@@ -256,6 +258,9 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     # 'allauth.socialaccount.providers.facebook',
     # 'allauth.socialaccount.providers.twitter',
+    'oauth2_provider',
+    'social_django',
+    'rest_framework_social_oauth2',
 
     # Other
     'rest_framework',
@@ -337,9 +342,18 @@ ABSOLUTE_URL_OVERRIDES = {
 
 
 AUTHENTICATION_BACKENDS = [
+    # Facebook OAuth2
+    'social_core.backends.facebook.FacebookAppOAuth2',
+    'social_core.backends.facebook.FacebookOAuth2',
+    # django-rest-framework-social-oauth2
+    'rest_framework_social_oauth2.backends.DjangoOAuth2',
+
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
+
+SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
 
 DJOSER = {
     'SERIALIZERS': {
@@ -410,6 +424,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
+
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+        'rest_framework_social_oauth2.authentication.SocialAuthentication',
     ],
     'UNICODE_JSON': False,
     # Use Django's standard `django.contrib.auth` permissions,

@@ -79,6 +79,7 @@ urlpatterns = [
 
     # API URLs.
     url(r'^api/', include(api_router.urls, namespace='api')),
+    url(r'^api/auth/social/', include('rest_framework_social_oauth2.urls')),
     url(r'^api/auth/register/$', RegistrationWithTokenView.as_view(),
         name='register'),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
