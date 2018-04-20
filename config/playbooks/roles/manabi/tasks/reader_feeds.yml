@@ -10,4 +10,4 @@
     cron_file: manabi_reader_feeds
   become: yes
   with_items:
-      - generate_nhk_easy_news
+      - generate_nhk_easy_news_feed

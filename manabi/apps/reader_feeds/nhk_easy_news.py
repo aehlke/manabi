@@ -16,6 +16,7 @@ ENTRY_COUNT = 12
 
 
 def _get_image_url(page_tree, nhk_url):
+    return None
     url = CSSSelector('#mainimg img')(page_tree)[0].get('src')
     if not (url.startswith('http://') or url.startswith('https://')):
         url = urljoin(nhk_url, url)
@@ -95,8 +96,9 @@ def generate_nhk_easy_news_feed():
 
         cleaned_content = _clean_content(content)
 
-        cleaned_content = (
-            '<p><img src="{}" /></p>'.format(image_url) + cleaned_content)
+        if image_url is not None:
+            cleaned_content = (
+                '<p><img src="{}" /></p>'.format(image_url) + cleaned_content)
 
         cleaned_content = _inject_comments(
             reddit, post, cleaned_content)
