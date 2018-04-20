@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "f9ed7fcc72a07d28a89ad2f7168a1f78c32c3fbdbf25d6645a16f8b0c2f8be6e"
+            "sha256": "97ce92d415acab6ca24b10160dba6cb6f62f6f052bc7000cd64ec01bddaccc87"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -49,9 +49,9 @@
         },
         "autopep8": {
             "hashes": [
-                "sha256:c7be71ab0cb2f50c9c22c82f0c9acaafc6f57492c3fbfee9790c415005c2b9a5"
+                "sha256:2284d4ae2052fedb9f466c09728e30d2e231cfded5ffd7b1a20c34123fdc4ba4"
             ],
-            "version": "==1.3.4"
+            "version": "==1.3.5"
         },
         "backports.functools-lru-cache": {
             "hashes": [
@@ -252,13 +252,6 @@
             "index": "pypi",
             "version": "==0.29.0"
         },
-        "django-braces": {
-            "hashes": [
-                "sha256:7c5b91c75240ccf2eb124fe3b09dd4978e8f4d412b553bb791920bd55839159c",
-                "sha256:7e0cb698f3cd17cc58d50aea4a663233f44228144b81d85e1b9bad05aa7f3f80"
-            ],
-            "version": "==1.12.0"
-        },
         "django-crispy-forms": {
             "hashes": [
                 "sha256:47ef7f74003b2a07a78ce6ed70b6472bf30efd7f8c3ef15fe0ca6685be2e0dfb"
@@ -305,19 +298,6 @@
             "index": "pypi",
             "version": "==1.4.5"
         },
-        "django-oauth-toolkit": {
-            "hashes": [
-                "sha256:23ca6ffc06167cf9a1e94f98e7662b5b4724e2b9acc607373b8811ba62adbb23"
-            ],
-            "version": "==1.0.0"
-        },
-        "django-rest-framework-social-oauth2": {
-            "hashes": [
-                "sha256:c9a297b636ffd37957c6146280e99ead41e6aca37bcb995e3d52d65eefbca0b7"
-            ],
-            "index": "pypi",
-            "version": "==1.1.0"
-        },
         "django-rq": {
             "hashes": [
                 "sha256:628216d036004418d3adea589f7e971134d554995f7692ebb28501dabb7fb31e",
@@ -333,6 +313,13 @@
             ],
             "index": "pypi",
             "version": "==2.0.0"
+        },
+        "django-templated-mail": {
+            "hashes": [
+                "sha256:8db807effebb42a532622e2d142dfd453dafcd0d7794c4c3332acb90656315f9",
+                "sha256:f7127e1e31d7cad4e6c4b4801d25814d4b8782627ead76f4a75b3b7650687556"
+            ],
+            "version": "==1.1.1"
         },
         "django-timezones": {
             "hashes": [
@@ -359,10 +346,11 @@
         },
         "djoser": {
             "hashes": [
-                "sha256:1ac76afab396cc680c16efcede96fac09224c09fe3fdc28d4e9827bcf8004fec"
+                "sha256:5348b153d887dfea86e0ecafce1c63588705e8e74d907ba5b1d54ab94bf85ab1",
+                "sha256:9b5cfccfbe3a515e3c7a76dc0179d1b5dc9d153543def6409405bab2a660b06f"
             ],
             "index": "pypi",
-            "version": "==0.5.1"
+            "version": "==1.1.5"
         },
         "drf-extensions": {
             "hashes": [
@@ -382,7 +370,7 @@
                 "sha256:6bd0f6ad48ec2aa117d3d141940d484deccda84d4fcd884f5c3d93c23ecd8c79",
                 "sha256:8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1"
             ],
-            "markers": "python_version == '2.7'",
+            "markers": "python_version < '3'",
             "version": "==1.1.6"
         },
         "fabric": {
@@ -981,6 +969,7 @@
                 "sha256:4e34d86709bfa51fd2938307e00f12f4e1dfef8a8ed6bfbfe9aeb4e69d57148f",
                 "sha256:b7c28bef8fbd11ff357ddd885cb219cdb55565e01109c709dd28569e0bfb0dea"
             ],
+            "index": "pypi",
             "version": "==2.1.0"
         },
         "social-auth-core": {

@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from djoser.serializers import UserRegistrationSerializer
+from djoser.serializers import UserCreateSerializer
 from rest_framework import authtoken, serializers
 
 from manabi.api.serializers import ManabiModelSerializer
@@ -15,11 +15,11 @@ class UserSerializer(ManabiModelSerializer):
         )
 
 
-class UserRegistrationWithTokenSerializer(UserRegistrationSerializer):
+class UserCreateWithTokenSerializer(UserCreateSerializer):
     auth_token = serializers.SerializerMethodField()
 
-    class Meta(UserRegistrationSerializer.Meta):
-        fields = UserRegistrationSerializer.Meta.fields + (
+    class Meta(UserCreateSerializer.Meta):
+        fields = UserCreateSerializer.Meta.fields + (
             'auth_token',
         )
         read_only_fields = (
