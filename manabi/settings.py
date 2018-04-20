@@ -338,7 +338,7 @@ ABSOLUTE_URL_OVERRIDES = {
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    'djoser.social.backends.facebook.FacebookOAuth2Override',
+    #'djoser.social.backends.facebook.FacebookOAuth2Override',
     'allauth.account.auth_backends.AuthenticationBackend',
 ]
 
