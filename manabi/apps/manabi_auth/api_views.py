@@ -8,4 +8,5 @@ class UserCreateWithTokenView(UserCreateView):
         super(UserCreateWithTokenView, self).perform_create(serializer)
 
         user = serializer.instance
-        user_logged_in.send(sender=user.__class__, request=self.request, user=user)
+        user_logged_in.send(
+            sender=user.__class__, request=self.request, user=user)

@@ -1,6 +1,4 @@
-from manabi.test_helpers import (
-    ManabiTestCase,
-)
+from manabi.test_helpers import ManabiTestCase
 
 
 class RegistrationAPITest(ManabiTestCase):

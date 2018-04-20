@@ -347,7 +347,7 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
 
 DJOSER = {
     'SERIALIZERS': {
-        'user_registration':
+        'user_create':
         'manabi.apps.manabi_auth.serializers.UserCreateWithTokenSerializer',
     },
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['https://manabi.io/'],
