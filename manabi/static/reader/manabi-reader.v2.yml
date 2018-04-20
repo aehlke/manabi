@@ -1,6 +1,6 @@
 beginner_feeds:
   - title: NHK News Easy
-    rss_url: https://manabi.io/media/nhk_easy_news.rss
+    rss_url: https://manabi.io/media/feeds/nhk_easy_news.rss
     rss_contains_full_content: true
     meaningful_content_min_length: 10
     icon_url: http://www3.nhk.or.jp/favicon.ico
@@ -50,7 +50,7 @@ categories:
         description: Breaking news from HuffPost Japan.
 
       - title: NHK News Easy
-        rss_url: https://manabi.io/media/nhk_easy_news.rss
+        rss_url: https://manabi.io/media/feeds/nhk_easy_news.rss
         rss_contains_full_content: true
         meaningful_content_min_length: 10
         icon_url: http://www3.nhk.or.jp/favicon.ico
