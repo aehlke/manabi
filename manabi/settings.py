@@ -266,7 +266,11 @@ INSTALLED_APPS = (
     'crispy_forms',  # For browsable API.
     'django_nose',
     'django_rq',
+
+    # Djoser
     'djoser',
+    'social_django',
+
     'raven.contrib.django.raven_compat',
     'silk',
     'webpack_loader',
@@ -338,8 +342,8 @@ ABSOLUTE_URL_OVERRIDES = {
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    #'djoser.social.backends.facebook.FacebookOAuth2Override',
     'allauth.account.auth_backends.AuthenticationBackend',
+    'social_core.backends.facebook.FacebookOAuth2',
 ]
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
