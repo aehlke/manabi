@@ -21,8 +21,6 @@ def strip_reading(reading):
 def make_ruby(kana, kanji):
     from manabi.apps.utils.japanese import is_kana, is_hiragana, is_kanji
 
-    # print u'make ruby [{}], [{}]'.format(kana, kanji)
-
     if kanji == '一ヶ月':
         return "｜一ヶ月《いっかげつ》"
     elif kanji == 'ユダヤ人':
@@ -91,7 +89,7 @@ def make_ruby(kana, kanji):
     ):
         if not kanji:
             return kana
-        print kana[:-4], kanji[:-4], (kana[:-4] == kanji[:-4] == u'(する)')
+        print(kana[:-4], kanji[:-4], (kana[:-4] == kanji[:-4] == u'(する)'))
         raise ValueError("Contains symbols: {} {}.".format(kana, kanji))
 
     if not kanji:
@@ -109,7 +107,7 @@ def make_ruby(kana, kanji):
 
     for c in middle_kanji:
         if is_kana(c):
-            print prefix, ',', middle_kanji, ',', suffix, ',', furigana
+            print(prefix, ',', middle_kanji, ',', suffix, ',', furigana)
             raise ValueError(
                 "Non-simple kanji can't be autoconverted: {}".format(kanji))
 
@@ -197,7 +195,7 @@ def forwards(apps, schema_editor):
             # if 'Reading' in vocab:
             #     reading = vocab['Reading']
             # else:
-            print e.message
+            print(e.message)
             raise
 
         expression = strip_reading(reading)

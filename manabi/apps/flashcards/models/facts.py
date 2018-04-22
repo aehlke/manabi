@@ -343,5 +343,5 @@ class Fact(models.Model):
         app_label = 'flashcards'
         unique_together = (('deck', 'synchronized_with'),)
 
-    def __unicode__(self):
-        return unicode(self.id)
+    def __str__(self):
+        return str(self.id)

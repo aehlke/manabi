@@ -79,7 +79,7 @@ def forwards(apps, schema_editor):
             if 'Reading' in vocab:
                 reading = vocab['Reading']
             else:
-                print e.message
+                print(e.message)
                 raise
 
         expression = strip_reading(reading)

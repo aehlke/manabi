@@ -11,7 +11,7 @@ def new_reading(reading):
                      reading, flags=re.UNICODE)
     reading = re.sub(ur' (\w+)\[(\w*)\]', ur'｜\1《\2》',
                      reading, flags=re.UNICODE)
-    print reading
+    print(reading)
     return reading
 
 

@@ -51,7 +51,7 @@ class DecksAPITest(ManabiTestCase):
         )
         self.assertFalse(Deck.objects.get(id=sample_deck.id).active)
 
-        print sample_deck.card_set.values_list('active', flat=True)
+        print(sample_deck.card_set.values_list('active', flat=True))
         self.assertFalse(any(
             sample_deck.card_set.values_list('active', flat=True)))
 
@@ -222,7 +222,7 @@ class SharedDecksTest(ManabiTestCase):
 
     def test_deck_subscribers(self):
         subscribers = self.api.shared_deck_subscribers(self.shared_deck)
-        print subscribers
+        print(subscribers)
         self.assertEqual(len(subscribers), 1)
 
     def test_subscribed_shared_deck_has_viewer_synchronized_deck_field(self):

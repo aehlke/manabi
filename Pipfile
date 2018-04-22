@@ -1,22 +1,16 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
 freezegun = "==0.3.9"
 
-
 [packages]
-
-django = "==1.11.8"
-fabric = "==1.8.0"
+Django = "==1.11.8"
+Fabric = "==1.8.0"
 django-extensions = "*"
 drf-extensions = "==0.3.1"
-jcconv = "==0.2.3"
 gunicorn = "==19.4.3"
 redis = "==2.10.5"
 hiredis = "==0.2.0"
@@ -32,7 +26,7 @@ natto-py = "==0.7.0"
 twython = "==3.3.0"
 djangorestframework = "*"
 django-filter = "==0.14.0"
-markdown = "==2.6.5"
+Markdown = "==2.6.5"
 django-crispy-forms = "==1.5.2"
 requests = {extras = ["security"]}
 humanize = "==0.5.1"
@@ -42,12 +36,11 @@ django-silk = "*"
 raven = "==5.32.0"
 python-memcached = "==1.58"
 sparkpost = "*"
-"jinja2" = "==2.8"
+"Jinja2" = "==2.8"
 django-webpack-loader = "==0.3.3"
-mecab-python = "==0.996"
 "430e1eb" = {file = "https://github.com/neithere/django-autoslug/archive/223771076e63c1b50f75fb2a576f2ea4c6bad514.zip"}
 django-admin-sortable = "==2.0.21"
-pillow = "==4.0.0"
+Pillow = "==4.0.0"
 lxml = "==3.7.3"
 "beautifulsoup4" = "==4.6.0"
 "html5lib" = "==0.999999999"
@@ -55,17 +48,16 @@ cssselect = "==1.0.1"
 feedgen = "*"
 "abdb104" = {file = "https://github.com/dcramer/django-devserver/archive/master.zip"}
 sqlparse = "*"
-werkzeug = "*"
-guppy = "*"
-line-profiler = "*"
+Werkzeug = "*"
+line_profiler = "*"
 bpython = "*"
-unidecode = "*"
+Unidecode = "*"
 "99c08fe" = {file = "https://github.com/aehlke/django-cachecow/archive/master.zip"}
 "e39c1a3" = {file = "https://github.com/aehlke/django-snippetscream/archive/master.zip"}
-webob = "==1.0.3"
+WebOb = "==1.0.3"
 django-timezones = "==0.2"
 "05b7bbf" = {file = "https://github.com/aehlke/django-catnap/archive/master.zip"}
-"rfc3339" = "==5"
+"rfc3339" = "==6"
 whitenoise = "*"
 nose = "*"
 itunes-iap = "*"
@@ -75,3 +67,5 @@ praw = "*"
 ipython = "<6"
 social-auth-app-django = "*"
 "django-rest-framework-social-oauth2" = "*"
+"mecab-python3" = "*"
+jcconv = {git = "https://github.com/besser82/jcconv.git", ref = "v0.2.4"}

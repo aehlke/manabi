@@ -36,7 +36,7 @@ MATURITY_COLORS = {
     'young':    '#7074C5',#'#49388a',
     'mature':   '#E4C670',
 }
-    
+
 MATURITY_NAMES = {
     'new': 'New',
     'young': 'Started',

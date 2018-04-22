@@ -25,7 +25,6 @@ from manabi.test_helpers import ManabiTestCase, create_sample_data, create_user
 #        from manabi.apps.flashcards.models import CardHistory
 #        user_items = CardHistory.objects.of_user(self.user)
 #        import sys
-#        print >> sys.stderr, user_items
 #        self.assertTrue(any([series['data'] for series in res.json['data']['series']]))
 
 #    def test_due_counts_view(self):

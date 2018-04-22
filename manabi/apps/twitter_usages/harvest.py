@@ -155,11 +155,11 @@ def harvest_tweets_for_facts(fact_count):
         expression__in=
         ExpressionTweet.objects.values_list('search_expression').distinct(),
     )
-    print 'Remaining facts: {}'.format(facts.count())
+    print('Remaining facts: {}'.format(facts.count()))
 
     facts = facts[:fact_count]
 
     for fact in facts.iterator():
-        print u'Fact {}:'.format(fact.id), fact.expression
+        print('Fact {}:'.format(fact.id), fact.expression)
 
         harvest_tweets(fact)

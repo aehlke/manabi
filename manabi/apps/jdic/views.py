@@ -26,7 +26,6 @@ def audio_file_exists(request):
         timeout=settings.JDIC_AUDIO_SERVER_TIMEOUT)
 
     url = ''.join(['/audio/', filename])
-    print url
 
     conn.request('HEAD', url)
     res = conn.getresponse()
@@ -39,4 +38,3 @@ def audio_file_exists(request):
     else:
         raise ApiException('Error communicating with JDic audio server.'
                             ' (HTTP {})'.format(res.status))
-    

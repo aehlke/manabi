@@ -12,7 +12,7 @@ def new_reading(reading):
     updated = re.sub(ur'[ 　,](\w+)\[([\w、／/ 　。－・,-]*)\]', ur'｜\1《\2》',
                      updated, flags=re.UNICODE)
     if reading != updated:
-        print reading, "  ====>  ", updated
+        print(reading, "  ====>  ", updated)
     return updated
 
 

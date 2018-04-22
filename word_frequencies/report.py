@@ -20,14 +20,14 @@ EXCEPTIONS = [
     u'・',
 ]
 
-print '# -*- coding: utf-8 -*-'
-print
-print 'WORD_FREQUENCIES = {'
+print('# -*- coding: utf-8 -*-')
+print()
+print('WORD_FREQUENCIES = {')
 for l in open('word_freq_report.txt').readlines():
     freq, word, _, __, ___ = l.split()
 
     if word.decode('utf8') in EXCEPTIONS:
         continue
 
-    print '    u"{}": {},'.format(word, freq)
-print '}'
+    print('    u"{}": {},'.format(word, freq))
+print('}')
