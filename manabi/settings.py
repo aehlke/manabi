@@ -267,9 +267,12 @@ INSTALLED_APPS = (
     'django_nose',
     'django_rq',
 
-    # Djoser
     'djoser',
+
+    # django-rest-framework-social-oauth2
+    'oauth2_provider',
     'social_django',
+    'rest_framework_social_oauth2',
 
     'raven.contrib.django.raven_compat',
     'silk',
@@ -343,7 +346,6 @@ ABSOLUTE_URL_OVERRIDES = {
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    'social_core.backends.facebook.FacebookOAuth2',
 ]
 
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
@@ -416,6 +418,7 @@ DEFAULT_URL_PREFIX = 'http://192.168.0.1:8000'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
         'rest_framework.authentication.SessionAuthentication',
