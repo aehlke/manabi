@@ -49,9 +49,6 @@ api_router.register(r'flashcards/review_availabilities',
 api_router.register(r'flashcards/next_cards_for_review',
     NextCardsForReviewViewSet,
     base_name='next-card-for-review')
-api_router.register(r'flashcards/review_results',
-    ReviewResultsView,
-    base_name='review-results')
 
 urlpatterns = [
     url(r'^apple-app-site-association$', TemplateView.as_view(
