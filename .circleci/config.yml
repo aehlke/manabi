@@ -12,7 +12,7 @@ jobs:
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circle_test
-      - image: redis:4.0.8
+      - image: redis:4.0.9
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
