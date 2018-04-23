@@ -12,7 +12,7 @@ def _auto_secondary_prompt(f):
         if secondary:
             parts = prompt.split(' ')
             if parts[0].lower() in ["we", "we'll", "you", "you'll"]:
-                prompt = u' '.join(parts[:1] + ['also'] + parts[1:])
+                prompt = ' '.join(parts[:1] + ['also'] + parts[1:])
         return prompt
     return wrapper
 
@@ -39,7 +39,7 @@ def _failed_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You're ready to revisit {} {} that you had forgotten."
+        "You're ready to revisit {} {} that you had forgotten."
     ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
 
 
@@ -53,7 +53,7 @@ def _mature_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} that you know well but may forget if left unused much longer."
+        "We have {} {} that you know well but may forget if left unused much longer."
     ).format(count, _pluralize_cards(count))
 
 
@@ -75,7 +75,7 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You'll soon forget {} {} you're still learning—reinforce {} now for maximum effectiveness."
+        "You'll soon forget {} {} you're still learning—reinforce {} now for maximum effectiveness."
     ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
 
 
@@ -89,8 +89,8 @@ def _failed_not_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"We have {} {} you forgot last time that you could wait a bit "
-        u"to revisit."
+        "We have {} {} you forgot last time that you could wait a bit "
+        "to revisit."
     ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
 
 
@@ -106,9 +106,9 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
         return
 
     if review_availabilities.new_cards_limit.learned_today_count > 0:
-        template = u"We have {} more new {} for you to learn."
+        template = "We have {} more new {} for you to learn."
     else:
-        template = u"We have {} new {} for you to learn."
+        template = "We have {} new {} for you to learn."
     return template.format(count, _pluralize_cards(count))
 
 
@@ -128,7 +128,7 @@ def _new_over_daily_limit(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        u"You've already learned {already_learned} new {cards} today, but we have {next_new_count} more if you're feeling ambitious."
+        "You've already learned {already_learned} new {cards} today, but we have {next_new_count} more if you're feeling ambitious."
     ).format(
         next_new_count=count,
         already_learned=(
@@ -149,8 +149,8 @@ def _new_buried_under_daily_limit(review_availabilities, secondary=False):
         return
 
     template = (
-        u"We have {} new {}, all related to material you've "
-        u"covered recently in other cards—better to wait."
+        "We have {} new {}, all related to material you've "
+        "covered recently in other cards—better to wait."
     )
     return template.format(count, _pluralize_cards(count))
 
@@ -173,8 +173,8 @@ def _new_buried_over_daily_limit(review_availabilities, secondary=False):
         return
 
     template = (
-        u"We have {} new {} only from material covered recently, "
-        u"plus you've already learned {} today—better wait."
+        "We have {} new {} only from material covered recently, "
+        "plus you've already learned {} today—better wait."
     )
     return template.format(
         count, _pluralize_cards(count),
@@ -192,10 +192,10 @@ def _early_review(review_availabilities, **kwargs):
         if not review_availabilities.new_cards_per_day_limit_reached:
             return
         return (
-            u'''Good news is you're caught up on reviews! Consider taking a '''
-            u'''break or <a href="itms-apps://itunes.apple.com/app/id1247286380">reading</a> instead.'''
+            '''Good news is you're caught up on reviews! Consider taking a '''
+            '''break or <a href="itms-apps://itunes.apple.com/app/id1247286380">reading</a> instead.'''
         )
-    return u'''You're caught up on reviews! Take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">go read something in Japanese</a>.'''
+    return '''You're caught up on reviews! Take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">go read something in Japanese</a>.'''
 
 
 @_auto_secondary_prompt
@@ -209,8 +209,8 @@ def _done_early_review_of_all_cards(review_availabilities, secondary=False):
     if review_availabilities.early_review_began_at is None:
         return
     return (
-        u"You've reviewed every card at least once already now in this "
-        u'''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
+        "You've reviewed every card at least once already now in this "
+        '''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
     )
 
 
@@ -228,8 +228,8 @@ def _all_cards_buffered(review_availabilities, secondary=False):
     ):
         return
     return (
-        u"You've reviewed every card at least once already now in this "
-        u'''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
+        "You've reviewed every card at least once already now in this "
+        '''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
     )
 
 

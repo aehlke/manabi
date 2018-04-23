@@ -24,12 +24,12 @@ def execute():
     feed_items = {}
     added_entry_urls = set()
     sections = {
-        'jap': u"日本の昔話 (Japanese Legends)",
-        'minwa': u"日本の民話 (Japanese Folktales)",
-        'world': u"世界の昔話 (World Folktales)",
-        'aesop': u"イソップ童話 (Aesop's Fables)",
-        'kobanashi': u"江戸小話 (Edo Short Stories)",
-        'kaidan': u"百物語 (Japanese Ghost Stories)",
+        'jap': "日本の昔話 (Japanese Legends)",
+        'minwa': "日本の民話 (Japanese Folktales)",
+        'world': "世界の昔話 (World Folktales)",
+        'aesop': "イソップ童話 (Aesop's Fables)",
+        'kobanashi': "江戸小話 (Edo Short Stories)",
+        'kaidan': "百物語 (Japanese Ghost Stories)",
     }
     for section in sections:
         feed_items[section] = []
@@ -52,9 +52,9 @@ def execute():
                     table = link.xpath('./ancestor::table[1]')[0]
                     texts = table.itertext()
                     description = ''
-                    for text1, text2 in zip(texts, list(texts)[1:]):
-                        if u'内容 :' in text1:
-                            description = (text1 + text2)[len(u'内容 :'):]
+                    for text1, text2 in zip(texts, texts[1:]):
+                        if '内容 :' in text1:
+                            description = (text1 + text2)[len('内容 :'):]
 
                     try:
                         image_relative_url = table.cssselect('img')[0].get('src')

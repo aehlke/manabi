@@ -18,7 +18,7 @@ def block(ch):
 
   '''
 
-  assert isinstance(ch, unicode) and len(ch) == 1, repr(ch)
+  assert isinstance(ch, str) and len(ch) == 1, repr(ch)
   cp = ord(ch)
   for start, end, name in _blocks:
     if start <= cp <= end:

@@ -43,7 +43,7 @@ class Textbook(models.Model):
 
     def __unicode__(self):
         try:
-            return self.get_basic_info()['title'] + u' [{0}]'.format(self.isbn)
+            return self.get_basic_info()['title'] + ' [{0}]'.format(self.isbn)
         except URLError:
             return 'ISBN: {0}'.format(self.isbn)
 

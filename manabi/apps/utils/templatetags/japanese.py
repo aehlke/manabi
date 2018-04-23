@@ -7,7 +7,7 @@ from re import compile, UNICODE
 
 
 #RUBY_TEXT_MARKUP_TEMPLATE = u'<ruby><rb>{expression}</rb><rp>(</rp><rt>{reading}</rt><rp>)</rp></ruby>'
-RUBY_TEXT_MARKUP_TEMPLATE = u'<span class="ezRuby" title="{reading}">{expression}</span>'
+RUBY_TEXT_MARKUP_TEMPLATE = '<span class="ezRuby" title="{reading}">{expression}</span>'
 
 #_LEFT_CARET = u'\&lt;'
 #_RIGHT_CARET = u'\&gt;'
@@ -15,7 +15,7 @@ RUBY_TEXT_MARKUP_TEMPLATE = u'<span class="ezRuby" title="{reading}">{expression
 #ruby_prog = compile(u'\&lt;(.*)\|(.*)\&gt;')
 #unescaped_ruby_prog = compile(u'<(.*)\|(.*)>')
 #ruby_prog = compile(u'\s(.*)\[(.*)\]', UNICODE) #for some reason, only [\s^] works, and [^\s] doesn't - so [] must prefer the first option it's given over the second
-ruby_prog = compile(u'\s?(\S*?)\[(.*?)\]', UNICODE) #for some reason, only [\s^] works, and [^\s] doesn't - so [] must prefer the first option it's given over the second
+ruby_prog = compile('\s?(\S*?)\[(.*?)\]', UNICODE) #for some reason, only [\s^] works, and [^\s] doesn't - so [] must prefer the first option it's given over the second
 #ruby_prog2 = compile(u'^(.*)\[(.*)\]', UNICODE)
 #unescaped_ruby_prog = compile(u'[^\s](.*)\[(.*)\]')
 

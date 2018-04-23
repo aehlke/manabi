@@ -2,7 +2,7 @@
 
 import itertools
 import json
-import urllib
+import urllib.request, urllib.parse, urllib.error
 from datetime import datetime, timedelta
 
 from django.test import Client, TestCase
@@ -77,7 +77,7 @@ class ReviewsAPITest(ManabiTestCase):
             if not cards:
                 break
             count += 1
-            card_ids = map(lambda card: card['id'], cards)
+            card_ids = [card['id'] for card in cards]
 
             next_cards = self.api.next_cards_for_review(self.user)['cards']
             for card in next_cards:
@@ -369,8 +369,8 @@ class ManabiReaderFactsTest(ManabiTestCase):
         fact = self.post(
             '/api/flashcards/manabi_reader_facts/',
             {
-                'expression': u'食べる',
-                'reading': u'たべる',
+                'expression': '食べる',
+                'reading': 'たべる',
                 'meaning': 'To eat',
                 'active_card_templates': ['recognition'],
             },
@@ -384,8 +384,8 @@ class ManabiReaderFactsTest(ManabiTestCase):
             resp = self.post(
                 '/api/flashcards/manabi_reader_facts/',
                 {
-                    'expression': u'食べる' + suffix,
-                    'reading': u'たべる',
+                    'expression': '食べる' + suffix,
+                    'reading': 'たべる',
                     'meaning': 'To eat',
                     'active_card_templates': ['recognition'],
                     'reader_source': {

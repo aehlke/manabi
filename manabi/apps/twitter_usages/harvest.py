@@ -14,7 +14,7 @@ from manabi.apps.twitter_usages.models import (
 def _search_tweets(term, count):
     twitter = Twython(settings.TWITTER_APP_KEY, settings.TWITTER_APP_SECRET)
     return twitter.search(
-        q=u'"{}"'.format(term),
+        q='"{}"'.format(term),
         lang='ja',
         result_type='mixed',
         count=count,
@@ -24,16 +24,16 @@ def _search_tweets(term, count):
 def tweet_is_spammy(tweet):
     display_name = tweet['user']['name'].lower()
 
-    if tweet['text'].strip()[:1] == u'【':
+    if tweet['text'].strip()[:1] == '【':
         return True
 
-    if tweet['text'].strip().startswith(u'定期自己紹介'):
+    if tweet['text'].strip().startswith('定期自己紹介'):
         return True
 
     for ad_word in [
-        u'[定期]', u'(定期)', u'【定期】', u'《定期》', u'定期：',
-        u'※定期※ ', u'〈定期〉', u'↓続く', u'【迷言定期】',
-        u'☆定期☆', u'『定期』',
+        '[定期]', '(定期)', '【定期】', '《定期》', '定期：',
+        '※定期※ ', '〈定期〉', '↓続く', '【迷言定期】',
+        '☆定期☆', '『定期』',
     ]:
         if ad_word in tweet['text'] or ad_word in display_name:
             return True
@@ -43,9 +43,9 @@ def tweet_is_spammy(tweet):
 
     if (
         '(bot)' in display_name
-        or u'（BOT）' in display_name
+        or '（BOT）' in display_name
         or display_name.endswith('bot')
-        or display_name.endswith(u'ボット')
+        or display_name.endswith('ボット')
     ):
         return True
 
@@ -78,7 +78,7 @@ def sorted_by_usefulness_estimate(tweets_with_frequencies):
 
         maybe_spam = (
             '|' in tweet['text'] 
-            or u'①' in tweet['text']
+            or '①' in tweet['text']
             or 'RT:' in tweet['text']
             or '#RT' in tweet['text']
         )

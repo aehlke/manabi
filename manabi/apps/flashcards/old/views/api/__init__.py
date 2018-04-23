@@ -264,7 +264,7 @@ def rest_facts(request, deck=None, tags=None):
         #CardFormset = modelformset_factory(Card, exclude=('fact', 'ease_factor', )) #TODO-OLD make from CardForm
         #card_formset = CardFormset(post_data, prefix='card')
         card_templates = CardTemplate.objects.filter(
-                id__in=[e[1] for e in post_data.items()
+                id__in=[e[1] for e in list(post_data.items())
                 if e[0].find('card_template') == 0])
 
         #FieldContentFormset = modelformset_factory(FieldContent, exclude=('fact', ))
@@ -296,7 +296,7 @@ def rest_facts(request, deck=None, tags=None):
                     # subfact
                     group = field_content_form\
                             .cleaned_data['subfact_group']
-                    if group not in group_to_subfact.keys():
+                    if group not in list(group_to_subfact.keys()):
                         # create the new subfact
                         new_subfact = Fact(
                                 fact_type=new_field_content\
@@ -444,7 +444,7 @@ def rest_fact(request, fact_id): #todo:refactor into facts
                         # or subscriber fields are optimized to not copy over
                         # until modified
                         group = field_content_form.cleaned_data['subfact_group']
-                        if group not in group_to_subfact.keys():
+                        if group not in list(group_to_subfact.keys()):
                             # create the new subfact
                             new_subfact = Fact(
                                 fact_type=field_content.field_type.fact_type,
@@ -489,7 +489,7 @@ def rest_fact(request, fact_id): #todo:refactor into facts
                         (card_form.cleaned_data['template'].id, card_form)
                         for card_form in card_formset.forms)
                 for card_template in fact.fact_type.cardtemplate_set.all():
-                    if card_template.id in card_form_template_ids.keys():
+                    if card_template.id in list(card_form_template_ids.keys()):
                         try:
                             card = fact2.card_set.get(template=card_template)
                             card.activate()

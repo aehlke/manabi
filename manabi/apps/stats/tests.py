@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import urllib
+import urllib.request, urllib.parse, urllib.error
 import json
 
 from django.test import Client, TestCase

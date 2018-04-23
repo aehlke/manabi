@@ -133,8 +133,8 @@ def api_data_response(view_func):
             http_ret['If-Modified-Since'] = str(datetime.datetime.utcnow())
 
             return http_ret
-        except Exception, e:
-            return HttpResponseServerError(content=unicode(e))
+        except Exception as e:
+            return HttpResponseServerError(content=str(e))
     return wrapper
 
 

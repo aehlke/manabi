@@ -48,7 +48,7 @@ def inject_furigana(text):
                 or jcconv.hira2kata(reading) == surface):
             injected_text.append(surface)
             current_offset += node_index_in_remaining_text + len(surface)
-            node = node.next
+            node = node.__next__
             continue
 
         suffix = ''
@@ -64,14 +64,14 @@ def inject_furigana(text):
             suffix = surface[-redundant_length:]
             surface = surface[:-redundant_length]
 
-        injected_text.append(u'｜{}《{}》{}'.format(surface, reading, suffix))
+        injected_text.append('｜{}《{}》{}'.format(surface, reading, suffix))
 
         current_offset += node_index_in_remaining_text
         furigana_positions.append((current_offset, current_offset + len(surface), reading))
         current_offset += len(surface) + len(suffix)
 
-        node = node.next
+        node = node.__next__
 
     injected_text.append(remaining_text)
 
-    return (u''.join(injected_text), furigana_positions)
+    return (''.join(injected_text), furigana_positions)

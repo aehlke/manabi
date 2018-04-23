@@ -39,7 +39,7 @@ def _inject_comments(reddit, post, content):
         return content
 
     content = (
-         u'<p><a href="{}" target="_blank">{} translation comment{}</a></p>'
+         '<p><a href="{}" target="_blank">{} translation comment{}</a></p>'
         .format(
             comments_url, comments_count, 's' if comments_count > 1 else '')
     ) + content
@@ -103,7 +103,7 @@ def generate_nhk_easy_news_feed():
         cleaned_content = _inject_comments(
             reddit, post, cleaned_content)
 
-        cleaned_content = u'<article class="article">{}</article>'.format(
+        cleaned_content = '<article class="article">{}</article>'.format(
             cleaned_content)
 
         entry = fg.add_entry()

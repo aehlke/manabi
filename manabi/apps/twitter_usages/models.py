@@ -16,11 +16,11 @@ def search_expressions(fact):
     Returns list of strings that should be used to search for usages for the
     given fact.
     '''
-    suru = u'（する）'
+    suru = '（する）'
     if suru in fact.expression:
         return [
             fact.expression.replace(suru, ''),
-            fact.expression.replace(suru, u'する'),
+            fact.expression.replace(suru, 'する'),
         ]
 
     return [fact.expression]

@@ -51,8 +51,8 @@ class FactViewSet(api_views.FactViewSet):
         messages.success(
             request._request,
             mark_safe((
-                u'''Created flashcards for <a href="{}" class="alert-link">'''
-                u'''「{}」</a>.'''
+                '''Created flashcards for <a href="{}" class="alert-link">'''
+                '''「{}」</a>.'''
             ).format(
                 reverse('fact-detail', args=[fact.id]),
                 escape(fact.expression),

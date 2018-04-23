@@ -1,4 +1,4 @@
-import httplib
+import http.client
 
 from django.conf import settings
 from django.views.decorators.http import require_POST
@@ -21,7 +21,7 @@ def audio_file_exists(request):
 
     filename = request.POST['filename']
 
-    conn = httplib.HTTPConnection(
+    conn = http.client.HTTPConnection(
         settings.JDIC_AUDIO_SERVER_URL.lstrip('http://').rstrip('/audio/'),
         timeout=settings.JDIC_AUDIO_SERVER_TIMEOUT)
 

@@ -28,4 +28,4 @@ class CardReview(object):
         due_in = self.card.due_at - datetime.utcnow()
         if due_in < timedelta(minutes=1):
             return "in less than a minute"
-        return u"in {}".format(naturaldelta(due_in, months=True))
+        return "in {}".format(naturaldelta(due_in, months=True))

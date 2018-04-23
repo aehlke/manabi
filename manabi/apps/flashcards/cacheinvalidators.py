@@ -7,7 +7,7 @@ from django.db.models.signals import (
 )
 from django.dispatch import receiver
 
-from cachenamespaces import deck_review_stats_namespace, fact_grid_namespace
+from .cachenamespaces import deck_review_stats_namespace, fact_grid_namespace
 from manabi.apps.flashcards.models import Card
 from manabi.apps.flashcards.signals import (
     fact_grid_updated,

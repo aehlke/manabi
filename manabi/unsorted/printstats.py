@@ -29,7 +29,7 @@ if __name__ == '__main__':
     import argparse
 
     parser = argparse.ArgumentParser(__doc__)
-    parser.add_argument('profiles', metavar='directory', type=unicode,
+    parser.add_argument('profiles', metavar='directory', type=str,
                         help='path to director containing profile data files')
     parser.add_argument('-d', '--strip-dirs', action='store_true',
                         help='strip directories from the output')

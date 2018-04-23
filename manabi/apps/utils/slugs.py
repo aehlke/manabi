@@ -6,10 +6,10 @@ from unidecode import unidecode
 _punct_re = re.compile(r'[\t !"#$%&\'()*\-/<=>?@\[\\\]^_`{|},.:]+')
 
 
-def slugify(text, delim=u'-', max_length=50):
+def slugify(text, delim='-', max_length=50):
     '''Generates an ASCII-only slug.'''
     def join(words):
-        return unicode(delim.join(words))
+        return str(delim.join(words))
 
     result = []
     for word in _punct_re.split(text.lower()):

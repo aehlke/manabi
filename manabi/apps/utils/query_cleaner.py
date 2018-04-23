@@ -1,5 +1,5 @@
 
-LIST_DELIMITER = u'+'
+LIST_DELIMITER = '+'
 #LIST_DELIMITER = u' '
 
 
@@ -35,7 +35,7 @@ def clean_query(query_params, structure):
 # Helper "types" to use with clean_query
 
 def bool_(query_param):
-    s = unicode(query_param).lower()
+    s = str(query_param).lower()
     if s == 'true':
         return True
     elif s == 'false':

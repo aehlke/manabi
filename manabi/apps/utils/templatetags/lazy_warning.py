@@ -11,7 +11,7 @@ def show_lazy_user_warning(user):
     '''
     cards_exist = Card.objects.of_user(user).exists()
     if cards_exist:
-        return u'''
+        return '''
                 <div><div class="lazy_user_warning user_message_box">
                     You have unsaved data. To save your progress,
                     please remember to <a href="{0}">sign up</a>
@@ -19,4 +19,4 @@ def show_lazy_user_warning(user):
                 </div></div>
                '''.format(reverse('lazysignup_convert'))
     else:
-        return u''
+        return ''
