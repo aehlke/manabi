@@ -91,7 +91,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
     # Persist everything.
     created_facts = Fact.objects.bulk_create(
         copied_facts, batch_size=BULK_BATCH_SIZE)
-    for fact, fact_cards in itertools.izip(created_facts, copied_cards):
+    for fact, fact_cards in zip(created_facts, copied_cards):
         for fact_card in fact_cards:
             fact_card.fact_id = fact.id
     Card.objects.bulk_create(

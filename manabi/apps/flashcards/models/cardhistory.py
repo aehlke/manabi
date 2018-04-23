@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Count, Min, Max, Sum, Avg
 
 from manabi.apps.utils.time_utils import start_and_end_of_day
-from constants import MATURE_INTERVAL_MIN
+from .constants import MATURE_INTERVAL_MIN
 
 
 class CardHistoryManagerMixin(object):

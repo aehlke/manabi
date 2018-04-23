@@ -58,7 +58,7 @@ class UndoCardReviewManager(models.Manager):
             for field_name in _get_model_fields(card_history.card)
             if field_name not in SKIP_FIELDS
         }
-        for key, value in snapshot.viewitems():
+        for key, value in snapshot.items():
             # Be sure to update the reverse mapping in `undo`.
             # If this gets unwieldy, find a 3rd-party lib for this.
             if isinstance(value, datetime.timedelta):

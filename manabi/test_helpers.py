@@ -98,7 +98,7 @@ class ManabiTestCase(APITestCase):
     #        user_pass = base64.b64decode(data)
 
     def assertStatus(self, status_code, response_or_url):
-        if isinstance(response_or_url, basestring):
+        if isinstance(response_or_url, str):
             response_or_url = self.get(response_or_url)
         self.assertEqual(status_code, response_or_url.status_code)
 
@@ -233,7 +233,7 @@ class APIShortcuts(object):
 
 
 def random_name():
-    return ''.join(random.choice(string.ascii_lowercase) for _ in xrange(5))
+    return ''.join(random.choice(string.ascii_lowercase) for _ in range(5))
 
 
 def create_user():
@@ -255,7 +255,7 @@ def create_sample_data(
         facts=100,
 ):
     deck = create_deck(user=user)
-    return [create_fact(user=user, deck=deck) for _ in xrange(facts)]
+    return [create_fact(user=user, deck=deck) for _ in range(facts)]
 
 
 def create_deck(user=None):

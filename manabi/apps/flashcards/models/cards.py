@@ -16,7 +16,7 @@ from django.db.models import (
     Sum,
 )
 
-from constants import (
+from manabi.apps.flashcards.models.constants import (
     ALL_GRADES,
     GRADE_NAMES,
     GRADE_NONE,
@@ -35,7 +35,7 @@ from manabi.apps.flashcards.cachenamespaces import (
 )
 from manabi.apps.flashcards.models.cardmanager import CardQuerySet
 from manabi.apps.flashcards.models.undo import UndoCardReview
-from repetitionscheduler import repetition_algo_dispatcher
+from .repetitionscheduler import repetition_algo_dispatcher
 
 CARD_TEMPLATE_CHOICES = (
     (PRODUCTION, 'Production'),
@@ -313,7 +313,7 @@ class Card(models.Model):
         See the `self.review` docstring for info on `duration`
         and `question_duration`.
         '''
-        from cardhistory import CardHistory
+        from .cardhistory import CardHistory
 
         #TODO-OLD update CardStatistics
         was_new = self.is_new

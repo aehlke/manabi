@@ -5,7 +5,8 @@ import random
 from cachecow.decorators import cached_function
 from django.utils.lru_cache import lru_cache
 
-from constants import (GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY, MATURE_INTERVAL_MIN)
+from .constants import (
+    GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY, MATURE_INTERVAL_MIN)
 from manabi.apps.flashcards.cachenamespaces import deck_review_stats_namespace
 from manabi.apps.flashcards.models.intervals import initial_interval
 from manabi.apps.utils.utils import timedelta_to_float
@@ -256,7 +257,7 @@ class RepetitionAlgo(object):
         See the card's `calculated_interval` docstring for info on the
         denominator here.
         '''
-        from cards import Card
+        from .cards import Card
 
         denominator = self.card.calculated_interval()
 

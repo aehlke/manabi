@@ -179,12 +179,9 @@ MIDDLEWARE_CLASSES = (
 
     'manabi.middleware.UserTimezoneMiddleware',
 
-    'catnap.middleware.HttpExceptionMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
 
-    'catnap.basic_auth.BasicAuthMiddleware',  # TODO: Delete
     'django.contrib.auth.middleware.AuthenticationMiddleware',
 
     'silk.middleware.SilkyMiddleware',
@@ -195,8 +192,6 @@ MIDDLEWARE_CLASSES = (
     #'pagination.middleware.PaginationMiddleware',
     #'pinax.middleware.security.HideSensistiveFieldsMiddleware',
     'manabi.apps.utils.middleware.WakeRequestUserMiddleware',
-    'catnap.middleware.HttpAcceptMiddleware',
-    'catnap.middleware.HttpMethodsFallbackMiddleware',
 )
 
 

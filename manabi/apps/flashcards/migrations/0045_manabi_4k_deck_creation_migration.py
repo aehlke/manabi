@@ -124,7 +124,7 @@ def swap_encoding(j):
                 note[key] = unicode(note[key].decode('unicode-escape'))
             except (AttributeError, UnicodeEncodeError, UnicodeDecodeError):
                 pass
-            if isinstance(note[key], basestring):
+            if isinstance(note[key], str):
                 note[key] = unicode(note[key])
     return j
 

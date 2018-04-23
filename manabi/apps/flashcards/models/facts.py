@@ -9,7 +9,7 @@ from django.db.models import Q, F
 from django.utils.functional import cached_property
 from natto import MeCab
 
-from constants import MAX_NEW_CARD_ORDINAL
+from .constants import MAX_NEW_CARD_ORDINAL
 from manabi.apps.flashcards.signals import fact_suspended, fact_unsuspended
 from manabi.apps.flashcards.models.constants import GRADE_NONE, MIN_CARD_SPACE, CARD_SPACE_FACTOR
 from manabi.apps.flashcards.models.synchronization import copy_facts_to_subscribers

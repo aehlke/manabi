@@ -10,7 +10,7 @@ class FilterRelatedMixin(object):
     def __init__(self, *args, **kwargs):
         super(FilterRelatedMixin, self).__init__(*args, **kwargs)
 
-        for name, field in self.fields.iteritems():
+        for name, field in self.fields.items():
             if (
                 isinstance(field, serializers.RelatedField)
                 or isinstance(field, serializers.ModelSerializer)

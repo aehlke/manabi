@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import re
-from urlparse import urljoin
+from urllib.parse import urljoin
+
 
 import requests
 from django.core.management.base import BaseCommand, CommandError

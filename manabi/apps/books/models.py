@@ -1,5 +1,5 @@
 from functools import wraps
-from urllib2 import URLError
+from urllib.error import URLError
 
 from django.db import models
 #from amazonproduct import API as AmazonAPI

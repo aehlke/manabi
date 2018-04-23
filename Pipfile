@@ -40,10 +40,10 @@ sparkpost = "*"
 django-webpack-loader = "==0.3.3"
 "430e1eb" = {file = "https://github.com/neithere/django-autoslug/archive/223771076e63c1b50f75fb2a576f2ea4c6bad514.zip"}
 django-admin-sortable = "==2.0.21"
-Pillow = "==4.0.0"
+Pillow = "==5.1.0"
 lxml = "==3.7.3"
 "beautifulsoup4" = "==4.6.0"
-"html5lib" = "==0.999999999"
+"html5lib" = "==1.0.1"
 cssselect = "==1.0.1"
 feedgen = "*"
 "abdb104" = {file = "https://github.com/dcramer/django-devserver/archive/master.zip"}
@@ -52,9 +52,8 @@ Werkzeug = "*"
 line_profiler = "*"
 bpython = "*"
 Unidecode = "*"
-"99c08fe" = {file = "https://github.com/aehlke/django-cachecow/archive/master.zip"}
 "e39c1a3" = {file = "https://github.com/aehlke/django-snippetscream/archive/master.zip"}
-WebOb = "==1.0.3"
+WebOb = "==1.8.1"
 django-timezones = "==0.2"
 "05b7bbf" = {file = "https://github.com/aehlke/django-catnap/archive/master.zip"}
 "rfc3339" = "==6"
@@ -69,3 +68,4 @@ social-auth-app-django = "*"
 "django-rest-framework-social-oauth2" = "*"
 "mecab-python3" = "*"
 jcconv = {git = "https://github.com/besser82/jcconv.git", ref = "v0.2.4"}
+django-cachecow = {git = "https://github.com/aehlke/django-cachecow.git"}

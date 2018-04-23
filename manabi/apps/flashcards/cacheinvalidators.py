@@ -14,7 +14,7 @@ from manabi.apps.flashcards.signals import (
     post_card_reviewed,
     card_active_field_changed,
 )
-from models.fields import FieldContent
+from .models.fields import FieldContent
 
 
 @receiver(fact_grid_updated, dispatch_uid='nuke_fact_grid_namespace')

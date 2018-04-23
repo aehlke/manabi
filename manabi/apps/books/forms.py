@@ -1,5 +1,5 @@
 from django import forms
-from models import Textbook
+from .models import Textbook
 from manabi.apps.flashcards.models import Deck
 
 class TextbookForm(forms.ModelForm):

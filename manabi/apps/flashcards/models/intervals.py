@@ -1,7 +1,7 @@
 import random
 from datetime import timedelta
 
-from constants import (
+from .constants import (
     GRADE_EASY,
     GRADE_GOOD,
     GRADE_HARD,

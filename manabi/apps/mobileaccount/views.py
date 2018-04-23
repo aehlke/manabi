@@ -13,7 +13,7 @@ from pinax.apps.account.forms import SignupForm
 from pinax.apps.account.views import group_and_bridge, group_context
 
 from django.db import models
-from models import MobileSignupRecord
+from .models import MobileSignupRecord
 from django.shortcuts import redirect
 from django.core.exceptions import ObjectDoesNotExist
 

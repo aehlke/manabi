@@ -1,6 +1,6 @@
 from django import forms
 
-from models import Card, CardHistory, Fact, Deck
+from .models import Card, CardHistory, Fact, Deck
 
 #Forms
 #todo:row-level authentication (subclassing formset)

@@ -1,4 +1,4 @@
-_NON_BREAKING_SPACE = unichr(160)
+_NON_BREAKING_SPACE = chr(160)
 PRIMARY_PROMPT = "Manabi adapts to how you learn, tracking your strength of memory to determine the optimal time for you to review right before you forget.\n\nSubscribe to unlock unlimited" + _NON_BREAKING_SPACE + "personalized" + _NON_BREAKING_SPACE + "reviews."
 
 STUDENT_PROMPT = "Are you a student, educator, or parent?\nManabi is available to you at a discount."

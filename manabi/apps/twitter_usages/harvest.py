@@ -1,6 +1,4 @@
 # -*- coding: utf-8 -*-
-import itertools
-
 from django.db import IntegrityError
 from django.db.models import Q
 from django.conf import settings

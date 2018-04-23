@@ -1,7 +1,8 @@
 import datetime
 import random
 from datetime import timedelta
-from urlparse import urljoin
+from urllib.parse import urljoin
+
 
 from autoslug import AutoSlugField
 from cachecow.decorators import cached_function

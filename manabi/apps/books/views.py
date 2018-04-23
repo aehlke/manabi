@@ -10,8 +10,8 @@ from dojango.util import to_dojo_data, json_decode, json_encode
 
 from manabi.apps.flashcards.forms import TextbookSourceForm
 from manabi.apps.flashcards.views.shortcuts import get_deck_or_404
-from forms import TextbookForm
-from models import Textbook
+from .forms import TextbookForm
+from .models import Textbook
 
 
 def book_list(request):

@@ -1,5 +1,5 @@
 import random
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 from autoslug import AutoSlugField
 from django.conf import settings

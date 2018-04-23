@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import Textbook
+from .models import Textbook
 
 
 class SimpleTest(TestCase):

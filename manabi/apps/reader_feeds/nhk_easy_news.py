@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import re
 from datetime import datetime
-from urlparse import urljoin
+from urllib.parse import urljoin
 
 import requests
 import lxml.html
