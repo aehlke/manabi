@@ -9,7 +9,7 @@ from manabi.apps.flashcards.models.constants import (
 )
 
 
-class NewCardsLimit(object):
+class NewCardsLimit:
     '''
     How many more new cards can the user learn today?
     '''

@@ -20,7 +20,7 @@ from manabi.apps.utils.shortcuts import get_deck_or_404
 from manabi.rest import ManabiRestView
 
 
-class CardQueryMixin(object):
+class CardQueryMixin:
     def get_deck(self):
         if (
             'deck' not in self.request.GET and

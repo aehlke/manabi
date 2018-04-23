@@ -318,7 +318,7 @@ if 'test' in sys.argv:
         if app_path != 'silk'
     )
 
-    class DisableMigrations(object):
+    class DisableMigrations:
         def __contains__(self, item):
             return True
 

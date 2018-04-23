@@ -28,7 +28,7 @@ class _BaseDeckSerializer(ManabiModelSerializer):
     original_author = UserSerializer(read_only=True)
     subscriber_count = serializers.SerializerMethodField()
 
-    class Meta(object):
+    class Meta:
         model = Deck
         fields = (
             'id',
@@ -75,7 +75,7 @@ class _BaseDeckSerializer(ManabiModelSerializer):
 class SharedDeckSerializer(_BaseDeckSerializer):
     viewer_synchronized_deck = ViewerSynchronizedDeckField(read_only=True)
 
-    class Meta(object):
+    class Meta:
         model = Deck
         read_only_fields = fields = (
             'id',
@@ -325,7 +325,7 @@ class CardSerializer(ManabiModelSerializer):
     example_sentence = serializers.CharField(source='fact.example_sentence')
     reader_source = ReaderSourceSerializer(source='fact.reader_source')
 
-    class Meta(object):
+    class Meta:
         model = Card
 
         fields = read_only_fields = (

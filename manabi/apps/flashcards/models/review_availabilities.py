@@ -24,7 +24,7 @@ from manabi.apps.flashcards.models.trial_limits import (
 )
 
 
-class ReviewAvailabilities(object):
+class ReviewAvailabilities:
     def __init__(
         self,
         user,

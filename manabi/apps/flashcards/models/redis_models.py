@@ -2,7 +2,7 @@ from manabi.apps.utils.utils import unix_time
 from manabi.apps.manabi_redis.models import redis
 
 
-class RedisCard(object):
+class RedisCard:
     def __init__(self, card):
         self.card = card
 

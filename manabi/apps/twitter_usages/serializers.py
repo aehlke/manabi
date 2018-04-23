@@ -5,7 +5,7 @@ from manabi.apps.twitter_usages.models import (
 
 
 class TweetSerializer(ManabiModelSerializer):
-    class Meta(object):
+    class Meta:
         model = ExpressionTweet
         fields = (
             'id',

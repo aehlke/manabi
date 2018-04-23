@@ -2,7 +2,7 @@ from django.template import RequestContext
 from django.shortcuts import render_to_response
 
 
-class JsonDebugMiddleware(object):
+class JsonDebugMiddleware:
     def process_response(self, request, response):
         if 'DEBUG' in request.GET and 'json' in response['Content-Type']:
             content = response.content
@@ -14,6 +14,6 @@ class JsonDebugMiddleware(object):
 
 
 # http://stackoverflow.com/questions/20534577/
-class WakeRequestUserMiddleware(object):
+class WakeRequestUserMiddleware:
     def process_request(self, request):
         user = request.user._wrapped if hasattr(request.user,'_wrapped') else request.user

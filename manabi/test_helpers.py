@@ -117,7 +117,7 @@ class ManabiTestCase(APITestCase):
         return cards
 
 
-class APIShortcuts(object):
+class APIShortcuts:
     def __init__(self, test_case):
         self.tc = test_case
 

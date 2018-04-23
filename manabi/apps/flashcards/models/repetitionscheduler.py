@@ -40,7 +40,7 @@ def repetition_algo_dispatcher(card, *args, **kwargs):
     return cls(card, *args, **kwargs)
 
 
-class RepetitionAlgo(object):
+class RepetitionAlgo:
     '''
     This base class represents the most general kind of card, which does
     not take into account special cases of having been recently failed,
@@ -442,7 +442,7 @@ class FailedCardAlgo(RepetitionAlgo):
         return ease_factor
 
 
-class NextRepetition(object):
+class NextRepetition:
     '''
     Contains the next scheduled repetition for the associated card.
     '''

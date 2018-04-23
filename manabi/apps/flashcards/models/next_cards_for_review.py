@@ -9,7 +9,7 @@ from manabi.apps.flashcards.models.new_cards_limit import (
 )
 
 
-class ReviewInterstitial(object):
+class ReviewInterstitial:
     def __init__(
         self,
         user,
@@ -42,7 +42,7 @@ class ReviewInterstitial(object):
         )
 
 
-class NextCardsForReview(object):
+class NextCardsForReview:
     def __init__(
         self,
         user,

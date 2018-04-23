@@ -41,7 +41,7 @@ class ManabiRestView(JsonEmitterMixin, AutoContentTypeMixin, RestView):
                       BasicAuthentication(realm='manabi'))
 
 
-class CardQueryFiltersMixin(object):
+class CardQueryFiltersMixin:
     def get_deck(self):
         if self.request.GET.get('deck'):
             return get_object_or_404(

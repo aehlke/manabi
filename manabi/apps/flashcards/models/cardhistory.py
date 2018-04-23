@@ -6,7 +6,7 @@ from manabi.apps.utils.time_utils import start_and_end_of_day
 from .constants import MATURE_INTERVAL_MIN
 
 
-class CardHistoryManagerMixin(object):
+class CardHistoryManagerMixin:
     def of_user(self, user):
         if not user.is_authenticated():
             return self.none()
@@ -42,7 +42,7 @@ class CardHistoryManagerMixin(object):
         return self.of_user(user).filter(**kwargs)
 
 
-class CardHistoryStatsMixin(object):
+class CardHistoryStatsMixin:
     '''Stats data methods for use in graphs.'''
     def repetitions(self):
         '''

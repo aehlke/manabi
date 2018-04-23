@@ -9,7 +9,7 @@ from manabi.apps.flashcards.models.constants import GRADE_NONE, MATURE_INTERVAL_
 from manabi.apps.flashcards.models.burying import with_siblings_buried
 
 
-class SchedulerMixin(object):
+class SchedulerMixin:
     '''
     Methods for retrieving the next cards that are ready to be reviewed.
     '''
@@ -313,7 +313,7 @@ class SchedulerMixin(object):
         return chain(*card_queries)
 
 
-class SchedulerFiltersMixin(object):
+class SchedulerFiltersMixin:
     def failed(self):
         return self.filter(last_review_grade=GRADE_NONE)
 
@@ -342,7 +342,7 @@ class SchedulerFiltersMixin(object):
         return self.filter(due_at__gt=(review_time or datetime.utcnow()))
 
 
-class CommonFiltersMixin(object):
+class CommonFiltersMixin:
     '''
     Provides filters for decks, maturity level, etc.
 
@@ -473,7 +473,7 @@ class CommonFiltersMixin(object):
         #return new_cards_count
 
 
-class CardStatsMixin(object):
+class CardStatsMixin:
     '''Stats data methods, primarily used for graphs and things.'''
 
     def with_due_dates(self):

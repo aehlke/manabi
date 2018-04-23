@@ -18,7 +18,7 @@ register = template.Library()
 # Calculation objects
 #==============================================================================
 
-class BaseCalc(object):
+class BaseCalc:
     def __init__(self, var1, var2=None, negate=False):
         self.var1 = var1
         self.var2 = var2
@@ -76,7 +76,7 @@ class In(BaseCalc):
 # Tests
 #==============================================================================
 
-class TestVar(object):
+class TestVar:
     """
     A basic self-resolvable object similar to a Django template variable. Used
     to assist with tests.
@@ -232,7 +232,7 @@ OPERATORS = {
 BOOL_OPERATORS = ('or', 'and')
 
 
-class IfParser(object):
+class IfParser:
     error_class = ValueError
 
     def __init__(self, tokens):

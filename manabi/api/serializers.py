@@ -6,7 +6,7 @@ class ManabiModelSerializer(serializers.ModelSerializer):
 
 
 # From https://github.com/tomchristie/django-rest-framework/issues/1985#issuecomment-61871134
-class FilterRelatedMixin(object):
+class FilterRelatedMixin:
     def __init__(self, *args, **kwargs):
         super(FilterRelatedMixin, self).__init__(*args, **kwargs)
 

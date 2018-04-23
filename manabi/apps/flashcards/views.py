@@ -85,7 +85,7 @@ class FactViewSet(api_views.FactViewSet):
         }, template_name='flashcards/fact.html')
 
 
-class _SubscriberDeckRedirectMixin(object):
+class _SubscriberDeckRedirectMixin:
     def redirect_to_owner_deck_if_subscriber(self, url_name):
         if self.request.user.is_anonymous():
             return

@@ -30,7 +30,7 @@ def _start_of_this_week(user_timezone):
         )
 
 
-class ReviewResults(object):
+class ReviewResults:
     '''
     Results for the last review session.
     '''

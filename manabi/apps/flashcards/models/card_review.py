@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from humanize.time import naturaldelta
 
 
-class CardReview(object):
+class CardReview:
     def __init__(self, card, grade):
         self.card = card
         self.grade = grade

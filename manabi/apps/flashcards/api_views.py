@@ -65,7 +65,7 @@ from manabi.apps.flashcards.serializers import (
 from manabi.apps.manabi_auth.serializers import UserSerializer
 
 
-class _DeckMixin(object):
+class _DeckMixin:
     @detail_route()
     def subscribers(self, request, pk=None):
         deck = self.get_object()
