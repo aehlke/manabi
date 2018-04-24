@@ -27,7 +27,7 @@ jobs:
           command: |
             sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
             sudo pip install pipenv
-            pipenv install --dev --three
+            pipenv install --deploy --three
       - save_cache:
           key: v1-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
@@ -54,7 +54,7 @@ jobs:
           command: |
             sudo pip install pipenv
             cd config
-            pipenv install --dev --three
+            pipenv install --deploy --three
             ssh-keyscan vps98220.vps.ovh.ca >> ~/.ssh/known_hosts
             echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && ./deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
             rm ~/.vault_password.txt
