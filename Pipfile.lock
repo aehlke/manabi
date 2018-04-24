@@ -17,9 +17,6 @@
         "05b7bbf": {
             "file": "https://github.com/aehlke/django-catnap/archive/master.zip"
         },
-        "430e1eb": {
-            "file": "https://github.com/neithere/django-autoslug/archive/223771076e63c1b50f75fb2a576f2ea4c6bad514.zip"
-        },
         "abdb104": {
             "file": "https://github.com/dcramer/django-devserver/archive/master.zip"
         },

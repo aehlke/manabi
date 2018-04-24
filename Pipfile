@@ -38,7 +38,6 @@ python-memcached = "==1.58"
 sparkpost = "*"
 "Jinja2" = "==2.8"
 django-webpack-loader = "==0.6.0"
-"430e1eb" = {file = "https://github.com/neithere/django-autoslug/archive/223771076e63c1b50f75fb2a576f2ea4c6bad514.zip"}
 django-admin-sortable = "==2.1.4"
 Pillow = "==5.1.0"
 lxml = "==3.7.3"
