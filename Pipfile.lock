@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "be16167223f594597e38db66e82b4aa393a41747f23c467eb1fac7fba45dff6b"
+            "sha256": "ce9e84bd9fc35c26ff0ba6ef0e82f530d349f9138f7b1034e6c99002c80a38b3"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -184,7 +184,6 @@
                 "sha256:edabd457cd23a02965166026fd9bfd196f4324fe6032e866d0f3bd0301cd486f",
                 "sha256:fdf1c1dc5bafc32bc5d08b054f94d659422b05aba244d6be4ddc1c72d9aa70fb"
             ],
-            "markers": "platform_python_implementation != 'pypy'",
             "version": "==1.11.5"
         },
         "chardet": {
@@ -256,7 +255,6 @@
                 "sha256:24d7f2f94f7f3cb6061acb215685e5125fbcdc40a857eff9de22518820b0a4f4",
                 "sha256:702a91ade2968a82beb0db1e0766a6a273f33d4616a6ce8cde475d8e09853b20"
             ],
-            "markers": "python_version >= '3.0'",
             "version": "==0.5.0"
         },
         "django": {
@@ -276,10 +274,10 @@
         },
         "django-allauth": {
             "hashes": [
-                "sha256:8b69e4365eb8248fd9b3e605bdf6fc64925bf2cd650c0452a6d8d6c428a4aeb1"
+                "sha256:7b31526cccd1c46f9f09acf0703068e8a9669337d29eb065f7e8143c2d897339"
             ],
             "index": "pypi",
-            "version": "==0.29.0"
+            "version": "==0.35.0"
         },
         "django-autoslug": {
             "git": "https://github.com/iplweb/django-autoslug-iplweb.git",
