@@ -85,7 +85,7 @@ class SharedDecks(ListView, ManabiRestView):
     def get_queryset(self):
         decks = models.Deck.objects.filter(active=True, shared=True)
 
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             decks = decks.exclude(owner=self.request.user)
 
         return decks.order_by('name')

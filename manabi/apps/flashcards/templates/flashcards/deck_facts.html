@@ -5,7 +5,7 @@
 {% block deck_content %}
     <div class="deck-facts list-group">
         {% for fact in deck.facts %}
-            <{{ 'a' if request.user.is_authenticated() else 'span' }} href="{{ url('fact-detail', args=[fact.id]) }}" class="list-group-item list-group-item-action">
+            <{{ 'a' if request.user.is_authenticated else 'span' }} href="{{ url('fact-detail', args=[fact.id]) }}" class="list-group-item list-group-item-action">
                 <span class="tag tag-default tag-pill float-xs-right">
                     {% set card_count = fact.card_count %}
                     {{ card_count }}
@@ -17,7 +17,7 @@
                 </span>
                 <div class="fact-expression">{{ (fact.reading or fact.expression)|as_ruby_tags|safe }}</div>
                 <div class="fact-meaning">{{ fact.meaning }}</div>
-            </{{ 'a' if request.user.is_authenticated() else 'span' }}>
+            </{{ 'a' if request.user.is_authenticated else 'span' }}>
         {% endfor %}
     </div>
 {% endblock %}

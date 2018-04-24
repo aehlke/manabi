@@ -20,7 +20,7 @@
             <div id="deck-author">by <a href="{{ url('user-profile', args=[deck.original_author.username]) }}">{{ deck.original_author.username }}</a></div>
         </div>
         <div class="col-sm-4 offset-sm-0 add-deck-container">
-            {% if request.user.is_authenticated() %}
+            {% if request.user.is_authenticated %}
                 {% if deck.owner.id != request.user.id %}
                     <button
                         type="button"

@@ -31,7 +31,7 @@ from manabi.apps.manabi_redis.models import redis
 
 class DeckQuerySet(QuerySet):
     def of_user(self, user):
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             return self.none()
 
         return self.filter(owner=user, active=True).order_by('name')
@@ -44,7 +44,7 @@ class DeckQuerySet(QuerySet):
         return decks[:LATEST_SHARED_DECKS_LIMIT]
 
     def synchronized_decks(self, user):
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             return self.none()
 
         return self.filter(owner=user, synchronized_with__isnull=False)

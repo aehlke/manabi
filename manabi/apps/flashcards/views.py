@@ -87,7 +87,7 @@ class FactViewSet(api_views.FactViewSet):
 
 class _SubscriberDeckRedirectMixin:
     def redirect_to_owner_deck_if_subscriber(self, url_name):
-        if self.request.user.is_anonymous():
+        if self.request.user.is_anonymous:
             return
 
         deck = self.get_object()
@@ -117,7 +117,7 @@ class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
             | Q(synchronized_with__isnull=False)
         )
 
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             filters |= Q(active=True, owner=self.request.user)
 
         return Deck.objects.filter(filters).order_by('name')
@@ -126,7 +126,7 @@ class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
         deck = self.get_object()
         if (
                 deck.synchronized_with is not None
-                and self.request.user.is_anonymous()
+                and self.request.user.is_anonymous
         ):
                 upstream_deck = deck.synchronized_with
                 return redirect(url_name,
@@ -138,7 +138,7 @@ class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
             return redirect(url_name, pk=deck.pk, slug=deck.slug)
 
     def list(self, request):
-        if self.request.user.is_anonymous():
+        if self.request.user.is_anonymous:
             return redirect('shared-deck-list')
 
         response = super(DeckViewSet, self).list(request)

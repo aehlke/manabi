@@ -137,7 +137,7 @@ class SynchronizedDeckViewSet(viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return Deck.objects.none()
         return Deck.objects.synchronized_decks(self.request.user)
 
@@ -166,7 +166,7 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
             'subscriber_counts': all_suggested_decks.subscriber_counts(),
         }
 
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             context['viewer_synchronized_decks'] = list(
                 Deck.objects.synchronized_decks(self.request.user)
                 .filter(active=True)
@@ -210,7 +210,7 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
         if user_id is not None:
             user = get_object_or_404(get_user_model(), id=user_id)
             decks = decks.shared_decks_owned_or_subcribed_by_user(user)
-        elif self.request.user.is_authenticated() and self.action == 'list':
+        elif self.request.user.is_authenticated and self.action == 'list':
             decks = decks.exclude(owner=self.request.user)
 
         return decks.order_by('collection_ordinal', 'name')
@@ -218,7 +218,7 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
     def get_serializer_context(self):
         context = super(SharedDeckViewSet, self).get_serializer_context()
         queryset_for_counts = self.filter_queryset(self.get_queryset())
-        if self.request.user.is_authenticated():
+        if self.request.user.is_authenticated:
             viewer_subscribed_decks = Deck.objects.filter(
                 synchronized_with_id__in=queryset_for_counts.values_list(
                     'id', flat=True),
@@ -249,7 +249,7 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
     ]
 
     def get_queryset(self):
-        if self.request.user.is_anonymous():
+        if self.request.user.is_anonymous:
             facts = Fact.objects.filter(deck__shared=True)
         else:
             facts = Fact.objects.filter(deck__owner=self.request.user)

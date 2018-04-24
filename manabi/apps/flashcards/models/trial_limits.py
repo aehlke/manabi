@@ -12,7 +12,7 @@ def cards_remaining_in_daily_trial(user, time_zone=None):
 
     If the user has an active subscription, returns None.
     '''
-    if user.is_anonymous():
+    if user.is_anonymous:
         raise ValueError("Requires authenticated user.")
 
     if user.username in ['alextest']:

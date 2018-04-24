@@ -82,7 +82,7 @@ class ReviewAvailabilities:
     @property
     @lru_cache(maxsize=None)
     def ready_for_review(self):
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return False
 
         return self.base_cards_queryset.due().exists()
@@ -109,7 +109,7 @@ class ReviewAvailabilities:
         If the user is beyond their daily limit, this provides up to the
         next override limit.
         '''
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return 0
 
         available_count = self.base_cards_queryset.new_count(
@@ -130,7 +130,7 @@ class ReviewAvailabilities:
         '''
         `None` means unspecified; not used if `next_new_cards_count` > 0.
         '''
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return None
 
         if self.next_new_cards_count > 0:
@@ -179,7 +179,7 @@ class ReviewAvailabilities:
         Mutually-exclusive with readiness for review (is false if any cards
         are due).
         '''
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return False
 
         if self.ready_for_review:
@@ -199,7 +199,7 @@ class ReviewAvailabilities:
 
     @lru_cache(maxsize=None)
     def _prompts(self):
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return ("", "")
         return review_availability_prompts(self)
 
@@ -224,7 +224,7 @@ class ReviewAvailabilities:
     @property
     @lru_cache(maxsize=None)
     def trial_prompt(self):
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return
         # FIXME
         if self.user.username in ['alextest']:
@@ -243,7 +243,7 @@ class ReviewAvailabilities:
     @property
     @lru_cache(maxsize=None)
     def trial_limit_reached(self):
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return False
         # FIXME
         if self.user.username in ['alextest']:

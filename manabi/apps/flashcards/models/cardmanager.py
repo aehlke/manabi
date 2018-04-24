@@ -357,7 +357,7 @@ class CommonFiltersMixin:
         return self.filter(deck=deck)
 
     def of_user(self, user):
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             return self.none()
         return self.filter(owner=user)
 

@@ -214,7 +214,7 @@ SILKY_AUTHORISATION = True
 SILKY_MAX_RECORDED_REQUESTS = 9000
 SILKY_MAX_RECORDED_REQUESTS_CHECK_PERCENT = 1
 def silk_intercept(request):
-    if request.user.is_anonymous():
+    if request.user.is_anonymous:
         return False
     if request.user.username not in ['alextest', 'alex']:
         return False

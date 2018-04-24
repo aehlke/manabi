@@ -32,7 +32,7 @@ def add_decks(request):
     '''Starting point for adding a deck, whether by creating or by downloading a shared deck.'''
     ctx = {}
     shared_decks = Deck.objects.shared_decks()
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         shared_decks = shared_decks.exclude(owner=request.user)
         ctx['deck_list'] = Deck.objects.filter(owner=request.user, active=True).order_by('name')
     ctx['shared_deck_list'] = shared_decks
@@ -41,7 +41,7 @@ def add_decks(request):
 def deck_detail(request, deck_id=None):
     deck = get_deck_or_404(request.user, deck_id)
 
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         # Redirect if the user is already subscribed to this deck.
         subscriber = deck.get_subscriber_deck_for_user(request.user)
         if subscriber:

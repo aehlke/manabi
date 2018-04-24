@@ -8,7 +8,7 @@ from .constants import MATURE_INTERVAL_MIN
 
 class CardHistoryManagerMixin:
     def of_user(self, user):
-        if not user.is_authenticated():
+        if not user.is_authenticated:
             return self.none()
         return self.filter(card__owner=user)
 

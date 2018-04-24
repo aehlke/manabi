@@ -24,7 +24,7 @@ class IsOwnerPermission(permissions.BasePermission):
     def has_object_permission(self, request, view, obj):
         if view.action in WRITE_ACTIONS:
             return (
-                request.user.is_authenticated() and
+                request.user.is_authenticated and
                 obj.owner.pk == request.user.pk
             )
         return True
