@@ -1,6 +1,6 @@
 from django import template
 from manabi.apps.flashcards.models import Card, Deck
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 register = template.Library()
 

@@ -1,5 +1,5 @@
 from catnap.rest_resources import RestResource, RestModelResource
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from manabi.apps.manabi_auth.rest_resources import UserResource
 

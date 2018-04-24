@@ -52,11 +52,11 @@ class Card(models.Model):
     objects = CardQuerySet.as_manager()
 
     # Denormalized fields:
-    owner = models.ForeignKey(User, editable=False)
-    deck = models.ForeignKey('flashcards.Deck', db_index=True)
+    owner = models.ForeignKey(User, models.CASCADE, editable=False)
+    deck = models.ForeignKey('flashcards.Deck', models.CASCADE, db_index=True)
     deck_suspended = models.BooleanField(default=False)
 
-    fact = models.ForeignKey('flashcards.Fact', db_index=True)
+    fact = models.ForeignKey('flashcards.Fact', models.CASCADE, db_index=True)
 
     template = models.SmallIntegerField(choices=CARD_TEMPLATE_CHOICES, blank=False)
 

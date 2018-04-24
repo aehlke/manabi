@@ -8,7 +8,7 @@ from autoslug import AutoSlugField
 from cachecow.decorators import cached_function
 from django.conf import settings
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db import (
     models,
     transaction,
@@ -121,13 +121,14 @@ class Deck(models.Model):
     slug = AutoSlugField(populate_from='name', always_update=True, unique=False)
     image = models.ImageField(blank=True)
     description = models.TextField(max_length=2000, blank=True)
-    owner = models.ForeignKey(User, db_index=True, editable=False)
+    owner = models.ForeignKey(User, models.CASCADE, db_index=True, editable=False)
 
-    collection = models.ForeignKey('flashcards.DeckCollection',
+    collection = models.ForeignKey(
+        'flashcards.DeckCollection', models.CASCADE,
         null=True, blank=True, related_name='decks')
     collection_ordinal = models.PositiveIntegerField(null=True, blank=True)
 
-    textbook_source = models.ForeignKey(Textbook, null=True, blank=True)
+    textbook_source = models.ForeignKey(Textbook, models.CASCADE, null=True, blank=True)
 
     randomize_card_order = models.BooleanField(default=True, blank=True)
 
@@ -141,7 +142,8 @@ class Deck(models.Model):
     shared = models.BooleanField(default=False, blank=True)
     shared_at = models.DateTimeField(null=True, blank=True, editable=False)
     # or if not, whether it's synchronized with a shared deck
-    synchronized_with = models.ForeignKey('self',
+    synchronized_with = models.ForeignKey(
+        'self', models.CASCADE,
         null=True, blank=True, related_name='subscriber_decks')
 
     # "active" is just a soft deletion flag. "suspended" is temporarily

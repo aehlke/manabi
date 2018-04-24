@@ -7,5 +7,5 @@ from django.contrib.auth.models import User
 class MobileSignupRecord(models.Model):
     '''Records that this user signed up from the mobile app.'''
     user = models.OneToOneField(
-            User, related_name='mobile_signup_record')
+            User, models.CASCADE, related_name='mobile_signup_record')
 

@@ -1,6 +1,6 @@
 from catnap.rest_views import ListView, DetailView, DeletionMixin
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 import catnap.permissions

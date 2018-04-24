@@ -124,9 +124,9 @@ class UndoCardReview(models.Model):
     objects = UndoCardReviewManager()
 
     timestamp = models.DateTimeField(auto_now_add=True, editable=False)
-    user = models.ForeignKey(User)  # Denormalization optimization
-    card = models.ForeignKey('Card')
-    card_history = models.ForeignKey('CardHistory')
+    user = models.ForeignKey(User, models.CASCADE)  # Denormalization optimization
+    card = models.ForeignKey('Card', models.CASCADE)
+    card_history = models.ForeignKey('CardHistory', models.CASCADE)
 
     card_snapshot = JSONField()
 

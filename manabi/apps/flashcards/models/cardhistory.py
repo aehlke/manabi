@@ -70,7 +70,7 @@ class CardHistoryQuerySet(CardHistoryManagerMixin, CardHistoryStatsMixin, QueryS
 class CardHistory(models.Model):
     objects = CardHistoryQuerySet.as_manager()
 
-    card = models.ForeignKey('Card')
+    card = models.ForeignKey('Card', models.CASCADE)
     # TODO: Denormalize card owner here.
 
     response = models.PositiveIntegerField(editable=False)

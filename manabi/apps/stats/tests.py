@@ -3,7 +3,7 @@ import urllib.request, urllib.parse, urllib.error
 import json
 
 from django.test import Client, TestCase
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.models import User
 
 from django.conf import settings

@@ -47,7 +47,7 @@ class Migration(migrations.Migration):
                 ('was_new', models.BooleanField(default=False, db_index=True)),
                 ('question_duration', models.FloatField(null=True, blank=True)),
                 ('duration', models.FloatField(null=True, blank=True)),
-                ('card', models.ForeignKey(to='flashcards.Card')),
+                ('card', models.ForeignKey(to='flashcards.Card', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -92,8 +92,8 @@ class Migration(migrations.Migration):
                 ('shared_at', models.DateTimeField(null=True, blank=True)),
                 ('suspended', models.BooleanField(default=False, db_index=True)),
                 ('active', models.BooleanField(default=True, db_index=True)),
-                ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
-                ('synchronized_with', models.ForeignKey(related_name='subscriber_decks', blank=True, to='flashcards.Deck', null=True)),
+                ('owner', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
+                ('synchronized_with', models.ForeignKey(related_name='subscriber_decks', blank=True, to='flashcards.Deck', null=True, on_delete=models.CASCADE)),
             ],
             options={
                 'ordering': ('name',),
@@ -111,8 +111,8 @@ class Migration(migrations.Migration):
                 ('meaning', models.CharField(max_length=1000)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(null=True, blank=True)),
-                ('deck', models.ForeignKey(blank=True, to='flashcards.Deck', null=True)),
-                ('synchronized_with', models.ForeignKey(related_name='subscriber_facts', blank=True, to='flashcards.Fact', null=True)),
+                ('deck', models.ForeignKey(blank=True, to='flashcards.Deck', null=True, on_delete=models.CASCADE)),
+                ('synchronized_with', models.ForeignKey(related_name='subscriber_facts', blank=True, to='flashcards.Fact', null=True, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -128,7 +128,7 @@ class Migration(migrations.Migration):
                 ('space_factor', models.FloatField(default=0.1)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),
-                ('parent_fact_type', models.ForeignKey(related_name='child_fact_types', blank=True, to='flashcards.FactType', null=True)),
+                ('parent_fact_type', models.ForeignKey(related_name='child_fact_types', blank=True, to='flashcards.FactType', null=True, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -142,7 +142,7 @@ class Migration(migrations.Migration):
                 ('media_uri', models.URLField(blank=True)),
                 ('media_file', models.FileField(null=True, upload_to=b'/card_media/', blank=True)),
                 ('cached_transliteration_without_markup', models.CharField(max_length=1000, blank=True)),
-                ('fact', models.ForeignKey(to='flashcards.Fact')),
+                ('fact', models.ForeignKey(to='flashcards.Fact', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -173,8 +173,8 @@ class Migration(migrations.Migration):
                 ('active', models.BooleanField(default=True)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('modified_at', models.DateTimeField(auto_now=True)),
-                ('fact_type', models.ForeignKey(to='flashcards.FactType')),
-                ('transliteration_field_type', models.OneToOneField(related_name='reverse_transliteration_field_type', null=True, blank=True, to='flashcards.FieldType')),
+                ('fact_type', models.ForeignKey(to='flashcards.FactType', on_delete=models.CASCADE)),
+                ('transliteration_field_type', models.OneToOneField(related_name='reverse_transliteration_field_type', null=True, blank=True, to='flashcards.FieldType', on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -198,9 +198,9 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('timestamp', models.DateTimeField(auto_now_add=True)),
                 ('pickled_card', models.CharField(max_length=255)),
-                ('card', models.ForeignKey(to='flashcards.Card')),
-                ('card_history', models.ForeignKey(to='flashcards.CardHistory')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('card', models.ForeignKey(to='flashcards.Card', on_delete=models.CASCADE)),
+                ('card_history', models.ForeignKey(to='flashcards.CardHistory', on_delete=models.CASCADE)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE)),
             ],
             options={
             },
@@ -213,7 +213,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='fieldcontent',
             name='field_type',
-            field=models.ForeignKey(to='flashcards.FieldType'),
+            field=models.ForeignKey(to='flashcards.FieldType', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AlterUniqueTogether(
@@ -223,13 +223,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='deck',
             name='textbook_source',
-            field=models.ForeignKey(blank=True, to='flashcards.Textbook', null=True),
+            field=models.ForeignKey(blank=True, to='flashcards.Textbook', null=True, on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='cardtemplate',
             name='fact_type',
-            field=models.ForeignKey(to='flashcards.FactType'),
+            field=models.ForeignKey(to='flashcards.FactType', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -245,19 +245,19 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='card',
             name='deck',
-            field=models.ForeignKey(to='flashcards.Deck'),
+            field=models.ForeignKey(to='flashcards.Deck', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='card',
             name='fact',
-            field=models.ForeignKey(to='flashcards.Fact'),
+            field=models.ForeignKey(to='flashcards.Fact', on_delete=models.CASCADE),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='card',
             name='legacy_template',
-            field=models.ForeignKey(to='flashcards.CardTemplate', blank=True, null=True, db_index=False),
+            field=models.ForeignKey(to='flashcards.CardTemplate', blank=True, null=True, db_index=False, on_delete=models.CASCADE),
             preserve_default=True,
         ),
     ]

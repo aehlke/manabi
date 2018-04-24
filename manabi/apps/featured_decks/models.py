@@ -14,8 +14,10 @@ class FeaturedDeck(SortableMixin, models.Model):
 
     # Use one or the other, not both.
     deck_collection = models.OneToOneField(
-        'flashcards.DeckCollection', blank=True, null=True)
-    deck = models.OneToOneField('flashcards.Deck', blank=True, null=True)
+        'flashcards.DeckCollection', models.CASCADE, blank=True, null=True)
+    deck = models.OneToOneField(
+        'flashcards.Deck', models.CASCADE,
+        blank=True, null=True)
 
     class Meta:
         ordering = ['ordinal']

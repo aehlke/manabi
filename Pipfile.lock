@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "475c40ba153b94806e537478e2eea1b552b6a486467ad76ee8a3ec6e37992c21"
+            "sha256": "be16167223f594597e38db66e82b4aa393a41747f23c467eb1fac7fba45dff6b"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -187,7 +187,7 @@
                 "sha256:edabd457cd23a02965166026fd9bfd196f4324fe6032e866d0f3bd0301cd486f",
                 "sha256:fdf1c1dc5bafc32bc5d08b054f94d659422b05aba244d6be4ddc1c72d9aa70fb"
             ],
-            "markers": "platform_python_implementation != 'PyPy'",
+            "markers": "platform_python_implementation != 'pypy'",
             "version": "==1.11.5"
         },
         "chardet": {
@@ -272,10 +272,10 @@
         },
         "django-admin-sortable": {
             "hashes": [
-                "sha256:0d0bf1a24bda7622eb9314728dbd7d8a0a901bc72c2a4a215349722d853789b6"
+                "sha256:579f880179ec6d9d2a302725d45c112d1df5b355aefe8e107c354e751f7f3a42"
             ],
             "index": "pypi",
-            "version": "==2.0.21"
+            "version": "==2.1.4"
         },
         "django-allauth": {
             "hashes": [
@@ -283,6 +283,10 @@
             ],
             "index": "pypi",
             "version": "==0.29.0"
+        },
+        "django-autoslug": {
+            "git": "https://github.com/iplweb/django-autoslug-iplweb.git",
+            "ref": "be379b83d90725b882c2ed38c9279167e69b6c7f"
         },
         "django-braces": {
             "hashes": [
@@ -311,11 +315,11 @@
         },
         "django-filter": {
             "hashes": [
-                "sha256:11110a3d7eec11a5b883df66677e6b87e472b662b515e8c03b30990836f96216",
-                "sha256:dd0d0ab678d4c2d57f1e27c2b26af5013df5763c3c6afa1dff0324866685e838"
+                "sha256:ea204242ea83790e1512c9d0d8255002a652a6f4986e93cee664f28955ba0c22",
+                "sha256:ec0ef1ba23ef95b1620f5d481334413700fb33f45cd76d56a63f4b0b1d76976a"
             ],
             "index": "pypi",
-            "version": "==0.14.0"
+            "version": "==1.1.0"
         },
         "django-lazysignup": {
             "hashes": [
@@ -327,10 +331,11 @@
         },
         "django-model-utils": {
             "hashes": [
-                "sha256:26795b12c85044073438d78d6efbb0071ebe1ebf7be2c185f2f0ba25ac446464"
+                "sha256:4356fad5f6fc9910da865fbf9371f9c2e028606dff2bbd8e32e67569260e530d",
+                "sha256:a9baa7de943b4e8afa61728ce8c42ce99e88cc87d40e74df2b060a78d22c0f5c"
             ],
             "index": "pypi",
-            "version": "==2.4"
+            "version": "==3.1.1"
         },
         "django-nose": {
             "hashes": [
@@ -386,11 +391,11 @@
         },
         "django-webpack-loader": {
             "hashes": [
-                "sha256:0fe315bda9236f298c56fc2c2f64d30e432059dd69b6ab3cecbd6b86e4a03643",
-                "sha256:2481388370dc5015a1136bddea4631eb275ab8d9646bfd9a6c581ac555bacfcd"
+                "sha256:60bab6b9a037a5346fad12d2a70a6bc046afb33154cf75ed640b93d3ebd5f520",
+                "sha256:970b968c2a8975fb7eff56a3bab5d0d90d396740852d1e0c50c5cfe2b824199a"
             ],
             "index": "pypi",
-            "version": "==0.3.3"
+            "version": "==0.6.0"
         },
         "djangorestframework": {
             "hashes": [
@@ -598,11 +603,11 @@
         },
         "markdown": {
             "hashes": [
-                "sha256:8d94cf6273606f76753fcb1324623792b3738c7612c2b180c85cc5e88642e560",
-                "sha256:a59fdbcec28f79ad9842ea7f74cde5a02e14a3025836e0bc66c4fc48596ce2ca"
+                "sha256:9ba587db9daee7ec761cfc656272be6aabe2ed300fece21208e4aab2e457bc8f",
+                "sha256:a856869c7ff079ad84a3e19cd87a64998350c2b94e9e08e44270faef33400f81"
             ],
             "index": "pypi",
-            "version": "==2.6.5"
+            "version": "==2.6.11"
         },
         "markupsafe": {
             "hashes": [
@@ -646,10 +651,10 @@
         },
         "natto-py": {
             "hashes": [
-                "sha256:8ef06f62bf39798a8a502e649b0edc8f96d6ea8be2b33d31de9257f02b466d38"
+                "sha256:5603d5481e52e42b473a2e8d6549712d2b3b43daf623e49ec686fef5d92355d1"
             ],
             "index": "pypi",
-            "version": "==0.7.0"
+            "version": "==0.9.0"
         },
         "nose": {
             "hashes": [
@@ -933,7 +938,6 @@
                 "sha256:0086da6b6ef3161cfe50fb1ee5cceaf2cda1700019fda03c2c5c440ca6abe4fa",
                 "sha256:628d365d687e12da12d02c6691170f4451db28d6d68d050007e4a40065868502"
             ],
-            "markers": "python_version >= '3.0'",
             "version": "==3.1.0"
         },
         "pytz": {

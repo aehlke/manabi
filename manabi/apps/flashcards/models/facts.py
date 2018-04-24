@@ -96,10 +96,11 @@ class Fact(models.Model):
     objects = FactQuerySet.as_manager()
 
     deck = models.ForeignKey(
-        'flashcards.Deck', db_index=True, related_name='facts')
+        'flashcards.Deck', models.CASCADE, db_index=True, related_name='facts')
 
     synchronized_with = models.ForeignKey(
-        'self', null=True, blank=True, related_name='subscriber_facts')
+        'self', models.CASCADE,
+        null=True, blank=True, related_name='subscriber_facts')
     forked = models.BooleanField(default=False, blank=True)
 
     new_fact_ordinal = models.PositiveIntegerField(null=True, blank=True)
@@ -112,7 +113,7 @@ class Fact(models.Model):
 
     example_sentence = models.TextField(blank=True)
     reader_source = models.ForeignKey(
-        'reader_sources.ReaderSource',
+        'reader_sources.ReaderSource', models.CASCADE,
         null=True, blank=True, related_name='facts')
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)

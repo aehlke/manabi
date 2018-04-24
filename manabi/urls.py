@@ -60,7 +60,7 @@ urlpatterns = [
         template_name='ios_required.html'), name='ios-required'),
 
     url(r'^accounts/', include('allauth.urls')),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^rq/', include('django_rq.urls')),
 
     url(r'^$', manabi.views.homepage, name='homepage'),
@@ -76,7 +76,7 @@ urlpatterns = [
         template_name='credits.html'), name='credits'),
 
     # API URLs.
-    url(r'^api/', include(api_router.urls, namespace='api')),
+    url(r'^api/', include((api_router.urls, 'api'))),
     url(r'^api/auth/register/$', UserCreateWithTokenView.as_view(),
         name='register'),
     url(r'^api/auth/convert-token/$', ConvertTokenView.as_view()),

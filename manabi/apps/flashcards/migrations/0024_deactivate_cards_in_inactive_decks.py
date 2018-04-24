@@ -9,7 +9,7 @@ def forwards(apps, schema_editor):
     Deck = apps.get_model('flashcards', 'Deck')
 
     for deck in Deck.objects.filter(active=False).order_by('id').iterator():
-        print "Deactivating deck", deck.id
+        print("Deactivating deck", deck.id)
         for fact in deck.facts.iterator():
             fact.card_set.update(active=False)
         deck.facts.update(active=False)
