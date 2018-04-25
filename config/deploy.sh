@@ -4,7 +4,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR
 
-pipenv install --ignore-pipfile --three --deploy
+pipenv install --ignore-pipfile --two --deploy
 
 cd playbooks
 pipenv run ansible-galaxy install -r requirements.yml --force
