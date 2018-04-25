@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import *
 from django.contrib import admin
 from django.views.generic.base import TemplateView
+from djoser.views import UserCreateView
 from rest_framework import routers
 
 import manabi.views
@@ -75,6 +76,7 @@ urlpatterns = [
 
     # API URLs.
     url(r'^api/', include((api_router.urls, 'api'))),
+    url(r'^api/auth/register/$', UserCreateView.as_view()),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
     url(r'^api/flashcards/review_results/', include('manabi.apps.review_results.api_urls')),

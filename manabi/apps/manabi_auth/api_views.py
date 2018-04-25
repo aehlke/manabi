@@ -10,6 +10,7 @@ from requests.exceptions import HTTPError
 from social_django.utils import psa
 
 
+# See: https://www.toptal.com/django/integrate-oauth-2-into-django-drf-back-end
 @api_view(http_method_names=['POST'])
 @permission_classes([AllowAny])
 @psa()
