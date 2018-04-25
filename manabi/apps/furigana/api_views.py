@@ -4,6 +4,7 @@ from rest_framework.response import Response
 
 from manabi.apps.furigana import inject
 
+
 @api_view(['POST'])
 def inject_furigana(request):
     try:

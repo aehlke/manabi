@@ -3,10 +3,8 @@ from django.conf.urls import *
 from django.contrib import admin
 from django.views.generic.base import TemplateView
 from rest_framework import routers
-from rest_framework_social_oauth2.views import ConvertTokenView
 
 import manabi.views
-from manabi.apps.manabi_auth.api_views import UserCreateWithTokenView
 from manabi.apps.flashcards.api_views import (
     DeckViewSet,
     SynchronizedDeckViewSet,
@@ -77,9 +75,6 @@ urlpatterns = [
 
     # API URLs.
     url(r'^api/', include((api_router.urls, 'api'))),
-    url(r'^api/auth/register/$', UserCreateWithTokenView.as_view(),
-        name='register'),
-    url(r'^api/auth/convert-token/$', ConvertTokenView.as_view()),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
     url(r'^api/flashcards/review_results/', include('manabi.apps.review_results.api_urls')),

@@ -27,7 +27,7 @@ twython = "==3.3.0"
 djangorestframework = "*"
 django-filter = "==1.1.0"
 Markdown = "==2.6.11"
-django-crispy-forms = "==1.5.2"
+django-crispy-forms = "==1.7.2"
 requests = {extras = ["security"]}
 humanize = "==0.5.1"
 python-dateutil = "*"

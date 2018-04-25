@@ -8,8 +8,8 @@ tagger = MeCab.Tagger('-Ochasen')
 
 
 def _reading(node):
-    surface = node.surface.decode('utf8')
-    reading = node.feature.decode('utf8').split(',')[-2]
+    surface = node.surface
+    reading = node.feature.split(',')[-2]
     if reading == '*':
         return None
     reading = jcconv.kata2hira(reading)
@@ -30,9 +30,9 @@ def inject_furigana(text):
     # https://runble1.com/python-mecab-morphological-analysis/
     tagger.parse('')
 
-    node = tagger.parseToNode(text.encode('utf8'))
+    node = tagger.parseToNode(text)
     while node:
-        surface = node.surface.decode('utf8')
+        surface = node.surface
 
         # Add any skipped text.
         node_index_in_remaining_text = remaining_text.find(surface)
@@ -48,7 +48,7 @@ def inject_furigana(text):
                 or jcconv.hira2kata(reading) == surface):
             injected_text.append(surface)
             current_offset += node_index_in_remaining_text + len(surface)
-            node = node.__next__
+            node = node.next
             continue
 
         suffix = ''
@@ -70,7 +70,7 @@ def inject_furigana(text):
         furigana_positions.append((current_offset, current_offset + len(surface), reading))
         current_offset += len(surface) + len(suffix)
 
-        node = node.__next__
+        node = node.next
 
     injected_text.append(remaining_text)
 
