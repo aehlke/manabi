@@ -169,7 +169,7 @@ TEMPLATES = [
     },
 ]
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 
     'django.middleware.gzip.GZipMiddleware',
@@ -191,20 +191,13 @@ MIDDLEWARE_CLASSES = (
     #'django.middleware.doc.XViewMiddleware',
     #'pagination.middleware.PaginationMiddleware',
     #'pinax.middleware.security.HideSensistiveFieldsMiddleware',
-    'manabi.apps.utils.middleware.WakeRequestUserMiddleware',
-)
+]
 
 
 # Potentially too slow at scale, but we used to have this via
 # TransactionMiddleware.
 ATOMIC_REQUESTS = True
 
-
-if DEBUG:
-    MIDDLEWARE_CLASSES += (
-        #'debug_toolbar.middleware.DebugToolbarMiddleware',
-        'manabi.apps.utils.middleware.JsonDebugMiddleware',
-    )
 
 SILKY_MAX_REQUEST_BODY_SIZE = 128  # kb
 SILKY_MAX_RESPONSE_BODY_SIZE = 128  # kb
@@ -309,10 +302,10 @@ RQ_QUEUES = {
 if 'test' in sys.argv:
     for queue_config in RQ_QUEUES.values():
         queue_config['ASYNC'] = False
-    MIDDLEWARE_CLASSES = tuple(
-        cls_path for cls_path in MIDDLEWARE_CLASSES
-        if 'silk.middleware' not in cls_path
-    )
+    MIDDLEWARE = [
+        middlware_path for middlware_path in MIDDLEWARE
+        if 'silk.middleware' not in middlware_path
+    ]
     INSTALLED_APPS = tuple(
         app_path for app_path in INSTALLED_APPS
         if app_path != 'silk'

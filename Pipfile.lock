@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "7e367e3c00a668a2b54970dc4594bb44452ebea67ea327bee861672610dd3dd0"
+            "sha256": "02800a8d983b126feb12b99662afc110dd0fb080eb02c90cf45a3cbc997fd463"
         },
         "pipfile-spec": 6,
         "requires": {},
@@ -255,6 +255,7 @@
                 "sha256:24d7f2f94f7f3cb6061acb215685e5125fbcdc40a857eff9de22518820b0a4f4",
                 "sha256:702a91ade2968a82beb0db1e0766a6a273f33d4616a6ce8cde475d8e09853b20"
             ],
+            "markers": "python_version >= '3.0'",
             "version": "==0.5.0"
         },
         "django": {
@@ -449,6 +450,14 @@
                 "sha256:49f44461237b69ecd901cc7ce66feea0319b9158743dd27a2899962ab214dac1"
             ],
             "version": "==0.12.2"
+        },
+        "freezegun": {
+            "hashes": [
+                "sha256:703caac155dcaad61f78de4cb0666dca778d854dfb90b3699930adee0559a622",
+                "sha256:94c59d69bb99c9ec3ca5a3adb41930d3ea09d2a9756c23a02d89fa75646e78dd"
+            ],
+            "index": "pypi",
+            "version": "==0.3.10"
         },
         "gprof2dot": {
             "hashes": [
@@ -1157,11 +1166,11 @@
     "develop": {
         "freezegun": {
             "hashes": [
-                "sha256:783ccccd7f60968bfe49ad9e114c18ea2b63831faaaf61c1f1f71ddfde1c0eee",
-                "sha256:8842688de9497c82ecb40c30274ecc676e97ac78765b0ade105a97063d5b7a11"
+                "sha256:703caac155dcaad61f78de4cb0666dca778d854dfb90b3699930adee0559a622",
+                "sha256:94c59d69bb99c9ec3ca5a3adb41930d3ea09d2a9756c23a02d89fa75646e78dd"
             ],
             "index": "pypi",
-            "version": "==0.3.9"
+            "version": "==0.3.10"
         },
         "python-dateutil": {
             "hashes": [

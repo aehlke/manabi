@@ -69,3 +69,4 @@ social-auth-app-django = "*"
 jcconv = {git = "https://github.com/besser82/jcconv.git", ref = "v0.2.4"}
 django-cachecow = {git = "https://github.com/aehlke/django-cachecow.git"}
 django-autoslug = {git = "https://github.com/iplweb/django-autoslug-iplweb.git", ref = "be379b83d90725b882c2ed38c9279167e69b6c7f"}
+freezegun = "==0.3.10"

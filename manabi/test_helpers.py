@@ -65,7 +65,7 @@ class ManabiTestCase(APITestCase):
         user = kwargs.pop('user')
         if user is None:
             user = create_user()
-        self.client.login(username=user.username, password=PASSWORD)
+        self.client.force_authenticate(user=user)
         resp = getattr(self.client, verb)(
             url,
             user=user,
