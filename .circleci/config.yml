@@ -45,7 +45,7 @@ jobs:
   deploy:
     working_directory: ~/manabi
     docker:
-      - image: circleci/python:3.6.5-stretch
+      - image: circleci/python:2.7.14
     environment:
         PIPENV_VENV_IN_PROJECT: true
     steps:
@@ -54,7 +54,6 @@ jobs:
           command: |
             sudo pip install pipenv
             cd config
-            pipenv install --deploy --three
             ssh-keyscan vps98220.vps.ovh.ca >> ~/.ssh/known_hosts
             echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && ./deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
             rm ~/.vault_password.txt
