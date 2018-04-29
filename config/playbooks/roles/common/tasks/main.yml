@@ -27,6 +27,11 @@
     name: aptitude
   become: yes
 
+- name: Add repository for Python 3.6
+  apt_repository:
+    repo: ppa:fkrull/deadsnakes
+  become: yes
+
 - name: Update apt and upgrade packages
   apt:
     update_cache: yes
@@ -51,6 +56,10 @@
     - python-pip
     - python-psycopg2
     - python-setuptools
+    - python3-dev
+    - python3-pip
+    - python3.6
+    - python3.6-dev
     - silversearcher-ag
     - zlib1g-dev
   become: yes
