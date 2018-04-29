@@ -35,7 +35,7 @@
   tags: git-pull
 
 - name: Install python dependencies
-  shell: bash -lc "pipenv install --ignore-pipfile --three --deploy"
+  shell: bash -lc "pipenv install --ignore-pipfile --deploy"
   args:
     chdir: '{{ app_root_path }}'
   notify:
