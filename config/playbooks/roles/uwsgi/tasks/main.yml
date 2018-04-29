@@ -1,10 +1,15 @@
 ---
 
-- name: Install uwsgi and utilities
+- name: Install uwsgi
+  apt:
+    name:
+      - uwsgi
+      - uwsgi-plugin-python3
+  become: yes
+
+- name: Install uwsgi utilities
   pip:
-    name: '{{ item }}'
+    name:
+      - uwsgitop
     state: latest
-  with_items:
-    - uwsgi
-    - uwsgitop
   become: true
