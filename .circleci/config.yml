@@ -52,6 +52,7 @@ jobs:
       - checkout
       - run:
           command: |
+            sudo apt-get install python-dev
             sudo pip install pipenv
             cd config
             ssh-keyscan vps98220.vps.ovh.ca >> ~/.ssh/known_hosts
