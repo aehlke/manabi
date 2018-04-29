@@ -67,6 +67,7 @@
 - name: Install common system Python packages for local user
   pip:
     name: '{{ item }}'
+    state: latest
     extra_args: --user
   with_items:
     - pipenv
