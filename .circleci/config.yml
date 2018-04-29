@@ -27,7 +27,7 @@ jobs:
           command: |
             sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
             sudo pip install pipenv
-            pipenv install --deploy --three
+            pipenv install --deploy
       - save_cache:
           key: v1-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
