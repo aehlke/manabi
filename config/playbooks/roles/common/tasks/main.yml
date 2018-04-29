@@ -27,11 +27,6 @@
     name: aptitude
   become: yes
 
-- name: Add repository for Python 3.6
-  apt_repository:
-    repo: ppa:fkrull/deadsnakes
-  become: yes
-
 - name: Update apt and upgrade packages
   apt:
     update_cache: yes
