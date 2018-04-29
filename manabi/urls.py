@@ -78,7 +78,7 @@ urlpatterns = [
     # API URLs.
     url(r'^api/', include((api_router.urls, 'api'))),
     url(r'^api/auth/register/$', UserCreateView.as_view()),
-    url(r'^api/auth/social_login/$', exchange_token),
+    url(r'^api/auth/social_login/(?P<backend>\S+)/$', exchange_token),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
     url(r'^api/flashcards/review_results/', include('manabi.apps.review_results.api_urls')),
