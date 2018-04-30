@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/manabi
     docker:
-      - image: meganii/dockerfile-mecab-python3
+      - image: circleci/python:3.6.5-stretch
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
@@ -15,8 +15,6 @@ jobs:
       - image: redis:4.0.9
     steps:
       - checkout
-      #- run: sudo chown -R circleci:circleci /usr/local/bin
-      #- run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
       - restore_cache:
           keys:
           # This branch if available
@@ -25,6 +23,7 @@ jobs:
           - v1-dep-master-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
+            sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
             sudo pip install pipenv
             pipenv install --deploy
       - save_cache:
