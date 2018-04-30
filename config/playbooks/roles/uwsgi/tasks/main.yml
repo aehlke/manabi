@@ -10,6 +10,6 @@
 - name: Install uwsgi utilities
   pip:
     name: uwsgitop
-    executable: /home/ubuntu/.local/bin/pip3
+    executable: pip3
     state: latest
   become: true
