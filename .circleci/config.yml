@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/manabi
     docker:
-        - image: meganii/dockerfile-mecab-python3
+      - image: meganii/dockerfile-mecab-python3
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
