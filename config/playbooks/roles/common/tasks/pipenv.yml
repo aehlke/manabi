@@ -1,0 +1,15 @@
+---
+
+- name: Add pypa apt repository for pipenv
+  apt_repository:
+      repo: ppa:pypa/ppa
+  become: yes
+
+- name: Install pipenv
+  apt:
+    name:
+      - software-properties-common
+      - python-software-properties
+      - pipenv
+    state: latest
+  become: yes
