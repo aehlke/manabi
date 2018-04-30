@@ -16,11 +16,11 @@
   command: python -m site --user-base
   register: python_user_base_dir
 
-- name: Add local user's binary directory to PATH
+- name: Prepend local user's binary directory to PATH
   lineinfile:
     dest: '{{ ansible_env.HOME }}/.profile'
     regexp: "^PATH=.*# Local user bin"
-    line: "PATH=$PATH:{{ ansible_env.HOME }}/.local/bin # Local user bin"
+    line: "PATH={{ ansible_env.HOME }}/.local/bin:$PATH # Local user bin"
 
 - name: Add Python user base's binary directory to PATH
   lineinfile:
