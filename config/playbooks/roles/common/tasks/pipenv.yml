@@ -1,11 +1,11 @@
 ---
 
-- name: Add pypa apt repository for pipenv
-  apt_repository:
-      repo: ppa:pypa/ppa
-  become: yes
-
 # No bionic available yet...
+#- name: Add pypa apt repository for pipenv
+#  apt_repository:
+#      repo: ppa:pypa/ppa
+#  become: yes
+#
 #- name: Install pipenv
 #  apt:
 #    name:
