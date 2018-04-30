@@ -15,8 +15,8 @@ jobs:
       - image: redis:4.0.9
     steps:
       - checkout
-      - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
+      #- run: sudo chown -R circleci:circleci /usr/local/bin
+      #- run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
       - restore_cache:
           keys:
           # This branch if available
