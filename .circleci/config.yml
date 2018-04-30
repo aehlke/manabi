@@ -35,6 +35,7 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python2.7/site-packages"
+            - "/usr/local/lib/python3.6/site-packages"
       - run:
           command: |
             pipenv run python manage.py test
