@@ -3,6 +3,8 @@
 - name: Install Tarsnapper
   pip:
     name: tarsnapper
+    executable: /home/ubuntu/.local/bin/pip3
+    state: latest
   become: yes
 
 - name: Create Tarsnapper directory

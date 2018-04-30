@@ -10,12 +10,10 @@
     - libpq-dev
 
 - name: Install Graphite-API
-  pip:
-    name: '{{ item }}'
+  apt:
+    name:
+      - graphite-api
   become: yes
-  with_items:
-    - graphite-api
-    - graphite-api[sentry]
 
 - name: Configure Graphite-API
   template:

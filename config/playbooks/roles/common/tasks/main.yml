@@ -62,13 +62,6 @@
       - zlib1g-dev
   become: yes
 
-- name: Install common system Python packages for local user
-  pip:
-    name:
-      - pipenv
-    state: latest
-    extra_args: --user
-
 - name: Configure Supervisor
   template:
     src: supervisor.conf.j2
@@ -80,6 +73,7 @@
   notify: Reload Supervisor configuration
 
 - include: byobu.yml
+- include: pipenv.yml
 
 # Security.
 - import_tasks: allow_only_ssh_login.yml
