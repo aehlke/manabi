@@ -5,11 +5,19 @@
       repo: ppa:pypa/ppa
   become: yes
 
+# No bionic available yet...
+#- name: Install pipenv
+#  apt:
+#    name:
+#      - software-properties-common
+#      - python-software-properties
+#      - pipenv
+#    state: latest
+#  become: yes
+
 - name: Install pipenv
-  apt:
-    name:
-      - software-properties-common
-      - python-software-properties
-      - pipenv
+  pip:
+    name: pipenv
+    executable: /home/ubuntu/.local/bin/pip3
     state: latest
   become: yes
