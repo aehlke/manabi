@@ -18,6 +18,6 @@
 - name: Install pipenv
   pip:
     name: pipenv
-    executable: /home/ubuntu/.local/bin/pip3
+    executable: pip3
     state: latest
   become: yes
