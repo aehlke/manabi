@@ -52,6 +52,12 @@ jobs:
         PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
+      - restore_cache:
+          keys:
+          # This branch if available
+          - v1-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          # Default branch if not
+          - v1-deploy-dep-master-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
             sudo apt-get install python-dev
@@ -61,6 +67,12 @@ jobs:
             echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && ./deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
             rm ~/.vault_password.txt
             curl https://manabi.io
+      - save_cache:
+          key: v1-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          paths:
+            - ".venv"
+            - "/usr/local/bin"
+            - "/usr/local/lib/python2.7/site-packages"
 
 workflows:
   version: 2
