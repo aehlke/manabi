@@ -3,5 +3,9 @@ from django.core.files.base import ContentFile
 
 
 def save_feed(feed_filename, feed_xml):
-    default_storage.save(
-        'feeds/{}'.format(feed_filename), ContentFile(feed_xml))
+    path = 'feeds/{}'.format(feed_filename)
+
+    if default_storage.exists(path):
+        default_storage.delete(path)
+
+    default_storage.save(path, ContentFile(feed_xml))
