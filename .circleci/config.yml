@@ -52,6 +52,8 @@ jobs:
         PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
+      - run: sudo chown -R circleci:circleci /usr/local/bin
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
       - restore_cache:
           keys:
           # This branch if available
