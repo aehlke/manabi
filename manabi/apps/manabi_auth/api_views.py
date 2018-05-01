@@ -9,6 +9,8 @@ from rest_framework.response import Response
 from requests.exceptions import HTTPError
 from social_django.utils import psa
 
+from manabi.apps.manabi_auth.serializers import SocialAccessTokenSerializer
+
 
 # See: https://www.toptal.com/django/integrate-oauth-2-into-django-drf-back-end
 @api_view(http_method_names=['POST'])
@@ -34,7 +36,7 @@ def exchange_token(request, backend):
     Requests must include the following field
     - `access_token`: The OAuth2 access token provided by the provider
     '''
-    serializer = SocialSerializer(data=request.data)
+    serializer = SocialAccessTokenSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
         # set up non-field errors key
         # http://www.django-rest-framework.org/api-guide/exceptions/#exception-handling-in-rest-framework-views

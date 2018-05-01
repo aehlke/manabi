@@ -334,12 +334,11 @@ ABSOLUTE_URL_OVERRIDES = {
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-]
 
-SOCIAL_AUTH_AUTHENTICATION_BACKENDS = [
     'social_core.backends.facebook.FacebookAppOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
 ]
+
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
 SOCIAL_AUTH_PIPELINE = [

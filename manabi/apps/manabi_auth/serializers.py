@@ -30,3 +30,13 @@ class UserCreateWithTokenSerializer(UserCreateSerializer):
         user = obj
         token, _ = authtoken.models.Token.objects.get_or_create(user=user)
         return token.key
+
+
+class SocialAccessTokenSerializer(serializers.Serializer):
+    """
+    Serializer which accepts an OAuth2 access token.
+    """
+    access_token = serializers.CharField(
+        allow_blank=False,
+        trim_whitespace=True,
+    )
