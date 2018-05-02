@@ -96,7 +96,7 @@ def word_frequencies(text):
     mecab = MeCab()
     frequencies = []
     for node in mecab.parse(text, as_nodes=True):
-        frequency = WORD_FREQUENCIES.get(node.surface.decode('utf8'))
+        frequency = WORD_FREQUENCIES.get(node.surface)
         if frequency is None:
             continue
         frequencies.append(frequency)
