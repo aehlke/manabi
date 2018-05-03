@@ -335,12 +335,20 @@ AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 
-    'social_core.backends.facebook.FacebookAppOAuth2',
-    'social_core.backends.facebook.FacebookOAuth2',
+    'manabi.apps.manabi_auth.backends.FacebookOAuth2ForManabiReader',
+    'manabi.apps.manabi_auth.backends.FacebookOAuth2ForManabi',
 ]
 
-SOCIAL_AUTH_FACEBOOK_SCOPE = ['email']
-SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {'fields': 'id, name, email'}
+SOCIAL_AUTH_FACEBOOK_FOR_MANABI_SCOPE = ['email']
+SOCIAL_AUTH_FACEBOOK_FOR_MANABI_READER_SCOPE = (
+    SOCIAL_AUTH_FACEBOOK_FOR_MANABI_SCOPE)
+
+SOCIAL_AUTH_FACEBOOK_FOR_MANABI_PROFILE_EXTRA_PARAMS = {
+    'fields': 'id, name, email',
+}
+SOCIAL_AUTH_FACEBOOK_FOR_MANABI_READER_PROFILE_EXTRA_PARAMS) = (
+    SOCIAL_AUTH_FACEBOOK_FOR_MANABI_PROFILE_EXTRA_PARAMS)
+
 SOCIAL_AUTH_PIPELINE = [
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',

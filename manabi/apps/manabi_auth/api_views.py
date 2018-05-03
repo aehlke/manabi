@@ -37,6 +37,7 @@ def exchange_token(request, backend):
     - `access_token`: The OAuth2 access token provided by the provider
     '''
     serializer = SocialAccessTokenSerializer(data=request.data)
+
     if serializer.is_valid(raise_exception=True):
         # set up non-field errors key
         # http://www.django-rest-framework.org/api-guide/exceptions/#exception-handling-in-rest-framework-views
