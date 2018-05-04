@@ -6,11 +6,11 @@ beginner_feeds:
     icon_url: http://www3.nhk.or.jp/favicon.ico
     description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
-  - title: Hiragana Times
-    rss_url: http://www.hiraganatimes.com/ja/feed/
-    rss_contains_full_content: true
-    icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
-    description: Monthly publication written for foreigners residing in Japan.
+#  - title: Hiragana Times
+#    rss_url: http://www.hiraganatimes.com/ja/feed/
+#    rss_contains_full_content: true
+#    icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+#    description: Monthly publication written for foreigners residing in Japan.
 
   - title: Matcha – Japan Travel Magazine
     rss_url: https://matcha-jp.com/easy/feed
@@ -22,11 +22,11 @@ categories:
   - title: News
     background_image_url: https://manabi.io/static/reader/category_images/news.png
     feeds:
-      - title: Hiragana Times
-        rss_url: http://www.hiraganatimes.com/ja/feed/
-        rss_contains_full_content: true
-        icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
-        description: Monthly publication written for foreigners residing in Japan.
+#      - title: Hiragana Times
+#        rss_url: http://www.hiraganatimes.com/ja/feed/
+#        rss_contains_full_content: true
+#        icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+#        description: Monthly publication written for foreigners residing in Japan.
 
       - title: Slashdot Japan
         rss_url: http://rss.rssad.jp/rss/slashdot/slashdot.rss
