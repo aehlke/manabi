@@ -40,3 +40,6 @@ class SocialAccessTokenSerializer(serializers.Serializer):
         allow_blank=False,
         trim_whitespace=True,
     )
+    username = serializers.CharField(
+        allow_blank=False,
+    )

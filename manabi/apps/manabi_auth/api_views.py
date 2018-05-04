@@ -47,14 +47,14 @@ def exchange_token(request, backend):
             nfe = 'non_field_errors'
 
         try:
-            # this line, plus the psa decorator above, are all that's necessary to
-            # get and populate a user object for any properly enabled/configured backend
-            # which python-social-auth can handle.
+            # this line, plus the psa decorator above, are all that's
+            # necessary to get and populate a user object for any properly
+            # enabled/configured backend which python-social-auth can handle.
             user = request.backend.do_auth(serializer.validated_data['access_token'])
         except HTTPError as e:
-            # An HTTPError bubbled up from the request to the social auth provider.
-            # This happens, at least in Google's case, every time you send a malformed
-            # or incorrect access key.
+            # An HTTPError bubbled up from the request to the social auth
+            # provider. This happens, at least in Google's case, every time
+            # you send a malformed or incorrect access key.
             return Response(
                 {'errors': {
                     'token': 'Invalid token',
@@ -66,12 +66,15 @@ def exchange_token(request, backend):
         if user:
             if user.is_active:
                 token, _ = Token.objects.get_or_create(user=user)
-                return Response({'auth_token': token.key})
+                return Response({
+                    'auth_token': token.key,
+                    'username': user.username,
+                })
             else:
                 # user is not active; at some point they deleted their account,
-                # or were banned by a superuser. They can't just log in with their
-                # normal credentials anymore, so they can't log in with social
-                # credentials either.
+                # or were banned by a superuser. They can't just log in with
+                # their normal credentials anymore, so they can't log in with
+                # social credentials either.
                 return Response(
                     {'errors': {nfe: 'This user account is inactive'}},
                     status=status.HTTP_400_BAD_REQUEST,
