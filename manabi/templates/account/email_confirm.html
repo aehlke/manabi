@@ -15,16 +15,14 @@
 
         <p>{% trans email=confirmation.email_address.email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endtrans %}</p>
 
-        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+        <form method="post" action="{% url('account_confirm_email', args=[confirmation.key]) %}">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
             <button type="submit">{{ _("Confirm") }}</button>
         </form>
 
     {% else %}
 
-        {% url 'account_email' as email_url %}
-
-        <p>{% trans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endtrans %}</p>
+        <p>{% trans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ url('account_email') }}">issue a new e-mail confirmation request</a>.{% endtrans %}</p>
 
     {% endif %}
 
