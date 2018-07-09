@@ -7,7 +7,7 @@
 
 - name: Add PgHero apt repository
   apt_repository:
-    repo: deb https://deb.packager.io/gh/pghero/pghero xenial master
+    repo: deb https://deb.packager.io/gh/pghero/pghero bionic master
   become: yes
 
 - name: Update packages
