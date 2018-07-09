@@ -31,7 +31,9 @@ class CardHistoryManagerMixin:
         '''
         return self.extra(select={'reviewed_on': 'date(reviewed_at)'})
 
-    def of_day_for_user(self, user, time_zone, date=None, field_name='reviewed_at'):
+    def of_day_for_user(
+        self, user, time_zone, date=None, field_name='reviewed_at'
+    ):
         '''
         Filters on the start and end of day for `user` adjusted to UTC.
 
@@ -44,6 +46,7 @@ class CardHistoryManagerMixin:
 
 class CardHistoryStatsMixin:
     '''Stats data methods for use in graphs.'''
+
     def repetitions(self):
         '''
         Returns a list of dictionaries,
@@ -63,7 +66,9 @@ class CardHistoryStatsMixin:
         return items.aggregate(Sum('duration'))['duration__sum']
 
 
-class CardHistoryQuerySet(CardHistoryManagerMixin, CardHistoryStatsMixin, QuerySet):
+class CardHistoryQuerySet(
+    CardHistoryManagerMixin, CardHistoryStatsMixin, QuerySet,
+):
     pass
 
 
