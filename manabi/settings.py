@@ -73,8 +73,18 @@ else:
             },
         },
         'handlers': {
+            'sentry': {
+                'level': logging.WARNING,
+                'class':
+                'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            },
+            'sentry_info': {
+                'level': logging.INFO,
+                'class':
+                'raven.contrib.django.raven_compat.handlers.SentryHandler',
+            },
             'console': {
-                'level': 'WARNING',
+                'level': logging.WARNING,
                 'class': 'logging.StreamHandler',
             },
         },
@@ -83,14 +93,19 @@ else:
              'level': logging.WARNING,
         },
         'loggers': {
+            'manabi.subscriptions': {
+                'handlers': ['console', 'sentry_info'],
+                'level': logging.INFO,
+                'propagate': False,
+            },
             'manabi': {
                 'handlers': ['console'],
-                'level': 'WARNING',
+                'level': logging.WARNING,
             },
             'django.request': {
                 'handlers': ['console'],
                 'propagate': True,
-                'level': 'WARNING',
+                'level': logging.WARNING,
             },
         },
     }

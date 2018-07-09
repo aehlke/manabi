@@ -51,6 +51,8 @@ class SubscriptionManager(models.Manager):
             user,
             _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']))
 
+        logger.info('Processed iTunes receipt')
+
     def process_itunes_subscription_update_notification(
         self, user, notification,
     ):
@@ -93,6 +95,8 @@ class SubscriptionManager(models.Manager):
         subscription.expires_date = _receipt_date_to_datetime(
             receipt_info['expires_date_ms'])
         subscription.save()
+
+        logger.info('Processed iTunes subscription update notification')
 
 
 class Subscription(models.Model):
