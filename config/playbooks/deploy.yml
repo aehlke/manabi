@@ -12,6 +12,6 @@
   remote_user: ubuntu
   roles:
     - { role: manabi, tags: ['manabi'] }
-    - { role: pghero, tags: ['pghero'] }
+    # FIXME: Currently broken in Bionic: - { role: pghero, tags: ['pghero'] }
     - { role: stats, tags: ['stats'] }
     - { role: tarsnapper, tags: ['tarsnap'] }
