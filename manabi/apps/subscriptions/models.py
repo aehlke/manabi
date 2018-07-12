@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from django.contrib.auth.models import User
+from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.db import models
 import itunesiap
@@ -42,6 +43,8 @@ class SubscriptionManager(models.Manager):
 
         Will raise InvalidReceipt error if invalid.
         '''
+        InAppPurchaseLogItem.objects.create(itunes_receipt=itunes_receipt)
+
         response = itunesiap.verify(
             itunes_receipt,
             password=settings.ITUNES_SHARED_SECRET,
@@ -62,6 +65,9 @@ class SubscriptionManager(models.Manager):
         shared_secret = notification['password']
         if shared_secret != settings.ITUNES_SHARED_SECRET:
             raise PermissionDenied('Invalid iTunes shared secret.')
+
+        SubscriptionUpdateNotificationLogItem.objects.create(
+            receipt_info=notification['latest_receipt_info'])
 
         if notification['environment'] == 'PROD':
             environment = itunesiap.env.production
@@ -89,6 +95,10 @@ class SubscriptionManager(models.Manager):
 
             subscription = Subscription.objects.get(subscriber=user)
             subscription.active = False
+        elif notification_type == 'DID_CHANGE_RENEWAL_PREF':
+            # Customer changed the plan that takes affect at the next
+            # subscription renewal. Current active plan is not affected.
+            return
 
         subscription.sandbox = environment == itunesiap.env.sandbox
         subscription.latest_itunes_receipt = receipt
@@ -113,3 +123,14 @@ class Subscription(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     modified_at = models.DateTimeField(auto_now=True, editable=False)
+
+
+class InAppPurchaseLogItem(models.Model):
+    itunes_receipt = models.TextField(editable=False)
+    subscriber = models.ForeignKey(User, models.CASCADE, editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
+
+
+class SubscriptionUpdateNotificationLogItem(models.Model):
+    receipt_info = JSONField(editable=False)
+    created_at = models.DateTimeField(auto_now_add=True, editable=False)
