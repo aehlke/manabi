@@ -43,7 +43,10 @@ class SubscriptionManager(models.Manager):
 
         Will raise InvalidReceipt error if invalid.
         '''
-        InAppPurchaseLogItem.objects.create(itunes_receipt=itunes_receipt)
+        InAppPurchaseLogItem.objects.create(
+            subscriber=user,
+            itunes_receipt=itunes_receipt,
+        )
 
         response = itunesiap.verify(
             itunes_receipt,
