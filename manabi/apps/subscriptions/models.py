@@ -133,6 +133,13 @@ class InAppPurchaseLogItem(models.Model):
     subscriber = models.ForeignKey(User, models.CASCADE, editable=False)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
+    def process_itunes_receipt(self):
+        '''
+        Useful for replaying a transaction that failed due to a bug.
+        '''
+        Subscription.objects.process_itunes_receipt(
+            self.subscriber, self.itunes_receipt)
+
 
 class SubscriptionUpdateNotificationLogItem(models.Model):
     receipt_info = JSONField(editable=False)
