@@ -37,16 +37,19 @@ class SubscriptionManager(models.Manager):
             subscription.expires_date = expires_date
             subscription.save()
 
-    def process_itunes_receipt(self, user, itunes_receipt):
+    def process_itunes_receipt(
+        self, user, itunes_receipt, log_purchase=True,
+    ):
         '''
         Subscribes if valid.
 
         Will raise InvalidReceipt error if invalid.
         '''
-        InAppPurchaseLogItem.objects.create(
-            subscriber=user,
-            itunes_receipt=itunes_receipt,
-        )
+        if log_purchase:
+            InAppPurchaseLogItem.objects.create(
+                subscriber=user,
+                itunes_receipt=itunes_receipt,
+            )
 
         response = itunesiap.verify(
             itunes_receipt,
@@ -138,7 +141,7 @@ class InAppPurchaseLogItem(models.Model):
         Useful for replaying a transaction that failed due to a bug.
         '''
         Subscription.objects.process_itunes_receipt(
-            self.subscriber, self.itunes_receipt)
+            self.subscriber, self.itunes_receipt, log_purchase=False)
 
 
 class SubscriptionUpdateNotificationLogItem(models.Model):
