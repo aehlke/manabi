@@ -86,8 +86,12 @@ def generate_nhk_easy_news_feed():
             continue
 
         content = post.content[0].value
-        nhk_url = re.search(
+
+        nhk_url_match = re.search(
             r'(http://www3.nhk.or.jp/news/easy/.*?\.html)', content).group()
+        if nhk_url_match is None:
+            continue
+        nhk_url = nhk_url_match.group()
 
         r = requests.get(nhk_url)
         page_tree = lxml.html.fromstring(r.text)
@@ -114,5 +118,8 @@ def generate_nhk_easy_news_feed():
         entry.summary(cleaned_content)
         #TODO: entry.published()
         entry.content(cleaned_content, type='CDATA')
+
+    if fg.entry() == 0:
+        raise Exception("Generated zero feed entries from NHK Easy News.")
 
     return fg.atom_str(pretty=True, encoding='utf-8')
