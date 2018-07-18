@@ -88,7 +88,7 @@ def generate_nhk_easy_news_feed():
         content = post.content[0].value
 
         nhk_url_match = re.search(
-            r'(http://www3.nhk.or.jp/news/easy/.*?\.html)', content).group()
+            r'(http://www3.nhk.or.jp/news/easy/.*?\.html)', content)
         if nhk_url_match is None:
             continue
         nhk_url = nhk_url_match.group()
