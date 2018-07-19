@@ -87,7 +87,7 @@ class SubscriptionManager(models.Manager):
         notification_type = notification['notification_type']
 
         if notification_type in [
-            'INITIAL_BUY', 'RENEWAL', 'INTERACTIVE_RENEWAL',
+            'RENEWAL', 'INTERACTIVE_RENEWAL',
         ]:
             receipt = notification['latest_receipt']
             receipt_info = notification['latest_receipt_info']
@@ -96,7 +96,7 @@ class SubscriptionManager(models.Manager):
 
             original_transaction_id = receipt_info['original_transaction_id']
 
-            subscription, created = Subscription.objects.get_or_create(
+            subscription = Subscription.objects.get(
                 original_transaction_id=original_transaction_id)
             subscription.active = True
         elif notification_type == 'CANCEL':
@@ -115,6 +115,9 @@ class SubscriptionManager(models.Manager):
             # Customer changed the plan that takes affect at the next
             # subscription renewal. Current active plan is not affected.
             return
+        elif notification_type == 'INITIAL_BUY':
+            raise Exception(
+                "Unexpectedly received an INITIAL_BUY notification.")
 
         subscription.sandbox = environment == itunesiap.env.sandbox
         subscription.latest_itunes_receipt = receipt
