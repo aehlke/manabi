@@ -89,7 +89,8 @@ class SubscriptionManager(models.Manager):
             receipt = notification['latest_receipt']
             receipt_info = notification['latest_receipt_info']
 
-            itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
+            response = itunesiap.verify(
+                receipt, password=settings.ITUNES_SHARED_SECRET)
 
             subscription, created = Subscription.objects.get_or_create(
                 subscriber=user)
@@ -127,7 +128,6 @@ class Subscription(models.Model):
     sandbox = models.BooleanField(default=False, blank=True)
 
     original_transaction_id = models.CharField(max_length=300)
-    original_itunes_receipt = models.TextField(blank=True)
     latest_itunes_receipt = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
