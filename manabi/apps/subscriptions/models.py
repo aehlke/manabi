@@ -50,7 +50,7 @@ class SubscriptionManager(models.Manager):
         Will raise InvalidReceipt error if invalid.
         '''
         if log_purchase:
-            InAppPurchaseLogItem.objects.create(
+            log_item = InAppPurchaseLogItem.objects.create(
                 subscriber=user,
                 itunes_receipt=itunes_receipt,
             )
@@ -60,6 +60,12 @@ class SubscriptionManager(models.Manager):
             password=settings.ITUNES_SHARED_SECRET,
             env=itunesiap.env.review)
         latest_receipt_info = response.latest_receipt_info[-1]
+
+        if log_purchase:
+            log_item.original_transaction_id = (
+                latest_receipt_info['original_transaction_id'])
+            log_item.save()
+
         self.model.objects.subscribe(
             user,
             _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']),
@@ -77,7 +83,9 @@ class SubscriptionManager(models.Manager):
             raise PermissionDenied('Invalid iTunes shared secret.')
 
         SubscriptionUpdateNotificationLogItem.objects.create(
-            receipt_info=notification['latest_receipt_info'])
+            receipt_info=notification['latest_receipt_info'],
+            original_transaction_id=
+                notification['latest_receipt_info']['original_transaction_id'])
 
         if notification['environment'] == 'PROD':
             environment = itunesiap.env.production
@@ -146,10 +154,14 @@ class Subscription(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
     modified_at = models.DateTimeField(auto_now=True, editable=False)
 
+    class Meta:
+        ordering = ['-created_at']
+
 
 class InAppPurchaseLogItem(models.Model):
     itunes_receipt = models.TextField(editable=False)
     subscriber = models.ForeignKey(User, models.CASCADE, editable=False)
+    original_transaction_id = models.CharField(max_length=300, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
 
     def process_itunes_receipt(self):
@@ -159,7 +171,14 @@ class InAppPurchaseLogItem(models.Model):
         Subscription.objects.process_itunes_receipt(
             self.subscriber, self.itunes_receipt, log_purchase=False)
 
+    class Meta:
+        ordering = ['-created_at']
+
 
 class SubscriptionUpdateNotificationLogItem(models.Model):
     receipt_info = JSONField(editable=False)
+    original_transaction_id = models.CharField(max_length=300, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
+
+    class Meta:
+        ordering = ['-created_at']
