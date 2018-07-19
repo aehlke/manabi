@@ -40,9 +40,18 @@ class InAppPurchaseLogItemAdmin(admin.ModelAdmin):
     list_display = [
         'subscriber',
         'original_transaction_id',
+        'created_at',
     ]
 
 
 @admin.register(SubscriptionUpdateNotificationLogItem)
 class SubscriptionUpdateNotificationLogItemAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = [
+        'receipt_info',
+        'original_transaction_id',
+        'created_at',
+    ]
+    list_display = [
+        'original_transaction_id',
+        'created_at',
+    ]
