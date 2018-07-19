@@ -91,17 +91,25 @@ class SubscriptionManager(models.Manager):
 
             response = itunesiap.verify(
                 receipt, password=settings.ITUNES_SHARED_SECRET)
+            latest_receipt_info = response.latest_receipt_info[-1]
+            original_transaction_id = (
+                latest_receipt_info['original_transaction_id'])
 
             subscription, created = Subscription.objects.get_or_create(
-                subscriber=user)
+                original_transaction_id=original_transaction_id)
             subscription.active = True
         elif notification_type == 'CANCEL':
             receipt = itunes_receipt['latest_expired_receipt']
             receipt_info = notification['latest_expired_receipt_info']
 
-            itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
+            response = itunesiap.verify(
+                receipt, password=settings.ITUNES_SHARED_SECRET)
+            latest_receipt_info = response.latest_receipt_info[-1]
+            original_transaction_id = (
+                latest_receipt_info['original_transaction_id'])
 
-            subscription = Subscription.objects.get(subscriber=user)
+            subscription = Subscription.objects.get(
+                original_transaction_id=original_transaction_id)
             subscription.active = False
         elif notification_type == 'DID_CHANGE_RENEWAL_PREF':
             # Customer changed the plan that takes affect at the next
