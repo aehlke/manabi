@@ -121,6 +121,13 @@ class Fact(models.Model):
 
     suspended = models.BooleanField(default=False)
 
+    class Meta:
+        app_label = 'flashcards'
+        unique_together = [
+            ('deck', 'synchronized_with'),
+            ('deck', 'expression', 'reading'),
+        ]
+
     def roll_ordinal(self):
         '''
         Returns whether a new ordinal was given.
@@ -339,10 +346,6 @@ class Fact(models.Model):
         '''
         return ([self.deck]
                 + [d for d in self.deck.subscriber_decks.filter(active=True)])
-
-    class Meta:
-        app_label = 'flashcards'
-        unique_together = (('deck', 'synchronized_with'),)
 
     def __str__(self):
         return str(self.id)

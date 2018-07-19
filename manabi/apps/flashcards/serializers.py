@@ -266,7 +266,7 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
     def update(self, instance, validated_data):
         active_card_templates = validated_data.pop('active_card_templates', None)
 
-        fact = super(FactWithCardsSerializer, self).update(instance, validated_data)
+        fact = super().update(instance, validated_data)
 
         if active_card_templates is not None:
             fact.set_active_card_templates(active_card_templates)
@@ -297,7 +297,7 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
         data['deck'] = Deck.objects.get_or_create_manabi_reader_deck(
             self.context['request'].user)
         data['suspended'] = False
-        fact = super(ManabiReaderFactWithCardsSerializer, self).create(data)
+        fact = super().create(data)
         return fact
 
 
