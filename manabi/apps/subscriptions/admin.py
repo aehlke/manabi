@@ -21,7 +21,11 @@ class SubscriptionAdmin(admin.ModelAdmin):
         'original_transaction_id',
     ]
     list_display = [
-        'subscriber', 'expires_date', 'active', 'is_trial_period',
+        'subscriber',
+        'expires_date',
+        'active',
+        'is_trial_period',
+        'original_transaction_id',
     ]
 
 
