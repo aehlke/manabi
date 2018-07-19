@@ -93,7 +93,7 @@ else:
              'level': logging.WARNING,
         },
         'loggers': {
-            'manabi.subscriptions': {
+            'manabi.apps.subscriptions': {
                 'handlers': ['console', 'sentry_info'],
                 'level': logging.INFO,
                 'propagate': False,
