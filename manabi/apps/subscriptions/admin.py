@@ -10,12 +10,12 @@ from .models import (
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
     fields = [
-        'subscriber',
         'expires_date',
         'active',
         'is_trial_period',
     ]
     readonly_fields = [
+        'subscriber',
         'created_at',
         'modified_at',
         'original_transaction_id',
