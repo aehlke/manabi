@@ -64,8 +64,8 @@
 
 - name: Configure Supervisor
   template:
-    src: supervisor.conf.j2
-    dest: /etc/supervisor/supervisor.conf
+    src: supervisord.conf.j2
+    dest: /etc/supervisor/supervisord.conf
     owner: root
     group: root
     mode: 0644
