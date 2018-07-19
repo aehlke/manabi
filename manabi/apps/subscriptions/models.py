@@ -128,6 +128,7 @@ class Subscription(models.Model):
     active = models.BooleanField(default=True, blank=True)
     sandbox = models.BooleanField(default=False, blank=True)
 
+    original_transaction_id = models.CharField(max_length=300)
     latest_itunes_receipt = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
