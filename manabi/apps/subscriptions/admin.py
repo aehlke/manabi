@@ -9,7 +9,20 @@ from .models import (
 
 @admin.register(Subscription)
 class SubscriptionAdmin(admin.ModelAdmin):
-    pass
+    fields = [
+        'subscriber',
+        'expires_date',
+        'active',
+        'is_trial_period',
+    ]
+    readonly_fields = [
+        'created_at',
+        'modified_at',
+        'original_transaction_id',
+    ]
+    list_display = [
+        'subscriber', 'expires_date', 'active', 'is_trial_period',
+    ]
 
 
 @admin.register(InAppPurchaseLogItem)
