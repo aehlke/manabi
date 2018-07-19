@@ -26,7 +26,7 @@ def user_is_active_subscriber(user):
 
 
 class SubscriptionManager(models.Manager):
-    def subscribe(self, user, expires_date):
+    def subscribe(self, user, expires_date, is_trial_period=False):
         subscription, created = Subscription.objects.get_or_create(
             subscriber=user,
             defaults={
@@ -38,6 +38,7 @@ class SubscriptionManager(models.Manager):
         ):
             subscription.active = True
             subscription.expires_date = expires_date
+            subscription.is_trial_period = is_trial_period
             subscription.save()
 
     def process_itunes_receipt(
@@ -61,7 +62,9 @@ class SubscriptionManager(models.Manager):
         latest_receipt_info = response.latest_receipt_info[-1]
         self.model.objects.subscribe(
             user,
-            _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']))
+            _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']),
+            is_trial_period=latest_receipt_info['is_trial_period'],
+        )
 
         logger.info('Processed iTunes receipt')
 
@@ -89,11 +92,9 @@ class SubscriptionManager(models.Manager):
             receipt = notification['latest_receipt']
             receipt_info = notification['latest_receipt_info']
 
-            response = itunesiap.verify(
-                receipt, password=settings.ITUNES_SHARED_SECRET)
-            latest_receipt_info = response.latest_receipt_info[-1]
-            original_transaction_id = (
-                latest_receipt_info['original_transaction_id'])
+            itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
+
+            original_transaction_id = receipt_info['original_transaction_id']
 
             subscription, created = Subscription.objects.get_or_create(
                 original_transaction_id=original_transaction_id)
@@ -102,11 +103,10 @@ class SubscriptionManager(models.Manager):
             receipt = itunes_receipt['latest_expired_receipt']
             receipt_info = notification['latest_expired_receipt_info']
 
-            response = itunesiap.verify(
-                receipt, password=settings.ITUNES_SHARED_SECRET)
-            latest_receipt_info = response.latest_receipt_info[-1]
+            itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
+
             original_transaction_id = (
-                latest_receipt_info['original_transaction_id'])
+                notification['latest_receipt_info']['original_transaction_id'])
 
             subscription = Subscription.objects.get(
                 original_transaction_id=original_transaction_id)
@@ -120,6 +120,7 @@ class SubscriptionManager(models.Manager):
         subscription.latest_itunes_receipt = receipt
         subscription.expires_date = _receipt_date_to_datetime(
             receipt_info['expires_date_ms'])
+        subscription.is_trial_period = receipt_info['is_trial_period']
         subscription.save()
 
         logger.info('Processed iTunes subscription update notification')
@@ -133,6 +134,7 @@ class Subscription(models.Model):
 
     expires_date = models.DateTimeField()
     active = models.BooleanField(default=True, blank=True)
+    is_trial_period = models.BooleanField(default=False, blank=True)
     sandbox = models.BooleanField(default=False, blank=True)
 
     original_transaction_id = models.CharField(max_length=300)
