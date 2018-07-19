@@ -1,10 +1,13 @@
 from datetime import datetime
+import logging
 
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.db import models
 import itunesiap
+
+logger = logging.getLogger(__name__)
 
 
 def _receipt_date_to_datetime(receipt_date):

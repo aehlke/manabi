@@ -18,7 +18,6 @@ from manabi.apps.subscriptions.serializers import (
     PurchasedSubscriptionProduct,
 )
 
-
 logger = logging.getLogger(__name__)
 
 
