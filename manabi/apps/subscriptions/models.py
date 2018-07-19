@@ -119,7 +119,7 @@ class SubscriptionManager(models.Manager):
         subscription.sandbox = environment == itunesiap.env.sandbox
         subscription.latest_itunes_receipt = receipt
         subscription.expires_date = _receipt_date_to_datetime(
-            receipt_info['expires_date_ms'])
+            receipt_info['expires_date'])
         subscription.is_trial_period = receipt_info['is_trial_period']
         subscription.save()
 
