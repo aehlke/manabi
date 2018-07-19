@@ -56,7 +56,7 @@ def subscription_update_notification(request):
 
     try:
         Subscription.objects.process_itunes_subscription_update_notification(
-            request.user, request.data)
+            request.data)
     except itunesiap.exc.InvalidReceipt:
         raven_client.captureException()
 

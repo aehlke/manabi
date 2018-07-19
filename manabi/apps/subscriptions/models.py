@@ -65,9 +65,7 @@ class SubscriptionManager(models.Manager):
 
         logger.info('Processed iTunes receipt')
 
-    def process_itunes_subscription_update_notification(
-        self, user, notification,
-    ):
+    def process_itunes_subscription_update_notification(self, notification):
         '''
         Will raise InvalidReceipt error if invalid.
         '''
@@ -129,6 +127,7 @@ class Subscription(models.Model):
     sandbox = models.BooleanField(default=False, blank=True)
 
     original_transaction_id = models.CharField(max_length=300)
+    original_itunes_receipt = models.TextField(blank=True)
     latest_itunes_receipt = models.TextField(blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True, editable=False)

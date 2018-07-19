@@ -9,7 +9,7 @@ def forwards(apps, schema_editor):
 
     Subscription = apps.get_model('subscriptions', 'Subscription')
 
-    for subscription in Subscription.objects.all():
+    for subscription in Subscription.objects.exclude(itunes_receipt=''):
         itunes_receipt = subscription.latest_itunes_receipt
         response = itunesiap.verify(
             itunes_receipt,
