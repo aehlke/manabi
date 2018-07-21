@@ -125,7 +125,7 @@ class Fact(models.Model):
         app_label = 'flashcards'
         unique_together = [
             ('deck', 'synchronized_with'),
-            ('deck', 'expression', 'reading'),
+            ('deck', 'expression', 'reading', 'meaning'),
         ]
 
     def roll_ordinal(self):

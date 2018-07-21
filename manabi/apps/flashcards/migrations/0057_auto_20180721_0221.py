@@ -12,6 +12,6 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AlterUniqueTogether(
             name='fact',
-            unique_together={('deck', 'expression', 'reading'), ('deck', 'synchronized_with')},
+            unique_together={('deck', 'expression', 'reading', 'meaning'), ('deck', 'synchronized_with')},
         ),
     ]
