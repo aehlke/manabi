@@ -3,6 +3,46 @@
 from django.db import migrations
 
 
+def forwards(apps, schema_editor):
+    Fact = apps.get_model('flashcards', 'Fact')
+
+    skip = set()
+    for f in Fact.objects.filter(active=True).order_by('deck_id').iterator():
+        dupes = Fact.objects.filter(
+            expression=f.expression, reading=f.reading, meaning=f.meaning, deck_id=f.deck_id, active=True).exclude(id__in=skip).exclude(id=f.id)
+        if dupes.exists():
+            skip.add(f.id)
+            first_dupe_with_nonzero_reviews = None
+            dupes = set(dupes) | set([f])
+            for dupe in dupes:
+                print(f'ID: {dupe.id} DECK: {dupe.deck_id} "{dupe.deck.name}" EXPRESSION: {dupe.expression} OWNER: {dupe.deck.owner.username} REVIEW COUNTS: {dupe.card_set.values_list("review_count", flat=True)}')
+                skip.add(dupe.id)
+                if dupe.card_set.filter(review_count__gt=0).exists():
+                    if (
+                        first_dupe_with_nonzero_reviews is None
+                        or (
+                            sum(first_dupe_with_nonzero_reviews.card_set.values_list('review_count', flat=True))
+                            < sum(dupe.card_set.values_list('review_count', flat=True))
+                        )
+                    ):
+                        first_dupe_with_nonzero_reviews = dupe
+            if first_dupe_with_nonzero_reviews is not None:
+                for dupe in dupes:
+                    if dupe.id != first_dupe_with_nonzero_reviews.id:
+                        print(f'Gonna delete ID: {dupe.id} DECK: {dupe.deck_id} "{dupe.deck.name}" EXPRESSION: {dupe.expression} OWNER: {dupe.deck.owner.username} REVIEW COUNTS: {dupe.card_set.values_list("review_count", flat=True)}. Not gonna delete {first_dupe_with_nonzero_reviews.id}')
+                        dupe.active = False
+                        dupe.save()
+            else:
+                dupe_to_preserve = list(dupes)[0]
+                for dupe in dupes:
+                    if dupe.id != dupe_to_preserve.id:
+                        print(f'Gonna delete ID: {dupe.id} DECK: {dupe.deck_id} "{dupe.deck.name}" EXPRESSION: {dupe.expression} OWNER: {dupe.deck.owner.username} REVIEW COUNTS: {dupe.card_set.values_list("review_count", flat=True)}. Not gonna delete {dupe_to_preserve.id}')
+                        dupe.active = False
+                        dupe.save()
+
+            print('')
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -10,8 +50,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterUniqueTogether(
-            name='fact',
-            unique_together={('deck', 'expression', 'reading', 'meaning'), ('deck', 'synchronized_with')},
+        migrations.RunPython(forwards),
+        migrations.RunSQL(
+            '''
+            ALTER TABLE flashcards_fact
+                ADD CONSTRAINT flashcards_fact_unique_content_if_active EXCLUDE (deck_id WITH =, expression WITH =, reading WITH =, meaning WITH =) WHERE (active IS TRUE);
+            '''
         ),
     ]
