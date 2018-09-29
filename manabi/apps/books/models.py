@@ -2,6 +2,7 @@ from functools import wraps
 from urllib.error import URLError
 
 from django.db import models
+from django.urls import reverse
 #from amazonproduct import API as AmazonAPI
 
 from manabi.apps.utils.slugs import slugify
@@ -57,15 +58,14 @@ class Textbook(models.Model):
         return self.deck_set.filter(
                 active=True, shared=True)
 
-    @models.permalink
     def get_absolute_url(self):
         if self.slug:
-            return ('book_detail_with_slug', (), {
+            return reverse('book_detail_with_slug', (), {
                 'object_id': self.id,
                 'slug': self.slug,
             })
         else:
-            return ('book_detail_without_slug', (), {
+            return reverse('book_detail_without_slug', (), {
                 'object_id': self.id,
             })
 
