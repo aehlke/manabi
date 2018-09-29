@@ -4,9 +4,9 @@ from django.db import migrations
 
 
 def forwards(apps, schema_editor):
+    from manabi.apps.subscriptions.models import InAppPurchaseLogItem
+
     Subscription = apps.get_model('subscriptions', 'Subscription')
-    InAppPurchaseLogItem = apps.get_model(
-        'subscriptions', 'InAppPurchaseLogItem')
 
     for log_item in InAppPurchaseLogItem.objects.filter(
         original_transaction_id__isnull=True,
