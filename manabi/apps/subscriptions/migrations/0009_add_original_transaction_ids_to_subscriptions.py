@@ -8,10 +8,15 @@ def forwards(apps, schema_editor):
     InAppPurchaseLogItem = apps.get_model(
         'subscriptions', 'InAppPurchaseLogItem')
 
-    for log_item in InAppPurchaseLogItem.objects.all():
+    for log_item in InAppPurchaseLogItem.objects.filter(
+        original_transaction_id__isnull=True,
+    ):
         subscription = Subscription.objects.get(subscriber=log_item.subscriber)
         subscription.original_transaction_id = log_item.original_transaction_id
         subscription.save(update_fields=['original_transaction_id'])
+
+        # Reapply transaction to update subscription expires_date
+        log_item.process_itunes_receipt()
 
 
 class Migration(migrations.Migration):

@@ -34,7 +34,7 @@ class SubscriptionManager(models.Manager):
             subscriber=user,
             defaults={
                 'expires_date': expires_date,
-                'original_transaction_id': '',
+                'original_transaction_id': original_transaction_id,
             },
         )
         if not created and (
@@ -69,8 +69,7 @@ class SubscriptionManager(models.Manager):
             latest_receipt_info['original_transaction_id'])
 
         if log_purchase:
-            log_item.original_transaction_id = (
-                )
+            log_item.original_transaction_id = original_transaction_id
             log_item.save()
 
         self.model.objects.subscribe(
