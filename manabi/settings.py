@@ -196,8 +196,8 @@ MIDDLEWARE = [
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
-
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'impersonate.middleware.ImpersonateMiddleware',
 
     'silk.middleware.SilkyMiddleware',
 
@@ -250,8 +250,8 @@ INSTALLED_APPS = (
     'timezones',
     #'ajax_validation',
     #'uni_form',
-
     'django_extensions',
+    'impersonate',
 
     # Auth
     'allauth',
