@@ -26,11 +26,15 @@ def user_is_active_subscriber(user):
 
 
 class SubscriptionManager(models.Manager):
-    def subscribe(self, user, expires_date, is_trial_period=False):
+    def subscribe(
+        self, user, original_transaction_id, expires_date,
+        is_trial_period=False,
+    ):
         subscription, created = Subscription.objects.get_or_create(
             subscriber=user,
             defaults={
                 'expires_date': expires_date,
+                'original_transaction_id': '',
             },
         )
         if not created and (
@@ -61,13 +65,17 @@ class SubscriptionManager(models.Manager):
             env=itunesiap.env.review)
         latest_receipt_info = response.latest_receipt_info[-1]
 
+        original_transaction_id = (
+            latest_receipt_info['original_transaction_id'])
+
         if log_purchase:
             log_item.original_transaction_id = (
-                latest_receipt_info['original_transaction_id'])
+                )
             log_item.save()
 
         self.model.objects.subscribe(
             user,
+            original_transaction_id,
             _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']),
             is_trial_period=latest_receipt_info['is_trial_period'],
         )
