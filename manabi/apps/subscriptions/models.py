@@ -131,8 +131,9 @@ class SubscriptionManager(models.Manager):
             # subscription renewal. Current active plan is not affected.
             return
         elif notification_type == 'INITIAL_BUY':
-            raise Exception(
-                "Unexpectedly received an INITIAL_BUY notification.")
+            # Doesn't have an original_transaction_id yet so it's useless.
+            # See https://forums.developer.apple.com/thread/98799
+            pass
 
         subscription.sandbox = environment == itunesiap.env.sandbox
         subscription.latest_itunes_receipt = receipt
