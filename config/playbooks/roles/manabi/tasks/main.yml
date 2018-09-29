@@ -34,6 +34,11 @@
     - Restart RQ workers
   tags: git-pull
 
+- name: Clean pyc files
+  shell: bash -lc "pipenv run python manage.py clean_pyc"
+  args:
+    chdir: '{{ app_root_path }}'
+
 - name: Install python dependencies
   shell: bash -lc "pipenv install --deploy"
   args:
