@@ -35,7 +35,7 @@
   tags: git-pull
 
 - name: Clean pyc files
-  shell: bash -lc "pipenv run python manage.py clean_pyc"
+  shell: bash -lc "pipenv run python manage.py clean_pyc --path {{ app_root_path }}"
   args:
     chdir: '{{ app_root_path }}'
 
