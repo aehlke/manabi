@@ -67,6 +67,8 @@ class SubscriptionManager(models.Manager):
 
         original_transaction_id = (
             latest_receipt_info['original_transaction_id'])
+        is_trial_period = (
+            latest_receipt_info['is_trial_period'].lower() == 'true')
 
         if log_purchase:
             log_item.original_transaction_id = original_transaction_id
@@ -76,7 +78,7 @@ class SubscriptionManager(models.Manager):
             user,
             original_transaction_id,
             _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']),
-            is_trial_period=latest_receipt_info['is_trial_period'],
+            is_trial_period=is_trial_period,
         )
 
         logger.info('Processed iTunes receipt')
