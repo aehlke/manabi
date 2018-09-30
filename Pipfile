@@ -61,7 +61,7 @@ django-timezones = "==0.2"
 "rfc3339" = "==6"
 whitenoise = "*"
 nose = "*"
-itunes-iap = "*"
+itunes-iap = {git = "https://github.com/youknowone/itunes-iap.git", ref = "452afa2107d7e5b79248b981fed01b1c2f5caca3"}
 "psycopg2" = "*"
 feedparser = "*"
 praw = "*"
