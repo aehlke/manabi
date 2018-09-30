@@ -12,7 +12,8 @@ def forwards(apps, schema_editor):
         if not log_item.original_transaction_id:
             continue
 
-        subscription = Subscription.objects.get(subscriber=log_item.subscriber)
+        subscription = Subscription.objects.get(
+            subscriber_id=log_item.subscriber.id)
         subscription.original_transaction_id = log_item.original_transaction_id
         subscription.save(update_fields=['original_transaction_id'])
 
