@@ -135,7 +135,7 @@ class SubscriptionManager(models.Manager):
         elif notification_type == 'INITIAL_BUY':
             # Doesn't have an original_transaction_id yet so it's useless.
             # See https://forums.developer.apple.com/thread/98799
-            pass
+            return
 
         subscription.sandbox = environment == itunesiap.env.sandbox
         subscription.latest_itunes_receipt = receipt
