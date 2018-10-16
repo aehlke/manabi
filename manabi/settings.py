@@ -408,7 +408,7 @@ SITE_NAME = 'Manabi'
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URLNAME = 'homepage'
 
-DEFAULT_FROM_EMAIL = 'Manabi <support@manabi.io>'
+DEFAULT_FROM_EMAIL = 'Manabi <alex@manabi.io>'
 
 FIXTURE_DIRS = (
     'fixtures/',
