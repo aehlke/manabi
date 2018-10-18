@@ -150,13 +150,16 @@ class Fact(models.Model):
             not self.forked and
             (
                 update_fields is None or
-                set(update_fields) & {'expression', 'reading', 'meaning'}
+                set(update_fields) & {
+                    'expression', 'reading', 'meaning', 'example_sentence',
+                }
             ) and
             self.synchronized_with is not None and
             (
                 self.synchronized_with.expression != self.expression or
                 self.synchronized_with.reading != self.reading or
-                self.synchronized_with.meaning != self.meaning
+                self.synchronized_with.meaning != self.meaning or
+                self.synchronized_with.example_sentence != self.example_sentence
             )
         ):
             self.forked = True
@@ -170,12 +173,15 @@ class Fact(models.Model):
         super(Fact, self).save(update_fields=update_fields, *args, **kwargs)
 
         if update_fields is None or (
-            set(update_fields) & {'expression', 'reading', 'meaning'}
+            set(update_fields) & {
+                'expression', 'reading', 'meaning', 'example_sentence',
+            }
         ):
             self.syncing_subscriber_facts.update(
                 expression=self.expression,
                 reading=self.reading,
                 meaning=self.meaning,
+                example_sentence=self.example_sentence,
             )
 
         if is_new and self.deck.shared:

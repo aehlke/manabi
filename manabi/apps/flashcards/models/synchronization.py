@@ -62,7 +62,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
     for shared_fact in facts:
         copy_attrs = [
             'active', 'suspended', 'new_fact_ordinal',
-            'expression', 'reading', 'meaning',
+            'expression', 'reading', 'meaning', 'example_sentence',
         ]
         fact_kwargs = {attr: getattr(shared_fact, attr) for attr in copy_attrs}
 
