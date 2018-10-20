@@ -397,3 +397,25 @@ class ManabiReaderFactsTest(ManabiTestCase):
                 user=self.user,
             )
             self.assertEqual(resp.status_code, 201)
+
+    def test_adding_same_word_twice_updates_existing_one(self):
+        for idx in range(2):
+            example_sentence = f'パンを食べる {idx}'
+            fact = self.post(
+                '/api/flashcards/manabi_reader_facts/',
+                {
+                    'expression': '食べる',
+                    'reading': 'たべる',
+                    'meaning': 'To eat',
+                    'example_sentence': example_sentence,
+                    'active_card_templates': ['recognition'],
+                },
+                user=self.user,
+            ).json()
+
+            self.assertEqual(
+                Deck.objects.get(id=fact['deck']).facts.count(), 1)
+            self.assertEqual(
+                Deck.objects.get(
+                    id=fact['deck']).facts.first().example_sentence,
+                    example_sentence)

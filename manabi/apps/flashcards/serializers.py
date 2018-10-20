@@ -225,9 +225,15 @@ class FactSerializer(ManabiModelSerializer):
                 },
             )
             validated_data['reader_source_id'] = reader_source.id
-        fact = Fact.objects.create(**validated_data)
-        return fact
 
+        (fact, _) = Fact.objects.update_or_create(
+            deck=validated_data['deck'],
+            expression=validated_data['expression'],
+            reading=validated_data['reading'],
+            meaning=validated_data['meaning'],
+            defaults=validated_data,
+        )
+        return fact
 
 
 class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
