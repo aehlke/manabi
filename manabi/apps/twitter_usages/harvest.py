@@ -23,8 +23,9 @@ def _search_tweets(term, count):
 
 def tweet_is_spammy(tweet):
     display_name = tweet['user']['name'].lower()
+    screen_name = tweet['user']['screen_name']
 
-    if tweet['text'].strip()[:1] == '【':
+    if tweet['text'].strip()[:1] in ['【', '[']:
         return True
 
     if tweet['text'].strip().startswith('定期自己紹介'):
@@ -38,7 +39,7 @@ def tweet_is_spammy(tweet):
         if ad_word in tweet['text'] or ad_word in display_name:
             return True
 
-    if tweet['user']['screen_name'].lower().endswith('_bot'):
+    if screen_name.lower().endswith('_bot'):
         return True
 
     if (
@@ -46,6 +47,7 @@ def tweet_is_spammy(tweet):
         or '（BOT）' in display_name
         or display_name.endswith('bot')
         or display_name.endswith('ボット')
+        or display_name.contains('@')
     ):
         return True
 
