@@ -47,7 +47,7 @@ def tweet_is_spammy(tweet):
         or '（BOT）' in display_name
         or display_name.endswith('bot')
         or display_name.endswith('ボット')
-        or display_name.contains('@')
+        or '@' in display_name
     ):
         return True
 
