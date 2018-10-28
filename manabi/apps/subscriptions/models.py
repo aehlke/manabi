@@ -141,7 +141,8 @@ class SubscriptionManager(models.Manager):
         subscription.latest_itunes_receipt = receipt
         subscription.expires_date = _receipt_date_to_datetime(
             receipt_info['expires_date'])
-        subscription.is_trial_period = receipt_info['is_trial_period']
+        subscription.is_trial_period = (
+            receipt_info['is_trial_period'].lower() == 'true')
         subscription.save()
 
         logger.info('Processed iTunes subscription update notification')
