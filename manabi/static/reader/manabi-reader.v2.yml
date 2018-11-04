@@ -11,6 +11,11 @@ beginner_feeds:
 #    rss_contains_full_content: true
 #    icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
 #    description: Monthly publication written for foreigners residing in Japan.
+#
+  - title: 和タのC
+    rss_url: https://watanoc.com/feed
+    icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
+    description: Web magazine written in simple Japanese with colorful photos. It is designed for all Japanese learners from beginners to intermediates.
 
   - title: Matcha – Japan Travel Magazine
     rss_url: https://matcha-jp.com/easy/feed
@@ -91,10 +96,15 @@ categories:
   - title: Blogs
     background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
     feeds:
-      - title: Medium
-        rss_url: https://medium.com/feed/japan
-        rss_contains_full_content: true
-        icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
+      #- title: Medium
+      #  rss_url: https://medium.com/feed/japan
+      #  rss_contains_full_content: true
+      #  icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
+
+      - title: 和タのC
+        rss_url: https://watanoc.com/feed
+        icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
+        description: Web magazine written in simple Japanese with colorful photos. It is designed for all Japanese learners from beginners to intermediates.
 
       - title: Lifehacker
         rss_url: http://feeds.lifehacker.jp/rss/lifehacker/index.xml
