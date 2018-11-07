@@ -3,24 +3,27 @@ import re
 from datetime import datetime
 from urllib.parse import urljoin
 
-import requests
 import lxml.html
 import feedparser
 import praw
 from django.conf import settings
 from feedgen.feed import FeedGenerator
 from lxml.cssselect import CSSSelector
+from requests_html import HTMLSession
 
 
-ENTRY_COUNT = 12
+ENTRY_COUNT = 15
 
 
-def _get_image_url(page_tree, nhk_url):
-    return None
-    url = CSSSelector('#mainimg img')(page_tree)[0].get('src')
-    if not (url.startswith('http://') or url.startswith('https://')):
-        url = urljoin(nhk_url, url)
-    return url
+def _get_image_url(response, nhk_url):
+    try:
+        return (
+            response.html
+            .find('#js-article-figure', first=True)
+            .find('img', first=True).attrs.get('src')
+        )
+    except AttributeError:
+        return None
 
 
 def _get_comments(reddit, post):
@@ -93,10 +96,11 @@ def generate_nhk_easy_news_feed():
             continue
         nhk_url = nhk_url_match.group()
 
-        r = requests.get(nhk_url)
-        page_tree = lxml.html.fromstring(r.text)
+        session = HTMLSession()
+        r = session.get(nhk_url)
+        r.html.render()
 
-        image_url = _get_image_url(page_tree, nhk_url)
+        image_url = _get_image_url(r, nhk_url)
 
         cleaned_content = _clean_content(content)
 
