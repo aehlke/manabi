@@ -74,6 +74,7 @@
 
 - include: byobu.yml
 - include: pipenv.yml
+- include: cron_sentry.yml
 
 # Security.
 - import_tasks: allow_only_ssh_login.yml

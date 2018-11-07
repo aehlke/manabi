@@ -1,0 +1,20 @@
+---
+
+- name: Install cron-sentry
+  pip:
+    name: cron-sentry
+    executable: pip3
+    state: latest
+  become: true
+
+- name: Configure crontab for UTF-8 Python output
+  cronvar:
+    name: PYTHONIOENCODING
+    value: utf-8
+  become: true
+
+- name: Configure crontab variable for Sentry DSN
+  cronvar:
+    name: SENTRY_DSN
+    value: "{{ CRON_SENTRY_DSN_CRONVAR_VALUE }}"
+  become: true
