@@ -16,5 +16,5 @@
 - name: Configure crontab variable for Sentry DSN
   cronvar:
     name: SENTRY_DSN
-    value: "{{ CRON_SENTRY_DSN_CRONVAR_VALUE }}"
+    value: "{{ cron_sentry_dsn_cronvar_value }}"
   become: true
