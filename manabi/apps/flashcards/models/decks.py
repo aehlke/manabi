@@ -103,7 +103,7 @@ class DeckQuerySet(QuerySet):
 class DeckManager(models.Manager):
     def get_or_create_manabi_reader_deck(self, user):
         deck, created = Deck.objects.get_or_create(
-            name='Manabi Reader', owner=user)
+            name='Manabi Reader', owner=user, active=True)
         if created:
             deck.description = (
                 "Get in the daily habit of reading native content "
@@ -118,7 +118,8 @@ class Deck(models.Model):
     objects = DeckManager.from_queryset(DeckQuerySet)()
 
     name = models.CharField(max_length=100)
-    slug = AutoSlugField(populate_from='name', always_update=True, unique=False)
+    slug = AutoSlugField(
+        populate_from='name', always_update=True, unique=False)
     image = models.ImageField(blank=True)
     description = models.TextField(max_length=2000, blank=True)
     owner = models.ForeignKey(User, models.CASCADE, db_index=True, editable=False)
@@ -157,7 +158,6 @@ class Deck(models.Model):
     class Meta:
         app_label = 'flashcards'
         ordering = ('name',)
-        unique_together = [('owner', 'name', 'synchronized_with', 'active')]
 
     @property
     def image_url(self):
