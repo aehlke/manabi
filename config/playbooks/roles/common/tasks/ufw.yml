@@ -8,6 +8,14 @@
   become: yes
   notify: Restart ufw
 
+- name: Allow Mosh
+  ufw:
+    rule: allow
+    proto: udp
+    port: 60000:60020
+  become: yes
+  notify: Restart ufw
+
 - name: Allow all outgoing by default
   ufw:
     state: enabled
