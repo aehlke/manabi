@@ -51,6 +51,7 @@
       - libssl-dev
       - libxml2-dev
       - libxslt1-dev
+      - mosh
       - ntp
       - python-dev
       - python-pip
