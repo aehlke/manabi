@@ -50,7 +50,7 @@ categories:
         rss_url: https://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
         rss_contains_full_content: true
         extract_entry_image_from_content: true
-        icon_url: https://amp.assets.huffpost.com/assets-0fc99828f5c53c861e04ebbd9e07d4d1/favicon.ico
+        icon_url: https://www.huffingtonpost.jp/favicon.ico
         description: Breaking news from HuffPost Japan.
 
       - title: NHK News Easy
@@ -142,7 +142,7 @@ categories:
         rss_url: https://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
         rss_contains_full_content: true
         extract_entry_image_from_content: true
-        icon_url: https://amp.assets.huffpost.com/assets-0fc99828f5c53c861e04ebbd9e07d4d1/favicon.ico
+        icon_url: https://www.huffingtonpost.jp/favicon.ico
         description: Blog articles from HuffPost Japan.
 
       #- title: Tedium Museum
