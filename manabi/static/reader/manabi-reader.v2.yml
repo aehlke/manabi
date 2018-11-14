@@ -41,11 +41,10 @@ categories:
         rss_url: http://natgeo.nikkeibp.co.jp/nng/rss/news.rdf
         icon_url: http://natgeo.nikkeibp.co.jp/favicon.ico
 
-      - title: 2ch News
-        rss_url: http://blog.livedoor.jp/dqnplus/index.rdf
-        icon_url: http://livedoor.4.blogimg.jp/dqnplus/imgs/4/c/4cdbfd58.gif
+      - title: 2ch Matome: News for Killing Time
+        rss_url: http://blog.livedoor.jp/rbkyn844/index.rdf
+        icon_url: http://livedoor.blogimg.jp/rbkyn844/imgs/d/a/da5c84ea.png
         description: News articles with curated commentary from the 2channel message board.
-        malformed_encoding: true
 
       - title: Huffington Post
         rss_url: https://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
