@@ -6,12 +6,12 @@ beginner_feeds:
     icon_url: http://www3.nhk.or.jp/favicon.ico
     description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
-#  - title: Hiragana Times
-#    rss_url: http://www.hiraganatimes.com/ja/feed/
-#    rss_contains_full_content: true
-#    icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
-#    description: Monthly publication written for foreigners residing in Japan.
-#
+  #- title: Hiragana Times
+  #  rss_url: http://www.hiraganatimes.com/ja/feed/
+  #  rss_contains_full_content: true
+  #  icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+  #  description: Monthly publication written for foreigners residing in Japan.
+
   - title: 和タのC (wa-tanoshii)
     rss_url: https://watanoc.com/feed
     icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
@@ -27,11 +27,11 @@ categories:
   - title: News
     background_image_url: https://manabi.io/static/reader/category_images/news.png
     feeds:
-#      - title: Hiragana Times
-#        rss_url: http://www.hiraganatimes.com/ja/feed/
-#        rss_contains_full_content: true
-#        icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
-#        description: Monthly publication written for foreigners residing in Japan.
+      #- title: Hiragana Times
+      #  rss_url: http://www.hiraganatimes.com/ja/feed/
+      #  rss_contains_full_content: true
+      #  icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
+      #  description: Monthly publication written for foreigners residing in Japan.
 
       - title: Slashdot Japan
         rss_url: https://srad.jp/sradjp.rss
@@ -95,10 +95,10 @@ categories:
   - title: Blogs
     background_image_url: https://manabi.io/static/reader/category_images/blogs.jpg
     feeds:
-#      - title: Medium
-#        rss_url: https://medium.com/feed/japan
-#        rss_contains_full_content: true
-#        icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
+      #- title: Medium
+      #  rss_url: https://medium.com/feed/japan
+      #  rss_contains_full_content: true
+      #  icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
 
       - title: 和タのC (wa-tanoshii)
         rss_url: https://watanoc.com/feed
@@ -145,11 +145,11 @@ categories:
         icon_url: https://www.huffingtonpost.jp/favicon.ico
         description: Blog articles from HuffPost Japan.
 
-#      - title: Tedium Museum
-#        rss_url: http://rssblog.ameba.jp/art00art/rss20.xml
-#        rss_contains_full_content: true
-#        icon_url: https://stat.profile.ameba.jp/profile_images/20160921/10/1e/NR/j/o064006401474420140354.jpg?cpd=120
-#        description: In spite of the absurdity of its name, this daily sketch blog is full of whimsy. The author, しらかわさん, writes short posts about daily life curiousities, accompanied by charming drawings of cats.
+      #- title: Tedium Museum
+      #  rss_url: http://rssblog.ameba.jp/art00art/rss20.xml
+      #  rss_contains_full_content: true
+      #  icon_url: https://stat.profile.ameba.jp/profile_images/20160921/10/1e/NR/j/o064006401474420140354.jpg?cpd=120
+      #  description: In spite of the absurdity of its name, this daily sketch blog is full of whimsy. The author, しらかわさん, writes short posts about daily life curiousities, accompanied by charming drawings of cats.
 
       - title: Seasonal Photo Notebook
         rss_url: http://shikiphotonote.blog.fc2.com/?xml
