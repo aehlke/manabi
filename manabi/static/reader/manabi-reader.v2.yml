@@ -41,7 +41,7 @@ categories:
         rss_url: http://natgeo.nikkeibp.co.jp/nng/rss/news.rdf
         icon_url: http://natgeo.nikkeibp.co.jp/favicon.ico
 
-      - title: 2ch Matome: News for Killing Time
+      - title: "2ch Matome: News for Killing Time"
         rss_url: http://blog.livedoor.jp/rbkyn844/index.rdf
         icon_url: http://livedoor.blogimg.jp/rbkyn844/imgs/d/a/da5c84ea.png
         description: News articles with curated commentary from the 2channel message board.
