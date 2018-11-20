@@ -44,6 +44,7 @@ categories:
       - title: "2ch Matome: News for Killing Time"
         rss_url: http://blog.livedoor.jp/rbkyn844/index.rdf
         icon_url: http://livedoor.blogimg.jp/rbkyn844/imgs/d/a/da5c84ea.png
+        extract_entry_image_from_content: true
         description: News articles with curated commentary from the 2channel message board.
 
       - title: Huffington Post
@@ -86,7 +87,7 @@ categories:
         rss_url: http://feeds.cnn.co.jp/rss/cnn/cnn.rdf
         icon_url: https://www.cnn.co.jp/media/cnn/images/icons/favicon.ico
         meaningful_content_min_length: 100
-        extract_entry_image_from_content: true
+        inject_entry_image_into_header: true
 
       - title: Engadget Japan
         rss_url: http://japanese.engadget.com/rss.xml
@@ -141,9 +142,9 @@ categories:
 
       - title: Huffington Post – Blog
         rss_url: https://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
+        icon_url: https://www.huffingtonpost.jp/favicon.ico
         rss_contains_full_content: true
         extract_entry_image_from_content: true
-        icon_url: https://www.huffingtonpost.jp/favicon.ico
         description: Blog articles from HuffPost Japan.
 
       #- title: Tedium Museum
