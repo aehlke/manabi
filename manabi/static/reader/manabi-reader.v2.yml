@@ -73,8 +73,9 @@ categories:
 
       - title: RocketNews24
         rss_url: http://feeds.rocketnews24.com/rocketnews24
-        rss_contains_full_content: true
         icon_url: https://s0.wp.com/wp-content/themes/vip/rocketnews/img/pts_logo.png
+        rss_contains_full_content: true
+        inject_entry_image_into_header: true
         description: Reporting the interesting, strange, and random. Covers a wide variety of topics.
 
       - title: TechCrunch Japan
@@ -92,6 +93,7 @@ categories:
       - title: Engadget Japan
         rss_url: http://japanese.engadget.com/rss.xml
         icon_url: http://www.blogsmithmedia.com/japanese.engadget.com/assets-h9912952623182b4273b51a1ed0b2aa6a/images/favicon-96x96.png?h=9680b5ecfb3de364248a4a98bf84664f
+        inject_entry_image_into_header: true
         description: Technology news and reviews.
 
   - title: Blogs
@@ -124,8 +126,9 @@ categories:
 
       - title: Matcha – Japan Travel Magazine
         rss_url: https://matcha-jp.com/jp/feed
-        rss_contains_full_content: true
         icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
+        rss_contains_full_content: true
+        inject_entry_image_into_header: true
         description: Travel magazine, written for foreigner visitors to Japan.
 
       - title: Melon Cafe
@@ -211,6 +214,8 @@ categories:
       - title: newsokur
         rss_url: https://www.reddit.com/r/newsokur/.rss
         icon_url: https://manabi.io/static/reader/category_images/feed_images/newsokur.png
+        extract_entry_image_from_content: true
+        inject_entry_image_into_header: true
         description: A popular haven for former 2ch message board posters looking to add more advanced features to their discussions, this subreddit brings the pseudoanonymous textboard culture of 2ch to Reddit.
 
       - title: BakaNewsJP
@@ -274,6 +279,7 @@ categories:
       - title: Dengeki Online
         rss_url: http://dengekionline.com/cate/11/rss.xml
         icon_url: http://dengekionline.com/img/favicon.ico
+        inject_entry_image_into_header: true
         description: Online Japanese gaming magazine, covering console, PC, and mobile games.
 
       - title: Famitsu
