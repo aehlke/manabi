@@ -158,8 +158,9 @@ categories:
 
       - title: Seasonal Photo Notebook
         rss_url: http://shikiphotonote.blog.fc2.com/?xml
-        rss_contains_full_content: true
         icon_url: http://blog-imgs-82.fc2.com/s/h/i/shikiphotonote/_MG_9786_3s.jpg
+        rss_contains_full_content: true
+        meaningful_content_min_length: 5
         description: Gorgeous landscape photography from around Osaka, Kyoto, and Nara.
 
       - title: Z TOKYO
