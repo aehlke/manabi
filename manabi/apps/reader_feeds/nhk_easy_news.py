@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 import re
 from datetime import datetime
-from urllib.parse import urljoin
+from urllib.parse import urlparse, urlunparse, urljoin
 
 import lxml.html
 import feedparser
@@ -12,18 +12,36 @@ from lxml.cssselect import CSSSelector
 from requests_html import HTMLSession
 
 
-ENTRY_COUNT = 15
+ENTRY_COUNT = 18
 
 
 def _get_image_url(response, nhk_url):
     try:
-        return (
+        src = (
             response.html
             .find('#js-article-figure', first=True)
             .find('img', first=True).attrs.get('src')
         )
     except AttributeError:
         return None
+
+    # Parse the image URL with stdlib.
+    parsed = urlparse(src)._asdict()
+
+    # If link is relative, then join it with base_url.
+    if not parsed['netloc']:
+        return urljoin(response.html.url, src)
+
+    # Link is absolute; if it lacks a scheme, add one from base_url.
+    if not parsed['scheme']:
+        parsed['scheme'] = urlparse(response.html.url).scheme
+
+        # Reconstruct the URL to incorporate the new scheme.
+        parsed = (v for v in parsed.values())
+        return urlunparse(parsed)
+
+    # Link is absolute and complete with scheme; nothing to be done here.
+    return src
 
 
 def _get_comments(reddit, post):
