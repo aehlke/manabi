@@ -23,7 +23,18 @@ def _get_image_url(response, nhk_url):
             .find('img', first=True).attrs.get('src')
         )
     except AttributeError:
-        return None
+        pass
+
+    if src is None:
+        try:
+            style = (
+                response.html
+                .find('#nPlayerContainerAltContentPosterFrame div', first=True)
+                .attrs.get('style')
+            )
+        except AttributeError:
+            return None
+        src = style.split('("', 1)[1].split('")')[0]
 
     # Parse the image URL with stdlib.
     parsed = urlparse(src)._asdict()
