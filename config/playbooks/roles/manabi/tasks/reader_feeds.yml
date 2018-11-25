@@ -5,7 +5,7 @@
     name: "Generate feed {{ item }}"
     minute: 10
     hour: '*/8'
-    user: ubuntu
+    user: root
     job: 'bash -lc "cd {{ app_root_path }} && cron-sentry --report-all pipenv run python manage.py {{ item }}"'
     cron_file: manabi_reader_feeds
   become: yes
