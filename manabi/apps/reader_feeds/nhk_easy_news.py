@@ -23,7 +23,7 @@ def _get_image_url(response, nhk_url):
             .find('img', first=True).attrs.get('src')
         )
     except AttributeError:
-        pass
+        src = None
 
     if src is None:
         try:
