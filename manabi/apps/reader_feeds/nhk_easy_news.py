@@ -6,13 +6,25 @@ from urllib.parse import urlparse, urlunparse, urljoin
 import lxml.html
 import feedparser
 import praw
+import requests
 from django.conf import settings
 from feedgen.feed import FeedGenerator
 from lxml.cssselect import CSSSelector
 from requests_html import HTMLSession
 
-
 ENTRY_COUNT = 18
+
+
+def _get_image_url_from_video(video_url):
+    '''
+    Can return a relatve URL.
+    '''
+    json_url = video_url.split('.html')[0] + '.json'
+    response = requests.get(json_url)
+    if response.status_code == 404:
+        return None
+    src = response.json()['mediaResource']['posterframe']
+    return src
 
 
 def _get_image_url(response, nhk_url):
@@ -27,14 +39,13 @@ def _get_image_url(response, nhk_url):
 
     if src is None:
         try:
-            style = (
-                response.html
-                .find('#nPlayerContainerAltContentPosterFrame div', first=True)
-                .attrs.get('style')
-            )
+            video_url = response.html.find(
+                'iframe.video-player-fixed', first=True).attrs.get('src')
+            if video_url.startswith('//'):
+                video_url = 'http:' + video_url
+            src = _get_image_url_from_video(video_url)
         except AttributeError:
             return None
-        src = style.split('("', 1)[1].split('")')[0]
 
     # Parse the image URL with stdlib.
     parsed = urlparse(src)._asdict()
