@@ -6,7 +6,7 @@
     minute: 10
     hour: '*/8'
     user: ubuntu
-    job: 'PATH=$PATH:/usr/local/bin bash -lc "cd {{ app_root_path }} && cron-sentry --report-all pipenv run python manage.py {{ item }}" >> /var/log/manabi_reader_feeds 2&>1'
+    job: 'PATH=$PATH:/usr/local/bin bash -lc "cd /home/ubuntu/manabi && cron-sentry --report-all pipenv run python manage.py {{ item }}" >> /var/log/manabi_reader_feeds/{{ item }}.log 2&>1'
     name: "{{ item }}"
   with_items:
       - generate_nhk_easy_news_feed
