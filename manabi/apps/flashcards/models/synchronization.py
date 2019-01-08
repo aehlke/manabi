@@ -104,7 +104,8 @@ def _copy_facts_to_subscribers(facts, subscribers):
     # Refresh denormalized card count.
     for subscriber_deck_id in updated_subscriber_deck_ids:
         Deck.objects.filter(id=subscriber_deck_id).update(
-            card_count=Card.objects.of_deck(self).available().count(),
+            card_count=
+            Card.objects.filter(deck_id=subscriber_deck_id).available().count(),
         )
 
 
