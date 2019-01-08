@@ -59,6 +59,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
 
     copied_facts = []
     copied_cards = []
+    updated_subscriber_deck_ids = set()
     for shared_fact in facts:
         copy_attrs = [
             'active', 'suspended', 'new_fact_ordinal',
@@ -88,6 +89,8 @@ def _copy_facts_to_subscribers(facts, subscribers):
                 copied_cards_for_fact.append(card)
             copied_cards.append(copied_cards_for_fact)
 
+            updated_subscriber_deck_ids.add(subscriber_deck_id)
+
     # Persist everything.
     created_facts = Fact.objects.bulk_create(
         copied_facts, batch_size=BULK_BATCH_SIZE)
@@ -97,6 +100,12 @@ def _copy_facts_to_subscribers(facts, subscribers):
     Card.objects.bulk_create(
         itertools.chain.from_iterable(copied_cards),
         batch_size=BULK_BATCH_SIZE)
+
+    # Refresh denormalized card count.
+    for subscriber_deck_id in updated_subscriber_deck_ids:
+        Deck.objects.filter(id=subscriber_deck_id).update(
+            card_count=Card.objects.of_deck(self).available().count(),
+        )
 
 
 def copy_facts_to_subscribers(facts, subscribers=None):
