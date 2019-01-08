@@ -31,7 +31,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
     '''
     The meat-and-potatoes of the copy operation.
     '''
-    from manabi.apps.flashcards.models import Card, Fact
+    from manabi.apps.flashcards.models import Card, Fact, Deck
 
     shared_deck = facts[0].deck
     subscriber_decks = shared_deck.subscriber_decks.filter(
