@@ -2,13 +2,12 @@
 
 - name: Import Grafana apt key
   apt_key:
-    url: https://packagecloud.io/gpg.key
+    url: https://packages.grafana.com/gpg.key
   become: yes
 
 - name: Add Grafana repository
   apt_repository:
-    repo: "deb https://packagecloud.io/grafana/stable/debian/ jessie main
-"
+    repo: "https://packages.grafana.com/oss/deb stable main"
     update_cache: yes
   become: yes
 
