@@ -31,10 +31,8 @@ def inject_furigana(text):
     tagger.parse('')
 
     node = tagger.parseToNode(text)
-    print(node)
     while node:
         surface = node.surface
-        print(surface)
 
         # Add any skipped text.
         node_index_in_remaining_text = remaining_text.find(surface)
@@ -67,19 +65,13 @@ def inject_furigana(text):
             surface = surface[:-redundant_length]
 
         injected_text.append('｜{}《{}》{}'.format(surface, reading, suffix))
-        print(f'surface {surface}')
-        print(f'reading {reading}')
-        print(f'suffix {suffix}')
 
         current_offset += node_index_in_remaining_text
-        furigana_positions.append(
-            (current_offset, current_offset + len(surface), reading))
+        furigana_positions.append((current_offset, current_offset + len(surface), reading))
         current_offset += len(surface) + len(suffix)
 
         node = node.next
 
     injected_text.append(remaining_text)
-    print(remaining_text)
-    print(furigana_positions)
 
     return (''.join(injected_text), furigana_positions)

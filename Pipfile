@@ -68,7 +68,7 @@ praw = "*"
 ipython = "<6"
 social-auth-app-django = "*"
 "django-rest-framework-social-oauth2" = "*"
-"mecab-python3" = "*"
+"mecab-python3" = {git = "https://github.com/SamuraiT/mecab-python3.git", ref = "aaac65033963474d02b3c8a9bb27c6e6fa214161"}
 jcconv = {git = "https://github.com/besser82/jcconv.git", ref = "v0.2.4"}
 django-cachecow = {git = "https://github.com/aehlke/django-cachecow.git"}
 django-autoslug = {git = "https://github.com/iplweb/django-autoslug-iplweb.git", ref = "be379b83d90725b882c2ed38c9279167e69b6c7f"}
