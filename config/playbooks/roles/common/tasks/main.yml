@@ -63,6 +63,7 @@
       - libxss1
       - libasound2
       - zlib1g-dev
+      - swig
   become: yes
 
 - name: Configure Supervisor
