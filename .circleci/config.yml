@@ -26,7 +26,7 @@ jobs:
           - v1-dep-master-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
-            sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8
+            sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8 swig
             sudo pip install pipenv
             pipenv install --deploy
       - save_cache:
