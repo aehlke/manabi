@@ -111,6 +111,8 @@ class Fact(models.Model):
     reading = models.CharField(max_length=1500, blank=True)
     meaning = models.CharField(max_length=1000)
 
+    jmdict_id = models.PositiveIntegerField(null=True, blank=True)
+
     example_sentence = models.TextField(blank=True)
     reader_source = models.ForeignKey(
         'reader_sources.ReaderSource', models.CASCADE,
