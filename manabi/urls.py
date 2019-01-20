@@ -84,10 +84,12 @@ urlpatterns = [
     url(r'^api/auth/', include('djoser.urls')),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
     url(r'^api/flashcards/', include('manabi.apps.flashcards.api_urls')),
-    url(r'^api/flashcards/review_results/', include('manabi.apps.review_results.api_urls')),
+    url(r'^api/flashcards/review_results/',
+        include('manabi.apps.review_results.api_urls')),
     url(r'^api/subscriptions/', include('manabi.apps.subscriptions.api_urls')),
     url(r'^api/furigana/', include('manabi.apps.furigana.urls')),
     url(r'^api/twitter_usages/', include('manabi.apps.twitter_usages.urls')),
+    url(r'^api/word_tracking/', include('manabi.apps.word_tracking.api_urls')),
 ]
 
 # if not settings.LIVE_HOST:

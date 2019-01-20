@@ -27,7 +27,7 @@ django-rq = "*"
 rq-dashboard = "*"
 natto-py = "==0.9.0"
 twython = "==3.4.0"
-djangorestframework = "==3.9.0"
+djangorestframework = "==3.9.1"
 django-filter = "==1.1.0"
 Markdown = "==2.6.11"
 django-crispy-forms = "==1.7.2"
@@ -48,30 +48,30 @@ lxml = "==4.3.0"
 "html5lib" = "==1.0.1"
 cssselect = "==1.0.1"
 feedgen = "*"
-"abdb104" = {file = "https://github.com/dcramer/django-devserver/archive/master.zip"}
+abdb104 = {file = "https://github.com/dcramer/django-devserver/archive/master.zip"}
 sqlparse = "*"
 Werkzeug = "*"
 line_profiler = "*"
 bpython = "*"
 Unidecode = "*"
-"e39c1a3" = {file = "https://github.com/aehlke/django-snippetscream/archive/master.zip"}
+e39c1a3 = {file = "https://github.com/aehlke/django-snippetscream/archive/master.zip"}
 WebOb = "==1.8.1"
 django-timezones = "==0.2"
-"05b7bbf" = {file = "https://github.com/aehlke/django-catnap/archive/master.zip"}
+05b7bbf = {file = "https://github.com/aehlke/django-catnap/archive/master.zip"}
 "rfc3339" = "==6"
 whitenoise = "*"
 nose = "*"
-itunes-iap = {git = "https://github.com/youknowone/itunes-iap.git", ref = "452afa2107d7e5b79248b981fed01b1c2f5caca3"}
+itunes-iap = {git = "https://github.com/youknowone/itunes-iap.git",ref = "452afa2107d7e5b79248b981fed01b1c2f5caca3"}
 "psycopg2" = "*"
 feedparser = "*"
 praw = "*"
 ipython = "<6"
 social-auth-app-django = "*"
 "django-rest-framework-social-oauth2" = "*"
-"mecab-python3" = {git = "https://github.com/SamuraiT/mecab-python3.git", ref = "aaac65033963474d02b3c8a9bb27c6e6fa214161"}
-jcconv = {git = "https://github.com/besser82/jcconv.git", ref = "v0.2.4"}
+mecab-python3 = {git = "https://github.com/SamuraiT/mecab-python3.git",ref = "aaac65033963474d02b3c8a9bb27c6e6fa214161"}
+jcconv = {git = "https://github.com/besser82/jcconv.git",ref = "v0.2.4"}
 django-cachecow = {git = "https://github.com/aehlke/django-cachecow.git"}
-django-autoslug = {git = "https://github.com/iplweb/django-autoslug-iplweb.git", ref = "be379b83d90725b882c2ed38c9279167e69b6c7f"}
+django-autoslug = {git = "https://github.com/iplweb/django-autoslug-iplweb.git",ref = "be379b83d90725b882c2ed38c9279167e69b6c7f"}
 freezegun = "==0.3.10"
 django-impersonate = "*"
 requests-html = "*"
