@@ -1,3 +1,9 @@
+config:
+  word_tracking_usernames:
+    - alex
+    - alextest
+    - KeithLeow
+
 beginner_feeds:
   - title: NHK News Easy
     rss_url: https://manabi.io/media/feeds/nhk_easy_news.rss
@@ -295,7 +301,7 @@ categories:
       - title: 4Gamer.net
         rss_url: http://www.4gamer.net/rss/index.xml
         icon_url: http://www.4gamer.net/favicon.ico
-    
+
       - title: My Game News Flash @JIN
         rss_url: http://jin115.com/index.rdf
         icon_url: http://jin115.com/favicon.ico
