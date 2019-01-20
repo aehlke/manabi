@@ -170,6 +170,7 @@ class FactSerializer(ManabiModelSerializer):
     card_count = serializers.ReadOnlyField()
     suspended = serializers.BooleanField()
     reader_source = ReaderSourceSerializer(required=False)
+    jmdict_id = serializers.IntegerField(required=False)
 
     class Meta:
         model = Fact
@@ -186,6 +187,7 @@ class FactSerializer(ManabiModelSerializer):
             'reading',
             'meaning',
             'reader_source',
+            'jmdict_id',
         )
         read_only_fields = (
             'id',
