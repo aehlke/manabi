@@ -90,11 +90,6 @@ class CardResource(RestModelResource):
         fact = self.obj.fact
 
         data.update({
-            #'reviews_url': CardReviewsResource(self).get_url(),
-            #'next_due_at_per_grade': dict((grade, rep.due_at)
-            #                              for (grade, rep)
-            #                              in self.obj.next_repetition_per_grade().items()),
-
             'expression': fact.expression,
             'reading': fact.reading,
             'meaning': fact.meaning,

@@ -7,7 +7,6 @@ from django.utils.lru_cache import lru_cache
 
 from .constants import (
     GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY, MATURE_INTERVAL_MIN)
-from manabi.apps.flashcards.cachenamespaces import deck_review_stats_namespace
 from manabi.apps.flashcards.models.intervals import initial_interval
 from manabi.apps.utils.utils import timedelta_to_float
 
@@ -100,21 +99,12 @@ class RepetitionAlgo:
         self.grade = grade
         self.reviewed_at = reviewed_at or datetime.utcnow()
 
-    # Very short cache on this function, because it's something that gets
-    # called potentially a bunch of times in one request, but even if the
-    # user does nothing, this value may change depending on the time. So
-    # allow a resolution of 3 seconds (at worst.)
-    @cached_function(timeout=3,
-                     key=['RepetitionAlgo', 'next_repetition',
-                          lambda self: (self.card.pk,
-                                        self.grade,
-                                        self.reviewed_at,)],
-                     namespace=lambda a, *args, **kwargs:
-                            deck_review_stats_namespace(a.card.deck_id))
     def next_repetition(self):
         '''
         Returns an instance of `NextRepetition` containing the updated
         repetition values for this card.
+
+        Avoid calling this unnecessarily without caching.
         '''
         interval = self._next_interval()
         ease_factor = self._next_ease_factor()

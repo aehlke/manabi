@@ -29,10 +29,6 @@ from manabi.apps.flashcards.models.constants import (
     KANJI_READING,
     KANJI_WRITING,
 )
-from manabi.apps.flashcards.cachenamespaces import (
-    deck_review_stats_namespace,
-    fact_grid_namespace,
-)
 from manabi.apps.flashcards.models.cardmanager import CardQuerySet
 from manabi.apps.flashcards.models.undo import UndoCardReview
 from .repetitionscheduler import repetition_algo_dispatcher
@@ -188,18 +184,14 @@ class Card(models.Model):
         self.save()
 
     def activate(self):
-        from manabi.apps.flashcards.signals import card_active_field_changed
-
         self.active = True
-        self.save()
-        card_active_field_changed.send(self, instance=self)
+        self.created_or_modified_at = datetime.utcnow()
+        self.save(update_fields=['active', 'created_or_modified_at'])
 
     def deactivate(self):
-        from manabi.apps.flashcards.signals import card_active_field_changed
-
         self.active = False
-        self.save(update_fields=['active'])
-        card_active_field_changed.send(self, instance=self)
+        self.created_or_modified_at = datetime.utcnow()
+        self.save(update_fields=['active', 'created_or_modified_at'])
 
     @property
     def is_new(self):
@@ -218,7 +210,6 @@ class Card(models.Model):
             return False
         return self.due_at < time
 
-    @cached_function(namespace=deck_review_stats_namespace)
     def average_duration(self):
         '''
         The average duration spent on the card each time it is shown
@@ -227,7 +218,6 @@ class Card(models.Model):
         return self.cardhistory_set.aggregate(
                 Avg('duration'))['duration__avg']
 
-    @cached_function(namespace=deck_review_stats_namespace)
     def total_duration(self):
         '''
         Total duration spent on the card each time it is shown.
@@ -235,7 +225,6 @@ class Card(models.Model):
         return self.cardhistory_set.aggregate(
                 Sum('duration'))['duration__sum']
 
-    @cached_function(namespace=deck_review_stats_namespace)
     def average_question_duration(self):
         '''
         Returns the average duration spent looking at the question side of
@@ -244,7 +233,6 @@ class Card(models.Model):
         return self.cardhistory_set.aggregate(
                 Avg('question_duration'))['question_duration__avg']
 
-    @cached_function(namespace=deck_review_stats_namespace)
     def total_question_duration(self):
         '''
         The total time spent thinking of the answer.
@@ -301,18 +289,6 @@ class Card(models.Model):
         self.update_due_at(from_date + duration, update_last_due_at=False)
         #self.redis.update_due_at()
 
-    def next_repetition_per_grade(self, reviewed_at=None):
-        #FIXME disable fuzzing
-        if not reviewed_at:
-            reviewed_at = datetime.utcnow()
-
-        reps = {}
-        for grade in ALL_GRADES:
-            repetition_algo = repetition_algo_dispatcher(
-                self, grade, reviewed_at=reviewed_at)
-            reps[grade] = repetition_algo.next_repetition()
-        return reps
-
     def _update_statistics(self, grade, reviewed_at,
                            duration=None, question_duration=None):
         '''
@@ -368,7 +344,8 @@ class Card(models.Model):
         `duration` is the same, but for each entire duration of viewing
         this card (so, the time taken for the front and back of the card.)
         '''
-        from manabi.apps.flashcards.signals import pre_card_reviewed, post_card_reviewed
+        from manabi.apps.flashcards.signals import (
+            pre_card_reviewed, post_card_reviewed)
 
         pre_card_reviewed.send(self, instance=self)
 
@@ -386,7 +363,6 @@ class Card(models.Model):
         # Compute and apply updated card repetition values.
         repetition_algo = repetition_algo_dispatcher(
             self, grade, reviewed_at=reviewed_at)
-        repetition_algo.next_repetition.delete_cache(repetition_algo)
         next_repetition = repetition_algo.next_repetition()
         self._apply_updated_schedule(next_repetition)
 

@@ -32,7 +32,6 @@ class TrackedWords:
                     output_field=models.CharField(),
                 ),
             ).distinct().values('jmdict_id', 'reading', 'is_mature')
-        print(self._tracked_words)
         return self._tracked_words
 
     @property

@@ -17,7 +17,6 @@ from django.db.models import Avg, Count, Q
 from django.db.models.query import QuerySet
 
 from manabi.apps.books.models import Textbook
-from manabi.apps.flashcards.cachenamespaces import deck_review_stats_namespace
 from manabi.apps.flashcards.models import cards
 from manabi.apps.flashcards.models.constants import (
     DEFAULT_EASE_FACTOR,
@@ -355,10 +354,9 @@ class Deck(models.Model):
     #    return cards.Card.objects.cards_due_count(
     #            self.owner, deck=self, active=True, suspended=False)
 
-    @cached_function(namespace=deck_review_stats_namespace)
     def average_ease_factor(self):
         '''
-        Includes suspended cards in the calcuation. Doesn't include inactive cards.
+        Includes suspended cards in the calcuation. Excludes inactive cards.
         '''
         average_ease_factor = self.card_set.filter(active=True).aggregate(
             Avg('ease_factor'))['ease_factor__avg']
