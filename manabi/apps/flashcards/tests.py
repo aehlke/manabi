@@ -334,6 +334,25 @@ class DeckTest(ManabiTestCase):
         new_count = assert_card_count()
         self.assertEqual(original_count - fact_card_count, new_count)
 
+    def test_reviewed_subscriber_deck_isnt_destroyed_when_synced_deck_is(self):
+        subscriber = create_user()
+        self.deck.share()
+        subscriber_deck = self.deck.subscribe(subscriber)
+
+        self.assertFalse(subscriber_deck.suspended)
+        self.assertTrue(subscriber_deck.active)
+
+        self.deck.is_suspended = True
+        self.deck.save()
+        self.assertFalse(Deck.objects.get(id=subscriber_deck.id).suspended)
+
+        self.deck.suspended = False
+        self.deck.save()
+        self.deck.delete()
+        subscriber_deck = Deck.objects.get(id=subscriber_deck.id)
+        self.assertFalse(subscriber_deck.suspended)
+        self.assertTrue(subscriber_deck.active)
+
 
 class NewCardsLimitTest(ManabiTestCase):
     def after_setUp(self):

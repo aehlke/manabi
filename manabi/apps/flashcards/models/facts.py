@@ -10,9 +10,9 @@ from django.utils.functional import cached_property
 from natto import MeCab
 
 from .constants import MAX_NEW_CARD_ORDINAL
-from manabi.apps.flashcards.signals import fact_suspended, fact_unsuspended
 from manabi.apps.flashcards.models.constants import GRADE_NONE, MIN_CARD_SPACE, CARD_SPACE_FACTOR
-from manabi.apps.flashcards.models.synchronization import copy_facts_to_subscribers
+from manabi.apps.flashcards.models.synchronization import (
+    copy_facts_to_subscribers)
 from manabi.apps.twitter_usages.jobs import harvest_tweets
 
 
@@ -148,20 +148,24 @@ class Fact(models.Model):
         if self.deck.randomize_card_order and self.roll_ordinal():
             also_update_fields.add('new_fact_ordinal')
 
+        # Fork if a subscriber card is being edited.
         if (
             not self.forked and
             (
                 update_fields is None or
                 set(update_fields) & {
                     'expression', 'reading', 'meaning', 'example_sentence',
+                    'jmdict_id',
                 }
             ) and
             self.synchronized_with is not None and
             (
-                self.synchronized_with.expression != self.expression or
-                self.synchronized_with.reading != self.reading or
-                self.synchronized_with.meaning != self.meaning or
-                self.synchronized_with.example_sentence != self.example_sentence
+                self.synchronized_with.expression != self.expression
+                or self.synchronized_with.reading != self.reading
+                or self.synchronized_with.meaning != self.meaning
+                or self.synchronized_with.example_sentence
+                    != self.example_sentence
+                or self.synchronized_with.jmdict_id != self.jmdict_id
             )
         ):
             self.forked = True
@@ -174,9 +178,11 @@ class Fact(models.Model):
 
         super(Fact, self).save(update_fields=update_fields, *args, **kwargs)
 
+        # Update subscriber cards as necessary.
         if update_fields is None or (
             set(update_fields) & {
                 'expression', 'reading', 'meaning', 'example_sentence',
+                'jmdict_id',
             }
         ):
             self.syncing_subscriber_facts.update(
@@ -184,6 +190,8 @@ class Fact(models.Model):
                 reading=self.reading,
                 meaning=self.meaning,
                 example_sentence=self.example_sentence,
+                jmdict_id=self.jmdict_id,
+                modified_at=self.modified_at,
             )
 
         if is_new and self.deck.shared:
@@ -194,6 +202,14 @@ class Fact(models.Model):
             or {'deck', 'deck_id', 'suspended', 'active'} & set(update_fields)
         ):
             self.deck.refresh_card_count()
+
+        if update_fields is None or 'jmdict_id' in update_fields:
+            self.card_set.exclude(
+                jmdict_id=self.jmdict_id,
+            ).update(
+                jmdict_id=self.jmdict_id,
+                created_or_modified_at=self.modified_at,
+            )
 
         if is_new:
             harvest_tweets.delay(self)
@@ -269,11 +285,19 @@ class Fact(models.Model):
 
         for template_id in template_ids - existing_template_ids:
             Card.objects.create(
+                owner=self.deck.owner,
                 deck=self.deck,
+                deck_suspended=self.deck.suspended,
+                jmdict_id=self.jmdict_id,
                 fact=self,
                 template=template_id,
                 new_card_ordinal=Card.random_card_ordinal(),
             )
+
+        if len(template_ids) == 0:
+            self.suspend()
+        elif self.suspended:
+            self.unsuspend()
 
         self._set_active_card_templates_for_subscribers(template_ids)
 
@@ -290,7 +314,7 @@ class Fact(models.Model):
 
         new_subscriber_cards.filter(
             template__in=template_ids,
-        ).update(active=True)
+        ).update(active=True, suspended=False)
         new_subscriber_cards.exclude(
             template__in=template_ids,
         ).update(active=False)
@@ -317,6 +341,13 @@ class Fact(models.Model):
 
             Card.objects.bulk_create(missing_cards)
 
+        if len(template_ids) == 0:
+            self.syncing_subscriber_facts.filter(
+                suspended=False).update(suspended=True)
+        else:
+            self.syncing_subscriber_facts.filter(
+                suspended=True).update(suspended=False)
+
     @transaction.atomic
     def move_to_deck(self, deck):
         self.new_syncing_subscriber_facts.update(active=False)
@@ -334,14 +365,12 @@ class Fact(models.Model):
         self.card_set.update(suspended=True)
         self.suspended = True
         self.save()
-        fact_suspended.send(sender=self, instance=self)
 
     @transaction.atomic
     def unsuspend(self):
         self.card_set.update(suspended=False)
         self.suspended = False
         self.save()
-        fact_unsuspended.send(sender=self, instance=self)
 
     #TODELETE?
     def all_owner_decks(self):

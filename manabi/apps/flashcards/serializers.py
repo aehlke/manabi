@@ -272,7 +272,8 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
         return fact
 
     def update(self, instance, validated_data):
-        active_card_templates = validated_data.pop('active_card_templates', None)
+        active_card_templates = validated_data.pop(
+            'active_card_templates', None)
 
         fact = super().update(instance, validated_data)
 

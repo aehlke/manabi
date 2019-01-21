@@ -1,11 +1,15 @@
+from django.urls import path, include
 from rest_framework import routers
 
-import .api_views
+from . import api_views
 
 api_router = routers.DefaultRouter()
 
-api_router.register(r'tracked_words', api_views.tracked_words)
+api_router.register(
+    r'tracked_words',
+    api_views.TrackedWordsViewSet,
+    base_name='tracked-words')
 
 urlpatterns = [
-    url(r'^', include(api_router.urls, 'word_tracking_api')),
+    path(r'', include(api_router.urls)),
 ]

@@ -2,6 +2,7 @@ import json
 import random
 import string
 import sys
+from datetime import datetime
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -231,6 +232,9 @@ class APIShortcuts:
     def inject_furigana(self, expression):
         return self.post('/api/furigana/inject/', {'text': expression}).json()['text_with_furigana']
 
+    def tracked_words(self, user):
+        return self.get('/api/word_tracking/tracked_words/', user=user).json()
+
 
 def random_name():
     return ''.join(random.choice(string.ascii_lowercase) for _ in range(5))
@@ -277,7 +281,9 @@ def create_deck_collection():
 
 
 def create_fact(user=None, deck=None):
-    """ Includes card creation. """
+    """
+    Includes card creation.
+    """
     deck = deck or create_deck(user=user)
     fact = Fact.objects.create(
         deck=deck,
@@ -292,6 +298,7 @@ def create_fact(user=None, deck=None):
             owner_id=deck.owner_id,
             fact=fact,
             template=template,
+            created_or_modified_at=datetime.utcnow(),
         )
         card.randomize_new_order()
         card.save()

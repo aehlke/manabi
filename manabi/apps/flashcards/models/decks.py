@@ -212,6 +212,7 @@ class Deck(models.Model):
     def save(self, update_fields=None, *args, **kwargs):
         super(Deck, self).save(update_fields=update_fields, *args, **kwargs)
 
+        # Update subscribers.
         update_kwargs = {}
         if update_fields is None or 'card_count' in update_fields:
             update_kwargs['card_count'] = self.refresh_card_count(save=False)

@@ -55,10 +55,12 @@ class Card(models.Model):
     owner = models.ForeignKey(User, models.CASCADE, editable=False)
     deck = models.ForeignKey('flashcards.Deck', models.CASCADE, db_index=True)
     deck_suspended = models.BooleanField(default=False)
+    jmdict_id = models.PositiveIntegerField(null=True, blank=True)
 
     fact = models.ForeignKey('flashcards.Fact', models.CASCADE, db_index=True)
 
-    template = models.SmallIntegerField(choices=CARD_TEMPLATE_CHOICES, blank=False)
+    template = models.SmallIntegerField(
+        choices=CARD_TEMPLATE_CHOICES, blank=False)
 
     # False when the card is removed from the Fact. This way, we can keep
     # card statistics if enabled later.
@@ -82,6 +84,8 @@ class Card(models.Model):
 
     suspended = models.BooleanField(default=False)
 
+    created_or_modified_at = models.DateTimeField(blank=True, null=True)
+
     class Meta:
         app_label = 'flashcards'
         index_together = [
@@ -91,9 +95,15 @@ class Card(models.Model):
         ]
 
     def __unicode__(self):
-        return '{} | {} [{}]'.format(self.fact.expression, self.fact.meaning, self.template)
+        return '{} | {} [{}]'.format(
+            self.fact.expression, self.fact.meaning, self.template)
 
     def save(self, force_update=False, update_fields=None, *args, **kwargs):
+        self.created_or_modified_at = datetime.utcnow()
+        if update_fields is not None:
+            update_fields = list(
+                set(update_fields) | {'created_or_modified_at'})
+
         if update_fields is None and not force_update:
             self.owner_id = self.deck.owner_id
 
@@ -109,7 +119,8 @@ class Card(models.Model):
         is_new = self.pk is None
 
         super(Card, self).save(
-            force_update=force_update, update_fields=update_fields,
+            force_update=force_update,
+            update_fields=update_fields,
             *args, **kwargs)
 
         if is_new:
@@ -124,11 +135,13 @@ class Card(models.Model):
         return Card(
             owner_id=owner_id,
             deck_id=target_fact.deck_id,
+            jmdict_id=self.jmdict_id,
             fact=target_fact,
             template=self.template,
             active=self.active,
             suspended=self.suspended,
             new_card_ordinal=self.new_card_ordinal,
+            created_or_modified_at=datetime.utcnow(),
         )
 
     @property

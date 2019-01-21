@@ -64,6 +64,7 @@ def _copy_facts_to_subscribers(facts, subscribers):
         copy_attrs = [
             'active', 'suspended', 'new_fact_ordinal',
             'expression', 'reading', 'meaning', 'example_sentence',
+            'jmdict_id',
         ]
         fact_kwargs = {attr: getattr(shared_fact, attr) for attr in copy_attrs}
 
@@ -104,8 +105,9 @@ def _copy_facts_to_subscribers(facts, subscribers):
     # Refresh denormalized card count.
     for subscriber_deck_id in updated_subscriber_deck_ids:
         Deck.objects.filter(id=subscriber_deck_id).update(
-            card_count=
-            Card.objects.filter(deck_id=subscriber_deck_id).available().count(),
+            card_count=Card.objects.filter(
+                deck_id=subscriber_deck_id,
+            ).available().count(),
         )
 
 
