@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+import asyncio
 import re
 from datetime import datetime
 from urllib.parse import urlparse, urlunparse, urljoin
@@ -10,7 +11,8 @@ import requests
 from django.conf import settings
 from feedgen.feed import FeedGenerator
 from lxml.cssselect import CSSSelector
-from requests_html import HTMLSession
+from lxml import etree
+from requests_html import AsyncHTMLSession
 
 ENTRY_COUNT = 18
 
@@ -27,7 +29,27 @@ def _get_image_url_from_video(video_url):
     return src
 
 
-def _get_image_url(response, nhk_url):
+def _absolute_url(response, url):
+    # Parse the URL with stdlib.
+    parsed = urlparse(url)._asdict()
+
+    # If link is relative, then join it with base_url.
+    if not parsed['netloc']:
+        return urljoin(response.html.url, url)
+
+    # Link is absolute; if it lacks a scheme, add one from base_url.
+    if not parsed['scheme']:
+        parsed['scheme'] = urlparse(response.html.url).scheme
+
+        # Reconstruct the URL to incorporate the new scheme.
+        parsed = (v for v in parsed.values())
+        return urlunparse(parsed)
+
+    # Link is absolute and complete with scheme; nothing to be done here.
+    return url
+
+
+def _get_image_url(response):
     try:
         src = (
             response.html
@@ -47,23 +69,22 @@ def _get_image_url(response, nhk_url):
         except AttributeError:
             return None
 
-    # Parse the image URL with stdlib.
-    parsed = urlparse(src)._asdict()
+    return _absolute_url(response, src)
 
-    # If link is relative, then join it with base_url.
-    if not parsed['netloc']:
-        return urljoin(response.html.url, src)
 
-    # Link is absolute; if it lacks a scheme, add one from base_url.
-    if not parsed['scheme']:
-        parsed['scheme'] = urlparse(response.html.url).scheme
+async def _get_voice_frame_url(response):
+    if not response.html.find('a.toggle-audio'):
+        return None
 
-        # Reconstruct the URL to incorporate the new scheme.
-        parsed = (v for v in parsed.values())
-        return urlunparse(parsed)
+    page = response.html.page
 
-    # Link is absolute and complete with scheme; nothing to be done here.
-    return src
+    #await page.click('article-main__date')
+    await page.click('a.toggle-audio')
+    await page.waitForSelector('.audio-player iframe')
+
+    iframe = await page.querySelector('.audio-player iframe')
+    src = await page.evaluate('(iframe) => iframe.src', iframe)
+    return _absolute_url(response, src)
 
 
 def _get_comments(reddit, post):
@@ -82,30 +103,55 @@ def _inject_comments(reddit, post, content):
         return content
 
     content = (
-         '<p><a href="{}" target="_blank">{} translation comment{}</a></p>'
+        '<p><a href="{}" target="_blank">{} translation{} on Reddit'
+        '</a></p>'
         .format(
             comments_url, comments_count, 's' if comments_count > 1 else '')
     ) + content
 
     return content
 
-def _clean_content(content):
-    trees = lxml.html.fragments_fromstring(content)
-    content_tree = [tree for tree in trees if tree.get('class') == 'md'][0]
 
-    # Remove URL and blank line.
-    for _ in range(2):
-        content_tree.remove(content_tree[0])
-
-    # Remove bot signature.
-    for _ in range(2):
-        content_tree.remove(content_tree[-1])
-
-    return lxml.html.tostring(
-        content_tree, pretty_print=True, encoding='unicode')
+def _article_body_html(response):
+    #print(response.html.find('.article-body'))
+    article_body = response.html.find('.article-body', first=True).lxml
+    for ruby in article_body.cssselect('ruby'):
+        ruby.remove(ruby.find('rt'))
+    etree.strip_tags(article_body, 'ruby', 'span', 'a')
+    return etree.tostring(article_body).decode('utf-8')
 
 
-def generate_nhk_easy_news_feed():
+async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
+    image_url = _get_image_url(response)
+    voice_frame_url = await _get_voice_frame_url(response)
+
+    content = _article_body_html(response)
+
+    if image_url is not None:
+        content = (
+            '<p><img src="{}" /></p>'.format(image_url) + content)
+
+    content = _inject_comments(
+        reddit, post, content)
+
+    content = f'<article class="article">{content}</article>'
+
+    entry = fg.add_entry()
+    entry.id(post.link)
+    entry.link({'href': nhk_url})
+    entry.title(post.title)
+
+    entry.summary(content)
+    #TODO: entry.published()
+    entry.content(content, type='CDATA')
+
+    return entry
+
+
+async def generate_nhk_easy_news_feed(
+    entry_count=ENTRY_COUNT,
+    return_content_only=False,
+):
     feed_items = []
 
     fg = FeedGenerator()
@@ -114,7 +160,8 @@ def generate_nhk_easy_news_feed():
     fg.language('ja')
 
     feed = feedparser.parse(
-        'https://www.reddit.com/r/NHKEasyNews.rss?limit={}'.format(ENTRY_COUNT))
+        'https://www.reddit.com/r/NHKEasyNews.rss?limit={}'
+        .format(entry_count))
 
     reddit = praw.Reddit(
         client_id=settings.REDDIT_CLIENT_ID,
@@ -124,44 +171,40 @@ def generate_nhk_easy_news_feed():
         user_agent='Manabi Reader',
     )
 
+    entries = []
     for post in reversed(feed.entries):
         if 'discord server' in post.title.lower():
             continue
 
-        content = post.content[0].value
-
+        reddit_content = post.content[0].value
         nhk_url_match = re.search(
-            r'(http://www3.nhk.or.jp/news/easy/.*?\.html)', content)
+            r'(http://www3.nhk.or.jp/news/easy/.*?\.html)', reddit_content)
         if nhk_url_match is None:
             continue
         nhk_url = nhk_url_match.group()
 
-        session = HTMLSession()
-        r = session.get(nhk_url)
-        r.html.render()
+        session = AsyncHTMLSession()
+        r = await session.get(nhk_url, timeout=60)
+        await r.html.arender(keep_page=True)
 
-        image_url = _get_image_url(r, nhk_url)
+        entry = await _process_and_add_entry(
+            post, nhk_url, r, fg, reddit)
+        entries.append(entry)
 
-        cleaned_content = _clean_content(content)
+        #r.html.page.close()
+        await session.close()
 
-        if image_url is not None:
-            cleaned_content = (
-                '<p><img src="{}" /></p>'.format(image_url) + cleaned_content)
+        if entry is None:
+            continue
 
-        cleaned_content = _inject_comments(
-            reddit, post, cleaned_content)
+    if return_content_only:
+        html = ''
+        for entry in reversed(entries):
+            title = entry.title()
+            content = entry.content()['content']
+            html += f'<article><h1>{title}</h1>{content}</article>'
+        return html
 
-        cleaned_content = '<article class="article">{}</article>'.format(
-            cleaned_content)
-
-        entry = fg.add_entry()
-        entry.id(post.link)
-        entry.link({'href': nhk_url})
-        entry.title(post.title)
-
-        entry.summary(cleaned_content)
-        #TODO: entry.published()
-        entry.content(cleaned_content, type='CDATA')
 
     if fg.entry() == 0:
         raise Exception("Generated zero feed entries from NHK Easy News.")

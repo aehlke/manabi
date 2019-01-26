@@ -71,7 +71,7 @@ social-auth-app-django = "*"
 mecab-python3 = {git = "https://github.com/SamuraiT/mecab-python3.git",ref = "aaac65033963474d02b3c8a9bb27c6e6fa214161"}
 jcconv = {git = "https://github.com/besser82/jcconv.git",ref = "v0.2.4"}
 django-cachecow = {git = "https://github.com/aehlke/django-cachecow.git"}
-django-autoslug = {git = "https://github.com/iplweb/django-autoslug-iplweb.git",ref = "be379b83d90725b882c2ed38c9279167e69b6c7f"}
+django-autoslug = {git = "https://github.com/justinmayer/django-autoslug.git",ref = "4dc75083d84265e019a900d636273c731457193d"}
 freezegun = "==0.3.10"
 django-impersonate = "*"
-requests-html = "*"
+requests-html = {git = "https://github.com/kennethreitz/requests-html.git",ref = "47b2ad86cab49167fb15cce787efca74c4de9fdd"}
