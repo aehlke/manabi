@@ -9,6 +9,7 @@ beginner_feeds:
     rss_url: https://manabi.io/media/feeds/nhk_easy_news.rss
     rss_contains_full_content: true
     meaningful_content_min_length: 10
+    inject_entry_image_into_header: true
     icon_url: http://www3.nhk.or.jp/favicon.ico
     description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
@@ -67,6 +68,7 @@ categories:
         rss_url: https://manabi.io/media/feeds/nhk_easy_news.rss
         rss_contains_full_content: true
         meaningful_content_min_length: 10
+        inject_entry_image_into_header: true
         icon_url: http://www3.nhk.or.jp/favicon.ico
         description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
@@ -75,10 +77,10 @@ categories:
         icon_url: http://www.nippon.com/img/favicon.ico
         description: Scholarly analysis and entertaining articles on Japan's society, economy, and politics.
 
-      - title: Business Insider Japan
-        rss_url: https://www.businessinsider.jp/feed/index.xml
-        icon_url: https://www.businessinsider.jp/favicon.ico
-        description: New Tokyo-headquartered offshoot of Business Insider launched in 2017.
+      #- title: Business Insider Japan
+      #  rss_url: https://www.businessinsider.jp/feed/index.xml
+      #  icon_url: https://www.businessinsider.jp/favicon.ico
+      #  description: New Tokyo-headquartered offshoot of Business Insider launched in 2017.
 
       - title: RocketNews24
         rss_url: http://feeds.rocketnews24.com/rocketnews24

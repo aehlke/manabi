@@ -96,20 +96,19 @@ def _get_comments(reddit, post):
     return (post.link, submission.num_comments)
 
 
-def _inject_comments(reddit, post, content):
+def _add_comments(reddit, post, fg):
     comments_url, comments_count = _get_comments(reddit, post)
 
     if comments_count == 0:
-        return content
+        return
 
-    content = (
-        '<p><a href="{}" target="_blank">{} translation{} on Reddit'
-        '</a></p>'
-        .format(
-            comments_url, comments_count, 's' if comments_count > 1 else '')
-    ) + content
+    plural_suffix = 's' if comments_count > 1 else ''
 
-    return content
+    fg.link(
+        href=comments_url,
+        rel='reddit-translations',
+        title=f'{comments_count} translation{plural_suffix} on Reddit',
+    )
 
 
 def _article_body_html(response):
@@ -122,17 +121,12 @@ def _article_body_html(response):
 
 
 async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
-    image_url = _get_image_url(response)
-    voice_frame_url = await _get_voice_frame_url(response)
-
     content = _article_body_html(response)
 
+    image_url = _get_image_url(response)
     if image_url is not None:
         content = (
             '<p><img src="{}" /></p>'.format(image_url) + content)
-
-    content = _inject_comments(
-        reddit, post, content)
 
     content = f'<article class="article">{content}</article>'
 
@@ -140,10 +134,17 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
     entry.id(post.link)
     entry.link({'href': nhk_url})
     entry.title(post.title)
+    entry.link(href=image_url, rel='enclosure', type='image/jpeg')
 
     entry.summary(content)
     #TODO: entry.published()
     entry.content(content, type='CDATA')
+
+    content = _add_comments(reddit, post, fg)
+
+    voice_frame_url = await _get_voice_frame_url(response)
+    if voice_frame_url is not None:
+        entry.link(href=voice_frame_url, rel='voice-frame')
 
     return entry
 
