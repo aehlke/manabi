@@ -175,11 +175,11 @@ categories:
         extract_entry_image_from_content: true
         description: Gorgeous landscape photography from around Osaka, Kyoto, and Nara.
 
-      - title: Z TOKYO
-        rss_url: https://ztokyo.net/feed/ja.rss
-        rss_contains_full_content: true
-        icon_url: https://ztokyo.net/favicon.ico
-        description: Online bilingual magazine bringing contemporary Tokyo culture to the world.
+      #- title: Z TOKYO
+      #  rss_url: https://ztokyo.net/feed/ja.rss
+      #  rss_contains_full_content: true
+      #  icon_url: https://ztokyo.net/favicon.ico
+      #  description: Online bilingual magazine bringing contemporary Tokyo culture to the world.
 
   - title: Folktales
     background_image_url: https://manabi.io/static/reader/category_images/folktales.png

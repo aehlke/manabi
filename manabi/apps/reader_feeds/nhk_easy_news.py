@@ -96,7 +96,7 @@ def _get_comments(reddit, post):
     return (post.link, submission.num_comments)
 
 
-def _add_comments(reddit, post, fg):
+def _add_comments(reddit, post, entry):
     comments_url, comments_count = _get_comments(reddit, post)
 
     if comments_count == 0:
@@ -104,7 +104,7 @@ def _add_comments(reddit, post, fg):
 
     plural_suffix = 's' if comments_count > 1 else ''
 
-    fg.link(
+    entry.link(
         href=comments_url,
         rel='reddit-translations',
         title=f'{comments_count} translation{plural_suffix} on Reddit',
@@ -136,11 +136,10 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
     entry.title(post.title)
     entry.link(href=image_url, rel='enclosure', type='image/jpeg')
 
-    entry.summary(content)
     #TODO: entry.published()
     entry.content(content, type='CDATA')
 
-    content = _add_comments(reddit, post, fg)
+    _add_comments(reddit, post, entry)
 
     voice_frame_url = await _get_voice_frame_url(response)
     if voice_frame_url is not None:
