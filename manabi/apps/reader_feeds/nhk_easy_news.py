@@ -122,7 +122,8 @@ def _article_body_html(response):
 
 async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
     content = _article_body_html(response)
-    print(content)
+
+    entry = fg.add_entry()
 
     image_url = _get_image_url(response)
     if image_url is not None:
@@ -132,7 +133,6 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
 
     content = f'<article class="article">{content}</article>'
 
-    entry = fg.add_entry()
     entry.id(post.link)
     entry.link({'href': nhk_url})
     entry.title(post.title)
