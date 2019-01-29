@@ -128,6 +128,7 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
     if image_url is not None:
         content = (
             '<p><img src="{}" /></p>'.format(image_url) + content)
+        entry.link(href=image_url, rel='enclosure', type='image/jpeg')
 
     content = f'<article class="article">{content}</article>'
 
@@ -135,7 +136,6 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
     entry.id(post.link)
     entry.link({'href': nhk_url})
     entry.title(post.title)
-    entry.link(href=image_url, rel='enclosure', type='image/jpeg')
 
     #TODO: entry.published()
     entry.content(content, type='CDATA')
