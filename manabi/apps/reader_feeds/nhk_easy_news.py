@@ -112,16 +112,17 @@ def _add_comments(reddit, post, entry):
 
 
 def _article_body_html(response):
-    #print(response.html.find('.article-body'))
     article_body = response.html.find('.article-body', first=True).lxml
     for ruby in article_body.cssselect('ruby'):
         ruby.remove(ruby.find('rt'))
     etree.strip_tags(article_body, 'ruby', 'span', 'a')
-    return etree.tostring(article_body).decode('utf-8')
+    # For some reason, article_body gets wrapped in <html/>
+    return etree.tostring(article_body[0], method='html').decode('utf-8')
 
 
 async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
     content = _article_body_html(response)
+    print(content)
 
     image_url = _get_image_url(response)
     if image_url is not None:
@@ -202,7 +203,7 @@ async def generate_nhk_easy_news_feed(
         for entry in reversed(entries):
             title = entry.title()
             content = entry.content()['content']
-            html += f'<article><h1>{title}</h1>{content}</article>'
+            html += f'<h1>{title}</h1>{content}'
         return html
 
 
