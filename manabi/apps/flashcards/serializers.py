@@ -231,7 +231,7 @@ class FactSerializer(ManabiModelSerializer):
         (fact, _) = Fact.objects.update_or_create(
             deck=validated_data['deck'],
             expression=validated_data['expression'],
-            reading=validated_data['reading'],
+            reading=validated_data.get('reading'),
             meaning=validated_data['meaning'],
             defaults=validated_data,
         )
