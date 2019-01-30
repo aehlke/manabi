@@ -107,7 +107,7 @@ def _add_comments(reddit, post, entry):
     entry.link(
         href=comments_url,
         rel='reddit-translations',
-        title=f'{comments_count} translation{plural_suffix} on Reddit',
+        title=f'{comments_count} Translation{plural_suffix} on Reddit',
     )
 
 
