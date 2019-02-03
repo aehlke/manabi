@@ -57,7 +57,7 @@ categories:
         description: News articles with curated commentary from the 2channel message board.
 
       - title: Huffington Post
-        rss_url: https://www.huffingtonpost.jp/feeds/verticals/japan/news.xml
+        rss_url: https://www.huffingtonpost.jp/feeds/index.xml
         rss_contains_full_content: true
         extract_entry_image_from_content: true
         inject_entry_image_into_header: false
@@ -153,13 +153,6 @@ categories:
         rss_contains_full_content: true
         icon_url: http://jolijoli.blog.jp/img/profile.jpg
         description: Recipes & copious photos of the author's cats. Each post is made up of photos with short captions—easy to digest.
-
-      - title: Huffington Post – Blog
-        rss_url: https://www.huffingtonpost.jp/feeds/verticals/japan/blog.xml
-        icon_url: https://www.huffingtonpost.jp/favicon.ico
-        rss_contains_full_content: true
-        extract_entry_image_from_content: true
-        description: Blog articles from HuffPost Japan.
 
       #- title: Tedium Museum
       #  rss_url: http://rssblog.ameba.jp/art00art/rss20.xml
