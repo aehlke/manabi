@@ -219,7 +219,7 @@ class Fact(models.Model):
         self.active = False
         self.save(update_fields=['active'])
 
-        new_subscriber_cards = subscriber_cards.filter(
+        new_subscriber_cards = Card.objects.filter(
             fact__in=self.syncing_subscriber_facts,
             last_reviewed_at__isnull=True,
         )
