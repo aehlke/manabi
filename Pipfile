@@ -1,5 +1,5 @@
 [requires]
-python_version = "3.7"
+python_version = "3.6"
 
 [[source]]
 url = "https://pypi.python.org/simple"
