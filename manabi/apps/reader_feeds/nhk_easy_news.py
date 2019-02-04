@@ -204,10 +204,13 @@ async def generate_nhk_easy_news_feed(
                 if attempt < ATTEMPTS_PER_ENTRY - 1:
                     continue
                 raise
-            entries.append(entry)
 
-            #r.html.page.close()
-            await session.close()
+            if entry is not None:
+                entries.append(entry)
+
+                #r.html.page.close()
+                await session.close()
+                break
 
         if entry is None:
             continue
