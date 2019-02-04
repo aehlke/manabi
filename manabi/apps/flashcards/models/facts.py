@@ -48,7 +48,8 @@ class FactQuerySet(QuerySet):
                 )
                 # Sibling is currently in the client-side review queue.
                 | Q(card__id__in=excluded_card_ids)
-                # Sibling is failed. (Either sibling's due, or it's shown before new cards.)
+                # Sibling is failed. (Either sibling's due, or it's shown
+                # before new cards.)
                 | Q(card__last_review_grade=GRADE_NONE)
             )
         )
@@ -216,6 +217,8 @@ class Fact(models.Model):
 
     @transaction.atomic
     def delete(self, *args, **kwargs):
+        from manabi.apps.flashcards.models import Card
+
         self.active = False
         self.save(update_fields=['active'])
 
