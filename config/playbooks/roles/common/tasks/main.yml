@@ -59,6 +59,8 @@
       - python-setuptools
       - python3-dev
       - python3-pip
+      #- python3.7
+      #- python3.7-dev
       - silversearcher-ag
       - libxss1
       - libasound2

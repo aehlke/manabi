@@ -1,5 +1,5 @@
 [requires]
-python_version = "3.6"
+python_version = "3.7"
 
 [[source]]
 url = "https://pypi.python.org/simple"
@@ -15,9 +15,9 @@ Fabric = "==1.14.1"
 django-extensions = "*"
 drf-extensions = "==0.4.0"
 gunicorn = "==19.9.0"
-redis = "==3.0.1"
-hiredis = "==0.3.1"
-pytz = "==2013d"
+redis = "==3.1.0"
+hiredis = "==1.0.0"
+pytz = "==2018.9"
 django-allauth = "==0.37.0"
 django-nose = "*"
 django-lazysignup = "==1.0.2"
@@ -50,11 +50,11 @@ cssselect = "==1.0.1"
 abdb104 = {file = "https://github.com/dcramer/django-devserver/archive/master.zip"}
 sqlparse = "*"
 Werkzeug = "*"
-line_profiler = "*"
+# line_profiler = "*" # Currently broken in Python 3.7
 bpython = "*"
 Unidecode = "*"
 e39c1a3 = {file = "https://github.com/aehlke/django-snippetscream/archive/master.zip"}
-WebOb = "==1.8.1"
+WebOb = "==1.8.5"
 django-timezones = "==0.2"
 05b7bbf = {file = "https://github.com/aehlke/django-catnap/archive/master.zip"}
 "rfc3339" = "==6"
@@ -64,7 +64,7 @@ itunes-iap = {git = "https://github.com/youknowone/itunes-iap.git",ref = "452afa
 "psycopg2" = "*"
 feedparser = "*"
 praw = "*"
-ipython = "<6"
+ipython = "==7.2.0"
 social-auth-app-django = "*"
 "django-rest-framework-social-oauth2" = "*"
 mecab-python3 = {git = "https://github.com/SamuraiT/mecab-python3.git",ref = "aaac65033963474d02b3c8a9bb27c6e6fa214161"}
