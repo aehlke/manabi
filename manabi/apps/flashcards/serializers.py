@@ -233,6 +233,7 @@ class FactSerializer(ManabiModelSerializer):
             expression=validated_data['expression'],
             reading=validated_data.get('reading'),
             meaning=validated_data['meaning'],
+            jmdict_id=validated_data['jmdict_id'],
             defaults=validated_data,
         )
         return fact

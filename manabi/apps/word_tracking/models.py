@@ -20,7 +20,7 @@ class TrackedWords:
             self._tracked_words = Card.objects.filter(
                 owner=self.user,
                 active=True,
-            ).annotate(
+            ).order_by('id').annotate(
                 is_mature=Case(
                     When(interval__gte=MATURE_INTERVAL_MIN, then=Value(True)),
                     default=Value(False),
