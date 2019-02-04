@@ -15,6 +15,7 @@ from lxml import etree
 from requests_html import AsyncHTMLSession
 
 ENTRY_COUNT = 18
+ATTEMPTS_PER_ENTRY = 5
 
 
 def _get_image_url_from_video(video_url):
@@ -111,8 +112,15 @@ def _add_comments(reddit, post, entry):
     )
 
 
+class NoArticleBodyError(ValueError):
+    pass
+
+
 def _article_body_html(response):
-    article_body = response.html.find('.article-body', first=True).lxml
+    try:
+        article_body = response.html.find('.article-body', first=True).lxml
+    except AttributeError:
+        raise NoArticleBodyError()
     for ruby in article_body.cssselect('ruby'):
         ruby.remove(ruby.find('rt'))
     etree.strip_tags(article_body, 'ruby', 'span', 'a')
@@ -184,16 +192,22 @@ async def generate_nhk_easy_news_feed(
             continue
         nhk_url = nhk_url_match.group()
 
-        session = AsyncHTMLSession()
-        r = await session.get(nhk_url, timeout=60)
-        await r.html.arender(keep_page=True)
+        for attempt in range(ATTEMPTS_PER_ENTRY):
+            session = AsyncHTMLSession()
+            r = await session.get(nhk_url, timeout=60)
+            await r.html.arender(keep_page=True)
 
-        entry = await _process_and_add_entry(
-            post, nhk_url, r, fg, reddit)
-        entries.append(entry)
+            try:
+                entry = await _process_and_add_entry(
+                    post, nhk_url, r, fg, reddit)
+            except NoArticleBodyError:
+                if attempt < ATTEMPTS_PER_ENTRY - 1:
+                    continue
+                raise
+            entries.append(entry)
 
-        #r.html.page.close()
-        await session.close()
+            #r.html.page.close()
+            await session.close()
 
         if entry is None:
             continue
