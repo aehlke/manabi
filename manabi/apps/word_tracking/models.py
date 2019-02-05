@@ -20,7 +20,7 @@ class TrackedWords:
             self._tracked_words = Card.objects.filter(
                 owner=self.user,
                 active=True,
-            ).order_by('id').annotate(
+            ).annotate(
                 is_mature=Case(
                     When(interval__gte=MATURE_INTERVAL_MIN, then=Value(True)),
                     default=Value(False),
@@ -31,11 +31,12 @@ class TrackedWords:
                     default=Value(None),
                     output_field=models.CharField(),
                 ),
-            ).values('jmdict_id', 'reading', 'is_mature').distinct()
+            ).distinct().values('jmdict_id', 'reading', 'is_mature')
         return self._tracked_words
 
     @property
     def learning_jmdict_ids(self):
+        print(self._get_tracked_words())
         return [
             word['jmdict_id'] for word in self._get_tracked_words()
             if not word['is_mature'] and word['jmdict_id'] is not None
