@@ -91,8 +91,10 @@ class SubscriptionManager(models.Manager):
         if shared_secret != settings.ITUNES_SHARED_SECRET:
             raise PermissionDenied('Invalid iTunes shared secret.')
 
+        receipt_info = notification.get(
+            'latest_receipt_info', notification['latest_expired_receipt_info'])
         SubscriptionUpdateNotificationLogItem.objects.create(
-            receipt_info=notification['latest_receipt_info'],
+            receipt_info=receipt_info,
             original_transaction_id=
                 notification['latest_receipt_info']['original_transaction_id'])
 
@@ -107,8 +109,6 @@ class SubscriptionManager(models.Manager):
             'RENEWAL', 'INTERACTIVE_RENEWAL',
         ]:
             receipt = notification['latest_receipt']
-            receipt_info = notification['latest_receipt_info']
-
             itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
 
             original_transaction_id = receipt_info['original_transaction_id']
@@ -118,12 +118,10 @@ class SubscriptionManager(models.Manager):
             subscription.active = True
         elif notification_type == 'CANCEL':
             receipt = itunes_receipt['latest_expired_receipt']
-            receipt_info = notification['latest_expired_receipt_info']
 
             itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
 
-            original_transaction_id = (
-                notification['latest_receipt_info']['original_transaction_id'])
+            original_transaction_id = receipt_info['original_transaction_id']
 
             subscription = Subscription.objects.get(
                 original_transaction_id=original_transaction_id)
