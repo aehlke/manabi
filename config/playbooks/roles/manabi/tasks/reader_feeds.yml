@@ -16,3 +16,4 @@
     hour: 1
     user: root
     job: 'killall chrome --older-than 4h'
+  become: yes
