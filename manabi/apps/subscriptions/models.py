@@ -91,8 +91,11 @@ class SubscriptionManager(models.Manager):
         if shared_secret != settings.ITUNES_SHARED_SECRET:
             raise PermissionDenied('Invalid iTunes shared secret.')
 
-        receipt_info = notification.get(
-            'latest_receipt_info', notification['latest_expired_receipt_info'])
+        try:
+            receipt_info = notification['latest_receipt_info']
+        except KeyError:
+            receipt_info = notification['latest_expired_receipt_info']
+
         SubscriptionUpdateNotificationLogItem.objects.create(
             receipt_info=receipt_info,
             original_transaction_id=
