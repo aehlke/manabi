@@ -2,11 +2,17 @@
 
 - name: Generate Manabi Reader RSS feeds on cron
   cron:
-    name: "Generate feed {{ item }}"
+    name: "{{ item }}"
     minute: 10
     hour: '*/8'
     user: ubuntu
     job: 'PATH=$PATH:/usr/local/bin bash -lc "cd /home/ubuntu/manabi && cron-sentry --report-all pipenv run python manage.py {{ item }}" >> /var/log/manabi_reader_feeds/{{ item }}.log 2&>1'
-    name: "{{ item }}"
   with_items:
       - generate_nhk_easy_news_feed
+
+- name: Kill zombie Chrome processes on cron
+  cron:
+    name: Kill zombie Chrome processes
+    hour: 1
+    user: root
+    job: 'killall chrome --older-than 4h'
