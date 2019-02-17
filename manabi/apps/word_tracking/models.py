@@ -21,6 +21,11 @@ class TrackedWords:
                 owner=self.user,
                 active=True,
             ).annotate(
+                is_new=Case(
+                    When(last_reviewed_at__isnull=True, then=Value(True)),
+                    default=Value(False),
+                    output_field=models.BooleanField(),
+                ),
                 is_mature=Case(
                     When(interval__gte=MATURE_INTERVAL_MIN, then=Value(True)),
                     default=Value(False),
@@ -35,6 +40,14 @@ class TrackedWords:
         return self._tracked_words
 
     @property
+    def new_jmdict_ids(self):
+        print(self._get_tracked_words())
+        return [
+            word['jmdict_id'] for word in self._get_tracked_words()
+            if word['is_new'] and word['jmdict_id'] is not None
+        ]
+
+    @property
     def learning_jmdict_ids(self):
         print(self._get_tracked_words())
         return [
@@ -47,6 +60,13 @@ class TrackedWords:
         return [
             word['jmdict_id'] for word in self._get_tracked_words()
             if word['is_mature'] and word['jmdict_id'] is not None
+        ]
+
+    @property
+    def new_words_without_jmdict_ids(self):
+        return [
+            word['reading'] for word in self._get_tracked_words()
+            if word['is_new'] and word['jmdict_id'] is None
         ]
 
     @property
