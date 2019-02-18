@@ -36,7 +36,7 @@ class TrackedWords:
                     default=Value(None),
                     output_field=models.CharField(),
                 ),
-            ).distinct().values('jmdict_id', 'reading', 'is_mature')
+            ).distinct().values('jmdict_id', 'reading', 'is_new', 'is_mature')
         return self._tracked_words
 
     @property
@@ -52,7 +52,11 @@ class TrackedWords:
         print(self._get_tracked_words())
         return [
             word['jmdict_id'] for word in self._get_tracked_words()
-            if not word['is_mature'] and word['jmdict_id'] is not None
+            if (
+                not word['is_new']
+                and not word['is_mature']
+                and word['jmdict_id'] is not None
+            )
         ]
 
     @property
@@ -73,7 +77,11 @@ class TrackedWords:
     def learning_words_without_jmdict_ids(self):
         return [
             word['reading'] for word in self._get_tracked_words()
-            if not word['is_mature'] and word['jmdict_id'] is None
+            if (
+                not word['is_new']
+                and not word['is_mature']
+                and word['jmdict_id'] is None
+            )
         ]
 
     @property
