@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from manabi.apps.flashcards.models.constants import (
     TRIAL_DAILY_REVIEW_CAP,
     DEFAULT_TIME_ZONE,
@@ -15,7 +17,7 @@ def cards_remaining_in_daily_trial(user, time_zone=None):
     if user.is_anonymous:
         raise ValueError("Requires authenticated user.")
 
-    if user.username in ['alextest']:
+    if user.username in settings.FREE_SUBSCRIPTION_USERNAMES:
         return None
 
     if user_is_active_subscriber(user):

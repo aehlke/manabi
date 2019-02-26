@@ -2,6 +2,7 @@
 
 from datetime import datetime
 
+from django.conf import settings
 from django.utils.lru_cache import lru_cache
 
 from manabi.apps.flashcards.models.constants import (
@@ -227,7 +228,7 @@ class ReviewAvailabilities:
         if self.user.is_anonymous:
             return
         # FIXME
-        if self.user.username in ['alextest']:
+        if self.user.username in settings.FREE_SUBSCRIPTION_USERNAMES:
             return
         if self._cards_remaining_in_daily_trial is None:
             return
@@ -246,7 +247,7 @@ class ReviewAvailabilities:
         if self.user.is_anonymous:
             return False
         # FIXME
-        if self.user.username in ['alextest']:
+        if self.user.username in settings.FREE_SUBSCRIPTION_USERNAMES:
             return False
         cards_remaining = self._cards_remaining_in_daily_trial
         return cards_remaining == 0
