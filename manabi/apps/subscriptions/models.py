@@ -97,7 +97,11 @@ class SubscriptionManager(models.Manager):
         except KeyError:
             receipt_info = notification['latest_expired_receipt_info']
 
+        notification_type = notification['notification_type']
+
         SubscriptionUpdateNotificationLogItem.objects.create(
+            production_environment=(notification['environment'] == 'PROD'),
+            notification_type=notification_type,
             receipt_info=receipt_info,
             original_transaction_id=
                 notification['latest_receipt_info']['original_transaction_id'])
@@ -106,8 +110,6 @@ class SubscriptionManager(models.Manager):
             environment = itunesiap.env.production
         else:
             environment = itunesiap.env.sandbox
-
-        notification_type = notification['notification_type']
 
         if notification_type in [
             'RENEWAL', 'INTERACTIVE_RENEWAL',
@@ -189,6 +191,8 @@ class InAppPurchaseLogItem(models.Model):
 
 
 class SubscriptionUpdateNotificationLogItem(models.Model):
+    notification_type = models.CharField(max_length=40, blank=True)
+    production_environment = models.BooleanField(default=True)
     receipt_info = JSONField(editable=False)
     original_transaction_id = models.CharField(max_length=300, blank=True)
     created_at = models.DateTimeField(auto_now_add=True, editable=False)
