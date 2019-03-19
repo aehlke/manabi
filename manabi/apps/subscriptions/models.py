@@ -198,3 +198,12 @@ class SubscriptionUpdateNotificationLogItem(models.Model):
 
     class Meta:
         ordering = ['-created_at']
+
+
+class PurchasedSubscriptionProduct:
+    def __init__(self, user, itunes_receipt):
+        self._user = user
+        self.itunes_receipt = itunes_receipt
+
+    def subscription_is_active(self):
+        return user_is_active_subscriber(self._user)

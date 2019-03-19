@@ -12,10 +12,13 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.serializers import ValidationError
 
 from manabi.apps.subscriptions import products
-from manabi.apps.subscriptions.models import Subscription
+from manabi.apps.subscriptions.models import (
+    Subscription,
+    PurchasedSubscriptionProduct,
+)
 from manabi.apps.subscriptions.serializers import (
     PurchasingOptionsSerializer,
-    PurchasedSubscriptionProduct,
+    PurchasedSubscriptionProductSerializer,
 )
 
 logger = logging.getLogger(__name__)
@@ -28,11 +31,13 @@ def purchasing_options(request):
 
 
 class SubscriptionViewSet(viewsets.GenericViewSet):
-    serializer_class = PurchasedSubscriptionProduct
+    serializer_class = PurchasedSubscriptionProductSerializer
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
-        serializer = self.get_serializer(data=request.data)
+        purchased_subscription_product = PurchasedSubscriptionProduct(
+            request.user, request.data['itunes_receipt'])
+        serializer = self.get_serializer(purchased_subscription_product)
         if not serializer.is_valid():
             return Response(
                 serializer.errors,

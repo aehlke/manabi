@@ -6,8 +6,9 @@ class SubscriptionProduct(serializers.Serializer):
     subtitle = serializers.CharField()
 
 
-class PurchasedSubscriptionProduct(serializers.Serializer):
+class PurchasedSubscriptionProductSerializer(serializers.Serializer):
     itunes_receipt = serializers.CharField()
+    subscription_is_active = serializers.BooleanField(read_only=True)
 
 
 class PurchasingOptionsSerializer(serializers.Serializer):

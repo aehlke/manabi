@@ -18,6 +18,7 @@ def _get_bool(request, field_name):
         raise ValidationError(
             "Invalid {} value.".format(field_name))
 
+
 def _get_timestamp(request, field_name):
     value = request.query_params.get(field_name)
     if value is None:
