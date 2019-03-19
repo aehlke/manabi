@@ -36,23 +36,24 @@ class SubscriptionViewSet(viewsets.GenericViewSet):
 
     def create(self, request):
         try:
-            purchased_subscription_product = PurchasedSubscriptionProduct(
-                request.user, request.data['itunes_receipt'])
+            itunes_receipt = request.data['itunes_receipt']
         except KeyError:
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST)
 
-        serializer = self.get_serializer(purchased_subscription_product)
-
         try:
             Subscription.objects.process_itunes_receipt(
-                request.user, serializer.data['itunes_receipt'])
+                request.user, itunes_receipt)
         except itunesiap.exc.InvalidReceipt:
             raven_client.captureException()
 
             raise ValidationError(
                 "Invalid iTunes receipt; please contact support.")
+
+        purchased_subscription_product = PurchasedSubscriptionProduct(
+            request.user, itunes_receipt)
+        serializer = self.get_serializer(purchased_subscription_product)
 
         return Response(serializer.data)
 
