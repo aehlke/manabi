@@ -35,13 +35,15 @@ class SubscriptionViewSet(viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated]
 
     def create(self, request):
-        purchased_subscription_product = PurchasedSubscriptionProduct(
-            request.user, request.data['itunes_receipt'])
-        serializer = self.get_serializer(purchased_subscription_product)
-        if not serializer.is_valid():
+        try:
+            purchased_subscription_product = PurchasedSubscriptionProduct(
+                request.user, request.data['itunes_receipt'])
+        except KeyError:
             return Response(
                 serializer.errors,
                 status=status.HTTP_400_BAD_REQUEST)
+
+        serializer = self.get_serializer(purchased_subscription_product)
 
         try:
             Subscription.objects.process_itunes_receipt(
