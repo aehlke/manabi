@@ -103,7 +103,7 @@ class SubscriptionManager(models.Manager):
             notification_type=notification_type,
             receipt_info=receipt_info,
             original_transaction_id=
-                notification['latest_receipt_info']['original_transaction_id'])
+                receipt_info['original_transaction_id'])
 
         if notification['environment'] == 'PROD':
             environment = itunesiap.env.production
@@ -138,6 +138,9 @@ class SubscriptionManager(models.Manager):
         elif notification_type == 'INITIAL_BUY':
             # Doesn't have an original_transaction_id yet so it's useless.
             # See https://forums.developer.apple.com/thread/98799
+            return
+        elif notification_type == 'DID_CHANGE_RENEWAL_STATUS':
+            # Indicates a change in the subscription renewal status.
             return
 
         subscription.sandbox = environment == itunesiap.env.sandbox
