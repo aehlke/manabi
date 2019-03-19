@@ -15,7 +15,6 @@ def _receipt_date_to_datetime(receipt_date):
 
 
 def user_is_active_subscriber(user):
-    return True
     try:
         subscription = Subscription.objects.get(
             subscriber=user,
