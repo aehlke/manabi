@@ -2,7 +2,7 @@
 
 dependencies:
   - role: ansible-supervisor_task
-    name: redis-server
+    task_name: redis-server
     directory: '{{ redis_install_dir }}'
     command: '{{ redis_install_dir }}/bin/redis-server /etc/redis/redis.conf'
     process_name: redis-server

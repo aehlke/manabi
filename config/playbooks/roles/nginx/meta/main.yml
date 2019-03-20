@@ -2,7 +2,7 @@
 
 dependencies:
   - role: ansible-supervisor_task
-    name: nginx
+    task_name: nginx
     command: /usr/sbin/nginx
     process_name: nginx
     user: root
