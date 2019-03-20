@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Case, When, Value, F
+from django.utils.functional import cached_property
 
 from manabi.apps.flashcards.models import Fact, Card
 from manabi.apps.flashcards.models.constants import (
@@ -37,56 +38,77 @@ class TrackedWords:
                     output_field=models.CharField(),
                 ),
             ).distinct().values('jmdict_id', 'reading', 'is_new', 'is_mature')
+            print(self._tracked_words)
         return self._tracked_words
 
-    @property
+    @cached_property
     def new_jmdict_ids(self):
-        print(self._get_tracked_words())
-        return [
+        new_jmdict_ids = set(
             word['jmdict_id'] for word in self._get_tracked_words()
-            if word['is_new'] and word['jmdict_id'] is not None
-        ]
+            if (
+                word['is_new']
+                and word['jmdict_id'] is not None
+            )
+        )
+        new_jmdict_ids -= self.learning_jmdict_ids
+        new_jmdict_ids -= self.known_jmdict_ids
+        return new_jmdict_ids
 
-    @property
+    @cached_property
     def learning_jmdict_ids(self):
-        print(self._get_tracked_words())
-        return [
+        learning_jmdict_ids = set(
             word['jmdict_id'] for word in self._get_tracked_words()
             if (
                 not word['is_new']
                 and not word['is_mature']
                 and word['jmdict_id'] is not None
             )
-        ]
+        )
+        learning_jmdict_ids -= self.known_jmdict_ids
+        return learning_jmdict_ids
 
-    @property
+    @cached_property
     def known_jmdict_ids(self):
-        return [
+        return set(
             word['jmdict_id'] for word in self._get_tracked_words()
-            if word['is_mature'] and word['jmdict_id'] is not None
-        ]
+            if (
+                word['is_mature']
+                and word['jmdict_id'] is not None
+            )
+        )
 
-    @property
+    @cached_property
     def new_words_without_jmdict_ids(self):
-        return [
+        new_words = set(
             word['reading'] for word in self._get_tracked_words()
-            if word['is_new'] and word['jmdict_id'] is None
-        ]
+            if (
+                word['is_new']
+                and word['jmdict_id'] is None
+            )
+        )
+        new_words -= self.learning_words_without_jmdict_ids
+        new_words -= self.known_words_without_jmdict_ids
+        return new_words
 
-    @property
+    @cached_property
     def learning_words_without_jmdict_ids(self):
-        return [
+        learning_words = set(
             word['reading'] for word in self._get_tracked_words()
             if (
                 not word['is_new']
                 and not word['is_mature']
                 and word['jmdict_id'] is None
             )
-        ]
+        )
+        learning_words -= self.known_words_without_jmdict_ids
+        return learning_words
 
-    @property
+    @cached_property
     def known_words_without_jmdict_ids(self):
-        return [
+        return set(
             word['reading'] for word in self._get_tracked_words()
-            if word['is_mature'] and word['jmdict_id'] is None
-        ]
+            if (
+                word['is_mature']
+                and word['jmdict_id'] is None
+            )
+        )

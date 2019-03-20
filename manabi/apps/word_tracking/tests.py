@@ -15,7 +15,7 @@ from manabi.test_helpers import (
 class WordTrackingAPITest(ManabiTestCase):
     def after_setUp(self):
         self.user = create_user()
-        create_sample_data(facts=2, user=self.user)
+        create_sample_data(facts=3, user=self.user)
 
         self.fact_without_jmdict_id = Fact.objects.filter(
             deck__owner=self.user).first()
@@ -65,3 +65,31 @@ class WordTrackingAPITest(ManabiTestCase):
             [self.fact_without_jmdict_id.reading])
 
         self.assertEqual(tracked_words['known_words_without_jmdict_ids'], [])
+
+    def test_no_dupes_across_categories(self):
+        card_id = self.fact_without_jmdict_id.card_set.first().id
+        self.api.review_card(self.user, card_id, GRADE_GOOD)
+
+        tracked_words = self.api.tracked_words(self.user)
+
+        seen_ids = set()
+        for field in [
+            'new_jmdict_ids',
+            'learning_jmdict_ids',
+            'known_jmdict_ids',
+        ]:
+            print(f"Checking {field}")
+            new_items = set(tracked_words[field])
+            self.assertEqual(len(new_items & seen_ids), 0)
+            seen_ids.update(new_items)
+
+        seen_words = set()
+        for field in [
+            'new_words_without_jmdict_ids',
+            'learning_words_without_jmdict_ids',
+            'known_words_without_jmdict_ids',
+        ]:
+            print(f"Checking {field}")
+            new_items = set(tracked_words[field])
+            self.assertEqual(len(new_items & seen_words), 0)
+            seen_words.update(new_items)

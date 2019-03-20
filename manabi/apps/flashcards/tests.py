@@ -85,7 +85,8 @@ class ReviewsAPITest(ManabiTestCase):
         self.assertTrue(count)
 
     def test_late_review(self):
-        grades = itertools.cycle([GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY])
+        grades = itertools.cycle(
+            [GRADE_NONE, GRADE_HARD, GRADE_GOOD, GRADE_EASY])
         for fact in self.facts:
             for grade, card in zip(grades, fact.card_set.all()):
                 card.due_at = datetime.utcnow() - timedelta(days=1)
