@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/manabi
     docker:
-      - image: circleci/python:3.6.5-stretch
+      - image: circleci/python:3.7.3
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
