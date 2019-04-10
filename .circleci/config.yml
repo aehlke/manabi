@@ -21,16 +21,16 @@ jobs:
       - restore_cache:
           keys:
           # This branch if available
-          - v2-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          - v3-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           # Default branch if not
-          - v2-dep-master-{{ checksum "Pipfile.lock" }}
+          - v3-dep-master-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
             sudo apt-get install mecab libmecab-dev mecab-ipadic mecab-ipadic-utf8 swig
-            sudo pip3 install pipenv
+            sudo pip install pipenv
             pipenv install --deploy
       - save_cache:
-          key: v2-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: v3-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ".venv"
             - "/usr/local/bin"
@@ -57,9 +57,9 @@ jobs:
       - restore_cache:
           keys:
           # This branch if available
-          - v2-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          - v3-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           # Default branch if not
-          - v2-deploy-dep-master-{{ checksum "Pipfile.lock" }}
+          - v3-deploy-dep-master-{{ checksum "Pipfile.lock" }}
       - run:
           command: |
             sudo apt-get install python-dev
@@ -70,7 +70,7 @@ jobs:
             rm ~/.vault_password.txt
             curl https://manabi.io
       - save_cache:
-          key: v2-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+          key: v3-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
             - ".venv"
             - "/usr/local/bin"

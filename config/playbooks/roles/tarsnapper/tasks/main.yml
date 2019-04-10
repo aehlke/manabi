@@ -3,7 +3,7 @@
 - name: Install Tarsnapper
   pip:
     name: tarsnapper
-    executable: pip3
+    executable: python3.7 -m pip
     state: latest
   become: yes
 

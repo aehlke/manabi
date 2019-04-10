@@ -3,7 +3,7 @@
 - name: Install cron-sentry
   pip:
     name: cron-sentry
-    executable: pip3
+    executable: python3.7 -m pip
     state: latest
   become: true
 
