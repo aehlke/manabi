@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 
 from django.contrib.auth.models import User
@@ -9,32 +9,50 @@ import itunesiap
 
 logger = logging.getLogger(__name__)
 
+GRACE_PERIOD = timedelta(days=365)
+
 
 def _receipt_date_to_datetime(receipt_date):
     return datetime.fromtimestamp(int(receipt_date) / 1000.0)
 
 
-def user_is_active_subscriber(user):
-    return True
+class OutOfDateReceiptError(ValueError):
+    pass
+
+
+def user_is_active_subscriber(user, with_grace_period=True):
+    if user.username in settings.FREE_SUBSCRIPTION_USERNAMES:
+        return True
+
     try:
         subscription = Subscription.objects.get(
             subscriber=user,
             active=True,
         )
-        return subscription.expires_date >= datetime.utcnow()
     except Subscription.DoesNotExist:
         return False
+
+    # Customers on earlier versions of Manabi had bugs with subscriptions.
+    if subscription.created_at < datetime(year=2019, month=6, day=1):
+        return True
+
+    expires_date = subscription.expires_date
+    if with_grace_period:
+        expires_date += GRACE_PERIOD
+
+    return expires_date >= datetime.utcnow()
 
 
 class SubscriptionManager(models.Manager):
     def subscribe(
-        self, user, original_transaction_id, expires_date,
+        self, user, original_transaction_id, expires_date, purchase_date,
         is_trial_period=False,
     ):
         subscription, created = Subscription.objects.get_or_create(
             subscriber=user,
             defaults={
                 'expires_date': expires_date,
+                'purchase_date': purchase_date,
                 'original_transaction_id': original_transaction_id,
             },
         )
@@ -43,6 +61,7 @@ class SubscriptionManager(models.Manager):
         ):
             subscription.active = True
             subscription.expires_date = expires_date
+            subscription.purchase_date = purchase_date
             subscription.is_trial_period = is_trial_period
             subscription.save()
 
@@ -52,14 +71,9 @@ class SubscriptionManager(models.Manager):
         '''
         Subscribes if valid.
 
-        Will raise InvalidReceipt error if invalid.
+        Will raise InvalidReceipt error if invalid. Raises
+        OutOfDateReceiptError if not the latest receipt on file.
         '''
-        if log_purchase:
-            log_item = InAppPurchaseLogItem.objects.create(
-                subscriber=user,
-                itunes_receipt=itunes_receipt,
-            )
-
         response = itunesiap.verify(
             itunes_receipt,
             password=settings.ITUNES_SHARED_SECRET,
@@ -70,15 +84,35 @@ class SubscriptionManager(models.Manager):
             latest_receipt_info['original_transaction_id'])
         is_trial_period = (
             latest_receipt_info['is_trial_period'].lower() == 'true')
+        purchase_date = _receipt_date_to_datetime(
+            latest_receipt_info['purchase_date_ms'])
+
+        # Confirm this incoming receipt isn't older than one on file.
+        try:
+            existing_subscription = Subscription.objects.get(
+                original_transaction_id=original_transaction_id)
+
+            existing_purchase_date = existing_subscription.purchase_date
+            if (
+                existing_purchase_date is not None
+                and purchase_date > existing_purchase_date
+            ):
+                raise OutOfDateReceiptError()
+        except Subscription.DoesNotExist:
+            pass
 
         if log_purchase:
-            log_item.original_transaction_id = original_transaction_id
-            log_item.save()
+            log_item = InAppPurchaseLogItem.objects.create(
+                subscriber=user,
+                itunes_receipt=itunes_receipt,
+                original_transaction_id=original_transaction_id,
+            )
 
         self.model.objects.subscribe(
             user,
             original_transaction_id,
             _receipt_date_to_datetime(latest_receipt_info['expires_date_ms']),
+            purchase_date,
             is_trial_period=is_trial_period,
         )
 
@@ -165,6 +199,7 @@ class Subscription(models.Model):
     active = models.BooleanField(default=True, blank=True)
     is_trial_period = models.BooleanField(default=False, blank=True)
     sandbox = models.BooleanField(default=False, blank=True)
+    purchase_date = models.DateTimeField(null=True, blank=True)
 
     original_transaction_id = models.CharField(max_length=300)
     latest_itunes_receipt = models.TextField(blank=True)

@@ -2,7 +2,6 @@
 
 from datetime import datetime
 
-from django.conf import settings
 from django.utils.lru_cache import lru_cache
 
 from manabi.apps.flashcards.models.constants import (
@@ -23,6 +22,7 @@ from manabi.apps.flashcards.models import (
 from manabi.apps.flashcards.models.trial_limits import (
     cards_remaining_in_daily_trial,
 )
+from manabi.apps.subscriptions.models import user_is_active_subscriber
 
 
 class ReviewAvailabilities:
@@ -227,9 +227,8 @@ class ReviewAvailabilities:
     def trial_prompt(self):
         if self.user.is_anonymous:
             return
-        # FIXME
-        if self.user.username in settings.FREE_SUBSCRIPTION_USERNAMES:
-            return
+        if user_is_active_subscriber(self.user):
+            return False
         if self._cards_remaining_in_daily_trial is None:
             return
 
@@ -246,8 +245,7 @@ class ReviewAvailabilities:
     def trial_limit_reached(self):
         if self.user.is_anonymous:
             return False
-        # FIXME
-        if self.user.username in settings.FREE_SUBSCRIPTION_USERNAMES:
+        if user_is_active_subscriber(self.user):
             return False
         cards_remaining = self._cards_remaining_in_daily_trial
         return cards_remaining == 0

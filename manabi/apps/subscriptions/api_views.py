@@ -15,6 +15,7 @@ from manabi.apps.subscriptions import products
 from manabi.apps.subscriptions.models import (
     Subscription,
     PurchasedSubscriptionProduct,
+    OutOfDateReceiptError,
 )
 from manabi.apps.subscriptions.serializers import (
     PurchasingOptionsSerializer,
@@ -50,6 +51,10 @@ class SubscriptionViewSet(viewsets.GenericViewSet):
 
             raise ValidationError(
                 "Invalid iTunes receipt; please contact support.")
+        except OutOfDateReceiptError:
+            raise ValidationError(
+                "iTunes purchase receipt is out of date. Please "
+                "restore purchases.")
 
         purchased_subscription_product = PurchasedSubscriptionProduct(
             request.user, itunes_receipt)

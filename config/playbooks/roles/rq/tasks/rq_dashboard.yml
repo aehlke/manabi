@@ -1,8 +1,9 @@
 ---
 
-- name: Add rq-dashboard nginx site
-  template:
-    src: nginx-rq_dashboard.conf.j2
-    dest: /etc/nginx/sites-enabled/rq_dashboard.conf
-  become: yes
-  notify: Reload nginx
+# Disabled for now until it's compatible with latest RQ.
+#- name: Add rq-dashboard nginx site
+#  template:
+#    src: nginx-rq_dashboard.conf.j2
+#    dest: /etc/nginx/sites-enabled/rq_dashboard.conf
+#  become: yes
+#  notify: Reload nginx
