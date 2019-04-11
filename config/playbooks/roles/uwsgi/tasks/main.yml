@@ -13,15 +13,12 @@
   become: yes
 
 - name: Build uwsgi plugin for Python 3.7
-  shell: 'PYTHON=python3.7 uwsgi --build-plugin "/src/uwsgi/plugins/python python37" && mv python37_plugin.so /usr/lib/uwsgi/plugins/python37_plugin.so && chmod 644 /usr/lib/uwsgi/plugins/python37_plugin.so'
+  shell: 'PYTHON=python3.7 uwsgi --build-plugin "/usr/src/uwsgi/plugins/python python37" && mv python37_plugin.so /usr/lib/uwsgi/plugins/python37_plugin.so && chmod 644 /usr/lib/uwsgi/plugins/python37_plugin.so'
   args:
     chdir: '{{ ansible_env.HOME }}'
     creates: '/usr/lib/uwsgi/plugins/python37_plugin.so'
   become: yes
 
 - name: Install uwsgi utilities
-  pip:
-    name: uwsgitop
-    executable: python3.7 -m pip
-    state: latest
+  shell: 'python3.7 -m pip install uwsgitop --target {{ python_user_base_dir.stdout }} --upgrade'
   become: true

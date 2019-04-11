@@ -2,12 +2,11 @@
 
 - name: Install MeCab and dictionary
   apt:
-    name: '{{ item }}'
-  with_items:
-    - mecab
-    - libmecab-dev
-    - mecab-ipadic
-    - mecab-ipadic-utf8
+    name:
+      - mecab
+      - libmecab-dev
+      - mecab-ipadic
+      - mecab-ipadic-utf8
   become: yes
 
 - name: Add mecabrc

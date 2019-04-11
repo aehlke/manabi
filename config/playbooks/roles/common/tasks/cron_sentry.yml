@@ -1,10 +1,7 @@
 ---
 
 - name: Install cron-sentry
-  pip:
-    name: cron-sentry
-    executable: python3.7 -m pip
-    state: latest
+  shell: 'python3.7 -m pip install cron-sentry --target {{ python_user_base_dir.stdout }} --upgrade'
   become: true
 
 - name: Configure crontab for UTF-8 Python output

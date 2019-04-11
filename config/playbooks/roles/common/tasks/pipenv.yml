@@ -16,8 +16,5 @@
 #  become: yes
 
 - name: Install pipenv
-  pip:
-    name: pipenv
-    executable: python3.7 -m pip
-    state: latest
+  shell: 'python3.7 -m pip install pipenv --target {{ python_user_base_dir.stdout }} --upgrade'
   become: yes
