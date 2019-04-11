@@ -40,7 +40,7 @@
     chdir: '{{ app_root_path }}'
 
 - name: Install python dependencies
-  shell: bash -lc "pipenv install --deploy"
+  shell: pipenv install --deploy
   args:
     chdir: '{{ app_root_path }}'
   notify:
@@ -57,7 +57,7 @@
     - Restart RQ workers
 
 - name: Migrate database
-  shell: bash -lc "pipenv run python manage.py migrate --noinput"
+  shell: pipenv run python manage.py migrate --noinput
   args:
     chdir: '{{ app_root_path }}'
 

@@ -2,10 +2,12 @@
 
 - name: Install node and npm
   apt:
-    name: '{{ item }}'
-  with_items:
-    - nodejs
-    - npm
+    name:
+      - nodejs-dev
+      - node-gyp
+      - libssl1.0-dev
+      - nodejs
+      - npm
   become: yes
 
 - name: Install npm dependencies
