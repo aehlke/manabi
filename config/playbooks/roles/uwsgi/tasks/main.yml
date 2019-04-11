@@ -1,10 +1,22 @@
 ---
 
+# https://www.paulox.net/2019/03/13/how-to-use-uwsgi-with-python-3-7-in-ubuntu-18-x/
+
 - name: Install uwsgi
   apt:
     name:
       - uwsgi
-      - uwsgi-plugin-python3
+      - uwsgi-src
+      - uuid-dev
+      - libcap-dev
+      - libpcre3-dev
+  become: yes
+
+- name: Build uwsgi plugin for Python 3.7
+  shell: 'PYTHON=python3.7 uwsgi --build-plugin "/src/uwsgi/plugins/python python37" && mv python37_plugin.so /usr/lib/uwsgi/plugins/python37_plugin.so && chmod 644 /usr/lib/uwsgi/plugins/python37_plugin.so'
+  args:
+    chdir: '{{ ansible_env.HOME }}'
+    creates: '/usr/lib/uwsgi/plugins/python37_plugin.so'
   become: yes
 
 - name: Install uwsgi utilities
