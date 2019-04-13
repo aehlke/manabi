@@ -1,5 +1,6 @@
 ---
 
+# https://askubuntu.com/questions/1088662/npm-depends-node-gyp-0-10-9-but-it-is-not-going-to-be-installed
 - name: Install node and npm
   apt:
     name:
