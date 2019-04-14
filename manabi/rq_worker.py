@@ -11,4 +11,4 @@ class ManabiWorker(rq.Worker):
 
         dsn = settings.RAVEN_CONFIG['dsn']
         client = Client(dsn, transport=HTTPTransport)
-        register_sentry(client, self)
+        register_sentry(client)

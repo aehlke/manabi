@@ -71,6 +71,9 @@ class SubscriptionManager(models.Manager):
         '''
         Subscribes if valid.
 
+        If log_purchase is True, will log only if the receipt didn't already
+        exist.
+
         Will raise InvalidReceipt error if invalid. Raises
         OutOfDateReceiptError if not the latest receipt on file.
         '''
@@ -102,7 +105,7 @@ class SubscriptionManager(models.Manager):
             pass
 
         if log_purchase:
-            log_item = InAppPurchaseLogItem.objects.create(
+            InAppPurchaseLogItem.objects.get_or_create(
                 subscriber=user,
                 itunes_receipt=itunes_receipt,
                 original_transaction_id=original_transaction_id,
