@@ -35,7 +35,6 @@ humanize = "==0.5.1"
 python-dateutil = "*"
 djoser = "==1.5.1"
 django-silk = "*"
-raven = "*"
 python-memcached = "==1.59"
 sparkpost = "*"
 "Jinja2" = "==2.10"
@@ -74,3 +73,4 @@ django-impersonate = "*"
 requests-html = {git = "https://github.com/kennethreitz/requests-html.git",ref = "47b2ad86cab49167fb15cce787efca74c4de9fdd"}
 feedgen = {git = "https://github.com/aehlke/python-feedgen.git",ref = "b80e122e9e45d05f6aaf67b1cb1438ea9a505c72"}
 psycopg2-binary = "*"
+sentry-sdk = "*"

@@ -4,7 +4,6 @@ import itunesiap
 from django.http import HttpResponse
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
-from raven.contrib.django.raven_compat.models import client as raven_client
 from rest_framework import viewsets, status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -47,7 +46,7 @@ class SubscriptionViewSet(viewsets.GenericViewSet):
             Subscription.objects.process_itunes_receipt(
                 request.user, itunes_receipt)
         except itunesiap.exc.InvalidReceipt:
-            raven_client.captureException()
+            logger.error('InvalidReceipt', exc_info=True)
 
             raise ValidationError(
                 "Invalid iTunes receipt; please contact support.")
@@ -71,7 +70,7 @@ def subscription_update_notification(request):
         Subscription.objects.process_itunes_subscription_update_notification(
             request.data)
     except itunesiap.exc.InvalidReceipt:
-        raven_client.captureException()
+        logger.error('InvalidReceipt', exc_info=True)
 
         raise ValidationError(
             "Invalid iTunes receipt; please contact support.")

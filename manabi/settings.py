@@ -7,6 +7,10 @@ import posixpath
 import sys
 from socket import gethostname
 
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.rq import RqIntegration
+
 
 LIVE_HOST = os.path.isfile('/etc/manabi/production')
 
@@ -73,16 +77,6 @@ else:
             },
         },
         'handlers': {
-            'sentry': {
-                'level': logging.WARNING,
-                'class':
-                'raven.contrib.django.raven_compat.handlers.SentryHandler',
-            },
-            'sentry_info': {
-                'level': logging.INFO,
-                'class':
-                'raven.contrib.django.raven_compat.handlers.SentryHandler',
-            },
             'console': {
                 'level': logging.WARNING,
                 'class': 'logging.StreamHandler',
@@ -93,11 +87,6 @@ else:
              'level': logging.WARNING,
         },
         'loggers': {
-            'manabi.apps.subscriptions': {
-                'handlers': ['console', 'sentry_info'],
-                'level': logging.INFO,
-                'propagate': False,
-            },
             'manabi': {
                 'handlers': ['console'],
                 'level': logging.WARNING,
@@ -278,7 +267,6 @@ INSTALLED_APPS = (
     'social_django',
     'rest_framework_social_oauth2',
 
-    'raven.contrib.django.raven_compat',
     'silk',
     'webpack_loader',
 
@@ -463,7 +451,6 @@ REST_FRAMEWORK = {
     # 'PAGE_SIZE': 100,
 }
 
-
 if LIVE_HOST:
     try:
         from manabi.settings_production_secrets import *
@@ -479,5 +466,9 @@ else:
     except ImportError:
         raise Exception("Couldn't import development settings.")
 
+if LIVE_HOST:
+    sentry_sdk.init(
+        RAVEN_CONFIG['dsn'],
+        integrations=[DjangoIntegration(), RqIntegration()])
 
 CACHES['default']['KEY_PREFIX'] = '2'
