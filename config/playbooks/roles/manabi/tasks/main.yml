@@ -34,11 +34,6 @@
     - Restart RQ workers
   tags: git-pull
 
-- name: Clean pyc files
-  shell: bash -lc "pipenv run python manage.py clean_pyc --path {{ app_root_path }}"
-  args:
-    chdir: '{{ app_root_path }}'
-
 - name: Install python dependencies
   shell: pipenv install --deploy
   args:
@@ -55,6 +50,11 @@
   notify:
     - Reload uwsgi
     - Restart RQ workers
+
+- name: Clean pyc files
+  shell: bash -lc "pipenv run python manage.py clean_pyc --path {{ app_root_path }}"
+  args:
+    chdir: '{{ app_root_path }}'
 
 - name: Migrate database
   shell: pipenv run python manage.py migrate --noinput
