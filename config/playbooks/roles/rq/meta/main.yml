@@ -5,7 +5,7 @@ dependencies:
 
   - role: ansible-supervisor_task
     task_name: rq
-    command: 'pipenv run python manage.py rqworker --worker-class "manabi.rq_worker.ManabiWorker"'
+    command: 'pipenv run python manage.py rqworker'
     directory: '{{ app_root_path }}'
     # RQ requires the TERM signal to perform a warm shutdown. If RQ does not die
     # within 10 seconds, supervisor will forcefully kill it
