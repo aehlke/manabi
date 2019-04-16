@@ -3,10 +3,9 @@
 - name: Install collectd and related packages
   apt:
     name: '{{ item }}'
+      - collectd
+      - collectd-utils
   become: yes
-  with_items:
-    - collectd
-    - collectd-utils
   tags: collectd
 
 - name: Configure Carbon

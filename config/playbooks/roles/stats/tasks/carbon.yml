@@ -27,4 +27,3 @@
     mode: 0644
   become: yes
   notify: Restart Carbon Cache
-

@@ -195,8 +195,8 @@ class SubscriptionManager(models.Manager):
 class Subscription(models.Model):
     objects = SubscriptionManager()
 
-    subscriber = models.ForeignKey(
-        User, models.CASCADE, unique=True, db_index=True, editable=False)
+    subscriber = models.OneToOneField(
+        User, models.CASCADE, db_index=True, editable=False)
 
     expires_date = models.DateTimeField()
     active = models.BooleanField(default=True, blank=True)

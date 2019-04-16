@@ -2,12 +2,11 @@
 
 - name: Install Graphite and related packages
   apt:
-    name: '{{ item }}'
+    name:
+      - build-essential
+      - graphite-carbon
+      - libpq-dev
   become: yes
-  with_items:
-    - build-essential
-    - graphite-carbon
-    - libpq-dev
 
 - name: Install Graphite-API
   apt:
