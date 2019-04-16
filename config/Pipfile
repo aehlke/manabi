@@ -8,3 +8,4 @@ name = "pypi"
 
 [packages]
 ansible = "==2.7.9"
+jinja2 = "==2.10.1"
