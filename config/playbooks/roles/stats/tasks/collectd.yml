@@ -2,7 +2,7 @@
 
 - name: Install collectd and related packages
   apt:
-    name: '{{ item }}'
+    name:
       - collectd
       - collectd-utils
   become: yes
