@@ -228,7 +228,7 @@ class ReviewAvailabilities:
         if self.user.is_anonymous:
             return
         if user_is_active_subscriber(self.user):
-            return False
+            return
         if self._cards_remaining_in_daily_trial is None:
             return
 
