@@ -77,11 +77,18 @@ class SubscriptionManager(models.Manager):
         Will raise InvalidReceipt error if invalid. Raises
         OutOfDateReceiptError if not the latest receipt on file.
         '''
-        response = itunesiap.verify(
-            itunes_receipt,
-            password=settings.ITUNES_SHARED_SECRET,
-            env=itunesiap.env.review)
-        latest_receipt_info = response.latest_receipt_info[-1]
+        try:
+            response = itunesiap.verify(
+                itunes_receipt,
+                password=settings.ITUNES_SHARED_SECRET,
+                env=itunesiap.env.review)
+            latest_receipt_info = response.latest_receipt_info[-1]
+        except Exception as e:
+            InAppPurchaseLogItem.objects.get_or_create(
+                subscriber=user,
+                itunes_receipt=itunes_receipt,
+            )
+            raise e from None
 
         original_transaction_id = (
             latest_receipt_info['original_transaction_id'])
