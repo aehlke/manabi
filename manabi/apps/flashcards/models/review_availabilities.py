@@ -232,10 +232,19 @@ class ReviewAvailabilities:
         if self._cards_remaining_in_daily_trial is None:
             return
 
-        return (
-            "You have {} out of {} cards left today.\n"
-            "Purchase to unlock unlimited daily reviews!"
-        ).format(
+        if self._cards_remaining_in_daily_trial > 0:
+            prompt = (
+                "You have {} out of {} cards left today.\n"
+                "Purchase to unlock unlimited daily reviews!"
+            )
+        else:
+            prompt = (
+                "You have {} out of {} cards left today.\n"
+                "Purchase to unlock unlimited daily reviews,\n"
+                "or come back tomorrow for more."
+            )
+
+        return prompt.format(
             self._cards_remaining_in_daily_trial,
             TRIAL_DAILY_REVIEW_CAP,
         )
