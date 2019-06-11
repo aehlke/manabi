@@ -227,6 +227,7 @@ class FactSerializer(ManabiModelSerializer):
                 },
             )
             validated_data['reader_source_id'] = reader_source.id
+        print(validated_data.get('jmdict_id'))
 
         (fact, _) = Fact.objects.update_or_create(
             deck=validated_data['deck'],
@@ -296,6 +297,7 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
             'active_card_templates',
             'example_sentence',
             'reader_source',
+            'jmdict_id',
         )
         read_only_fields = (
             'id',

@@ -399,6 +399,22 @@ class ManabiReaderFactsTest(ManabiTestCase):
         self.assertEqual(
             Deck.objects.get(id=fact['deck']).name, 'Manabi Reader')
 
+    def test_valid_creation_with_jmdict_id(self):
+        jmdict_id = 1419270
+        fact = self.post(
+            '/api/flashcards/manabi_reader_facts/',
+            {
+                'expression': '団体',
+                'reading': '｜団《だん》｜体《たい》',
+                'meaning': 'Organization, organisation, association',
+                'active_card_templates': ['recognition'],
+                'example_sentence': 'デモを行った団体によると、１０３万人が参加しました。',
+                'jmdict_id': jmdict_id,
+            },
+            user=self.user,
+        ).json()
+        self.assertEqual(Fact.objects.last().jmdict_id, jmdict_id)
+
     def test_multiple_from_same_source(self):
         for suffix in ['1', '2']:
             resp = self.post(
