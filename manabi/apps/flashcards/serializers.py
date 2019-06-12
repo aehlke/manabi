@@ -329,6 +329,27 @@ class DetailedFactSerializer(FactWithCardsSerializer):
             return DeckSerializer(obj.deck).data
 
 
+class SuspendFactsSerializer(serializers.Serializer):
+    reading = serializers.CharField()
+    jmdict_id = serializers.IntegerField(required=False)
+    fact_ids = serializers.ListField(
+        child=serializers.IntegerField(),
+        read_only=True,
+    )
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        suspended_facts = Fact.objects.filter(
+            deck__owner=user, active=True,
+        ).suspend_matching(
+            validated_data['reading'],
+            jmdict_id=validated_data.get('jmdict_id'),
+        )
+        data = validated_data.copy()
+        data['fact_ids'] = suspended_facts.values_list('id', flat=True)
+        return data
+
+
 class CardSerializer(ManabiModelSerializer):
     expression = serializers.CharField(source='fact.expression')
     reading = serializers.CharField(source='fact.reading')

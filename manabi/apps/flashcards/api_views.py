@@ -61,6 +61,7 @@ from manabi.apps.flashcards.serializers import (
     SharedDeckSerializer,
     SuggestedSharedDecksSerializer,
     SynchronizedDeckSerializer,
+    SuspendFactsSerializer,
 )
 from manabi.apps.manabi_auth.serializers import UserSerializer
 
@@ -261,6 +262,19 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
     # TODO Special code for getting a specific object, for speed.
 
 
+class SuspendFactsView(APIView):
+    '''
+    Used by Manabi Reader to suspend facts that match a tracked word.
+    '''
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, format=None):
+        serializer = SuspendFactsSerializer(
+            data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        return Response(SuspendFactsSerializer(serializer.save()).data)
+
+
 class ManabiReaderFactViewSet(
     mixins.CreateModelMixin, viewsets.GenericViewSet,
 ):
@@ -404,6 +418,7 @@ class UndoCardReviewView(APIView):
         card = UndoCardReview.objects.undo(request.user)
 
         if card is None:
-            return Response("Nothing to undo.", status=status.HTTP_404_NOT_FOUND)
+            return Response(
+                "Nothing to undo.", status=status.HTTP_404_NOT_FOUND)
 
         return Response(CardSerializer(card).data)

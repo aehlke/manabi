@@ -68,6 +68,18 @@ class FactQuerySet(QuerySet):
             )
         )
 
+    def suspend_matching(self, reading, jmdict_id=None):
+        if jmdict_id is None:
+            matches = self.filter(reading=reading)
+        else:
+            matches = self.filter(
+                (Q(reading=reading) & Q(jmdict_id__isnull=True))
+                | Q(jmdict_id=jmdict_id)
+            )
+        for match in matches:
+            match.suspend()
+        return matches
+
 
 def _card_template_id_to_string(card_template_id):
     from manabi.apps.flashcards.models import (

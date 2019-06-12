@@ -381,6 +381,37 @@ class NewCardsLimitTest(ManabiTestCase):
             0, self._get_limit(user=create_user()).learned_today_count)
 
 
+class FactsTest(ManabiTestCase):
+    def after_setUp(self):
+        self.user = create_user()
+        create_sample_data(facts=4, user=self.user)
+
+    def _get_facts(self):
+        return Fact.objects.filter(deck__owner=self.user)
+
+    def test_suspending_matching_facts_by_reading(self):
+        for fact in self._get_facts():
+            self.assertFalse(fact.suspended)
+
+        fact_to_suspend = self._get_facts()[0]
+        self.api.suspend_facts(self.user, fact_to_suspend.reading)
+        for fact in self._get_facts():
+            self.assertEqual(fact.suspended, fact.id == fact_to_suspend.id)
+
+    def test_suspending_matching_facts_by_jmdict_id(self):
+        for fact in self._get_facts():
+            self.assertFalse(fact.suspended)
+
+        fact_to_suspend = self._get_facts()[0]
+        fact_to_suspend.jmdict_id = 123
+        fact_to_suspend.save()
+
+        self.api.suspend_facts(
+            self.user, 'reading that will not match', jmdict_id=123)
+        for fact in self._get_facts():
+            self.assertEqual(fact.suspended, fact.id == fact_to_suspend.id)
+
+
 class ManabiReaderFactsTest(ManabiTestCase):
     def after_setUp(self):
         self.user = create_user()
