@@ -10,9 +10,11 @@ from django.utils.functional import cached_property
 from natto import MeCab
 
 from .constants import MAX_NEW_CARD_ORDINAL
-from manabi.apps.flashcards.models.constants import GRADE_NONE, MIN_CARD_SPACE, CARD_SPACE_FACTOR
+from manabi.apps.flashcards.models.constants import (
+    GRADE_NONE, MIN_CARD_SPACE, CARD_SPACE_FACTOR)
 from manabi.apps.flashcards.models.synchronization import (
     copy_facts_to_subscribers)
+from manabi.apps.reader_sources.models import ReaderSource
 from manabi.apps.twitter_usages.jobs import harvest_tweets
 
 
@@ -79,6 +81,66 @@ class FactQuerySet(QuerySet):
         for match in matches:
             match.suspend()
         return matches
+
+    def update_or_create_for_manabi_reader(
+        self, user, expression, reading, meaning, active_card_templates,
+        jmdict_id=None,
+        example_sentence=None,
+        reader_source_data=None,
+    ):
+        '''
+        Corresponds to the "I Want to Learn" button in Manabi Reader, and thus
+        has some particular behaviors built in to provide a nice UX.
+        '''
+        from manabi.apps.flashcards.models import Deck
+
+        reader_source = None
+        if reader_source_data is not None:
+            (reader_source, _) = ReaderSource.objects.get_or_create(
+                source_url=reader_source_data['source_url'],
+                defaults={
+                    'title': reader_source_data['title'],
+                    'thumbnail_url': reader_source_data.get('thumbnail_url'),
+                },
+            )
+
+        try:
+            fact = Fact.objects.get(
+                deck__owner=user,
+                deck__active=True,
+
+                expression=expression,
+                reading=reading,
+                meaning=meaning,
+                active=True,
+            )
+
+            fact.suspended = False
+
+            if example_sentence is not None:
+                fact.example_sentence = example_sentence
+            if reader_source is not None:
+                fact.reader_source = reader_source
+            if jmdict_id is not None:
+                fact.jmdict_id = jmdict_id
+
+            fact.save(update_fields=[
+                'suspended', 'jmdict_id', 'reader_source', 'example_sentence'])
+        except Fact.DoesNotExist:
+            deck = Deck.objects.get_or_create_manabi_reader_deck(user)
+
+            fact = Fact.objects.create(
+                deck=deck,
+                expression=expression,
+                reading=reading,
+                meaning=meaning,
+                reader_source=reader_source,
+                example_sentence=example_sentence or '',
+                jmdict_id=jmdict_id,
+            )
+
+        fact.set_active_card_templates(active_card_templates)
+        return fact
 
 
 def _card_template_id_to_string(card_template_id):

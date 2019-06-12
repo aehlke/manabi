@@ -227,7 +227,6 @@ class FactSerializer(ManabiModelSerializer):
                 },
             )
             validated_data['reader_source_id'] = reader_source.id
-        print(validated_data.get('jmdict_id'))
 
         (fact, _) = Fact.objects.update_or_create(
             deck=validated_data['deck'],
@@ -305,12 +304,16 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
         )
 
     def create(self, validated_data):
-        data = validated_data.copy()
-        data['deck'] = Deck.objects.get_or_create_manabi_reader_deck(
-            self.context['request'].user)
-        data['suspended'] = False
-        fact = super().create(data)
-        return fact
+        return Fact.objects.update_or_create_for_manabi_reader(
+            self.context['request'].user,
+            validated_data['expression'],
+            validated_data['reading'],
+            validated_data['meaning'],
+            validated_data['active_card_templates'],
+            jmdict_id=validated_data.get('jmdict_id'),
+            example_sentence=validated_data.get('example_sentence'),
+            reader_source_data=validated_data.get('reader_source'),
+        )
 
 
 class DetailedFactSerializer(FactWithCardsSerializer):
