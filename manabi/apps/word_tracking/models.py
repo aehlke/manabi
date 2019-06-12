@@ -42,6 +42,14 @@ class TrackedWords:
         return self._tracked_words
 
     @cached_property
+    def suspended_jmdict_ids(self):
+        return set(
+            word['jmdict_id'] for word in self._get_tracked_words()
+            if word['suspended']
+            and word['jmdict_id'] is not None
+        )
+
+    @cached_property
     def new_jmdict_ids(self):
         new_jmdict_ids = set(
             word['jmdict_id'] for word in self._get_tracked_words()
@@ -75,6 +83,14 @@ class TrackedWords:
                 word['is_mature']
                 and word['jmdict_id'] is not None
             )
+        )
+
+    @cached_property
+    def suspended_words_without_jmdict_ids(self):
+        return set(
+            word['reading'] for word in self._get_tracked_words()
+            if word['suspended']
+            and word['jmdict_id'] is None
         )
 
     @cached_property

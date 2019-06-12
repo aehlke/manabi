@@ -30,10 +30,12 @@ class WordTrackingAPITest(ManabiTestCase):
             deck.delete()
         tracked_words = self.api.tracked_words(self.user)
         for field in [
+            'suspended_jmdict_ids',
             'learning_jmdict_ids',
             'known_jmdict_ids',
             'learning_words_without_jmdict_ids',
-            'known_words_without_jmdict_ids'
+            'known_words_without_jmdict_ids',
+            'suspended_words_without_jmdict_ids',
         ]:
             self.assertEqual(tracked_words[field], [])
 
