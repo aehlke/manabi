@@ -205,8 +205,8 @@ class APIShortcuts:
             user=user,
         ).json()
 
-    def suspend_facts(self, user, reading, jmdict_id=None):
-        payload = {'reading': reading}
+    def suspend_facts(self, user, expression, jmdict_id=None):
+        payload = {'expression': expression}
         if jmdict_id is not None:
             payload['jmdict_id'] = jmdict_id
         return self.post(
