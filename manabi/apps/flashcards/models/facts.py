@@ -70,12 +70,12 @@ class FactQuerySet(QuerySet):
             )
         )
 
-    def suspend_matching(self, expression, jmdict_id=None):
+    def suspend_matching(self, reading, jmdict_id=None):
         if jmdict_id is None:
-            matches = self.filter(expression=expression)
+            matches = self.filter(reading=reading)
         else:
             matches = self.filter(
-                (Q(expression=expression) & Q(jmdict_id__isnull=True))
+                (Q(reading=reading) & Q(jmdict_id__isnull=True))
                 | Q(jmdict_id=jmdict_id)
             )
         for match in matches:
@@ -108,7 +108,6 @@ class FactQuerySet(QuerySet):
             fact = Fact.objects.get(
                 deck__owner=user,
                 deck__active=True,
-
                 expression=expression,
                 reading=reading,
                 meaning=meaning,

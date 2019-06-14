@@ -389,12 +389,12 @@ class FactsTest(ManabiTestCase):
     def _get_facts(self):
         return Fact.objects.filter(deck__owner=self.user)
 
-    def test_suspending_matching_facts_by_expression(self):
+    def test_suspending_matching_facts_by_reading(self):
         for fact in self._get_facts():
             self.assertFalse(fact.suspended)
 
         fact_to_suspend = self._get_facts()[0]
-        self.api.suspend_facts(self.user, fact_to_suspend.expression)
+        self.api.suspend_facts(self.user, fact_to_suspend.reading)
         for fact in self._get_facts():
             self.assertEqual(fact.suspended, fact.id == fact_to_suspend.id)
 
@@ -407,7 +407,7 @@ class FactsTest(ManabiTestCase):
         fact_to_suspend.save()
 
         self.api.suspend_facts(
-            self.user, 'expression that will not match', jmdict_id=123)
+            self.user, 'reading that will not match', jmdict_id=123)
         for fact in self._get_facts():
             self.assertEqual(fact.suspended, fact.id == fact_to_suspend.id)
 
