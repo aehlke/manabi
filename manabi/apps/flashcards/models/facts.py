@@ -70,16 +70,27 @@ class FactQuerySet(QuerySet):
             )
         )
 
-    def suspend_matching(self, reading, jmdict_id=None):
+    def _filter_for_suspend_toggling_matching(self, reading, jmdict_id=None):
         if jmdict_id is None:
-            matches = self.filter(reading=reading)
+            return self.filter(reading=reading)
         else:
-            matches = self.filter(
+            return self.filter(
                 (Q(reading=reading) & Q(jmdict_id__isnull=True))
                 | Q(jmdict_id=jmdict_id)
             )
+
+    def suspend_matching(self, reading, jmdict_id=None):
+        matches = self._filter_for_suspend_toggling_matching(
+            reading, jmdict_id=jmdict_id)
         for match in matches:
             match.suspend()
+        return matches
+
+    def unsuspend_matching(self, reading, jmdict_id=None):
+        matches = self._filter_for_suspend_toggling_matching(
+            reading, jmdict_id=jmdict_id)
+        for match in matches:
+            match.unsuspend()
         return matches
 
     def update_or_create_for_manabi_reader(
@@ -91,8 +102,13 @@ class FactQuerySet(QuerySet):
         '''
         Corresponds to the "I Want to Learn" button in Manabi Reader, and thus
         has some particular behaviors built in to provide a nice UX.
+
+        Also undoes all what suspend_matching may have suspended, in case the
+        user cycled between not learning/learning.
         '''
         from manabi.apps.flashcards.models import Deck
+
+        self.unsuspend_matching(reading, jmdict_id=jmdict_id)
 
         reader_source = None
         if reader_source_data is not None:
