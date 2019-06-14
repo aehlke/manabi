@@ -70,12 +70,12 @@ class FactQuerySet(QuerySet):
             )
         )
 
-    def suspend_matching(self, reading, jmdict_id=None):
+    def suspend_matching(self, expression, jmdict_id=None):
         if jmdict_id is None:
-            matches = self.filter(reading=reading)
+            matches = self.filter(expression=expression)
         else:
             matches = self.filter(
-                (Q(reading=reading) & Q(jmdict_id__isnull=True))
+                (Q(expression=expression) & Q(jmdict_id__isnull=True))
                 | Q(jmdict_id=jmdict_id)
             )
         for match in matches:

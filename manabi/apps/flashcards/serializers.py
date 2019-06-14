@@ -333,7 +333,7 @@ class DetailedFactSerializer(FactWithCardsSerializer):
 
 
 class SuspendFactsSerializer(serializers.Serializer):
-    reading = serializers.CharField()
+    expression = serializers.CharField()
     jmdict_id = serializers.IntegerField(required=False)
     fact_ids = serializers.ListField(
         child=serializers.IntegerField(),
@@ -345,7 +345,7 @@ class SuspendFactsSerializer(serializers.Serializer):
         suspended_facts = Fact.objects.filter(
             deck__owner=user, active=True,
         ).suspend_matching(
-            validated_data['reading'],
+            validated_data['expression'],
             jmdict_id=validated_data.get('jmdict_id'),
         )
         data = validated_data.copy()
