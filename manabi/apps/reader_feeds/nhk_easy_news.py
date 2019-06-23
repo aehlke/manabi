@@ -128,6 +128,14 @@ def _article_body_html(response):
     return etree.tostring(article_body[0], method='html').decode('utf-8')
 
 
+def _post_title_and_date(raw_title):
+    #[06/20/2019]
+    m = re.search(r'\[(\d{2})\/(\d{2})\/(\d{4})\] (.*)', raw_title)
+    month, day, year = int(m.group(1)), int(m.group(2)), int(m.group(3))
+    title = m.group(4)
+    return (title, datetime(year=year, month=month, day=day))
+
+
 async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
     content = _article_body_html(response)
 
@@ -143,7 +151,11 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
 
     entry.id(post.link)
     entry.link({'href': nhk_url})
-    entry.title(post.title)
+
+    title, publication_date = _post_title_and_date(post.title)
+
+    entry.title(title)
+    entry.published(publication_date)
 
     #TODO: entry.published()
     entry.content(content, type='CDATA')

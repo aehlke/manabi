@@ -11,6 +11,7 @@ beginner_feeds:
     meaningful_content_min_length: 10
     inject_entry_image_into_header: true
     icon_url: http://www3.nhk.or.jp/favicon.ico
+    display_publication_date: true
     description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
   #- title: Hiragana Times
@@ -28,6 +29,7 @@ beginner_feeds:
     rss_url: https://matcha-jp.com/easy/feed
     rss_contains_full_content: true
     icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
+    display_publication_date: true
     description: The "easy edition" of a Japanese travel magazine, with furigana in all its articles. Written for foreigner visitors to Japan.
 
 categories:
@@ -44,16 +46,19 @@ categories:
         rss_url: https://srad.jp/sradjp.rss
         icon_url: https://images.srad.jp/favicon.ico
         inject_entry_image_into_header: false
+        display_publication_date: true
 
       - title: National Geographic News
         rss_url: http://natgeo.nikkeibp.co.jp/nng/rss/news.rdf
         icon_url: http://natgeo.nikkeibp.co.jp/favicon.ico
+        display_publication_date: true
         inject_entry_image_into_header: false
 
       - title: "2ch Matome: News for Killing Time"
         rss_url: http://blog.livedoor.jp/rbkyn844/index.rdf
         icon_url: http://livedoor.blogimg.jp/rbkyn844/imgs/d/a/da5c84ea.png
         extract_entry_image_from_content: true
+        display_publication_date: true
         description: News articles with curated commentary from the 2channel message board.
 
       - title: Huffington Post
@@ -62,6 +67,7 @@ categories:
         extract_entry_image_from_content: true
         inject_entry_image_into_header: false
         icon_url: https://www.huffingtonpost.jp/favicon.ico
+        display_publication_date: true
         description: Breaking news from HuffPost Japan.
 
       - title: NHK News Easy
@@ -70,11 +76,13 @@ categories:
         meaningful_content_min_length: 10
         inject_entry_image_into_header: true
         icon_url: http://www3.nhk.or.jp/favicon.ico
+        display_publication_date: true
         description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
       - title: Nippon.com
         rss_url: http://nippon.com/ja/feed/
         icon_url: http://www.nippon.com/img/favicon.ico
+        display_publication_date: true
         description: Scholarly analysis and entertaining articles on Japan's society, economy, and politics.
 
       #- title: Business Insider Japan
@@ -87,24 +95,28 @@ categories:
         icon_url: https://s0.wp.com/wp-content/themes/vip/rocketnews/img/pts_logo.png
         rss_contains_full_content: true
         inject_entry_image_into_header: true
+        display_publication_date: true
         description: Reporting the interesting, strange, and random. Covers a wide variety of topics.
 
       - title: TechCrunch Japan
         rss_url: http://jp.techcrunch.com/feed/
         rss_contains_full_content: true
         icon_url: https://s0.wp.com/wp-content/themes/vip/techcrunch-jp-2015/assets/images/favicon.ico
+        display_publication_date: true
         description: The latest technology news and information on startups.
 
       - title: CNN Japan
         rss_url: http://feeds.cnn.co.jp/rss/cnn/cnn.rdf
         icon_url: https://www.cnn.co.jp/media/cnn/images/icons/favicon.ico
         meaningful_content_min_length: 100
+        display_publication_date: true
         inject_entry_image_into_header: true
 
       - title: Engadget Japan
         rss_url: http://japanese.engadget.com/rss.xml
         icon_url: http://www.blogsmithmedia.com/japanese.engadget.com/assets-h9912952623182b4273b51a1ed0b2aa6a/images/favicon-96x96.png?h=9680b5ecfb3de364248a4a98bf84664f
         inject_entry_image_into_header: true
+        display_publication_date: true
         description: Technology news and reviews.
 
   - title: Blogs
@@ -222,61 +234,73 @@ categories:
         icon_url: https://manabi.io/static/reader/category_images/feed_images/newsokur.png
         extract_entry_image_from_content: true
         inject_entry_image_into_header: true
+        display_publication_date: true
         description: A popular haven for former 2ch message board posters looking to add more advanced features to their discussions, this subreddit brings the pseudoanonymous textboard culture of 2ch to Reddit.
 
       - title: BakaNewsJP
         rss_url: https://www.reddit.com/r/BakaNewsJP/.rss
         icon_url: https://b.thumbs.redditmedia.com/DT2HJ3cr8cUouM95rp9qgEJZVBse8MLvWMWSW2lqocg.png
+        display_publication_date: true
         description: Funny news, videos, pics, GIFs.
 
       - title: FoodPorn_ja
         rss_url: https://www.reddit.com/r/FoodPorn_ja/.rss
         icon_url: https://b.thumbs.redditmedia.com/d1mkJlolXKNBnbrIjs3UuRJCkny39VIJFX6oFylsRHs.png
+        display_publication_date: true
         #description: Food pictures to get your hunger going.
 
       - title: Software_ja
         rss_url: https://www.reddit.com/r/software_ja/.rss
         icon_url: https://b.thumbs.redditmedia.com/sqUB4v3p6DRaJStRY_cCizAatJ9nQf4necosM5Gk6tI.png
+        display_publication_date: true
         description: Windows, Mac, Linux software information and discussion.
 
       - title: newsokunomoral
         rss_url: https://www.reddit.com/r/newsokunomoral/.rss
         icon_url: https://a.thumbs.redditmedia.com/rpWxWUJxUB-vYyoB1LP7iOFKK42mMKCa6WNKlLGpF-0.png
+        display_publication_date: true
         description: Chat about cool and funny news.
 
       - title: occult_ja
         rss_url: https://www.reddit.com/r/occult_ja/.rss
         icon_url: https://a.thumbs.redditmedia.com/okUHJsCg4XMsw7TaFTaSIy1eTEkvexgthhnFUBJQej4.png
+        display_publication_date: true
         description: Occult and generally spooky subject matters.
 
       - title: manhole_jp
         rss_url: https://www.reddit.com/r/manhole_jp/.rss
         icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        display_publication_date: true
         description: Manhole covers in Japan are often decorated with stunning designs evoking something of their locality.
 
       - title: EIGANEWS
         rss_url: https://www.reddit.com/r/eiganews/.rss
         icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        display_publication_date: true
         description: Movie news.
 
       - title: apple_jp
         rss_url: https://www.reddit.com/r/apple_jp/.rss
         icon_url: https://b.thumbs.redditmedia.com/rt9iMdOGzROC5mvVtWNGta3LT0qotzKMDGdVw4Yk0Nw.png
+        display_publication_date: true
         #description: Discussions around iPhone, Mac, and various Apple products and services.
 
       - title: PokemonGo_Ja
         rss_url: https://www.reddit.com/r/PokemonGo_Ja/.rss
         icon_url: https://b.thumbs.redditmedia.com/XgpSITLa-RTUMVXMAQuLHf_6eOqEF7fxvfvjIdxLWcQ.png
+        display_publication_date: true
         description: Pokemon Go news.
 
       - title: whistory_ja
         rss_url: https://www.reddit.com/r/whistory_ja/.rss
         icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        display_publication_date: true
         description: World history.
 
       - title: RUINS_JP
         rss_url: https://www.reddit.com/r/ruins_jp/.rss
         icon_url: https://f.thumbs.redditmedia.com/c78wf8j5xPEQ9QnA.png
+        display_publication_date: true
         description: Abandoned building photography and news.
 
   - title: Gaming
@@ -286,23 +310,28 @@ categories:
         rss_url: http://dengekionline.com/cate/11/rss.xml
         icon_url: http://dengekionline.com/img/favicon.ico
         inject_entry_image_into_header: true
+        display_publication_date: true
         description: Online Japanese gaming magazine, covering console, PC, and mobile games.
 
       - title: Famitsu
         rss_url: https://www.famitsu.com/rss/fcom_all.rdf
         icon_url: https://www.famitsu.com/favicon.ico
+        display_publication_date: true
         description: The largest and most popular gaming news publication in Japan.
 
       - title: 4Gamer.net
         rss_url: http://www.4gamer.net/rss/index.xml
+        display_publication_date: true
         icon_url: http://www.4gamer.net/favicon.ico
 
       - title: My Game News Flash @JIN
         rss_url: http://jin115.com/index.rdf
         icon_url: http://jin115.com/favicon.ico
+        display_publication_date: true
         description: Japanese gaming blog known to break news later picked up by outlets. Each article is accompanied by amusing text art.
 
       - title: STEAMR Subreddit
         rss_url: https://www.reddit.com/r/steamr/.rss
         icon_url: https://b.thumbs.redditmedia.com/HEveML44twbIl4nG91F6XwUHa5vDvCtXXHIsB2V2mqM.png
+        display_publication_date: true
         description: Steam PC game news and discussion.
