@@ -129,11 +129,14 @@ def _article_body_html(response):
 
 
 def _post_title_and_date(raw_title):
-    #[06/20/2019]
     m = re.search(r'\[(\d{2})\/(\d{2})\/(\d{4})\] (.*)', raw_title)
     month, day, year = int(m.group(1)), int(m.group(2)), int(m.group(3))
     title = m.group(4)
-    return (title, datetime(year=year, month=month, day=day))
+    publication_date = datetime(
+        year=year, month=month, day=day,
+        tzinfo=pytz.timezone('Asia/Tokyo'),
+    )
+    return (title, publication_date)
 
 
 async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
