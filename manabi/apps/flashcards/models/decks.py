@@ -212,7 +212,6 @@ class Deck(models.Model):
     def save(self, update_fields=None, *args, **kwargs):
         super(Deck, self).save(update_fields=update_fields, *args, **kwargs)
 
-        # Update subscribers.
         update_kwargs = {}
         if update_fields is None or 'card_count' in update_fields:
             update_kwargs['card_count'] = self.refresh_card_count(save=False)
@@ -221,7 +220,7 @@ class Deck(models.Model):
         if update_fields is None or 'collection' in update_fields:
             update_kwargs['collection'] = self.collection
         if update_fields is None or 'suspended' in update_fields:
-            self.card_set.update(deck_suspended=True)
+            self.card_set.update(deck_suspended=self.suspended)
         if update_kwargs:
             self.subscriber_decks.update(**update_kwargs)
 

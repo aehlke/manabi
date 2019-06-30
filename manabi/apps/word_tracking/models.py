@@ -38,7 +38,8 @@ class TrackedWords:
                     output_field=models.CharField(),
                 ),
             ).distinct().values(
-                'jmdict_id', 'reading', 'is_new', 'is_mature', 'suspended')
+                'jmdict_id', 'reading', 'is_new', 'is_mature',
+                'suspended', 'deck_suspended')
         return self._tracked_words
 
     @cached_property
