@@ -46,7 +46,7 @@ class TrackedWords:
     def suspended_jmdict_ids(self):
         return set(
             word['jmdict_id'] for word in self._get_tracked_words()
-            if word['suspended']
+            if word['suspended'] or word['deck_suspended']
             and word['jmdict_id'] is not None
         )
 
@@ -90,7 +90,7 @@ class TrackedWords:
     def suspended_words_without_jmdict_ids(self):
         return set(
             word['reading'] for word in self._get_tracked_words()
-            if word['suspended']
+            if word['suspended'] or word['deck_suspended']
             and word['jmdict_id'] is None
         )
 
