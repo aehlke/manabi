@@ -308,6 +308,8 @@ class ReviewAvailabilitiesView(views.APIView):
         availabilities = ReviewAvailabilities(
             request.user,
 
+            is_for_manabi_reader=request_serializer.validated_data[
+                'is_for_manabi_reader']
             jmdict_ids=request_serializer.validated_data.get('jmdict_ids'),
             words_without_jmdict_ids=request_serializer.validated_data.get(
                 'words_without_jmdict_ids'),
@@ -397,6 +399,8 @@ class NextCardsForReviewView(views.APIView):
             excluded_card_ids=excluded_card_ids,
             time_zone=request.user_timezone,
 
+            is_for_manabi_reader=request_serializer.validated_data[
+                'is_for_manabi_reader']
             jmdict_ids=request_serializer.validated_data.get('jmdict_ids'),
             words_without_jmdict_ids=
             request_serializer.validated_data.get(
