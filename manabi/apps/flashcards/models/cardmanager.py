@@ -3,7 +3,7 @@ from itertools import chain
 
 from django.db import models
 from django.db.models.query import QuerySet
-from django.db.models import Min, Count
+from django.db.models import Min, Count, Q
 
 from manabi.apps.flashcards.models.constants import GRADE_NONE, MATURE_INTERVAL_MIN
 from manabi.apps.flashcards.models.burying import with_siblings_buried
@@ -238,6 +238,8 @@ class SchedulerMixin:
         early_review_began_at=None,
         include_new_buried_siblings=False,
         learn_more=False,
+        manabi_reader_jmdict_ids=None,
+        manabi_reader_words_without_jmdict_ids=None,
     ):
         '''
         Returns `count` cards to be reviewed, in order.
@@ -274,7 +276,14 @@ class SchedulerMixin:
         )
 
         user_cards = (
-            self.common_filters(user, deck=deck, excluded_ids=excluded_ids)
+            self.common_filters(
+                user,
+                deck=deck,
+                excluded_ids=excluded_ids,
+                manabi_reader_jmdict_ids=manabi_reader_jmdict_ids,
+                manabi_reader_words_without_jmdict_ids=
+                manabi_reader_words_without_jmdict_ids,
+            )
             .select_related('fact')
         )
 
@@ -300,6 +309,9 @@ class SchedulerMixin:
                 learn_more=learn_more,
                 buried_facts=buried_facts,
                 new_cards_limit=new_cards_limit,
+                manabi_reader_jmdict_ids=manabi_reader_jmdict_ids,
+                manabi_reader_words_without_jmdict_ids=
+                manabi_reader_words_without_jmdict_ids,
             )
 
             cards_left -= len(cards)
@@ -367,7 +379,14 @@ class CommonFiltersMixin:
     def unsuspended(self):
         return self.filter(suspended=False)
 
-    def common_filters(self, user, deck=None, excluded_ids=None):
+    def common_filters(
+        self,
+        user,
+        deck=None,
+        excluded_ids=None,
+        manabi_reader_jmdict_ids=None,
+        manabi_reader_words_without_jmdict_ids=None,
+    ):
         cards = self.of_user(user).unsuspended().filter(active=True)
 
         if deck:
@@ -377,6 +396,20 @@ class CommonFiltersMixin:
 
         if excluded_ids:
             cards = cards.excluding_ids(excluded_ids)
+
+        if (
+            manabi_reader_jmdict_ids is not None
+            or manabi_reader_words_without_jmdict_ids is not None
+        ):
+            reader_filters = Q()
+            if manabi_reader_jmdict_ids is not None:
+                reader_filters |= Q(jmdict_id__in=manabi_reader_jmdict_ids)
+            if manabi_reader_words_without_jmdict_ids is not None:
+                reader_filters |= Q(
+                    fact__reading__in=manabi_reader_words_without_jmdict_ids)
+            print(reader_filters)
+            print(manabi_reader_jmdict_ids)
+            cards = cards.filter(reader_filters)
 
         return cards
 

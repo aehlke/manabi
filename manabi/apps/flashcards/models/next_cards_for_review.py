@@ -53,6 +53,8 @@ class NextCardsForReview:
         include_new_buried_siblings=False,
         new_cards_per_day_limit_override=None,
         excluded_card_ids=set(),
+        manabi_reader_jmdict_ids=None,
+        manabi_reader_words_without_jmdict_ids=None,
         time_zone=None,
     ):
         new_cards_limit = NewCardsLimit(
@@ -69,6 +71,9 @@ class NextCardsForReview:
             early_review_began_at=early_review_began_at,
             include_new_buried_siblings=include_new_buried_siblings,
             new_cards_limit=new_cards_limit.next_new_cards_limit,
+            manabi_reader_jmdict_ids=manabi_reader_jmdict_ids,
+            manabi_reader_words_without_jmdict_ids=
+            manabi_reader_words_without_jmdict_ids,
         )
 
         card_ids = [card.id for card in next_cards]

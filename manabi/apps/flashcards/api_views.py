@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
-from rest_framework import mixins, viewsets, status
+from rest_framework import mixins, views, viewsets, status
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.permissions import (
     IsAuthenticated,
@@ -57,6 +57,7 @@ from manabi.apps.flashcards.serializers import (
     FactWithCardsSerializer,
     ManabiReaderFactWithCardsSerializer,
     NextCardsForReviewSerializer,
+    NextCardsForReviewRequestSerializer,
     ReviewAvailabilitiesSerializer,
     SharedDeckSerializer,
     SuggestedSharedDecksSerializer,
@@ -310,7 +311,7 @@ class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
         return Response(serializer.data)
 
 
-class NextCardsForReviewViewSet(viewsets.ViewSet):
+class NextCardsForReviewView(views.APIView):
     permission_classes = [IsAuthenticated]
 
     def _test_helper_get(
@@ -355,7 +356,11 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
         except TypeError:
             raise ValidationError("Couldn't parse card IDs.")
 
-    def list(self, request, format=None):
+    def _get_or_post(self, request, format=None):
+        request_serializer = NextCardsForReviewRequestSerializer(
+            data=request.data)
+        request_serializer.is_valid(raise_exception=True)
+
         excluded_card_ids = self._get_excluded_card_ids(request)
 
         if settings.USE_TEST_STUBS:
@@ -375,6 +380,13 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
             card_limit,
             excluded_card_ids=excluded_card_ids,
             time_zone=request.user_timezone,
+
+            manabi_reader_jmdict_ids=
+            request_serializer.validated_data.get('manabi_reader_jmdict_ids'),
+            manabi_reader_words_without_jmdict_ids=
+            request_serializer.validated_data.get(
+                'manabi_reader_words_without_jmdict_ids'),
+
             **next_cards_to_review_filters(self.request)
         )
 
@@ -382,6 +394,12 @@ class NextCardsForReviewViewSet(viewsets.ViewSet):
             next_cards_for_review)
 
         return Response(serializer.data)
+
+    def get(self, request, format=None):
+        return self._get_or_post(request, format=format)
+
+    def post(self, request, format=None):
+        return self._get_or_post(request, format=format)
 
 
 class CardViewSet(viewsets.ModelViewSet):

@@ -191,6 +191,21 @@ class APIShortcuts:
         return self.get(
             '/api/flashcards/next_cards_for_review/', user=user).json()
 
+    def manabi_reader_next_cards_for_review(
+        self, user, jmdict_ids, words_without_jmdict_ids,
+    ):
+        return self.post(
+            '/api/flashcards/next_cards_for_review/',
+            {
+                'manabi_reader_jmdict_ids': [
+                    str(jmdict_id) for jmdict_id in jmdict_ids
+                ],
+                'manabi_reader_words_without_jmdict_ids':
+                words_without_jmdict_ids,
+            },
+            user=user,
+        ).json()
+
     def review_card(self, user, card_id, grade):
         return self.post(
             '/api/flashcards/cards/{}/reviews/'.format(card_id),

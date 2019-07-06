@@ -459,6 +459,17 @@ class ReviewInterstitialSerializer(serializers.Serializer):
         )
 
 
+class NextCardsForReviewRequestSerializer(serializers.Serializer):
+    manabi_reader_jmdict_ids  = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=False,
+    )
+    manabi_reader_words_without_jmdict_ids  = serializers.ListField(
+        child=serializers.CharField(),
+        required=False,
+    )
+
+
 class NextCardsForReviewSerializer(serializers.Serializer):
     cards = CardSerializer(many=True)
 

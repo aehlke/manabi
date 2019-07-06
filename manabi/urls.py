@@ -14,7 +14,6 @@ from manabi.apps.flashcards.api_views import (
     ManabiReaderFactViewSet,
     FactViewSet,
     ReviewAvailabilitiesViewSet,
-    NextCardsForReviewViewSet,
     CardViewSet,
 )
 from manabi.apps.manabi_auth.api_views import exchange_token
@@ -46,9 +45,6 @@ api_router.register(r'flashcards/cards',
 api_router.register(r'flashcards/review_availabilities',
     ReviewAvailabilitiesViewSet,
     base_name='card')
-api_router.register(r'flashcards/next_cards_for_review',
-    NextCardsForReviewViewSet,
-    base_name='next-card-for-review')
 
 urlpatterns = [
     url(r'^apple-app-site-association$', TemplateView.as_view(

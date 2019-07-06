@@ -70,6 +70,19 @@ class ReviewsAPITest(ManabiTestCase):
         review_availabilities = interstitial['review_availabilities']
         # FIXME self.assertTrue(review_availabilities['trial_prompt'])
 
+    def test_manabi_reader_cards_for_review(self):
+        reader_fact = self.facts[0]
+        reader_fact.jmdict_id = 123
+        reader_fact.save()
+
+        next_cards_for_review = (
+            self.api.manabi_reader_next_cards_for_review(
+                self.user, [123], []))
+
+        cards = next_cards_for_review['cards']
+        self.assertEqual(len(cards), 1)
+        self.assertEqual(cards[0]['expression'], reader_fact.expression)
+
     def test_review_cards(self):
         count = 0
         while True:
