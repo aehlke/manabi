@@ -13,7 +13,6 @@ from manabi.apps.flashcards.api_views import (
     SuggestedSharedDecksViewSet,
     ManabiReaderFactViewSet,
     FactViewSet,
-    ReviewAvailabilitiesViewSet,
     CardViewSet,
 )
 from manabi.apps.manabi_auth.api_views import exchange_token
@@ -41,9 +40,6 @@ api_router.register(r'flashcards/manabi_reader_facts',
     base_name='fact')
 api_router.register(r'flashcards/cards',
     CardViewSet,
-    base_name='card')
-api_router.register(r'flashcards/review_availabilities',
-    ReviewAvailabilitiesViewSet,
     base_name='card')
 
 urlpatterns = [

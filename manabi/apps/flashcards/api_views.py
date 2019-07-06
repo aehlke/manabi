@@ -285,7 +285,7 @@ class ManabiReaderFactViewSet(
     ]
 
 
-class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
+class ReviewAvailabilitiesView(views.APIView):
     def _test_helper_get(self, request, format=None):
         from manabi.apps.flashcards.test_stubs import NEXT_CARDS_TO_REVIEW_STUBS
         interstitial = NEXT_CARDS_TO_REVIEW_STUBS[1]['interstitial']
@@ -296,7 +296,7 @@ class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
 
         return Response(interstitial)
 
-    def list(self, request, format=None):
+    def _get_or_post(self, request, format=None):
         if settings.USE_TEST_STUBS:
             return self._test_helper_get(request, format=format)
 
@@ -320,6 +320,12 @@ class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
         serializer = ReviewAvailabilitiesSerializer(
             availabilities)
         return Response(serializer.data)
+
+    def get(self, request, format=None):
+        return self._get_or_post(request, format=format)
+
+    def post(self, request, format=None):
+        return self._get_or_post(request, format=format)
 
 
 class NextCardsForReviewView(views.APIView):

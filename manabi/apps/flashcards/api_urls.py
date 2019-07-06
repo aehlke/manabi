@@ -6,6 +6,8 @@ from manabi.apps.flashcards import api_views
 urlpatterns = [
     url(r'^next_cards_for_review/$',
         api_views.NextCardsForReviewView.as_view()),
+    url(r'flashcards/review_availabilities',
+        api_views.ReviewAvailabilitiesView.as_view()),
     url(r'^undo_card_review/$', api_views.UndoCardReviewView.as_view()),
     url(r'^suspend_facts/$', api_views.SuspendFactsView.as_view()),
     # url(r'^cards/(?P<card>\w+)/$', api.Card.as_view(), name='api_card'),
