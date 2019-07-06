@@ -308,11 +308,9 @@ class ReviewAvailabilitiesView(views.APIView):
         availabilities = ReviewAvailabilities(
             request.user,
 
-            manabi_reader_jmdict_ids=
-            request_serializer.validated_data.get('manabi_reader_jmdict_ids'),
-            manabi_reader_words_without_jmdict_ids=
-            request_serializer.validated_data.get(
-                'manabi_reader_words_without_jmdict_ids'),
+            jmdict_ids=request_serializer.validated_data.get('jmdict_ids'),
+            words_without_jmdict_ids=request_serializer.validated_data.get(
+                'words_without_jmdict_ids'),
 
             time_zone=request.user_timezone,
             **review_availabilities_filters(self.request)
@@ -399,11 +397,10 @@ class NextCardsForReviewView(views.APIView):
             excluded_card_ids=excluded_card_ids,
             time_zone=request.user_timezone,
 
-            manabi_reader_jmdict_ids=
-            request_serializer.validated_data.get('manabi_reader_jmdict_ids'),
-            manabi_reader_words_without_jmdict_ids=
+            jmdict_ids=request_serializer.validated_data.get('jmdict_ids'),
+            words_without_jmdict_ids=
             request_serializer.validated_data.get(
-                'manabi_reader_words_without_jmdict_ids'),
+                'words_without_jmdict_ids'),
 
             **next_cards_to_review_filters(self.request)
         )

@@ -197,11 +197,11 @@ class APIShortcuts:
         return self.post(
             '/api/flashcards/next_cards_for_review/',
             {
-                'manabi_reader_jmdict_ids': [
+                'is_for_manabi_reader': True,
+                'jmdict_ids': [
                     str(jmdict_id) for jmdict_id in jmdict_ids
                 ],
-                'manabi_reader_words_without_jmdict_ids':
-                words_without_jmdict_ids,
+                'words_without_jmdict_ids': words_without_jmdict_ids,
             },
             user=user,
         ).json()
@@ -238,15 +238,34 @@ class APIShortcuts:
     def undo_review(self, user):
         return self.post('/api/flashcards/undo_card_review/', user=user).json()
 
-    def review_availabilities(self, user, deck=None):
-        params = {}
+    def review_availabilities(
+        self,
+        user,
+        deck=None,
+        is_for_manabi_reader=False,
+        jmdict_ids=None,
+        words_without_jmdict_ids=None,
+    ):
+        params = {'is_for_manabi_reader': is_for_manabi_reader}
         if deck is not None:
             params['deck'] = deck
-        return self.get(
-            '/api/flashcards/review_availabilities/',
-            params,
-            user=user,
-        ).json()
+        if jmdict_ids is not None:
+            params['jmdict_ids'] = jmdict_ids
+        if words_without_jmdict_ids is not None:
+            params['words_without_jmdict_ids'] = words_without_jmdict_ids
+
+        if 'jmdict_ids' in params or 'words_without_jmdict_ids' in params:
+            return self.post(
+                '/api/flashcards/review_availabilities/',
+                params,
+                user=user,
+            ).json()
+        else:
+            return self.get(
+                '/api/flashcards/review_availabilities/',
+                params,
+                user=user,
+            ).json()
 
     def review_results(self, user, review_began_at):
         return self.get(

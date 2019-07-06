@@ -150,6 +150,25 @@ class ReviewsAPITest(ManabiTestCase):
     def test_review_availabilities(self):
         self.api.review_availabilities(self.user)
 
+    def test_review_availabilities_for_manabi_reader(self):
+        review_availabilities = self.api.review_availabilities(
+            self.user,
+            is_for_manabi_reader=True,
+            jmdict_ids=[],
+        )
+        self.assertEqual(review_availabilities['next_new_cards_count'], 0)
+
+        reader_fact = self.facts[0]
+        reader_fact.jmdict_id = 123
+        reader_fact.save()
+
+        review_availabilities = self.api.review_availabilities(
+            self.user,
+            is_for_manabi_reader=True,
+            jmdict_ids=[reader_fact.jmdict_id],
+        )
+        self.assertEqual(review_availabilities['next_new_cards_count'], 1)
+
 
 class SynchronizationTest(ManabiTestCase):
     def after_setUp(self):

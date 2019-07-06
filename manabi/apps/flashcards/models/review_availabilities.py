@@ -37,8 +37,9 @@ class ReviewAvailabilities:
         excluded_card_ids=set(),
         time_zone=None,
         new_cards_limit=None,
-        manabi_reader_jmdict_ids=None,
-        manabi_reader_words_without_jmdict_ids=None,
+        is_for_manabi_reader=False,
+        jmdict_ids=None,
+        words_without_jmdict_ids=None,
     ):
         '''
         `buffered_new_cards_count` are the count of new cards that the user
@@ -56,9 +57,9 @@ class ReviewAvailabilities:
         self.early_review_began_at = early_review_began_at
         self._buffered_cards_count = buffered_cards_count
         self._buffered_new_cards_count = buffered_new_cards_count
-        self._manabi_reader_jmdict_ids = manabi_reader_jmdict_ids
-        self._manabi_reader_words_without_jmdict_ids = (
-            manabi_reader_words_without_jmdict_ids)
+        self._is_for_manabi_reader = is_for_manabi_reader
+        self._jmdict_ids = jmdict_ids
+        self._words_without_jmdict_ids = words_without_jmdict_ids
 
         self.new_cards_limit = (
             new_cards_limit or
@@ -84,9 +85,8 @@ class ReviewAvailabilities:
             cards = cards.excluding_ids(self.excluded_card_ids)
 
         cards = cards.manabi_reader_filters(
-            manabi_reader_jmdict_ids=self._manabi_reader_jmdict_ids,
-            manabi_reader_words_without_jmdict_ids=
-            self._manabi_reader_words_without_jmdict_ids,
+            jmdict_ids=self._jmdict_ids,
+            words_without_jmdict_ids=self._words_without_jmdict_ids,
         )
 
         return cards

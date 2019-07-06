@@ -238,8 +238,9 @@ class SchedulerMixin:
         early_review_began_at=None,
         include_new_buried_siblings=False,
         learn_more=False,
-        manabi_reader_jmdict_ids=None,
-        manabi_reader_words_without_jmdict_ids=None,
+        is_for_manabi_reader=False,
+        jmdict_ids=None,
+        words_without_jmdict_ids=None,
     ):
         '''
         Returns `count` cards to be reviewed, in order.
@@ -281,9 +282,8 @@ class SchedulerMixin:
                 deck=deck,
                 excluded_ids=excluded_ids,
             ).manabi_reader_filters(
-                manabi_reader_jmdict_ids=manabi_reader_jmdict_ids,
-                manabi_reader_words_without_jmdict_ids=
-                manabi_reader_words_without_jmdict_ids,
+                jmdict_ids=jmdict_ids,
+                words_without_jmdict_ids=words_without_jmdict_ids,
             ).select_related('fact')
         )
 
@@ -309,9 +309,8 @@ class SchedulerMixin:
                 learn_more=learn_more,
                 buried_facts=buried_facts,
                 new_cards_limit=new_cards_limit,
-                manabi_reader_jmdict_ids=manabi_reader_jmdict_ids,
-                manabi_reader_words_without_jmdict_ids=
-                manabi_reader_words_without_jmdict_ids,
+                jmdict_ids=jmdict_ids,
+                words_without_jmdict_ids=words_without_jmdict_ids,
             )
 
             cards_left -= len(cards)
@@ -399,19 +398,19 @@ class CommonFiltersMixin:
 
     def manabi_reader_filters(
         self,
-        manabi_reader_jmdict_ids=None,
-        manabi_reader_words_without_jmdict_ids=None,
+        jmdict_ids=None,
+        words_without_jmdict_ids=None,
     ):
         if (
-            manabi_reader_jmdict_ids is not None
-            or manabi_reader_words_without_jmdict_ids is not None
+            jmdict_ids is not None
+            or words_without_jmdict_ids is not None
         ):
             reader_filters = Q()
-            if manabi_reader_jmdict_ids is not None:
-                reader_filters |= Q(jmdict_id__in=manabi_reader_jmdict_ids)
-            if manabi_reader_words_without_jmdict_ids is not None:
+            if jmdict_ids is not None:
+                reader_filters |= Q(jmdict_id__in=jmdict_ids)
+            if words_without_jmdict_ids is not None:
                 reader_filters |= Q(
-                    fact__reading__in=manabi_reader_words_without_jmdict_ids)
+                    fact__reading__in=words_without_jmdict_ids)
             return self.filter(reader_filters)
         return self
 
