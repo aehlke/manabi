@@ -11,7 +11,7 @@ def _auto_secondary_prompt(f):
             return
         if secondary:
             parts = prompt.split(' ')
-            if parts[0].lower() in ["we", "we'll", "you", "you'll"]:
+            if parts[0].lower() in ["we", "we'll", "you", "you'll", "you're"]:
                 prompt = ' '.join(parts[:1] + ['also'] + parts[1:])
         return prompt
     return wrapper
@@ -39,8 +39,9 @@ def _failed_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        "You're ready to revisit {} {} that you had forgotten."
-    ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
+        f"You're ready to revisit {count} {_pluralize_cards(count)} "
+        f"that you had forgotten."
+    )
 
 
 @_auto_secondary_prompt
@@ -53,8 +54,9 @@ def _mature_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        "We have {} {} that you know well but may forget if left unused much longer."
-    ).format(count, _pluralize_cards(count))
+        f"We have {count} {_pluralize_cards(count)} that you know well but "
+        f"may forget if left unused much longer."
+    )
 
 
 # TODO
@@ -75,8 +77,10 @@ def _young_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        "You'll soon forget {} {} you're still learning—reinforce {} now for maximum effectiveness."
-    ).format(count, _pluralize_cards(count), _pluralize('it', 'them', count))
+        f"You'll soon forget {count} {_pluralize_cards(count)} you're still "
+        f"learning—reinforce {_pluralize('it', 'them', count)} now for "
+        f"maximum effectiveness."
+    )
 
 
 @_auto_secondary_prompt
@@ -89,9 +93,9 @@ def _failed_not_due(review_availabilities, secondary=False):
     if count == 0:
         return
     return (
-        "We have {} {} you forgot last time that you could wait a bit "
-        "to revisit."
-    ).format(count, _pluralize_cards(count), _pluralize('is', 'are', count))
+        f"We have {count} {_pluralize_cards(count)} you forgot last time "
+        f"that you could wait a bit to revisit."
+    )
 
 
 @_auto_secondary_prompt
@@ -106,10 +110,14 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
         return
 
     if review_availabilities.new_cards_limit.learned_today_count > 0:
-        template = "We have {} more new {} for you to learn."
+        return (
+            f"We have {count} more new {_pluralize_cards(count)} for you "
+            f"to learn."
+        )
     else:
-        template = "We have {} new {} for you to learn."
-    return template.format(count, _pluralize_cards(count))
+        return (
+            f"We have {count} new {_pluralize_cards(count)} for you to learn."
+        )
 
 
 @_auto_secondary_prompt
@@ -127,15 +135,12 @@ def _new_over_daily_limit(review_availabilities, secondary=False):
     count = review_availabilities.next_new_cards_count
     if count == 0:
         return
+    already_learned = review_availabilities.new_cards_limit.learned_today_count
     return (
-        "You've already learned {already_learned} new {cards} today, but we have {next_new_count} more if you're feeling ambitious."
-    ).format(
-        next_new_count=count,
-        already_learned=(
-            review_availabilities.new_cards_limit.learned_today_count),
-        cards=_pluralize_cards(count),
+        f"You've already learned {already_learned} new "
+        f"{_pluralze_cards(count)} today, but we have {count} more "
+        f"if you're feeling ambitious."
     )
-
 
 @_auto_secondary_prompt
 def _new_buried_under_daily_limit(review_availabilities, secondary=False):
@@ -149,10 +154,9 @@ def _new_buried_under_daily_limit(review_availabilities, secondary=False):
         return
 
     template = (
-        "We have {} new {}, all related to material you've "
-        "covered recently in other cards—better to wait."
+        f"We have {count} new {_pluralize_cards(count)}, all related "
+        f"to material you've covered recently in other cards—better to wait."
     )
-    return template.format(count, _pluralize_cards(count))
 
 
 @_auto_secondary_prompt
@@ -171,14 +175,12 @@ def _new_buried_over_daily_limit(review_availabilities, secondary=False):
     count = review_availabilities.buried_new_cards_count
     if count == 0 or count is None:
         return
-
-    template = (
-        "We have {} new {} only from material covered recently, "
-        "plus you've already learned {} today—better wait."
+    already_learned = review_availabilities.new_cards_limit.learned_today_count
+    return (
+        f"We have {count} new {_pluralize_cards(count)} only from material "
+        f"covered recently, "
+        f"plus you've already learned {already_learned} today—better wait."
     )
-    return template.format(
-        count, _pluralize_cards(count),
-        review_availabilities.new_cards_limit.learned_today_count)
 
 
 @_auto_secondary_prompt
@@ -253,7 +255,10 @@ def review_availability_prompts(review_availabilities):
     prompts = []
 
     for prompt_func in prompt_funcs:
-        prompt = prompt_func(review_availabilities, secondary=(len(prompts) == 1))
+        prompt = prompt_func(
+            review_availabilities,
+            secondary=(len(prompts) == 1))
+
         if prompt is not None:
             prompts.append(prompt)
         if len(prompts) == 2:
