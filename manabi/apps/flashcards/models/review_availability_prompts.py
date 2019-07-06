@@ -44,7 +44,7 @@ def _failed_due(review_availabilities, secondary=False):
     count = cards.failed().due().count()
     if count == 0:
         return
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
     return (
         f"You're ready to revisit {count} "
         f"{_pluralize_cards(count)}{cards_suffix} "
@@ -61,7 +61,7 @@ def _mature_due(review_availabilities, secondary=False):
     count = cards.mature().due().excluding_failed().count()
     if count == 0:
         return
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
     return (
         f"We have {count} {_pluralize_cards(count)}{cards_suffix} "
         f"that you know well but "
@@ -86,7 +86,7 @@ def _young_due(review_availabilities, secondary=False):
     count = cards.young().due().excluding_failed().count()
     if count == 0:
         return
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
     return (
         f"You'll soon forget {count} {_pluralize_cards(count)}{cards_suffix} "
         f"you're still learning—reinforce "
@@ -103,7 +103,7 @@ def _failed_not_due(review_availabilities, secondary=False):
     count = cards.failed().not_due().count()
     if count == 0:
         return
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
     return (
         f"We have {count} {_pluralize_cards(count)}{cards_suffix} you "
         f"forgot last time that you could wait a bit to revisit."
@@ -121,7 +121,7 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
     if count == 0:
         return
 
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
 
     if review_availabilities.new_cards_limit.learned_today_count > 0:
         return (
@@ -152,10 +152,10 @@ def _new_over_daily_limit(review_availabilities, secondary=False):
         return
 
     already_learned = review_availabilities.new_cards_limit.learned_today_count
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
     return (
         f"You've already learned {already_learned} new "
-        f"{_pluralze_cards(count)} today, but we have {count} "
+        f"{_pluralize_cards(count)} today, but we have {count} "
         f"more{cards_suffix} if you're feeling ambitious."
     )
 
@@ -170,7 +170,7 @@ def _new_buried_under_daily_limit(review_availabilities, secondary=False):
     if count == 0 or count is None:
         return
 
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
     template = (
         f"We have {count} new {_pluralize_cards(count)}{cards_suffix}, "
         f"all related to material you've covered recently in "
@@ -195,7 +195,7 @@ def _new_buried_over_daily_limit(review_availabilities, secondary=False):
     if count == 0 or count is None:
         return
     already_learned = review_availabilities.new_cards_limit.learned_today_count
-    cards_suffix = _manabi_reader_suffix(review_availabilties)
+    cards_suffix = _manabi_reader_suffix(review_availabilities)
     return (
         f"We have {count} new {_pluralize_cards(count)}{cards_suffix} "
         f"only from material covered recently, "
