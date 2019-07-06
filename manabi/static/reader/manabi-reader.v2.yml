@@ -140,12 +140,12 @@ categories:
         rss_url: http://feeds.gizmodo.jp/rss/gizmodo/index.xml
         icon_url: http://www.gizmodo.jp/assets/favicon/favicon-32x32.png
 
-      - title: One Day One Rail!
-        rss_url: http://www.ichitetsu.com/atom.xml
-        # The embedded HTML unfortunately breaks Readability: rss_contains_full_content: true
-        meaningful_content_min_length: 10
-        icon_url: http://railman.cocolog-nifty.com/prof.jpg
-        description: One railway-related photo per day, with a brief note attached in Japanese and English.
+      #- title: One Day One Rail!
+      #  rss_url: http://www.ichitetsu.com/atom.xml
+      #  # The embedded HTML unfortunately breaks Readability: rss_contains_full_content: true
+      #  meaningful_content_min_length: 10
+      #  icon_url: http://railman.cocolog-nifty.com/prof.jpg
+      #  description: One railway-related photo per day, with a brief note attached in Japanese and English.
 
       - title: Matcha – Japan Travel Magazine
         rss_url: https://matcha-jp.com/jp/feed
@@ -175,7 +175,6 @@ categories:
       - title: Seasonal Photo Notebook
         rss_url: http://shikiphotonote.blog.fc2.com/?xml
         icon_url: http://blog-imgs-82.fc2.com/s/h/i/shikiphotonote/_MG_9786_3s.jpg
-        rss_contains_full_content: true
         meaningful_content_min_length: 5
         extract_entry_image_from_content: true
         description: Gorgeous landscape photography from around Osaka, Kyoto, and Nara.
