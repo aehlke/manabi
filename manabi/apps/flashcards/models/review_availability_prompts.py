@@ -125,7 +125,8 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
 
     if review_availabilities.new_cards_limit.learned_today_count > 0:
         return (
-            f"We have {count} more new {_pluralize_cards(count)}{cards_suffix}"
+            f"We have {count} more new "
+            f"{_pluralize_cards(count)}{cards_suffix} "
             f"for you to learn."
         )
     else:

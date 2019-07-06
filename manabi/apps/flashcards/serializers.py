@@ -418,14 +418,15 @@ class DetailedSharedDeckSerializer(SharedDeckSerializer):
 
 
 class ReviewAvailabilitiesRequestSerializer(serializers.Serializer):
-    jmdict_ids  = serializers.ListField(
+    jmdict_ids = serializers.ListField(
         child=serializers.IntegerField(),
         required=False,
     )
-    words_without_jmdict_ids  = serializers.ListField(
+    words_without_jmdict_ids = serializers.ListField(
         child=serializers.CharField(),
         required=False,
     )
+    is_for_manabi_reader = serializers.BooleanField(default=False)
 
 
 class ReviewAvailabilitiesSerializer(serializers.Serializer):
