@@ -280,11 +280,11 @@ class SchedulerMixin:
                 user,
                 deck=deck,
                 excluded_ids=excluded_ids,
+            ).manabi_reader_filters(
                 manabi_reader_jmdict_ids=manabi_reader_jmdict_ids,
                 manabi_reader_words_without_jmdict_ids=
                 manabi_reader_words_without_jmdict_ids,
-            )
-            .select_related('fact')
+            ).select_related('fact')
         )
 
         buried_facts = Fact.objects.buried(
@@ -384,8 +384,6 @@ class CommonFiltersMixin:
         user,
         deck=None,
         excluded_ids=None,
-        manabi_reader_jmdict_ids=None,
-        manabi_reader_words_without_jmdict_ids=None,
     ):
         cards = self.of_user(user).unsuspended().filter(active=True)
 
@@ -397,6 +395,13 @@ class CommonFiltersMixin:
         if excluded_ids:
             cards = cards.excluding_ids(excluded_ids)
 
+        return cards
+
+    def manabi_reader_filters(
+        self,
+        manabi_reader_jmdict_ids=None,
+        manabi_reader_words_without_jmdict_ids=None,
+    ):
         if (
             manabi_reader_jmdict_ids is not None
             or manabi_reader_words_without_jmdict_ids is not None
@@ -407,11 +412,8 @@ class CommonFiltersMixin:
             if manabi_reader_words_without_jmdict_ids is not None:
                 reader_filters |= Q(
                     fact__reading__in=manabi_reader_words_without_jmdict_ids)
-            print(reader_filters)
-            print(manabi_reader_jmdict_ids)
-            cards = cards.filter(reader_filters)
-
-        return cards
+            return self.filter(reader_filters)
+        return self
 
     def new(self, user):
         user_cards = self.available().of_user(user)

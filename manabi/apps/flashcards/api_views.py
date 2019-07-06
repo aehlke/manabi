@@ -300,8 +300,19 @@ class ReviewAvailabilitiesViewSet(viewsets.ViewSet):
         if settings.USE_TEST_STUBS:
             return self._test_helper_get(request, format=format)
 
+        request_serializer = ReviewAvailabilitiesRequestSerializer(
+            data=request.data)
+        request_serializer.is_valid(raise_exception=True)
+
         availabilities = ReviewAvailabilities(
             request.user,
+
+            manabi_reader_jmdict_ids=
+            request_serializer.validated_data.get('manabi_reader_jmdict_ids'),
+            manabi_reader_words_without_jmdict_ids=
+            request_serializer.validated_data.get(
+                'manabi_reader_words_without_jmdict_ids'),
+
             time_zone=request.user_timezone,
             **review_availabilities_filters(self.request)
         )

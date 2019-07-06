@@ -417,6 +417,17 @@ class DetailedSharedDeckSerializer(SharedDeckSerializer):
         )
 
 
+class ReviewAvailabilitiesRequestSerializer(serializers.Serializer):
+    manabi_reader_jmdict_ids  = serializers.ListField(
+        child=serializers.IntegerField(),
+        required=False,
+    )
+    manabi_reader_words_without_jmdict_ids  = serializers.ListField(
+        child=serializers.CharField(),
+        required=False,
+    )
+
+
 class ReviewAvailabilitiesSerializer(serializers.Serializer):
     ready_for_review = serializers.BooleanField()
     early_review_available = serializers.BooleanField()
@@ -459,15 +470,10 @@ class ReviewInterstitialSerializer(serializers.Serializer):
         )
 
 
-class NextCardsForReviewRequestSerializer(serializers.Serializer):
-    manabi_reader_jmdict_ids  = serializers.ListField(
-        child=serializers.IntegerField(),
-        required=False,
-    )
-    manabi_reader_words_without_jmdict_ids  = serializers.ListField(
-        child=serializers.CharField(),
-        required=False,
-    )
+class NextCardsForReviewRequestSerializer(
+    ReviewAvailabilitiesRequestSerializer,
+):
+    pass
 
 
 class NextCardsForReviewSerializer(serializers.Serializer):
