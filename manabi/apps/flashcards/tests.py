@@ -148,7 +148,7 @@ class ReviewsAPITest(ManabiTestCase):
             due_at_before_review)
 
     def test_review_availabilities(self):
-        pass
+        self.api.review_availabilities(self.user)
 
 
 class SynchronizationTest(ManabiTestCase):

@@ -239,9 +239,12 @@ class APIShortcuts:
         return self.post('/api/flashcards/undo_card_review/', user=user).json()
 
     def review_availabilities(self, user, deck=None):
+        params = {}
+        if deck is not None:
+            params['deck'] = deck
         return self.get(
             '/api/flashcards/review_availabilities/',
-            {'deck': deck},
+            params,
             user=user,
         ).json()
 
