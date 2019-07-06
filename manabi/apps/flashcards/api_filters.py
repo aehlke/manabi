@@ -8,8 +8,12 @@ from manabi.apps.flashcards.models import (
 )
 
 
+def _get_param(request, field_name):
+    return request.query_params.get(field_name, request.data.get(field_name))
+
+
 def _get_bool(request, field_name):
-    value = request.query_params.get(field_name, 'false').lower()
+    value = (_get_param(request, field_name) or 'false').lower()
     if value == 'true':
         return True
     elif value == 'false':
@@ -20,7 +24,7 @@ def _get_bool(request, field_name):
 
 
 def _get_timestamp(request, field_name):
-    value = request.query_params.get(field_name)
+    value = _get_param(request, field_name)
     if value is None:
         return
     try:
@@ -32,7 +36,7 @@ def _get_timestamp(request, field_name):
 
 def review_availabilities_filters(request):
     deck = None
-    deck_id = request.query_params.get('deck_id')
+    deck_id = _get_param(request, 'deck_id')
     if deck_id:
         deck = get_object_or_404(Deck, pk=deck_id)
 
@@ -43,7 +47,7 @@ def review_availabilities_filters(request):
 
 def next_cards_to_review_filters(request):
     deck = None
-    deck_id = request.query_params.get('deck_id')
+    deck_id = _get_param(request, 'deck_id')
     if deck_id:
         deck = get_object_or_404(Deck, pk=deck_id)
 
@@ -53,8 +57,8 @@ def next_cards_to_review_filters(request):
     include_new_buried_siblings = _get_bool(
         request, 'include_new_buried_siblings')
 
-    new_cards_per_day_limit_override = (
-       request.query_params.get('new_cards_per_day_limit_override'))
+    new_cards_per_day_limit_override =  _get_param(
+        request, 'new_cards_per_day_limit_override')
     if new_cards_per_day_limit_override is not None:
         new_cards_per_day_limit_override = int(
             new_cards_per_day_limit_override)
