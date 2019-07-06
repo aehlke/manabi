@@ -57,7 +57,7 @@ class ReviewAvailabilities:
         self.early_review_began_at = early_review_began_at
         self._buffered_cards_count = buffered_cards_count
         self._buffered_new_cards_count = buffered_new_cards_count
-        self._is_for_manabi_reader = is_for_manabi_reader
+        self.is_for_manabi_reader = is_for_manabi_reader
         self._jmdict_ids = jmdict_ids
         self._words_without_jmdict_ids = words_without_jmdict_ids
 
