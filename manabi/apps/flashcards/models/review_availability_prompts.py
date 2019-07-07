@@ -214,11 +214,20 @@ def _early_review(review_availabilities, **kwargs):
     if review_availabilities.next_new_cards_count > 0:
         if not review_availabilities.new_cards_per_day_limit_reached:
             return
-        return (
-            '''Good news is you're caught up on reviews! Consider taking a '''
-            '''break or <a href="itms-apps://itunes.apple.com/app/id1247286380">reading</a> instead.'''
+        if review_availabilities.is_for_manabi_reader:
+            return (
+                "Good news is you're caught up on reviews! "
+                "Consider finding something else to read instead."
+            )
+        else:
+            return (
+                "Good news is you're caught up on reviews! Consider taking a "
+                "break or <a href='itms-apps://itunes.apple.com/app/id1247286380'>reading</a> instead."
         )
-    return '''You're caught up on reviews! Take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">go read something in Japanese</a>.'''
+    if review_availabilities.is_for_manabi_reader:
+        return "You're caught up on reviews!"
+    else:
+        return "You're caught up on reviews! Take a break or <a href='itms-apps://itunes.apple.com/app/id1247286380'>go read something in Japanese</a>."
 
 
 @_auto_secondary_prompt
@@ -229,11 +238,13 @@ def _done_early_review_of_all_cards(review_availabilities, secondary=False):
     '''
     if secondary:
         return
+    if review_availabilities.is_for_manabi_reader:
+        return
     if review_availabilities.early_review_began_at is None:
         return
     return (
         "You've reviewed every card at least once already now in this "
-        '''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
+        "session. Go take a break or <a href='itms-apps://itunes.apple.com/app/id1247286380'>read something</a> instead."
     )
 
 
@@ -245,6 +256,8 @@ def _all_cards_buffered(review_availabilities, secondary=False):
     '''
     if secondary:
         return
+    if review_availabilities.is_for_manabi_reader:
+        return
     if (
         review_availabilities.base_cards_queryset.exists()
         or not review_availabilities.excluded_card_ids
@@ -252,7 +265,7 @@ def _all_cards_buffered(review_availabilities, secondary=False):
         return
     return (
         "You've reviewed every card at least once already now in this "
-        '''session. Go take a break or <a href="itms-apps://itunes.apple.com/app/id1247286380">read something</a> instead.'''
+        "session. Go take a break or <a href='itms-apps://itunes.apple.com/app/id1247286380'>read something</a> instead."
     )
 
 
