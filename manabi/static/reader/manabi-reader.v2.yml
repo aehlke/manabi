@@ -34,7 +34,7 @@ beginner_feeds:
 
 categories:
   - title: News
-    background_image_url: https://manabi.io/static/reader/category_images/news.png
+    background_image_url: https://manabi.io/static/reader/category_images/news.jpg
     feeds:
       #- title: Hiragana Times
       #  rss_url: http://www.hiraganatimes.com/ja/feed/
@@ -186,7 +186,7 @@ categories:
       #  description: Online bilingual magazine bringing contemporary Tokyo culture to the world.
 
   - title: Folktales
-    background_image_url: https://manabi.io/static/reader/category_images/folktales.png
+    background_image_url: https://manabi.io/static/reader/category_images/folktales.jpg
     feeds:
       - title: 日本の昔話
         rss_url: https://manabi.io/static/reader/feeds/hukumusume-jap.rss
