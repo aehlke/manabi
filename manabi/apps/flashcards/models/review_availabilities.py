@@ -37,6 +37,7 @@ class ReviewAvailabilities:
         excluded_card_ids=set(),
         time_zone=None,
         new_cards_limit=None,
+
         is_for_manabi_reader=False,
         jmdict_ids=None,
         words_without_jmdict_ids=None,

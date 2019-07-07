@@ -21,6 +21,10 @@ class ReviewInterstitial:
         new_cards_limit=None,
         buffered_cards_count=None,
         buffered_new_cards_count=None,
+
+        is_for_manabi_reader=False,
+        jmdict_ids=None,
+        words_without_jmdict_ids=None,
     ):
         '''
         `new_cards_limit` is an instance of `NewCardsLimit.`
@@ -39,6 +43,10 @@ class ReviewInterstitial:
             new_cards_limit=new_cards_limit,
             buffered_cards_count=buffered_cards_count,
             buffered_new_cards_count=buffered_new_cards_count,
+
+            is_for_manabi_reader=is_for_manabi_reader,
+            jmdict_ids=jmdict_ids,
+            words_without_jmdict_ids=words_without_jmdict_ids,
         )
 
 
@@ -53,9 +61,11 @@ class NextCardsForReview:
         include_new_buried_siblings=False,
         new_cards_per_day_limit_override=None,
         excluded_card_ids=set(),
+
         is_for_manabi_reader=False,
         jmdict_ids=None,
         words_without_jmdict_ids=None,
+
         time_zone=None,
     ):
         new_cards_limit = NewCardsLimit(
@@ -72,6 +82,7 @@ class NextCardsForReview:
             early_review_began_at=early_review_began_at,
             include_new_buried_siblings=include_new_buried_siblings,
             new_cards_limit=new_cards_limit.next_new_cards_limit,
+
             is_for_manabi_reader=is_for_manabi_reader,
             jmdict_ids=jmdict_ids,
             words_without_jmdict_ids=words_without_jmdict_ids,
@@ -101,6 +112,10 @@ class NextCardsForReview:
             new_cards_per_day_limit_override=new_cards_per_day_limit_override,
             new_cards_limit=new_cards_limit,
             early_review_began_at=early_review_began_at,
+
+            is_for_manabi_reader=is_for_manabi_reader,
+            jmdict_ids=jmdict_ids,
+            words_without_jmdict_ids=words_without_jmdict_ids,
         )
 
         self.server_datetime = datetime.now(pytz.utc)
