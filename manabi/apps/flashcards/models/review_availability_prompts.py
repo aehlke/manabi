@@ -131,7 +131,7 @@ def _new_under_daily_limit(review_availabilities, secondary=False):
         )
     else:
         return (
-            f"We have {count} new {_pluralize_cards(count)}{cards_suffix}"
+            f"We have {count} new {_pluralize_cards(count)}{cards_suffix} "
             f"for you to learn."
         )
 
