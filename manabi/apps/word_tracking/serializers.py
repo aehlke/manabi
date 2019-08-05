@@ -19,3 +19,6 @@ class TrackedWordsSerializer(serializers.Serializer):
         child=serializers.CharField())
     known_words_without_jmdict_ids = serializers.ListField(
         child=serializers.CharField())
+
+    learning_kanji = serializers.CharField()
+    known_kanji = serializers.CharField()

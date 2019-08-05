@@ -1,3 +1,4 @@
+from django.contrib.admin.utils import flatten
 from django.db import models
 from django.db.models import Case, When, Value, F
 from django.utils.functional import cached_property
@@ -6,6 +7,15 @@ from manabi.apps.flashcards.models import Fact, Card
 from manabi.apps.flashcards.models.constants import (
     MATURE_INTERVAL_MIN,
 )
+from manabi.apps.utils.japanese import is_kanji
+
+
+def _kanji_in_reading(reading):
+    kanji = set()
+    for char in reading:
+        if is_kanji(char):
+            kanji.add(char)
+    return [c for c in kanji]
 
 
 class TrackedWords:
@@ -32,11 +42,7 @@ class TrackedWords:
                     default=Value(False),
                     output_field=models.BooleanField(),
                 ),
-                reading=Case(
-                    When(jmdict_id__isnull=True, then=F('fact__reading')),
-                    default=Value(None),
-                    output_field=models.CharField(),
-                ),
+                reading=F('fact__reading'),
             ).distinct().values(
                 'jmdict_id', 'reading', 'is_new', 'is_mature',
                 'suspended', 'deck_suspended')
@@ -129,3 +135,24 @@ class TrackedWords:
                 and word['jmdict_id'] is None
             )
         )
+
+    @cached_property
+    def learning_kanji(self):
+        learning_kanji = set(flatten([
+            _kanji_in_reading(word['reading'])
+            for word in self._get_tracked_words()
+            if (
+                not word['is_new']
+                and not word['is_mature']
+            )
+        ]))
+        learning_kanji -= set(self.known_kanji)
+        return ''.join(learning_kanji)
+
+    @cached_property
+    def known_kanji(self):
+        return ''.join(set(flatten([
+            _kanji_in_reading(word['reading'])
+            for word in self._get_tracked_words()
+            if word['is_mature']
+        ])))
