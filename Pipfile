@@ -70,7 +70,7 @@ django-cachecow = {git = "https://github.com/aehlke/django-cachecow.git"}
 django-autoslug = {git = "https://github.com/justinmayer/django-autoslug.git",ref = "4dc75083d84265e019a900d636273c731457193d"}
 freezegun = "==0.3.10"
 django-impersonate = "*"
-requests-html = {git = "https://github.com/kennethreitz/requests-html.git",ref = "47b2ad86cab49167fb15cce787efca74c4de9fdd"}
+requests-html = {git = "https://github.com/kennethreitz/requests-html.git",ref = "dc82965d66761eed3b92ff371b8af9c4b85cc725"}
 feedgen = {git = "https://github.com/aehlke/python-feedgen.git",ref = "b80e122e9e45d05f6aaf67b1cb1438ea9a505c72"}
 psycopg2-binary = "*"
 sentry-sdk = "*"
