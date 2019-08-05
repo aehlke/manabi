@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from rest_framework import status, viewsets
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework.renderers import TemplateHTMLRenderer, HTMLFormRenderer
 from rest_framework.response import Response
 
@@ -31,7 +31,8 @@ class FactViewSet(api_views.FactViewSet):
 
     renderer_classes = [TemplateHTMLRenderer]
 
-    @list_route(
+    @action(
+        detail=False,
         methods=['GET', 'POST'],
         renderer_classes=[TemplateHTMLRenderer],
     )
@@ -160,7 +161,7 @@ class DeckViewSet(_SubscriberDeckRedirectMixin, api_views.DeckViewSet):
         response.template_name = 'flashcards/deck_detail.html'
         return response
 
-    @detail_route()
+    @action(detail=True)
     def facts(self, request, pk=None, slug=None):
         deck = self.get_object()
         if slug != deck.slug:
@@ -215,7 +216,7 @@ class SharedDeckViewSet(_SubscriberDeckRedirectMixin, api_views.SharedDeckViewSe
             template_name='flashcards/deck_detail.html',
         )
 
-    @detail_route()
+    @action(detail=True)
     def facts(self, request, pk=None, slug=None):
         deck = self.get_object()
         if slug != deck.slug:

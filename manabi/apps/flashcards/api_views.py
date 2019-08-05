@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from rest_framework import mixins, views, viewsets, status
-from rest_framework.decorators import detail_route, list_route
+from rest_framework.decorators import action
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAuthenticatedOrReadOnly,
@@ -69,7 +69,7 @@ from manabi.apps.manabi_auth.serializers import UserSerializer
 
 
 class _DeckMixin:
-    @detail_route()
+    @action(detail=True)
     def subscribers(self, request, pk=None):
         deck = self.get_object()
         if not (deck.shared and deck.active):
@@ -105,13 +105,13 @@ class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):
     def perform_create(self, serializer):
         instance = serializer.save(owner=self.request.user)
 
-    @detail_route()
+    @action(detail=True)
     def cards(self, request, pk=None):
         deck = self.get_object()
         cards = Card.objects.of_deck(deck)
         return Response(CardSerializer(cards, many=True).data)
 
-    @detail_route()
+    @action(detail=True)
     def facts(self, request, pk=None):
         deck = self.get_object()
         facts = Fact.objects.deck_facts(deck)
@@ -187,7 +187,7 @@ class SuggestedSharedDecksViewSet(viewsets.ViewSet):
 class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
     serializer_class = SharedDeckSerializer
 
-    @detail_route()
+    @action(detail=True)
     def facts(self, request, pk=None):
         deck = self.get_object()
         facts = Fact.objects.deck_facts(deck)
@@ -434,7 +434,9 @@ class CardViewSet(viewsets.ModelViewSet):
             .select_related('fact', 'deck')
         )
 
-    @detail_route(methods=['post'], permission_classes=[IsAuthenticated])
+    @action(
+        detail=True, methods=['post'], permission_classes=[IsAuthenticated],
+    )
     def reviews(self, request, pk=None):
         card = self.get_object()
         input_serializer = CardReviewSerializer(data=request.data)
