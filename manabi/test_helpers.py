@@ -148,12 +148,6 @@ class APIShortcuts:
         kwargs['method'] = 'delete'
         return self.call(*args, **kwargs)
 
-    def register(self, username, password):
-        resp = self.post('/api/auth/register/', {
-            'username': username, 'password': password,
-        })
-        return resp.json()
-
     def decks(self, user):
         resp = self.get('/api/flashcards/decks/', user=user)
         return resp.json()

@@ -2,7 +2,6 @@ from django.conf import settings
 from django.conf.urls import *
 from django.contrib import admin
 from django.views.generic.base import TemplateView
-from djoser.views import UserCreateView, TokenCreateView
 from rest_framework import routers
 
 import manabi.views
@@ -70,8 +69,6 @@ urlpatterns = [
 
     # API URLs.
     url(r'^api/', include((api_router.urls, 'api'))),
-    url(r'^api/auth/register/$', UserCreateView.as_view()), # Deprecated.
-    url(r'^api/auth/login/$', TokenCreateView.as_view()), # Deprecated.
     url(r'^api/auth/social_login/(?P<backend>\S+)/$', exchange_token),
     url(r'^api/auth/', include('djoser.urls')),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
