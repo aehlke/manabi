@@ -452,11 +452,8 @@ REST_FRAMEWORK = {
 }
 
 if LIVE_HOST:
-    try:
-        from manabi.settings_production_secrets import *
-        from manabi.settings_production import *
-    except ImportError:
-        pass
+    from manabi.settings_production_secrets import *
+    from manabi.settings_production import *
 elif os.environ.get('CIRCLECI'):
     from manabi.settings_circleci import *
 else:
