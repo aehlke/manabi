@@ -257,6 +257,14 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
         else:
             facts = Fact.objects.filter(deck__owner=self.request.user)
         facts = facts.filter(active=True).distinct()
+
+        jmdict_id = self.request.query_params.get('jmdict_id')
+        if jmdict_id is not None:
+            facts = facts.filter(jmdict_id=jmdict_id)
+        reading = self.request.query_params.get('reading')
+        if reading is not None:
+            facts = facts.filter(reading=reading)
+
         facts = facts.select_related('deck')
         facts = facts.prefetch_related('card_set')
         return facts
