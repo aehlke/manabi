@@ -261,9 +261,9 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
         jmdict_id = self.request.query_params.get('jmdict_id')
         if jmdict_id is not None:
             facts = facts.filter(jmdict_id=jmdict_id)
-        reading = self.request.query_params.get('reading')
-        if reading is not None:
-            facts = facts.filter(reading=reading)
+        expression = self.request.query_params.get('expression')
+        if expression is not None:
+            facts = facts.filter(expression=expression)
 
         facts = facts.select_related('deck')
         facts = facts.prefetch_related('card_set')
