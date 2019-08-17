@@ -260,7 +260,10 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
 
         jmdict_id = self.request.query_params.get('jmdict_id')
         if jmdict_id is not None:
-            facts = facts.filter(jmdict_id=jmdict_id)
+            facts = facts.filter(
+                Q(jmdict_id=jmdict_id)
+                | Q(jmdict_id__isnull=True)
+            )
         expression = self.request.query_params.get('expression')
         if expression is not None:
             facts = facts.filter(expression=expression)
