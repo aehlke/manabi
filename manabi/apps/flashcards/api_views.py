@@ -240,6 +240,9 @@ class SharedDeckViewSet(_DeckMixin, viewsets.ReadOnlyModelViewSet):
 
 
 class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
+    '''
+    jmdict_id trumps expression query param.
+    '''
     serializer_class = DetailedFactSerializer
     serializer_action_classes = {
         'create': FactWithCardsSerializer,
@@ -259,13 +262,16 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
         facts = facts.filter(active=True).distinct()
 
         jmdict_id = self.request.query_params.get('jmdict_id')
-        if jmdict_id is not None:
-            facts = facts.filter(
-                Q(jmdict_id=jmdict_id)
-                | Q(jmdict_id__isnull=True)
-            )
         expression = self.request.query_params.get('expression')
-        if expression is not None:
+        if jmdict_id is not None:
+            filters = Q(jmdict_id=jmdict_id)
+            if expression is not None:
+                filters = filters | Q(
+                    expression=expression, jmdict_id__isnull=True)
+            else:
+                filters = filters | Q(jmdict_id__isnull=True)
+            facts = facts.filter(filters)
+        elif expression is not None:
             facts = facts.filter(expression=expression)
 
         facts = facts.select_related('deck')
