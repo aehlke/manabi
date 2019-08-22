@@ -207,6 +207,7 @@ async def generate_nhk_easy_news_feed(
         if nhk_url_match is None:
             continue
         nhk_url = nhk_url_match.group()
+        nhk_url = nhk_url.replace('http://', 'https://', 1)
 
         for attempt in range(ATTEMPTS_PER_ENTRY):
             session = AsyncHTMLSession()
