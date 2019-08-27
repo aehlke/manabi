@@ -117,7 +117,7 @@ categories:
 
       - title: Engadget Japan
         rss_url: http://japanese.engadget.com/rss.xml
-        icon_url: http://www.blogsmithmedia.com/japanese.engadget.com/assets-h9912952623182b4273b51a1ed0b2aa6a/images/favicon-96x96.png?h=9680b5ecfb3de364248a4a98bf84664f
+        icon_url: https://s.yimg.com/cv/apiv2/engadget/engadget-favicon-96x96.png
         inject_entry_image_into_header: true
         display_publication_date: true
         description: Technology news and reviews.
