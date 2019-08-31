@@ -71,7 +71,7 @@ urlpatterns = [
     # API URLs.
     url(r'^api/', include((api_router.urls, 'api'))),
     url(r'^api/auth/social_login/(?P<backend>\S+)/$', exchange_token),
-    url(r'^api/auth/users/create/', UserViewSet.as_view({'post': 'create'}),
+    url(r'^api/auth/users/create/', UserViewSet.as_view({'post': 'create'})),
     url(r'^api/auth/token/create/', TokenCreateView.as_view()),
     url(r'^api/auth/', include('djoser.urls')),
     url(r'^api/auth/', include('djoser.urls.authtoken')),
