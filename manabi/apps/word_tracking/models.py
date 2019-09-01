@@ -52,6 +52,7 @@ class TrackedWords:
                 'suspended', 'deck_suspended')
         return self._tracked_words
 
+    @cached_property
     def last_modified(self):
         return self._get_cards().annotate(
             last_modified=Greatest(
