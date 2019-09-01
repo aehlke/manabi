@@ -1,6 +1,7 @@
 from django.contrib.admin.utils import flatten
 from django.db import models
-from django.db.models import Case, When, Value, F
+from django.db.models import Case, When, Value, F, Max
+from django.db.models.functions import Greatest
 from django.utils.functional import cached_property
 
 from manabi.apps.flashcards.models import Fact, Card
@@ -23,15 +24,18 @@ class TrackedWords:
         self.user = user
         self._tracked_words = None
 
+    def _get_cards(self):
+        return Card.objects.filter(
+            owner=self.user,
+            active=True,
+        )
+
     def _get_tracked_words(self):
         '''
         Includes suspended cards (that the user may have already reviewed).
         '''
         if self._tracked_words is None:
-            self._tracked_words = Card.objects.filter(
-                owner=self.user,
-                active=True,
-            ).annotate(
+            self._tracked_words = self._get_cards().annotate(
                 is_new=Case(
                     When(last_reviewed_at__isnull=True, then=Value(True)),
                     default=Value(False),
@@ -47,6 +51,14 @@ class TrackedWords:
                 'jmdict_id', 'reading', 'is_new', 'is_mature',
                 'suspended', 'deck_suspended')
         return self._tracked_words
+
+    def last_modified(self):
+        return self._get_cards().annotate(
+            last_modified=Greatest(
+                'last_reviewed_at',
+                'created_or_modified_at',
+            )
+        ).aggregate(Max('last_modified'))['last_modified__max']
 
     @cached_property
     def suspended_jmdict_ids(self):

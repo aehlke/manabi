@@ -74,3 +74,4 @@ requests-html = {git = "https://github.com/kennethreitz/requests-html.git",ref =
 feedgen = {git = "https://github.com/aehlke/python-feedgen.git",ref = "b80e122e9e45d05f6aaf67b1cb1438ea9a505c72"}
 psycopg2-binary = "*"
 sentry-sdk = "*"
+django-rest-framework-condition = "*"
