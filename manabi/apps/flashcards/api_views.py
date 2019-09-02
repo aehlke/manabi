@@ -115,6 +115,7 @@ class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):
     def facts(self, request, pk=None):
         deck = self.get_object()
         facts = Fact.objects.deck_facts(deck)
+        facts = facts.filter(active=True)
         facts = facts.select_related('deck')
         facts = facts.prefetch_active_card_templates()
 

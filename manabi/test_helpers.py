@@ -207,6 +207,18 @@ class APIShortcuts:
             user=user,
         ).json()
 
+    def facts(self, user, deck=None):
+        if deck is not None:
+            return self.get(
+                f'/api/flashcards/decks/{deck.id}/facts/',
+                user=user,
+            ).json()
+
+        return self.get(
+            '/api/flashcards/facts/',
+            user=user,
+        ).json()
+
     def suspend_fact(self, user, fact_id):
         return self.patch(
             '/api/flashcards/facts/{}/'.format(fact_id),

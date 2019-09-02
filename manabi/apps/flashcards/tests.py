@@ -443,6 +443,36 @@ class FactsTest(ManabiTestCase):
         for fact in self._get_facts():
             self.assertEqual(fact.suspended, fact.id == fact_to_suspend.id)
 
+    def test_fact_deletion(self):
+        fact_to_delete = self._get_facts()[0]
+
+        self.assertTrue(fact_to_delete.active)
+        self.assertTrue(
+            any(fact['id'] == fact_to_delete.id
+                for fact in self.api.facts(self.user)))
+        self.assertTrue(
+            any(fact['id'] == fact_to_delete.id
+                for fact
+                in self.api.facts(self.user, deck=fact_to_delete.deck)))
+
+        self.api.delete(
+            f'/api/flashcards/facts/{fact_to_delete.id}/',
+            user=self.user,
+        )
+        self.assertFalse(Fact.objects.get(id=fact_to_delete.id).active)
+
+        # Deleted fact doesn't show up in API requests.
+        self.assertFalse(
+            any(fact['id'] == fact_to_delete.id
+                for fact in self.api.facts(self.user)))
+        self.assertFalse(
+            any(fact['id'] == fact_to_delete.id
+                for fact
+                in self.api.facts(self.user, deck=fact_to_delete.deck)))
+        self.assertTrue(
+            all(fact['active'] for fact in self.api.facts(user=self.user)))
+
+
 
 class ManabiReaderFactsTest(ManabiTestCase):
     def after_setUp(self):
