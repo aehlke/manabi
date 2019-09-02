@@ -247,7 +247,7 @@ class FactViewSet(MultiSerializerViewSetMixin, viewsets.ModelViewSet):
     serializer_class = DetailedFactSerializer
     serializer_action_classes = {
         'create': FactWithCardsSerializer,
-        'update': FactWithCardsSerializer,
+        'update': DetailedFactSerializer,
         'partial_update': FactWithCardsSerializer,
     }
     permission_classes = [
