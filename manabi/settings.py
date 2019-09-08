@@ -255,7 +255,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'adminsortable',
     'cachecow',
-    'catnap',
     'crispy_forms',  # For browsable API.
     'django_nose',
     'django_rq',
