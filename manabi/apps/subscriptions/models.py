@@ -21,7 +21,7 @@ class OutOfDateReceiptError(ValueError):
 
 
 def user_is_active_subscriber(user, with_grace_period=True):
-    if not user.is_authenticated():
+    if not user.is_authenticated:
         return False
 
     if user.username in settings.FREE_SUBSCRIPTION_USERNAMES:
