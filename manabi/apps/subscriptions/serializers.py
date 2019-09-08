@@ -18,3 +18,7 @@ class PurchasingOptionsSerializer(serializers.Serializer):
     annual_product = SubscriptionProduct()
     student_monthly_product = SubscriptionProduct()
     student_annual_product = SubscriptionProduct()
+
+
+class SubscriptionStatusSerializer(serializers.Serializer):
+    active = serializers.BooleanField(read_only=True)

@@ -15,10 +15,12 @@ from manabi.apps.subscriptions.models import (
     Subscription,
     PurchasedSubscriptionProduct,
     OutOfDateReceiptError,
+    user_is_active_subscriber,
 )
 from manabi.apps.subscriptions.serializers import (
     PurchasingOptionsSerializer,
     PurchasedSubscriptionProductSerializer,
+    SubscriptionStatusSerializer,
 )
 
 logger = logging.getLogger(__name__)
@@ -27,6 +29,13 @@ logger = logging.getLogger(__name__)
 @api_view(['GET'])
 def purchasing_options(request):
     serializer = PurchasingOptionsSerializer(products.purchasing_options())
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def subscription_status(request):
+    serializer = SubscriptionStatusSerializer(
+        data={'active': user_is_active_subscriber(request.user)})
     return Response(serializer.data)
 
 

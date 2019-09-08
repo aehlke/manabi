@@ -5,6 +5,7 @@ from manabi.apps.subscriptions import api_views
 
 urlpatterns = [
     url(r'^purchasing_options/$', api_views.purchasing_options),
+    url(r'^subscription_status/$', api_views.subscription_status),
     url(r'^subscriptions/$', api_views.SubscriptionViewSet.as_view(
         {'post': 'create'})),
     url(r'^subscription_update_notification/$',
