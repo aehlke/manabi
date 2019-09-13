@@ -286,6 +286,10 @@ class APIShortcuts:
     def tracked_words(self, user):
         return self.get('/api/word_tracking/tracked_words/', user=user).json()
 
+    def subscription_status(self, user=None):
+        return self.get(
+            '/api/subscriptions/subscription_status/', user=user).json()
+
 
 def random_name():
     return ''.join(random.choice(string.ascii_lowercase) for _ in range(5))
