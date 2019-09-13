@@ -36,6 +36,7 @@ def purchasing_options(request):
 def subscription_status(request):
     serializer = SubscriptionStatusSerializer(
         data={'active': user_is_active_subscriber(request.user)})
+    serializer.is_valid(raise_exception=True)
     return Response(serializer.data)
 
 
