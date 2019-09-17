@@ -29,6 +29,7 @@ def purchasing_options():
 
 def manabi_reader_purchasing_options():
     return {
+        'primary_prompt': '',
         'student_prompt': STUDENT_PROMPT.replace('Manabi', 'Manabi Reader'),
         'monthly_product': _product(
             'io.manabi.ManabiReader.monthly', '1480319679', 'Per Month'),
