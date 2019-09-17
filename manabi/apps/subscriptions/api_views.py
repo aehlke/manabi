@@ -33,6 +33,13 @@ def purchasing_options(request):
 
 
 @api_view(['GET'])
+def manabi_reader_purchasing_options(request):
+    serializer = PurchasingOptionsSerializer(
+        products.manabi_reader_purchasing_options())
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
 def subscription_status(request):
     serializer = SubscriptionStatusSerializer(
         {'active': user_is_active_subscriber(request.user)})
