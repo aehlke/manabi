@@ -56,3 +56,10 @@
     dest: /etc/nginx/sites-enabled/manabi-reader.conf
   become: yes
   notify: Reload nginx
+
+- name: Add LaunchRock redirect nginx site
+  template:
+    src: templates/launchrock-redirect.conf.j2
+    dest: /etc/nginx/sites-enabled/launchrock-redirect.conf
+  become: yes
+  notify: Reload nginx
