@@ -466,5 +466,6 @@ if LIVE_HOST:
     sentry_sdk.init(
         RAVEN_CONFIG['dsn'],
         integrations=[DjangoIntegration(), RqIntegration()])
+    sentry_sdk.utils.MAX_STRING_LENGTH = 8192 # undocumented truncation length as of v0.12.2
 
 CACHES['default']['KEY_PREFIX'] = '2'
