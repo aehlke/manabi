@@ -4,6 +4,7 @@ import logging
 from django.contrib.auth.models import User
 from django.contrib.postgres.fields import JSONField
 from django.conf import settings
+from django.core.exceptions import PermissionDenied
 from django.db import models
 import itunesiap
 
@@ -136,8 +137,6 @@ class SubscriptionManager(models.Manager):
         Will raise InvalidReceipt error if invalid.
         '''
         shared_secret = notification['password']
-        if shared_secret != settings.ITUNES_SHARED_SECRET:
-            raise PermissionDenied('Invalid iTunes shared secret.')
 
         try:
             receipt_info = notification['latest_receipt_info']
@@ -153,6 +152,13 @@ class SubscriptionManager(models.Manager):
             original_transaction_id=
                 receipt_info['original_transaction_id'])
 
+        if shared_secret not in [
+            settings.ITUNES_SHARED_SECRET,
+            settings.MANABI_SPECIFIC_ITUNES_SHARED_SECRET,
+        ]:
+            logger.warning('Invalid iTunes shared secret')
+            raise PermissionDenied('Invalid iTunes shared secret.')
+
         if notification['environment'] == 'PROD':
             environment = itunesiap.env.production
         else:
@@ -162,7 +168,7 @@ class SubscriptionManager(models.Manager):
             'RENEWAL', 'INTERACTIVE_RENEWAL',
         ]:
             receipt = notification['latest_receipt']
-            itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
+            itunesiap.verify(receipt, password=shared_secret)
 
             original_transaction_id = receipt_info['original_transaction_id']
 
@@ -172,7 +178,7 @@ class SubscriptionManager(models.Manager):
         elif notification_type == 'CANCEL':
             receipt = itunes_receipt['latest_expired_receipt']
 
-            itunesiap.verify(receipt, password=settings.ITUNES_SHARED_SECRET)
+            itunesiap.verify(receipt, password=shared_secret)
 
             original_transaction_id = receipt_info['original_transaction_id']
 
