@@ -32,6 +32,21 @@ class UserCreateWithTokenSerializer(UserCreateSerializer):
         return token.key
 
 
+class SignInWithAppleIDSerializer(serializers.Serializer):
+    user_identifier = serializers.CharField(
+        allow_blank=False,
+    )
+    email = serializers.EmailField(
+        allow_blank=False,
+    )
+    first_name = serializers.CharField(
+        allow_blank=False,
+    )
+    last_name = serializers.CharField(
+        allow_blank=False,
+    )
+
+
 class SocialAccessTokenSerializer(serializers.Serializer):
     """
     Serializer which accepts an OAuth2 access token.

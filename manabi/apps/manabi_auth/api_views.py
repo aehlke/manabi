@@ -1,5 +1,6 @@
 from rest_framework.decorators import api_view
 from django.conf import settings
+from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
@@ -9,7 +10,50 @@ from rest_framework.response import Response
 from requests.exceptions import HTTPError
 from social_django.utils import psa
 
-from manabi.apps.manabi_auth.serializers import SocialAccessTokenSerializer
+from manabi.apps.manabi_auth.models import (
+    AppleIDAccount,
+    generate_username_for_apple_id,
+)
+from manabi.apps.manabi_auth.serializers import (
+    SignInWithAppleIDSerializer,
+    SocialAccessTokenSerializer,
+)
+
+
+@api_view(http_method_names=['POST'])
+@permission_classes([AllowAny])
+def sign_in_with_apple_id(request):
+    serializer = SignInWithAppleIDSerializer(data=request.data)
+    serializer.is_valid(raise_exception=True)
+
+    try:
+        account = AppleIDAccount.objects.get(
+            user_identifier=serializer.user_identifier)
+        user = account.user
+    except AppleIDAccount.DoesNotExist:
+        username = generate_username_for_apple_id(serializer.first_name)
+        user = User.objects.create_user(
+            username=username,
+            email=serializer.email,
+            first_name=serializer.first_name,
+            last_name=serializer.last_name,
+        )
+        account = AppleIDAccount.objects.create(
+            user=user,
+            user_identifier=serializer.user_identifier,
+        )
+
+    if user.is_active:
+        token, _ = Token.objects.get_or_create(user=user)
+        return Response({
+            'auth_token': token.key,
+            'username': user.username,
+        })
+    else:
+        return Response(
+            {'errors': {nfe: 'This user account is inactive'}},
+            status=status.HTTP_400_BAD_REQUEST,
+        )
 
 
 # See: https://www.toptal.com/django/integrate-oauth-2-into-django-drf-back-end

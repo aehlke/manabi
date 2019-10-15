@@ -108,16 +108,16 @@ class FactQuerySet(QuerySet):
                 },
             )
 
-        try:
-            fact = Fact.objects.get(
-                deck__owner=user,
-                deck__active=True,
-                expression=expression,
-                reading=reading,
-                meaning=meaning,
-                active=True,
-            )
+        fact = Fact.objects.filter(
+            deck__owner=user,
+            deck__active=True,
+            expression=expression,
+            reading=reading,
+            meaning=meaning,
+            active=True,
+        ).first()
 
+        if fact is not None:
             fact.suspended = False
 
             if example_sentence is not None:
@@ -129,7 +129,7 @@ class FactQuerySet(QuerySet):
 
             fact.save(update_fields=[
                 'suspended', 'jmdict_id', 'reader_source', 'example_sentence'])
-        except Fact.DoesNotExist:
+        else:
             deck = Deck.objects.get_or_create_manabi_reader_deck(user)
 
             fact = Fact.objects.create(

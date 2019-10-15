@@ -15,7 +15,10 @@ from manabi.apps.flashcards.api_views import (
     FactViewSet,
     CardViewSet,
 )
-from manabi.apps.manabi_auth.api_views import exchange_token
+from manabi.apps.manabi_auth.api_views import (
+    sign_in_with_apple_id,
+    exchange_token,
+)
 from manabi.apps.review_results.api_views import ReviewResultsView
 
 
@@ -71,6 +74,7 @@ urlpatterns = [
     # API URLs.
     url(r'^api/', include((api_router.urls, 'api'))),
     url(r'^api/auth/social_login/(?P<backend>\S+)/$', exchange_token),
+    url(r'^api/auth/sign_in_with_apple_id/$', sign_in_with_apple_id),
     url(r'^api/auth/users/create/', UserViewSet.as_view({'post': 'create'})),
     url(r'^api/auth/token/create/', TokenCreateView.as_view()),
     url(r'^api/auth/', include('djoser.urls')),
