@@ -31,7 +31,9 @@ def sign_in_with_apple_id(request):
             user_identifier=serializer.user_identifier)
         user = account.user
     except AppleIDAccount.DoesNotExist:
-        username = generate_username_for_apple_id(serializer.first_name)
+        username = generate_username_for_apple_id(
+            serializer.user_identifier,
+            serializer.first_name)
         user = User.objects.create_user(
             username=username,
             email=serializer.email,

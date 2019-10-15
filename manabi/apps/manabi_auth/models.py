@@ -15,8 +15,8 @@ class AppleIDAccount(models.Model):
     )
 
 
-def generate_username_for_apple_id(first_name, suffix=None):
-    username = first_name
+def generate_username_for_apple_id(user_identifier, first_name, suffix=None):
+    username = first_name or user_identifier[:8]
 
     if suffix is not None:
         username = username + suffix
