@@ -84,7 +84,7 @@ categories:
 
       - title: Nippon.com
         rss_url: http://nippon.com/ja/feed/
-        icon_url: http://www.nippon.com/img/favicon.ico
+        icon_url: https://www.nippon.com/ja/ncommon/images/apple-touch-icon.png
         display_publication_date: true
         description: Scholarly analysis and entertaining articles on Japan's society, economy, and politics.
 
