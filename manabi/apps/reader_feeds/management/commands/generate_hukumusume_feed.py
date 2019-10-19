@@ -50,7 +50,7 @@ def execute():
                         continue
 
                     table = link.xpath('./ancestor::table[1]')[0]
-                    texts = table.itertext()
+                    texts = list(table.itertext())
                     description = ''
                     for text1, text2 in zip(texts, texts[1:]):
                         if '内容 :' in text1:
