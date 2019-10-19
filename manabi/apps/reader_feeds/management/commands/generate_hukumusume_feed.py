@@ -67,7 +67,7 @@ def execute():
                         continue
 
                     try:
-                        audio_url = table.cssselect('audio')[0].get('url')
+                        audio_url = table.cssselect('audio')[0].get('src')
                     except IndexError:
                         audio_url = None
 
