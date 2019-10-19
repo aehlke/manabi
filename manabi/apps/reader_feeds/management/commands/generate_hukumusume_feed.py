@@ -66,11 +66,17 @@ def execute():
                         # Every one has an image.
                         continue
 
+                    try:
+                        audio_url = table.cssselect('audio')[0].get('url')
+                    except IndexError:
+                        audio_url = None
+
                     feed_items[section].append({
                         'url': url,
                         'title': link.text,
                         'description': description,
                         'image_url': image_url,
+                        'audio_url': audio_url,
                     })
                     added_entry_urls.add(url)
 
@@ -86,6 +92,10 @@ def execute():
             entry.title(item['title'])
             entry.link(href=item['url'], rel='alternate')
             entry.summary(item['description'])
+
+            if item['audio_url']:
+                entry.link(href=item['audio_url'], rel='voice-audio')
+
             entry.content('<img src="{}" />'.format(item['image_url']), type='CDATA')
 
         fg.atom_file('manabi/static/reader/feeds/hukumusume-{}.rss'.format(section))
