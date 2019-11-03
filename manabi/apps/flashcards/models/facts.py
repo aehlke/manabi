@@ -284,24 +284,11 @@ class Fact(models.Model):
             # Update cards.
             card_attrs = {
                 'deck_id': self.deck_id,
-                'fact_suspended': self.suspended,
                 'created_or_modified_at': datetime.utcnow(),
             }
             if not self.active:
                 card_attrs['active'] = False
             self.card_set.update(**card_attrs)
-
-            # Update subscriber cards.
-            subscriber_card_attrs = {
-                'fact_suspended': self.suspended,
-                'created_or_modified_at': datetime.utcnow(),
-            }
-            if self.suspended or not self.active:
-                self.new_syncing_subscriber_cards.update(
-                    **subscriber_card_attrs)
-            elif not self.suspended:
-                self.syncing_subscriber_cards.update(
-                    **subscriber_card_attrs)
 
         if update_fields is None or 'jmdict_id' in update_fields:
             self.card_set.exclude(
@@ -407,7 +394,6 @@ class Fact(models.Model):
                 owner=self.deck.owner,
                 deck=self.deck,
                 deck_suspended=self.deck.suspended,
-                fact_suspended=self.suspended,
                 jmdict_id=self.jmdict_id,
                 fact=self,
                 template=template_id,
@@ -418,6 +404,11 @@ class Fact(models.Model):
             self.suspend()
         elif self.suspended:
             self.unsuspend()
+
+        try:
+            del self.active_card_templates
+        except AttributeError:
+            pass
 
         self._set_active_card_templates_for_subscribers(template_ids)
 
@@ -449,16 +440,13 @@ class Fact(models.Model):
                     owner_id=owner_id,
                     deck_id=deck_id,
                     deck_suspended=deck_suspended,
-                    fact_suspended=fact_suspended,
                     fact_id=fact_id,
                     template=template_id,
                     new_card_ordinal=Card.random_card_ordinal(),
                 )
-                for fact_id, deck_id, deck_suspended, fact_suspended,
-                owner_id in
+                for fact_id, deck_id, deck_suspended, owner_id in
                 facts_without_template.values_list(
-                    'id', 'deck_id', 'deck__suspended', 'suspended',
-                    'deck__owner_id',
+                    'id', 'deck_id', 'deck__suspended', 'deck__owner_id',
                 ).iterator()
             ]
 
@@ -485,13 +473,13 @@ class Fact(models.Model):
 
     @transaction.atomic
     def suspend(self):
-        self.card_set.update(fact_suspended=True)
+        self.card_set.update(suspended=True)
         self.suspended = True
         self.save(update_fields=['suspended'])
 
     @transaction.atomic
     def unsuspend(self):
-        self.card_set.update(fact_suspended=False)
+        self.card_set.update(suspended=False)
         self.suspended = False
         self.save(update_fields=['suspended'])
 

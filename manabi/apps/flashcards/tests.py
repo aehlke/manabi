@@ -472,6 +472,15 @@ class FactsTest(ManabiTestCase):
         self.assertTrue(
             all(fact['active'] for fact in self.api.facts(user=self.user)))
 
+    def test_card_suspension_and_unsuspension(self):
+        fact = self._get_facts()[0]
+        original_templates = fact.active_card_templates
+
+        fact.set_active_card_templates(set())
+        self.assertEqual(fact.active_card_templates, set())
+
+        fact.set_active_card_templates(original_templates)
+        self.assertEqual(fact.active_card_templates, original_templates)
 
 
 class ManabiReaderFactsTest(ManabiTestCase):

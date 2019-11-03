@@ -51,7 +51,6 @@ class Card(models.Model):
     owner = models.ForeignKey(User, models.CASCADE, editable=False)
     deck = models.ForeignKey('flashcards.Deck', models.CASCADE, db_index=True)
     deck_suspended = models.BooleanField(default=False)
-    fact_suspended = models.BooleanField(default=False)
     jmdict_id = models.PositiveIntegerField(null=True, blank=True)
 
     fact = models.ForeignKey('flashcards.Fact', models.CASCADE, db_index=True)
@@ -88,7 +87,7 @@ class Card(models.Model):
         index_together = [
             [
                 'owner', 'due_at', 'active', 'suspended', 'due_at', 'fact',
-                'deck_suspended', 'fact_suspended',
+                'deck_suspended',
             ],
             ['owner', 'due_at', 'active', 'suspended'],
             ['deck', 'owner'],

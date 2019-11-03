@@ -376,7 +376,7 @@ class CommonFiltersMixin:
         return self.exclude(id__in=excluded_ids)
 
     def unsuspended(self):
-        return self.filter(suspended=False, fact_suspended=False)
+        return self.filter(suspended=False)
 
     def common_filters(
         self,
