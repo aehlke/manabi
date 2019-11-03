@@ -6,8 +6,11 @@ from django.db import migrations, models
 
 def forwards(apps, schema_editor):
     from manabi.apps.flashcards.models import Fact, Deck
+    from django.db.models import Q
 
-    for fact in Fact.objects.iterator():
+    for fact in Fact.objects.filter(
+        Q(suspended=True) | Q(deck__suspended=True) | Q(active=False)
+    ).iterator():
         card_attrs = {
             'fact_suspended': fact.suspended,
             'deck_suspended': fact.deck.suspended,
