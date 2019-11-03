@@ -362,7 +362,7 @@ class CommonFiltersMixin:
     '''
     def available(self):
         ''' Cards which are active and unsuspended. '''
-        return self.filter(active=True, suspended=False)
+        return self.filter(active=True).unsuspended()
 
     def of_deck(self, deck):
         return self.filter(deck=deck)
@@ -376,7 +376,7 @@ class CommonFiltersMixin:
         return self.exclude(id__in=excluded_ids)
 
     def unsuspended(self):
-        return self.filter(suspended=False)
+        return self.filter(suspended=False, fact_suspended=False)
 
     def common_filters(
         self,
