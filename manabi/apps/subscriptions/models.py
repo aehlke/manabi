@@ -165,7 +165,7 @@ class SubscriptionManager(models.Manager):
             environment = itunesiap.env.sandbox
 
         if notification_type in [
-            'RENEWAL', 'INTERACTIVE_RENEWAL',
+            'DID_RECOVER', 'RENEWAL', 'INTERACTIVE_RENEWAL',
         ]:
             receipt = notification['latest_receipt']
             itunesiap.verify(receipt, password=shared_secret)
