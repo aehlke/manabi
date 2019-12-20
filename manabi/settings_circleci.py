@@ -9,12 +9,6 @@ DATABASES = {
     },
 }
 
-REDIS = {
-    'host': 'localhost',
-    'port': 6379,
-    'db'  : 0,
-}
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',

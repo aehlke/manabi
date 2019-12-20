@@ -1,12 +1,6 @@
 DEFAULT_URL_PREFIX = 'https://manabi.io'
 API_URL_PREFIX = 'https://api.manabi.io'
 
-REDIS = {
-    'host': 'localhost',
-    'port': 6378,
-    'db'  : 0,
-}
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',

@@ -25,7 +25,6 @@ from manabi.apps.flashcards.models.constants import (
 from manabi.apps.flashcards.models.synchronization import (
     copy_facts_to_subscribers,
 )
-from manabi.apps.manabi_redis.models import redis
 
 
 class DeckQuerySet(QuerySet):

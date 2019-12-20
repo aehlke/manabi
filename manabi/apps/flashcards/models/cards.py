@@ -144,11 +144,6 @@ class Card(models.Model):
         )
 
     @property
-    def redis(self):
-        from manabi.apps.flashcards.models.redis_models import RedisCard
-        return RedisCard(self)
-
-    @property
     def siblings(self):
         '''Returns the other cards from this card's fact.'''
         return self.fact.card_set.exclude(id=self.id)
@@ -290,7 +285,6 @@ class Card(models.Model):
         now = datetime.utcnow()
         from_date = self.due_at if self.due_at >= now else now
         self.update_due_at(from_date + duration, update_last_due_at=False)
-        #self.redis.update_due_at()
 
     def _update_statistics(self, grade, reviewed_at,
                            duration=None, question_duration=None):
@@ -333,8 +327,6 @@ class Card(models.Model):
         self.last_interval, self.interval = (
             self.interval, next_repetition.interval)
         self.update_due_at(next_repetition.due_at)
-
-        # self.redis.update_ease_factor()
 
     def review(self, grade, duration=None, question_duration=None):
         '''
@@ -382,5 +374,4 @@ class Card(models.Model):
         card_history_item.save()
 
         self.save()
-        # self.redis.after_review()
         post_card_reviewed.send(self, instance=self)

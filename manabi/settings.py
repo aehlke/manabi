@@ -276,7 +276,6 @@ INSTALLED_APPS = (
     'manabi.apps.utils',
     'manabi.apps.jdic',
     'manabi.apps.manabi_auth',
-    'manabi.apps.manabi_redis',
     'manabi.apps.profiles',
     'manabi.apps.reader_feeds',
     'manabi.apps.reader_sources',
