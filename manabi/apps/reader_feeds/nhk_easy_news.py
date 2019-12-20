@@ -15,7 +15,7 @@ from lxml.cssselect import CSSSelector
 from lxml import etree
 from requests_html import AsyncHTMLSession
 
-ENTRY_COUNT = 18
+ENTRY_COUNT = 30
 ATTEMPTS_PER_ENTRY = 5
 
 
