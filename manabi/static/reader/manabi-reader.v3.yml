@@ -24,7 +24,7 @@ categories:
       #  icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
       #  description: Monthly publication written for foreigners residing in Japan.
 
-      - title: 和タのC n5 – Beginner
+      - title: 和タのC N5 – Beginner
         rss_url: https://manabi.io/media/feeds/watanoc-n5.rss
         icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
         description: Wa-tanoshii is a web magazine written in simple Japanese with colorful photos. Its beginner category is a great place to start when you can read kana but are otherwise just starting out.
@@ -130,15 +130,21 @@ categories:
       #  rss_contains_full_content: true
       #  icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
 
-      - title: 和タのC n4 – Upper Beginner
+      - title: 和タのC N4 – Upper Beginner
         rss_url: https://manabi.io/media/feeds/watanoc-n4.rss
         icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
         description: Wa-tanoshii is a web magazine written in relatively simple Japanese with colorful photos. Its "n4" category corresponds to the JLPT proficiency level between beginner and intermediate.
 
-      - title: 和タのC n3 – Intermediate
+      - title: 和タのC N3 – Intermediate
         rss_url: https://manabi.io/media/feeds/watanoc-n3.rss
         icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
         description: Wa-tanoshii n3 is a colorful web magazine written at an intermediate level.
+
+      - title: Nihongo Day by Day
+        rss_url: http://nihongodaybyday.blogspot.com/feeds/posts/default?alt=rss
+        rss_contains_full_content: true
+        icon_url: http://nihongodaybyday.blogspot.com/favicon.ico
+        description: Explanations of Japanese grammar and other questions about the language. Written in Japanese, so this is suitable for more advanced learners.
 
       - title: Lifehacker
         rss_url: http://feeds.lifehacker.jp/rss/lifehacker/index.xml
