@@ -1,18 +1,9 @@
 # -*- encoding: utf-8 -*-
 import asyncio
-import re
-from datetime import datetime
-from urllib.parse import urlparse, urlunparse, urljoin
 
 import lxml.html
-import feedparser
-import praw
-import pytz
-import requests
 from django.conf import settings
 from feedgen.feed import FeedGenerator
-from lxml.cssselect import CSSSelector
-from lxml import etree
 from requests_html import AsyncHTMLSession
 
 ATTEMPTS_PER_ENTRY = 5
@@ -80,7 +71,6 @@ async def generate_feed(
     while entry_limit is None or entry_limit > 0:
         page_url = (
                 f'http://watanoc.com/tag/{jlpt_level}/page/{current_page}')
-        print(page_url)
         session = AsyncHTMLSession()
         r = await session.get(page_url, timeout=20)
 
