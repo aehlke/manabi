@@ -24,10 +24,10 @@ categories:
       #  icon_url: http://hiraganatimes.com/wp/wp-content/uploads/2012/11/favicon2.ico
       #  description: Monthly publication written for foreigners residing in Japan.
 
-      - title: 和タのC (wa-tanoshii)
-        rss_url: https://watanoc.com/feed
+      - title: 和タのC n5 – Beginner
+        rss_url: https://manabi.io/static/reader/feeds/watanoc-n5.rss
         icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
-        description: Web magazine written in simple Japanese with colorful photos. It is designed for all Japanese learners from beginners to intermediates.
+        description: Wa-tanoshii is a web magazine written in simple Japanese with colorful photos. Its beginner category is a great place to start when you can read kana but are otherwise just starting out.
 
       - title: Matcha – Japan Travel Magazine
         rss_url: https://matcha-jp.com/easy/feed
@@ -130,10 +130,15 @@ categories:
       #  rss_contains_full_content: true
       #  icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
 
-      - title: 和タのC (wa-tanoshii)
-        rss_url: https://watanoc.com/feed
+      - title: 和タのC n4 – Beginner
+        rss_url: https://manabi.io/static/reader/feeds/watanoc-n4.rss
         icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
-        description: Web magazine written in simple Japanese with colorful photos. It is designed for all Japanese learners from beginners to intermediates.
+        description: Wa-tanoshii is a web magazine written in relatively simple Japanese with colorful photos. Its "n4" category corresponds to the JLPT proficiency level between beginner and intermediate.
+
+      - title: 和タのC n3 – Beginner
+        rss_url: https://manabi.io/static/reader/feeds/watanoc-n3.rss
+        icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
+        description: Wa-tanoshii n3 is a colorful web magazine written at an intermediate level.
 
       - title: Lifehacker
         rss_url: http://feeds.lifehacker.jp/rss/lifehacker/index.xml

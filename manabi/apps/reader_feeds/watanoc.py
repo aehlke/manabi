@@ -34,6 +34,11 @@ async def _add_entries_from_page(page_url, response, fg, jlpt_level):
     for article in response.html.find(
         '#content section.loop-section article.loop-article',
     ):
+        title = article.find('.entry-title a', first=True).text.replace(
+            f'...({jlpt_level})', ' ')
+        if 'quiz' in title.lower():
+            continue
+
         entry = fg.add_entry()
 
         article_url = article.find('.entry-title a', first=True).attrs['href']
@@ -46,8 +51,6 @@ async def _add_entries_from_page(page_url, response, fg, jlpt_level):
         category = article.find('.meta-cat a', first=True).text
         entry.category({'term': category, 'label': category})
 
-        title = article.find('.entry-title a', first=True).text.replace(
-            f'...({jlpt_level})', ' ')
         entry.title(title)
 
         description = article.find('.entry-summary', first=True).text
@@ -77,6 +80,7 @@ async def generate_feed(
     while entry_limit is None or entry_limit > 0:
         page_url = (
                 f'http://watanoc.com/tag/{jlpt_level}/page/{current_page}')
+        print(page_url)
         session = AsyncHTMLSession()
         r = await session.get(page_url, timeout=20)
 
