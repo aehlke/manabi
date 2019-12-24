@@ -31,7 +31,7 @@ class Command(BaseCommand):
                 tf.write(f'<html><body>{xml}</body></html>'.encode('utf-8'))
             subprocess.call(['open', tf.name])
         else:
-            save_feed(f'nhk-news.rss', xml)
+            save_feed(f'wired.rss', xml)
 
     def handle(self, *args, **options):
         loop = asyncio.get_event_loop()

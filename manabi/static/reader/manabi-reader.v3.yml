@@ -14,7 +14,7 @@ categories:
         rss_contains_full_content: true
         meaningful_content_min_length: 10
         inject_entry_image_into_header: true
-        icon_url: http://www3.nhk.or.jp/favicon.ico
+        icon_url: https://www.nhk.or.jp/apple-touch-icon-152x152-precomposed.png
         display_publication_date: true
         description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
 
@@ -78,9 +78,17 @@ categories:
         rss_contains_full_content: true
         meaningful_content_min_length: 10
         inject_entry_image_into_header: true
-        icon_url: http://www3.nhk.or.jp/favicon.ico
+        icon_url: https://www.nhk.or.jp/apple-touch-icon-152x152-precomposed.png
         display_publication_date: true
         description: Japan's public broadcasting organization offers news articles written in beginner-to-intermediate level Japanese.
+
+      - title: NHK News Web
+        rss_url: https://manabi.io/media/feeds/nhk_news.rss
+        meaningful_content_min_length: 10
+        inject_entry_image_into_header: true
+        icon_url: https://www.nhk.or.jp/apple-touch-icon-152x152-precomposed.png
+        display_publication_date: true
+        description: Native Japanese news by Japan's public broadcasting organization. For a beginner-friendly alternative, see NHK News Easy.
 
       - title: Nippon.com
         rss_url: http://nippon.com/ja/feed/
@@ -119,6 +127,12 @@ categories:
         rss_url: http://japanese.engadget.com/rss.xml
         icon_url: https://s.yimg.com/cv/apiv2/engadget/engadget-favicon-96x96.png
         inject_entry_image_into_header: true
+        display_publication_date: true
+        description: Technology news and reviews.
+
+      - title: WIRED.jp
+        rss_url: https://manabi.io/media/feeds/wired.rss
+        icon_url: https://wired.jp/apple-touch-icon.png
         display_publication_date: true
         description: Technology news and reviews.
 
