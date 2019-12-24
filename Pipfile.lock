@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "df1a5beb35e0fb19e184eed44641f1888797107647172f9095f63b762246dadf"
+            "sha256": "0425a92f2b293577ff1542431efca83585804d091fff9f70219dccf3af94048f"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -616,7 +616,7 @@
         },
         "mecab-python3": {
             "git": "https://github.com/SamuraiT/mecab-python3.git",
-            "ref": "aaac65033963474d02b3c8a9bb27c6e6fa214161"
+            "ref": "6a500d3616fe5b5183a040fae0f72ed79501bb90"
         },
         "natto-py": {
             "hashes": [

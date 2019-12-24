@@ -63,13 +63,13 @@ praw = "*"
 ipython = "==7.2.0"
 social-auth-app-django = "*"
 "django-rest-framework-social-oauth2" = "*"
-mecab-python3 = {git = "https://github.com/SamuraiT/mecab-python3.git",ref = "aaac65033963474d02b3c8a9bb27c6e6fa214161"}
+mecab-python3 = {git = "https://github.com/SamuraiT/mecab-python3.git",ref = "6a500d3616fe5b5183a040fae0f72ed79501bb90"}
 jcconv = {git = "https://github.com/besser82/jcconv.git",ref = "v0.2.4"}
 django-cachecow = {git = "https://github.com/aehlke/django-cachecow.git"}
 django-autoslug = {git = "https://github.com/justinmayer/django-autoslug.git",ref = "4dc75083d84265e019a900d636273c731457193d"}
 freezegun = "==0.3.10"
 django-impersonate = "*"
-requests-html = {git = "https://github.com/kennethreitz/requests-html.git",ref = "dc82965d66761eed3b92ff371b8af9c4b85cc725"}
+requests-html = "==0.10.0"
 feedgen = {git = "https://github.com/aehlke/python-feedgen.git",ref = "b80e122e9e45d05f6aaf67b1cb1438ea9a505c72"}
 psycopg2-binary = "*"
 sentry-sdk = "*"
