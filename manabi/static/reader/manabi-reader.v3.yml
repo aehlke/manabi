@@ -52,6 +52,12 @@ categories:
         inject_entry_image_into_header: false
         display_publication_date: true
 
+      - title: BuzzFeed News
+        rss_url: https://www.buzzfeed.com/jp/news.xml?country=jp
+        icon_url: https://www.buzzfeed.com/static-assets/img/favicon.ico
+        display_publication_date: true
+        description: Breaking stories and original reporting on politics, world news, technology, health, science, and more.
+
       - title: National Geographic News
         rss_url: http://natgeo.nikkeibp.co.jp/nng/rss/news.rdf
         icon_url: http://natgeo.nikkeibp.co.jp/favicon.ico
@@ -162,6 +168,12 @@ categories:
         rss_contains_full_content: true
         icon_url: http://nihongodaybyday.blogspot.com/favicon.ico
         description: Explanations of Japanese grammar and other questions about the language. Written in Japanese, so this is suitable for more advanced learners.
+
+      - title: BuzzFeed
+        rss_url: https://www.buzzfeed.com/jp/index.xml
+        icon_url: https://www.buzzfeed.com/static-assets/img/favicon.ico
+        display_publication_date: true
+        description: Cute and fun content with lots of pictures.
 
       - title: Lifehacker
         rss_url: http://feeds.lifehacker.jp/rss/lifehacker/index.xml
