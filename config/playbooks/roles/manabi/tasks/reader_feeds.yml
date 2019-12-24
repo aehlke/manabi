@@ -48,11 +48,12 @@
   cron:
     name: "{{ item }}"
     minute: 10
-    hour: '*/8'
+    hour: '*/4'
     user: ubuntu
     job: 'PATH=$PATH:/usr/local/bin bash -lc "cd /home/ubuntu/manabi && cron-sentry --report-all pipenv run python manage.py {{ item }}" >> /var/log/manabi_reader_feeds/{{ item }}.log 2&>1'
   with_items:
       - generate_nhk_easy_news_feed
+      - generate_nhk_news
 
 - name: Kill zombie Chrome processes on cron
   cron:
