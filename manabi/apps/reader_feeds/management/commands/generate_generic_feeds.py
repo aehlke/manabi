@@ -13,6 +13,7 @@ from manabi.apps.reader_feeds.generic_feed import generate_feed
 FEEDS = [
     ('https://wired.jp/', 'WIRED.jp', 'https://wired.jp/rssfeeder/', 'wired'),
     ('https://news.yahoo.co.jp/', 'Yahoo!ニュース', 'https://news.yahoo.co.jp/pickup/rss.xml', 'yahoo-news'),
+    ('http://news.tbs.co.jp/', 'TBS News', 'https://news.tbs.co.jp/rss/tbs_newsi.rdf', 'tbs-news'),
 ]
 
 class Command(BaseCommand):

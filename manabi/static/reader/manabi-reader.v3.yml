@@ -58,6 +58,11 @@ categories:
         display_publication_date: true
         description: Breaking stories and original reporting on politics, world news, technology, health, science, and more.
 
+      - title: TBS News
+        rss_url: https://manabi.io/media/feeds/tbs-news.rss
+        icon_url: https://pbs.twimg.com/profile_images/877744751839019008/TcsXijAk_400x400.jpg
+        display_publication_date: true
+
       - title: National Geographic News
         rss_url: http://natgeo.nikkeibp.co.jp/nng/rss/news.rdf
         icon_url: http://natgeo.nikkeibp.co.jp/favicon.ico
