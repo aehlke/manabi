@@ -73,8 +73,8 @@ async def generate_feed(
         if entry is not None and entry_limit is not None:
             entry_limit -= 1
 
-        if entry_limit <= 0:
-            break
+            if entry_limit <= 0:
+                break
 
     if return_content_only:
         html = ''

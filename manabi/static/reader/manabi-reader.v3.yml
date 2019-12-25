@@ -69,12 +69,12 @@ categories:
         display_publication_date: true
         inject_entry_image_into_header: false
 
-      - title: "2ch Matome: News for Killing Time"
+      - title: "2ch Matome"
         rss_url: http://blog.livedoor.jp/rbkyn844/index.rdf
         icon_url: http://livedoor.blogimg.jp/rbkyn844/imgs/d/a/da5c84ea.png
         extract_entry_image_from_content: true
         display_publication_date: true
-        description: News articles with curated commentary from the 2channel message board.
+        description: : News for killing time. Articles with curated commentary from the 2channel message board.
 
       - title: Huffington Post
         rss_url: https://www.huffingtonpost.jp/feeds/index.xml
