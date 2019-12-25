@@ -360,6 +360,12 @@ categories:
         display_publication_date: true
         description: Online Japanese gaming magazine, covering console, PC, and mobile games.
 
+      - title: IGN Japan
+        rss_url: https://jp.ign.com/feed.xml
+        icon_url: https://jp.ign.com/s/ign/favicon.ico
+        display_publication_date: true
+        description: Video game news and reviews.
+
       - title: Famitsu
         rss_url: https://www.famitsu.com/rss/fcom_all.rdf
         icon_url: https://www.famitsu.com/favicon.ico
