@@ -97,6 +97,11 @@ categories:
         display_publication_date: true
         description: Native Japanese news by Japan's public broadcasting organization. For a beginner-friendly alternative, see NHK News Easy.
 
+      - title: Yahoo!ニュース
+        rss_url: https://manabi.io/media/feeds/yahoo-news.rss
+        icon_url: https://s.yimg.jp/c/icon/s/bsc/2.0/favicon.ico
+        display_publication_date: true
+
       - title: Nippon.com
         rss_url: http://nippon.com/ja/feed/
         icon_url: https://www.nippon.com/ja/ncommon/images/apple-touch-icon.png
