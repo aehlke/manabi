@@ -7,8 +7,13 @@ from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand, CommandError
 
 from manabi.apps.reader_feeds.feed_storage import save_feed
-from manabi.apps.reader_feeds.wired import generate_feed
+from manabi.apps.reader_feeds.generic_feed import generate_feed
 
+
+FEEDS = [
+    ('https://wired.jp/', 'WIRED.jp', 'https://wired.jp/rssfeeder/', 'wired'),
+    ('https://news.yahoo.co.jp/', 'Yahoo!ニュース', 'https://news.yahoo.co.jp/pickup/rss.xml', 'yahoo-news'),
+]
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
@@ -22,16 +27,18 @@ class Command(BaseCommand):
         if options['dev']:
             feed_kwargs['return_content_only'] = True
 
-        xml = await generate_feed(**feed_kwargs)
+        for feed_id, feed_title, feed_url, feed_filename in FEEDS:
+            xml = await generate_feed(
+                feed_id, feed_title, feed_url, **feed_kwargs)
 
-        if options['dev']:
-            with tempfile.NamedTemporaryFile(
-                delete=False, suffix='.html',
-            ) as tf:
-                tf.write(f'<html><body>{xml}</body></html>'.encode('utf-8'))
-            subprocess.call(['open', tf.name])
-        else:
-            save_feed(f'wired.rss', xml)
+            if options['dev']:
+                with tempfile.NamedTemporaryFile(
+                    delete=False, suffix='.html',
+                ) as tf:
+                    tf.write(f'<html><body>{xml}</body></html>'.encode('utf-8'))
+                subprocess.call(['open', tf.name])
+            else:
+                save_feed(f'{feed_filename}.rss', xml)
 
     def handle(self, *args, **options):
         loop = asyncio.get_event_loop()

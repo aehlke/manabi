@@ -50,15 +50,18 @@ async def _process_and_add_entry(post, fg):
 
 
 async def generate_feed(
+    feed_id,
+    feed_title,
+    feed_url,
     entry_limit=None,
     return_content_only=False,
 ):
     fg = FeedGenerator()
-    fg.id('https://wired.jp/')
-    fg.title('WIRED.jp')
+    fg.id(feed_id)
+    fg.title(feed_title)
     fg.language('ja')
 
-    feed = feedparser.parse('https://wired.jp/rssfeeder/')
+    feed = feedparser.parse(feed_url)
 
     entries = []
     for post in reversed(feed.entries):
