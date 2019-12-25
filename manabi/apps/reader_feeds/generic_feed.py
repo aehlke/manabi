@@ -43,8 +43,11 @@ async def _process_and_add_entry(post, fg):
     if image_url:
         entry.link(href=image_url, rel='enclosure', type='image/jpeg')
 
-    description = post.summary
-    entry.description(description)
+    try:
+        description = post.summary
+        entry.description(description)
+    except AttributeError:
+        pass
 
     return entry
 
