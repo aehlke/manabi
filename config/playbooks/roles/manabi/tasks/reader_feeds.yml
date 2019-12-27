@@ -54,6 +54,7 @@
   with_items:
       - generate_nhk_easy_news_feed
       - generate_nhk_news
+      - generate_slow_communication
       - generate_generic_feeds
 
 - name: Kill zombie Chrome processes on cron

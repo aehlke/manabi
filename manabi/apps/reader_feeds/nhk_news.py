@@ -7,13 +7,9 @@ from urllib.parse import urlparse, urlunparse, urljoin
 
 import lxml.html
 import feedparser
-import praw
 import pytz
-import requests
 from django.conf import settings
 from feedgen.feed import FeedGenerator
-from lxml.cssselect import CSSSelector
-from lxml import etree
 from requests_html import AsyncHTMLSession
 
 
@@ -25,7 +21,7 @@ async def _get_image_url(article_url):
 
 
 async def _process_and_add_entry(post, fg):
-    entry = fg.add_entry()
+    entry = fg.add_entry(order='append')
 
     title = post.title
     entry.title(title)
@@ -75,7 +71,7 @@ async def generate_feed(
 
     if return_content_only:
         html = ''
-        for entry in reversed(entries):
+        for entry in entries:
             title = entry.title()
             content = entry.content()['content']
             html += f'<h1>{title}</h1>{content}'
