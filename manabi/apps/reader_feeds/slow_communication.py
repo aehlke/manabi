@@ -59,7 +59,7 @@ async def generate_feed(
 ):
     fg = FeedGenerator()
     fg.id('https://slow-communication.jp/')
-    fg.title('')
+    fg.title('Slow Communication')
     fg.language('ja')
 
     entries = []

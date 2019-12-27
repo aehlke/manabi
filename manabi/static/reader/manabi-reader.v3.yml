@@ -30,6 +30,12 @@ categories:
         display_publication_date: false
         description: Wa-tanoshii is a web magazine written in simple Japanese with colorful photos. Its beginner category is a great place to start when you can read kana but are otherwise just starting out.
 
+      - title: Slow Communication
+        rss_url: https://manabi.io/media/feeds/slow-communication.rss
+        icon_url: https://slow-communication.jp/wordpress/wp-content/themes/scj2018/images/favicon.ico
+        display_publication_date: true
+        description: News written in easy-to-understand sentences. Founded by researchers for Japanese people with mental disabilities, this is ideal for beginner language learners as well. Includes slowly-spoken audio.
+
       - title: Matcha – Japan Travel Magazine
         rss_url: https://matcha-jp.com/easy/feed
         rss_contains_full_content: true
@@ -75,6 +81,12 @@ categories:
         extract_entry_image_from_content: true
         display_publication_date: true
         description: : News for killing time. Articles with curated commentary from the 2channel message board.
+
+      - title: Slow Communication
+        rss_url: https://manabi.io/media/feeds/slow-communication.rss
+        icon_url: https://slow-communication.jp/wordpress/wp-content/themes/scj2018/images/favicon.ico
+        display_publication_date: true
+        description: News written in easy-to-understand sentences. Founded by researchers for Japanese people with mental disabilities, this is ideal for beginner language learners as well. Includes slowly-spoken audio.
 
       - title: Huffington Post
         rss_url: https://www.huffingtonpost.jp/feeds/index.xml
