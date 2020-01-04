@@ -11,9 +11,9 @@ shared_deck_detail = views.SharedDeckViewSet.as_view({'get': 'retrieve'})
 shared_deck_facts = views.SharedDeckViewSet.as_view({'get': 'facts'})
 
 router = routers.SimpleRouter()
-router.register(r'decks', views.DeckViewSet, base_name='deck')
-router.register(r'shared-decks', views.SharedDeckViewSet, base_name='shared-deck')
-router.register(r'facts', views.FactViewSet, base_name='fact')
+router.register(r'decks', views.DeckViewSet, basename='deck')
+router.register(r'shared-decks', views.SharedDeckViewSet, basename='shared-deck')
+router.register(r'facts', views.FactViewSet, basename='fact')
 
 urlpatterns = [
     url(r'^decks/creator/', views.deck_creator, name='deck-creator'),

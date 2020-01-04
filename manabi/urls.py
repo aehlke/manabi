@@ -25,25 +25,25 @@ from manabi.apps.review_results.api_views import ReviewResultsView
 api_router = routers.DefaultRouter()
 api_router.register(r'flashcards/decks',
     DeckViewSet,
-    base_name='deck')
+    basename='deck')
 api_router.register(r'flashcards/synchronized_decks',
     SynchronizedDeckViewSet,
-    base_name='synchronized-deck')
+    basename='synchronized-deck')
 api_router.register(r'flashcards/suggested_shared_decks',
     SuggestedSharedDecksViewSet,
-    base_name='suggested-shared-deck')
+    basename='suggested-shared-deck')
 api_router.register(r'flashcards/shared_decks',
     SharedDeckViewSet,
-    base_name='shared-deck')
+    basename='shared-deck')
 api_router.register(r'flashcards/facts',
     FactViewSet,
-    base_name='fact')
+    basename='fact')
 api_router.register(r'flashcards/manabi_reader_facts',
     ManabiReaderFactViewSet,
-    base_name='fact')
+    basename='fact')
 api_router.register(r'flashcards/cards',
     CardViewSet,
-    base_name='card')
+    basename='card')
 
 urlpatterns = [
     url(r'^apple-app-site-association$', TemplateView.as_view(

@@ -30,7 +30,7 @@ class _BaseDeckSerializer(ManabiModelSerializer):
 
     class Meta:
         model = Deck
-        fields = (
+        fields = [
             'id',
             'owner',
             'original_author',
@@ -48,8 +48,8 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             'suspended',
             'is_synchronized',
             'synchronized_with',
-        )
-        read_only_fields = (
+        ]
+        read_only_fields = [
             'id',
             'owner',
             'original_author',
@@ -63,7 +63,7 @@ class _BaseDeckSerializer(ManabiModelSerializer):
             'synchronized_with',
             'created_at',
             'modified_at',
-        )
+        ]
 
     def get_subscriber_count(self, obj):
         try:
@@ -77,7 +77,7 @@ class SharedDeckSerializer(_BaseDeckSerializer):
 
     class Meta:
         model = Deck
-        read_only_fields = fields = (
+        read_only_fields = fields = [
             'id',
             'owner',
             'name',
@@ -90,7 +90,7 @@ class SharedDeckSerializer(_BaseDeckSerializer):
             'created_at',
             'modified_at',
             'share_url',
-        )
+        ]
 
 
 class DeckSerializer(_BaseDeckSerializer):
@@ -118,15 +118,15 @@ class SynchronizedDeckSerializer(ManabiModelSerializer):
 
     class Meta:
         model = Deck
-        fields = (
+        fields = [
             'id',
             'owner',
             'synchronized_with',
-        )
-        read_only_fields = (
+        ]
+        read_only_fields = [
             'id',
             'owner',
-        )
+        ]
 
     def create(self, validated_data):
         upstream_deck = validated_data['synchronized_with']
@@ -137,14 +137,14 @@ class SynchronizedDeckSerializer(ManabiModelSerializer):
 class DeckCollectionSerializer(ManabiModelSerializer):
     class Meta:
         model = DeckCollection
-        fields = (
+        fields = [
             'id',
             'name',
             'image_url',
             'description',
             'created_at',
             'modified_at',
-        )
+        ]
         read_only_fields = fields
 
 
@@ -174,7 +174,7 @@ class FactSerializer(ManabiModelSerializer):
 
     class Meta:
         model = Fact
-        fields = (
+        fields = [
             'id',
             'active',
             'card_count',
@@ -188,14 +188,14 @@ class FactSerializer(ManabiModelSerializer):
             'meaning',
             'reader_source',
             'jmdict_id',
-        )
-        read_only_fields = (
+        ]
+        read_only_fields = [
             'id',
             'active',
             'card_count',
             'created_at',
             'modified_at',
-        )
+        ]
 
     def update(self, instance, validated_data):
         deck = validated_data.pop('deck', None)
@@ -252,9 +252,9 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
     )
 
     class Meta(FactSerializer.Meta):
-        fields = FactSerializer.Meta.fields + (
+        fields = FactSerializer.Meta.fields + [
             'active_card_templates',
-        )
+        ]
 
     def get_card_count(self, obj):
         return len(obj.active_card_templates)
@@ -287,7 +287,7 @@ class FactWithCardsSerializer(FilterRelatedMixin, FactSerializer):
 class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
     class Meta:
         model = Fact
-        fields = (
+        fields = [
             'id',
             'deck',
             'expression',
@@ -297,11 +297,11 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
             'example_sentence',
             'reader_source',
             'jmdict_id',
-        )
-        read_only_fields = (
+        ]
+        read_only_fields = [
             'id',
             'deck',
-        )
+        ]
 
     def create(self, validated_data):
         return Fact.objects.update_or_create_for_manabi_reader(
@@ -320,16 +320,45 @@ class DetailedFactSerializer(FactWithCardsSerializer):
     deck = serializers.SerializerMethodField()
 
     class Meta(FactSerializer.Meta):
-        fields = FactWithCardsSerializer.Meta.fields + (
+        fields = FactWithCardsSerializer.Meta.fields + [
             'example_sentence',
             'reader_source',
-        )
+        ]
 
     def get_deck(self, obj):
         try:
             return self.context['deck_data']
         except KeyError:
             return DeckSerializer(obj.deck).data
+
+
+class DeckFactSerializer(FactWithCardsSerializer):
+    class Meta(FactSerializer.Meta):
+        fields = [
+            field for field in
+            FactWithCardsSerializer.Meta.fields + [
+                'example_sentence',
+                'reader_source',
+            ]
+            if field != 'deck'
+        ]
+
+    def get_deck(self, obj):
+        try:
+            return self.context['deck_data']
+        except KeyError:
+            return DeckSerializer(obj.deck).data
+
+
+class DeckFactsSerializer(serializers.Serializer):
+    deck = DeckSerializer()
+    facts = DeckFactSerializer(many=True)
+
+    class Meta(FactSerializer.Meta):
+        fields = [
+            'deck',
+            'facts',
+        ]
 
 
 class SuspendFactsSerializer(serializers.Serializer):
@@ -364,7 +393,7 @@ class CardSerializer(ManabiModelSerializer):
     class Meta:
         model = Card
 
-        fields = read_only_fields = (
+        fields = read_only_fields = [
             'id',
             'deck',
             'fact',
@@ -383,7 +412,7 @@ class CardSerializer(ManabiModelSerializer):
 
             'example_sentence',
             'reader_source',
-        )
+        ]
 
 
 class DetailedCardSerializer(CardSerializer):
@@ -399,9 +428,9 @@ class DetailedDeckSerializer(DeckSerializer):
     )
 
     class Meta(DeckSerializer.Meta):
-        fields = DeckSerializer.Meta.fields + (
+        fields = DeckSerializer.Meta.fields + [
             'facts',
-        )
+        ]
 
 
 class DetailedSharedDeckSerializer(SharedDeckSerializer):
@@ -412,9 +441,9 @@ class DetailedSharedDeckSerializer(SharedDeckSerializer):
     )
 
     class Meta(DeckSerializer.Meta):
-        fields = DeckSerializer.Meta.fields + (
+        fields = DeckSerializer.Meta.fields + [
             'facts',
-        )
+        ]
 
 
 class ReviewAvailabilitiesRequestSerializer(serializers.Serializer):
@@ -447,7 +476,7 @@ class ReviewAvailabilitiesSerializer(serializers.Serializer):
     trial_limit_reached = serializers.BooleanField()
 
     class Meta:
-        read_only_fields = (
+        read_only_fields = [
             'ready_for_review',
             'early_review_available',
             'next_new_cards_count',
@@ -459,16 +488,16 @@ class ReviewAvailabilitiesSerializer(serializers.Serializer):
             'secondary_prompt',
             'trial_prompt',
             'trial_limit_reached',
-        )
+        ]
 
 
 class ReviewInterstitialSerializer(serializers.Serializer):
     review_availabilities = ReviewAvailabilitiesSerializer(required=True)
 
     class Meta:
-        read_only_fields = (
+        read_only_fields = [
             'review_availabilities',
-        )
+        ]
 
 
 class NextCardsForReviewRequestSerializer(
@@ -487,10 +516,10 @@ class NextCardsForReviewSerializer(serializers.Serializer):
     server_datetime = serializers.DateTimeField()
 
     class Meta:
-        read_only_fields = (
+        read_only_fields = [
             'cards',
             'interstitial',
-        )
+        ]
 
 
 class CardReviewSerializer(serializers.Serializer):
