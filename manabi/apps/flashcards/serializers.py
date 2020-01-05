@@ -350,17 +350,6 @@ class DeckFactSerializer(FactWithCardsSerializer):
             return DeckSerializer(obj.deck).data
 
 
-class DeckFactsSerializer(serializers.Serializer):
-    deck = DeckSerializer()
-    facts = DeckFactSerializer(many=True)
-
-    class Meta(FactSerializer.Meta):
-        fields = [
-            'deck',
-            'facts',
-        ]
-
-
 class SuspendFactsSerializer(serializers.Serializer):
     reading = serializers.CharField()
     jmdict_id = serializers.IntegerField(required=False)

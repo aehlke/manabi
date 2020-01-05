@@ -32,7 +32,6 @@ from manabi.apps.flashcards.models import (
     NextCardsForReview,
     UndoCardReview,
 )
-from manabi.apps.flashcards.models.deck_facts import DeckFacts
 from manabi.apps.flashcards.models.trial_limits import (
     cards_remaining_in_daily_trial,
 )
@@ -55,7 +54,6 @@ from manabi.apps.flashcards.serializers import (
     DeckSerializer,
     DetailedFactSerializer,
     DeckFactSerializer,
-    DeckFactsSerializer,
     FactSerializer,
     FactWithCardsSerializer,
     ManabiReaderFactWithCardsSerializer,
@@ -115,35 +113,14 @@ class DeckViewSet(_DeckMixin, viewsets.ModelViewSet):
         cards = Card.objects.of_deck(deck)
         return Response(CardSerializer(cards, many=True).data)
 
-    # DEPRECATED as of Manabi 2.0
     @action(detail=True)
     def facts(self, request, pk=None):
         deck = self.get_object()
         facts = Fact.objects.deck_facts(deck)
         facts = facts.filter(active=True)
-        facts = facts.select_related('deck')
         facts = facts.prefetch_active_card_templates()
 
-        deck_serializer = DeckSerializer(deck)
-
-        serializer = DetailedFactsSerializer(
-            facts,
-            many=True,
-            context={
-                'deck_data': deck_serializer.data,
-            },
-        )
-        return Response(serializer.data)
-
-    @action(detail=True)
-    def facts_v2(self, request, pk=None):
-        deck = self.get_object()
-        facts = Fact.objects.deck_facts(deck)
-        facts = facts.filter(active=True)
-        facts = facts.prefetch_active_card_templates()
-
-        serializer = DeckFactsSerializer(
-            DeckFacts(deck, facts))
+        serializer = DeckFactSerializer(facts, many=True)
         return Response(serializer.data)
 
 

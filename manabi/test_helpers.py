@@ -210,9 +210,9 @@ class APIShortcuts:
     def facts(self, user, deck=None):
         if deck is not None:
             return self.get(
-                f'/api/flashcards/decks/{deck.id}/facts_v2/',
+                f'/api/flashcards/decks/{deck.id}/facts/',
                 user=user,
-            ).json()['facts']
+            ).json()
 
         return self.get(
             '/api/flashcards/facts/',
