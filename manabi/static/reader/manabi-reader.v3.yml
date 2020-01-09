@@ -80,7 +80,7 @@ categories:
         icon_url: http://livedoor.blogimg.jp/rbkyn844/imgs/d/a/da5c84ea.png
         extract_entry_image_from_content: true
         display_publication_date: true
-        description: : News for killing time. Articles with curated commentary from the 2channel message board.
+        description: News for killing time. Articles with curated commentary from the 2channel message board.
 
       - title: Slow Communication
         rss_url: https://manabi.io/media/feeds/slow-communication.rss
