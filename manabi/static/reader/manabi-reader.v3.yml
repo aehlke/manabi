@@ -41,6 +41,7 @@ categories:
         rss_contains_full_content: true
         icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
         display_publication_date: true
+        inject_entry_image_into_header: true
         description: The "easy edition" of a Japanese travel magazine, with furigana in all its articles. Written for foreigner visitors to Japan.
 
   - title: News
