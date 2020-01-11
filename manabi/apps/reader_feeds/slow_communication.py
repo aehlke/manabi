@@ -45,7 +45,8 @@ async def _add_entries_from_page(page_url, response, fg):
         entry.category({'term': category, 'label': category})
 
         audio_url = await _get_audio_url(article_url)
-        if audio_url is not None:
+        # TODO: Their MP3s don't play in iOS for some reason.
+        if False and audio_url is not None:
             entry.link(href=audio_url, rel='voice-audio')
 
         entries.append(entry)
