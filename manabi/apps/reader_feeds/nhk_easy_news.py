@@ -89,8 +89,10 @@ async def _get_voice_audio_url(response):
 
     session = AsyncHTMLSession()
     response = await session.get(audio_frame_url, timeout=20)
-    m3u8_url = response.html.find('audio source', first=True).attrs.get('src')
-    return m3u8_url
+    audio_source = response.html.find('audio source', first=True)
+
+    if audio_source is not None:
+        return audio_source.attrs.get('src')
 
 
 def _get_comments(reddit, post):
