@@ -74,7 +74,7 @@ def _get_image_url(response):
     return _absolute_url(response, src)
 
 
-async def _get_voice_frame_url(response):
+async def _get_voice_audio_url(response):
     if not response.html.find('a.toggle-audio'):
         return None
 
@@ -86,7 +86,12 @@ async def _get_voice_frame_url(response):
 
     iframe = await page.querySelector('.audio-player iframe')
     src = await page.evaluate('(iframe) => iframe.src', iframe)
-    return _absolute_url(response, src)
+    audio_frame_url = _absolute_url(response, src)
+
+    response = requests.get(audio_frame_url)
+    response.raise_for_status()
+    m3u8_url = response.html.find('audio source').attrs.get('src')
+    return m3u8_url
 
 
 def _get_comments(reddit, post):
@@ -166,9 +171,9 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
 
     _add_comments(reddit, post, entry)
 
-    voice_frame_url = await _get_voice_frame_url(response)
-    if voice_frame_url is not None:
-        entry.link(href=voice_frame_url, rel='voice-frame')
+    voice_audio_url = await _get_voice_audio_url(response)
+    if voice_audio_url is not None:
+        entry.link(href=voice_audio_url, rel='voice-audio')
 
     return entry
 
