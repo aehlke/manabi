@@ -74,25 +74,12 @@ def _get_image_url(response):
 
 
 async def _get_voice_audio_url(response):
-    if not response.html.find('a.toggle-audio'):
-        return None
-
-    page = response.html.page
-
-    #await page.click('article-main__date')
-    await page.click('a.toggle-audio')
-    await page.waitForSelector('.audio-player iframe')
-
-    iframe = await page.querySelector('.audio-player iframe')
-    src = await page.evaluate('(iframe) => iframe.src', iframe)
-    audio_frame_url = _absolute_url(response, src)
-
-    session = AsyncHTMLSession()
-    response = await session.get(audio_frame_url, timeout=20)
-    audio_source = response.html.find('audio source', first=True)
-
-    if audio_source is not None:
-        return audio_source.attrs.get('src')
+    news_id = response.html.base_url.split('/')[-2]
+    m3u8_url = (
+        'https://nhks-vh.akamaihd.net/i/news/easy/{0}.mp4/master.m3u8'
+        .format(news_id)
+    )
+    return m3u8_url
 
 
 def _get_comments(reddit, post):
@@ -190,9 +177,22 @@ async def generate_nhk_easy_news_feed(
     fg.title('NHK Easy News')
     fg.language('ja')
 
+    # https://stackoverflow.com/a/57637827/89373
+    import ssl
+    try:
+        _create_unverified_https_context = ssl._create_unverified_context
+    except AttributeError:
+        # Legacy Python that doesn't verify HTTPS certificates by default
+        pass
+    else:
+        # Handle target environment that doesn't support HTTPS verification
+        ssl._create_default_https_context = _create_unverified_https_context
+
     feed = feedparser.parse(
         'https://www.reddit.com/r/NHKEasyNews.rss?limit={}'
         .format(entry_count))
+    if feed.get('bozo') == 1:
+        raise Exception(feed.get('bozo_exception'))
 
     reddit = praw.Reddit(
         client_id=settings.REDDIT_CLIENT_ID,

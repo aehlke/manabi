@@ -74,3 +74,4 @@ feedgen = {git = "https://github.com/aehlke/python-feedgen.git",ref = "b80e122e9
 psycopg2-binary = "*"
 sentry-sdk = "*"
 django-rest-framework-condition = "*"
+certifi = "*"
