@@ -11,7 +11,6 @@ import pytz
 import requests
 from django.conf import settings
 from feedgen.feed import FeedGenerator
-from lxml.cssselect import CSSSelector
 from lxml import etree
 from requests_html import AsyncHTMLSession
 
@@ -88,9 +87,9 @@ async def _get_voice_audio_url(response):
     src = await page.evaluate('(iframe) => iframe.src', iframe)
     audio_frame_url = _absolute_url(response, src)
 
-    response = requests.get(audio_frame_url)
-    response.raise_for_status()
-    m3u8_url = response.html.find('audio source').attrs.get('src')
+    session = AsyncHTMLSession()
+    response = await session.get(audio_frame_url, timeout=20)
+    m3u8_url = response.html.find('audio source', first=True).attrs.get('src')
     return m3u8_url
 
 
