@@ -203,10 +203,12 @@ categories:
       - title: Lifehacker
         rss_url: http://feeds.lifehacker.jp/rss/lifehacker/index.xml
         icon_url: https://www.lifehacker.jp/assets/common/img/favicon.ico
+        display_publication_date: true
 
       - title: Gizmodo
         rss_url: http://feeds.gizmodo.jp/rss/gizmodo/index.xml
         icon_url: http://www.gizmodo.jp/assets/favicon/favicon-32x32.png
+        display_publication_date: true
 
       #- title: One Day One Rail!
       #  rss_url: http://www.ichitetsu.com/atom.xml
@@ -220,18 +222,21 @@ categories:
         icon_url: https://matcha-jp.com/frontend/img/touch-icon_57.png
         rss_contains_full_content: true
         inject_entry_image_into_header: true
+        display_publication_date: true
         description: Travel magazine, written for foreigner visitors to Japan.
 
       - title: Melon Cafe
         rss_url: http://meloncafe.blog.jp/atom.xml
         rss_contains_full_content: true
         icon_url: http://image.profile.livedoor.jp/icon/meloncafe_60.gif
+        display_publication_date: true
         description: Simple and delicious recipes for sweets and snacks, with cheerful photos of food and colorful "character bento".
 
       - title: Homecooking, Sweets, and Cat
         rss_url: http://jolijoli.blog.jp/atom.xml
         rss_contains_full_content: true
         icon_url: http://jolijoli.blog.jp/img/profile.jpg
+        display_publication_date: true
         description: Recipes & copious photos of the author's cats. Each post is made up of photos with short captions—easy to digest.
 
       #- title: Tedium Museum
@@ -245,6 +250,7 @@ categories:
         icon_url: http://blog-imgs-82.fc2.com/s/h/i/shikiphotonote/_MG_9786_3s.jpg
         meaningful_content_min_length: 5
         extract_entry_image_from_content: true
+        display_publication_date: true
         description: Gorgeous landscape photography from around Osaka, Kyoto, and Nara.
 
       #- title: Z TOKYO
