@@ -1,7 +1,10 @@
 # -*- encoding: utf-8 -*-
 import asyncio
 import io
+import os
+import subprocess
 from datetime import datetime
+from tempfile import NamedTemporaryFile
 
 import lxml.html
 import pytz
@@ -9,7 +12,6 @@ import requests
 from django.conf import settings
 from django.core.files.storage import default_storage
 from feedgen.feed import FeedGenerator
-from pydub import AudioSegment
 from requests_html import AsyncHTMLSession
 
 ENTRY_COUNT = 30
@@ -19,6 +21,13 @@ async def _get_audio_url(article_url):
     session = AsyncHTMLSession()
     r = await session.get(article_url, timeout=20)
     return r.html.find('audio.wp-audio-shortcode a', first=True).attrs['href']
+
+
+def _reencode_mp3(input_path, output_path):
+    cmd = ['ffmpeg', '-hide_banner', '-loglevel', 'panic',
+           '-i', input_path, '-c:a', 'libmp3lame', '-b:a', '128k',
+           output_path]
+    subprocess.call(cmd)
 
 
 async def _add_entries_from_page(page_url, response, fg):
@@ -54,15 +63,19 @@ async def _add_entries_from_page(page_url, response, fg):
             audio_path = f'feeds/audio/slow-communication-{audio_filename}'
 
             if not default_storage.exists(audio_path):
-                audio_request = requests.get(audio_url, stream=True)
-                audio_request.raw.decode_content = True
+                audio_request = requests.get(audio_url)
+                with NamedTemporaryFile() as f:
+                    f.write(audio_request.content)
+                    audio_temp_path = f.name
 
-                mp3 = AudioSegment.from_mp3(audio_request.raw)
-                export_file = io.BytesIO()
-                export_file = mp3.export(export_file, format='mp3')
-                export_file.seek(0)
+                    reencoded_path = audio_temp_path + '.out.mp3'
+                    _reencode_mp3(audio_temp_path, reencoded_path)
 
-                default_storage.save(audio_path, export_file)
+                    with open(reencoded_path, 'rb') as output_f:
+                        default_storage.save(audio_path, output_f)
+
+                    os.remove(audio_temp_path)
+                    os.remove(reencoded_path)
 
             entry.link(
                 href=f'https://manabi.io/media/{audio_path}',
