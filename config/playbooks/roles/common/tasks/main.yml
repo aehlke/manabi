@@ -56,6 +56,9 @@
       - libssl-dev
       - libxml2-dev
       - libxslt1-dev
+      - ffmpeg # pydub
+      - libavcodec-extra # pydub
+      - libav
       - mosh
       - ntp
       - python-dev

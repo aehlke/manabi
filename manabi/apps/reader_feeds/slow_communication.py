@@ -1,12 +1,15 @@
 # -*- encoding: utf-8 -*-
 import asyncio
+import io
 from datetime import datetime
 
 import lxml.html
 import pytz
 import requests
 from django.conf import settings
+from django.core.files.storage import default_storage
 from feedgen.feed import FeedGenerator
+from pydub import AudioSegment
 from requests_html import AsyncHTMLSession
 
 ENTRY_COUNT = 30
@@ -45,9 +48,25 @@ async def _add_entries_from_page(page_url, response, fg):
         entry.category({'term': category, 'label': category})
 
         audio_url = await _get_audio_url(article_url)
-        # TODO: Their MP3s don't play in iOS for some reason.
-        if False and audio_url is not None:
-            entry.link(href=audio_url, rel='voice-audio')
+
+        if audio_url is not None:
+            audio_filename = audio_url.split('/')[-1].split('?_=1')[0]
+            audio_path = f'feeds/audio/slow-communication-{audio_filename}'
+
+            if not default_storage.exists(audio_path):
+                audio_request = requests.get(audio_url, stream=True)
+                audio_request.raw.decode_content = True
+
+                mp3 = AudioSegment.from_mp3(audio_request.raw)
+                export_file = io.BytesIO()
+                export_file = mp3.export(export_file, format='mp3')
+                export_file.seek(0)
+
+                default_storage.save(audio_path, export_file)
+
+            entry.link(
+                href=f'https://manabi.io/media/{audio_path}',
+                rel='voice-audio')
 
         entries.append(entry)
 
