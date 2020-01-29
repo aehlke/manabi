@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "bf53b0ea0f73dde79f01b01d2c55e6b50be8097468146d19e6bf32ce7c98e403"
+            "sha256": "18611ce1553f2d3fd04d048b1bcc710d7fe138d02483bdba02989637c8f362a4"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -16,9 +16,6 @@
         ]
     },
     "default": {
-        "abdb104": {
-            "file": "https://github.com/dcramer/django-devserver/archive/master.zip"
-        },
         "appdirs": {
             "hashes": [
                 "sha256:9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92",
@@ -332,11 +329,11 @@
         },
         "django-rq": {
             "hashes": [
-                "sha256:2855d50dcf909b69a36268347d38b3ca8e5111bbb7503a322d85137c13907a5f",
-                "sha256:f2a9a85d8567254ecf97052e27eb6168ef94a2fd6da850e70677e9b08b482c80"
+                "sha256:04cb9626827c667699281a377234f63fe2ba768c4f83d6bfb5c086f9ab1edcaf",
+                "sha256:f8d8998f60f915c7229a365e2e3d232be7aa27d32f3bbb3219a04a7e7a62a95c"
             ],
             "index": "pypi",
-            "version": "==2.0"
+            "version": "==2.2.0"
         },
         "django-silk": {
             "hashes": [
@@ -462,11 +459,11 @@
         },
         "gunicorn": {
             "hashes": [
-                "sha256:aa8e0b40b4157b36a5df5e599f45c9c76d6af43845ba3b3b0efe2c70473c2471",
-                "sha256:fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3"
+                "sha256:1904bb2b8a43658807108d59c3f3d56c2b6121a701161de0ddf9ad140073c626",
+                "sha256:cd4a810dd51bf497552cf3f863b575dabd73d6ad6a91075b65936b151cbf4f9c"
             ],
             "index": "pypi",
-            "version": "==19.9.0"
+            "version": "==20.0.4"
         },
         "hiredis": {
             "hashes": [
