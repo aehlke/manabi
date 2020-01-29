@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "18611ce1553f2d3fd04d048b1bcc710d7fe138d02483bdba02989637c8f362a4"
+            "sha256": "3d6c444e3fbdc3e89f9a0a4ece2f8048d9c2d61333840017bf626a1cf21df9f9"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -231,10 +231,10 @@
         },
         "django-allauth": {
             "hashes": [
-                "sha256:01a74c6156aaba87c0ab0568bb0372fcf20b7fc3cc22a0e4fdb6cf832b1c1039"
+                "sha256:7ab91485b80d231da191d5c7999ba93170ef1bf14ab6487d886598a1ad03e1d8"
             ],
             "index": "pypi",
-            "version": "==0.37.0"
+            "version": "==0.41.0"
         },
         "django-autoslug": {
             "git": "https://github.com/justinmayer/django-autoslug.git",
