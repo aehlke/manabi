@@ -86,6 +86,7 @@ class FactQuerySet(QuerySet):
             match.suspend()
         return matches
 
+    @transaction.atomic
     def update_or_create_for_manabi_reader(
         self, user, expression, reading, meaning, active_card_templates,
         jmdict_id=None,
