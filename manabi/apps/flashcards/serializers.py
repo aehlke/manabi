@@ -17,6 +17,7 @@ from manabi.apps.flashcards.models import (
 from manabi.apps.flashcards.models.constants import ALL_GRADES
 from manabi.apps.flashcards.serializer_fields import (
     ViewerSynchronizedDeckField,
+    DeckPrimaryKeyRelatedField,
 )
 from manabi.apps.manabi_auth.serializers import UserSerializer
 from manabi.apps.reader_sources.models import ReaderSource
@@ -317,7 +318,7 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
 
 
 class DetailedFactSerializer(FactWithCardsSerializer):
-    deck = serializers.SerializerMethodField()
+    deck = DeckPrimaryKeyRelatedField()
 
     class Meta(FactSerializer.Meta):
         fields = FactWithCardsSerializer.Meta.fields + [
@@ -325,14 +326,10 @@ class DetailedFactSerializer(FactWithCardsSerializer):
             'reader_source',
         ]
 
-    def get_deck(self, obj):
-        try:
-            return self.context['deck_data']
-        except KeyError:
-            return DeckSerializer(obj.deck).data
-
 
 class DeckFactSerializer(FactWithCardsSerializer):
+    deck = DeckPrimaryKeyRelatedField()
+
     class Meta(FactSerializer.Meta):
         fields = [
             field for field in
@@ -340,14 +337,7 @@ class DeckFactSerializer(FactWithCardsSerializer):
                 'example_sentence',
                 'reader_source',
             ]
-            if field != 'deck'
         ]
-
-    def get_deck(self, obj):
-        try:
-            return self.context['deck_data']
-        except KeyError:
-            return DeckSerializer(obj.deck).data
 
 
 class SuspendFactsSerializer(serializers.Serializer):

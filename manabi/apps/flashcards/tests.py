@@ -482,6 +482,11 @@ class FactsTest(ManabiTestCase):
         fact.set_active_card_templates(original_templates)
         self.assertEqual(fact.active_card_templates, original_templates)
 
+    def test_deck_facts_have_deck_id(self):
+        fact = self._get_facts()[0]
+        deck_facts = self.api.facts(self.user, deck=fact.deck)
+        self.assertEqual(deck_facts[0]['deck'], fact.deck_id)
+
 
 class ManabiReaderFactsTest(ManabiTestCase):
     def after_setUp(self):

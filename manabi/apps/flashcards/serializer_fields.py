@@ -32,3 +32,10 @@ class ViewerSynchronizedDeckField(serializers.Field):
                 'subscriber_counts': self.context['subscriber_counts'],
             },
         ).data
+
+
+class DeckPrimaryKeyRelatedField(serializers.PrimaryKeyRelatedField):
+    def get_queryset(self):
+        user = self.context['request'].user
+        queryset = Deck.objects.of_user(user)
+        return queryset

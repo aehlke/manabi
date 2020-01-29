@@ -20,7 +20,9 @@ ENTRY_COUNT = 30
 async def _get_audio_url(article_url):
     session = AsyncHTMLSession()
     r = await session.get(article_url, timeout=20)
-    return r.html.find('audio.wp-audio-shortcode a', first=True).attrs['href']
+    audio_element = r.html.find('audio.wp-audio-shortcode a', first=True)
+    if audio_element is not None:
+        return audio_element.attrs['href']
 
 
 def _reencode_mp3(input_path, output_path):
