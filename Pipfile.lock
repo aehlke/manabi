@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3d6c444e3fbdc3e89f9a0a4ece2f8048d9c2d61333840017bf626a1cf21df9f9"
+            "sha256": "cd4ad24042bedd32a745b55c5e1de623e5b088f446a17d6aa67299ba5b0af3b8"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -383,11 +383,11 @@
         },
         "drf-extensions": {
             "hashes": [
-                "sha256:78e3ac3c944774878c28ae335d91bbd6c43889bee610c48cf893faffb7685dce",
-                "sha256:a3869f2bb668ee05acc78e9076e658527611efa9a4ba319f0817f89b0ec01bf4"
+                "sha256:9a76d59c8ecc2814860e94a0c96a26a824e392cd4550f2efa928af43c002a750",
+                "sha256:a04cf188d27fdc13a1083a3ac9e4d72d3d93fcef76b3584191489c75d550c10d"
             ],
             "index": "pypi",
-            "version": "==0.5.0"
+            "version": "==0.6.0"
         },
         "e39c1a3": {
             "file": "https://github.com/aehlke/django-snippetscream/archive/master.zip"
