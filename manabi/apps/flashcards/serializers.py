@@ -318,7 +318,8 @@ class ManabiReaderFactWithCardsSerializer(FactWithCardsSerializer):
 
 
 class DetailedFactSerializer(FactWithCardsSerializer):
-    deck = DeckPrimaryKeyRelatedField()
+    #  deck = DeckPrimaryKeyRelatedField()
+    deck = serializers.SerializerMethodField()
 
     class Meta(FactSerializer.Meta):
         fields = FactWithCardsSerializer.Meta.fields + [
@@ -326,9 +327,16 @@ class DetailedFactSerializer(FactWithCardsSerializer):
             'reader_source',
         ]
 
+    def get_deck(self, obj):
+        try:
+            return self.context['deck_data']
+        except KeyError:
+            return DeckSerializer(obj.deck).data
+
 
 class DeckFactSerializer(FactWithCardsSerializer):
-    deck = DeckPrimaryKeyRelatedField()
+    #  deck = DeckPrimaryKeyRelatedField()
+    deck = serializers.SerializerMethodField()
 
     class Meta(FactSerializer.Meta):
         fields = [
@@ -338,6 +346,13 @@ class DeckFactSerializer(FactWithCardsSerializer):
                 'reader_source',
             ]
         ]
+
+    def get_deck(self, obj):
+        try:
+            return self.context['deck_data']
+        except KeyError:
+            return DeckSerializer(obj.deck).data
+
 
 
 class SuspendFactsSerializer(serializers.Serializer):
