@@ -1,28 +1,24 @@
 {% extends "account/base.html" %}
 
 
-
-
-{% block head_title %}{{ _("Confirm Email Address") }}{% endblock %}
+{% block head_title %}Confirm Email Address{% endblock %}
 
 
 {% block content %}
-    <h1>{{ _("Confirm Email Address") }}</h1>
+    <h1>Confirm Email Address</h1>
 
     {% if confirmation %}
 
-        {% set user_display = user_display(confirmation.email_address.user) %}
-
-        <p>{% trans email=confirmation.email_address.email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endtrans %}</p>
+        <p>Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an email address for user {{ user_display(confirmation.email_address.user) }}.</p>
 
         <form method="post" action="{{ url('account_confirm_email', args=[confirmation.key]) }}">
             <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
-            <button type="submit">{{ _("Confirm") }}</button>
+            <button type="submit">Confirm</button>
         </form>
 
     {% else %}
 
-        <p>{% trans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ url('account_email') }}">issue a new e-mail confirmation request</a>.{% endtrans %}</p>
+        <p>This email confirmation link expired or is invalid. Please <a href="{{ url('account_email') }}">issue a new email confirmation request</a>.</p>
 
     {% endif %}
 
