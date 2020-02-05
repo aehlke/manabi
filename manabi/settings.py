@@ -334,7 +334,7 @@ ABSOLUTE_URL_OVERRIDES = {
 
 
 AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
+    'manabi.apps.manabi_auth.backends.ManabiUserModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 
     'manabi.apps.manabi_auth.backends.FacebookOAuth2ForManabiReader',
