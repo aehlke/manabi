@@ -85,6 +85,9 @@ class ManabiTestCase(APITestCase):
     def post(self, *args, **kwargs):
         return self._http_verb('post', *args, **kwargs)
 
+    def put(self, *args, **kwargs):
+        return self._http_verb('put', *args, **kwargs)
+
     def patch(self, *args, **kwargs):
         return self._http_verb('patch', *args, **kwargs)
 
@@ -142,6 +145,10 @@ class APIShortcuts:
 
     def patch(self, *args, **kwargs):
         kwargs['method'] = 'patch'
+        return self.call(*args, **kwargs)
+
+    def put(self, *args, **kwargs):
+        kwargs['method'] = 'put'
         return self.call(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

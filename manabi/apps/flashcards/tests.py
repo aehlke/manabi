@@ -487,6 +487,29 @@ class FactsTest(ManabiTestCase):
     #      deck_facts = self.api.facts(self.user, deck=fact.deck)
     #      self.assertEqual(deck_facts[0]['deck'], fact.deck_id)
 
+    def test_saving_fact_with_new_deck_id(self):
+        fact = self._get_facts()[0]
+        old_deck_id = fact.deck_id
+
+        target_deck = create_deck(user=self.user)
+
+        new_fact = self.api.put(
+            f'/api/flashcards/facts/{fact.id}/',
+            {
+                'id': fact.id,
+                'expression': fact.expression,
+                'active_card_templates': ['recognition'],
+                'reading': fact.reading,
+                'meaning': fact.meaning,
+                'suspended': False,
+                'deck': target_deck.id,
+                'active': True,
+            },
+            user=self.user,
+        ).json()
+
+        self.assertEqual(new_fact['deck']['id'], target_deck.id)
+
 
 class ManabiReaderFactsTest(ManabiTestCase):
     def after_setUp(self):
