@@ -1,6 +1,7 @@
 # -*- encoding: utf-8 -*-
 import asyncio
 import re
+import time
 from datetime import datetime
 from urllib.parse import urlparse, urlunparse, urljoin
 
@@ -15,7 +16,7 @@ from lxml import etree
 from requests_html import AsyncHTMLSession
 
 ENTRY_COUNT = 30
-ATTEMPTS_PER_ENTRY = 5
+ATTEMPTS_PER_ENTRY = 15
 
 
 def _get_image_url_from_video(video_url):
@@ -225,6 +226,7 @@ async def generate_nhk_easy_news_feed(
                     post, nhk_url, r, fg, reddit)
             except NoArticleBodyError:
                 if attempt < ATTEMPTS_PER_ENTRY - 1:
+                    time.sleep(1)
                     continue
                 raise
 
