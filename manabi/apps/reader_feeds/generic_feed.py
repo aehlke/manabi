@@ -32,11 +32,11 @@ async def _process_and_add_entry(post, fg):
 
     try:
         published_struct = post.published_parsed
-        entry.published(
-            datetime.fromtimestamp(mktime(published_struct))
-            .replace(tzinfo=pytz.utc))
     except AttributeError:
-        pass
+        published_struct = post.updated_parsed
+    entry.published(
+        datetime.fromtimestamp(mktime(published_struct))
+        .replace(tzinfo=pytz.utc))
 
     article_url = post.link
     entry.id(article_url)
