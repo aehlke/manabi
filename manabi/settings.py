@@ -202,7 +202,7 @@ MIDDLEWARE = [
 # TransactionMiddleware.
 ATOMIC_REQUESTS = True
 
-FREE_SUBSCRIPTION_USERNAMES = ['alextest', 'voykaoka', 'PhilipYBae']
+FREE_SUBSCRIPTION_USERNAMES = ['alextest', 'voykaoka', 'PhilipYBae', 'Seven']
 
 SILKY_MAX_REQUEST_BODY_SIZE = 128  # kb
 SILKY_MAX_RESPONSE_BODY_SIZE = 128  # kb
