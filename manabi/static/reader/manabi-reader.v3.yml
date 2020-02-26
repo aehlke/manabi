@@ -225,6 +225,13 @@ categories:
         display_publication_date: true
         description: Travel magazine, written for foreigner visitors to Japan.
 
+      - title: HYPEBEAST
+        rss_url: https://hypebeast.com/jp/feed
+        icon_url: https://static.hypebeast.com/images/hypebeast/favicon/favicon.ico
+        inject_entry_image_into_header: true
+        display_publication_date: true
+        description: Men's contemporary fashion and streetwear.
+
       - title: Melon Cafe
         rss_url: http://meloncafe.blog.jp/atom.xml
         rss_contains_full_content: true
