@@ -228,6 +228,7 @@ categories:
       - title: HYPEBEAST
         rss_url: https://hypebeast.com/jp/feed
         icon_url: https://static.hypebeast.com/images/hypebeast/favicon/favicon.ico
+        extract_entry_image_from_content: true
         inject_entry_image_into_header: true
         display_publication_date: true
         description: Men's contemporary fashion and streetwear.
