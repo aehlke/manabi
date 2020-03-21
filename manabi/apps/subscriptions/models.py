@@ -144,6 +144,9 @@ class SubscriptionManager(models.Manager):
             receipt_info = notification['latest_expired_receipt_info']
 
         notification_type = notification['notification_type']
+        logger.info(
+            'Notification type received',
+            extra={'notification_type': notification_type})
 
         SubscriptionUpdateNotificationLogItem.objects.create(
             production_environment=(notification['environment'] == 'PROD'),
