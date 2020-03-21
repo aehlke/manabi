@@ -113,6 +113,13 @@ class SubscriptionManager(models.Manager):
         purchase_date = _receipt_date_to_datetime(
             latest_receipt_info['purchase_date_ms'])
 
+        if log_purchase:
+            InAppPurchaseLogItem.objects.get_or_create(
+                subscriber=user,
+                itunes_receipt=itunes_receipt,
+                original_transaction_id=original_transaction_id,
+            )
+
         # Confirm this incoming receipt isn't older than one on file.
         try:
             existing_subscription = Subscription.objects.get(
@@ -126,13 +133,6 @@ class SubscriptionManager(models.Manager):
                 raise OutOfDateReceiptError()
         except Subscription.DoesNotExist:
             pass
-
-        if log_purchase:
-            InAppPurchaseLogItem.objects.get_or_create(
-                subscriber=user,
-                itunes_receipt=itunes_receipt,
-                original_transaction_id=original_transaction_id,
-            )
 
         self.model.objects.subscribe(
             user,
