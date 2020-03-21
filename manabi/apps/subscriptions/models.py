@@ -148,12 +148,13 @@ class SubscriptionManager(models.Manager):
             'Notification type received',
             extra={'notification_type': notification_type})
 
+        original_transaction_id = receipt_info.get('original_transaction_id')
+
         SubscriptionUpdateNotificationLogItem.objects.create(
             production_environment=(notification['environment'] == 'PROD'),
             notification_type=notification_type,
             receipt_info=receipt_info,
-            original_transaction_id=
-                receipt_info['original_transaction_id'])
+            original_transaction_id=original_transaction_id)
 
         if shared_secret not in [
             settings.ITUNES_SHARED_SECRET,
@@ -173,8 +174,6 @@ class SubscriptionManager(models.Manager):
             receipt = notification['latest_receipt']
             itunesiap.verify(receipt, password=shared_secret)
 
-            original_transaction_id = receipt_info['original_transaction_id']
-
             subscription = Subscription.objects.get(
                 original_transaction_id=original_transaction_id)
             subscription.active = True
@@ -183,8 +182,6 @@ class SubscriptionManager(models.Manager):
 
             itunesiap.verify(receipt, password=shared_secret)
 
-            original_transaction_id = receipt_info['original_transaction_id']
-
             subscription = Subscription.objects.get(
                 original_transaction_id=original_transaction_id)
             subscription.active = False
@@ -192,6 +189,19 @@ class SubscriptionManager(models.Manager):
             # Customer changed the plan that takes affect at the next
             # subscription renewal. Current active plan is not affected.
             return
+        elif notification_type == 'DID_FAIL_TO_RENEW':
+            # Indicates a subscription that failed to renew due to a billing
+            # issue. Check is_in_billing_retry_period to know the current
+            # retry status of the subscription, and grace_period_expires_date
+            # to know the new service expiration date if the subscription is
+            # in a billing grace period.
+            expiration_intent = notification['expiration_intent']
+            if expiration_intent in ["1", "3"]:
+                # Customer canceled their subscription,
+                # or customer did not agree to a recent price increase.
+                subscription = Subscription.objects.get(
+                    original_transaction_id=original_transaction_id)
+                subscription.active = False
         elif notification_type == 'INITIAL_BUY':
             # Doesn't have an original_transaction_id yet so it's useless.
             # See https://forums.developer.apple.com/thread/98799
