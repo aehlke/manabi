@@ -6,6 +6,7 @@ from django.contrib.postgres.fields import JSONField
 from django.conf import settings
 from django.core.exceptions import PermissionDenied
 from django.db import models
+from itunesiap.receipt import MissingFieldError
 import itunesiap
 
 logger = logging.getLogger(__name__)
@@ -86,13 +87,24 @@ class SubscriptionManager(models.Manager):
                 itunes_receipt,
                 password=settings.ITUNES_SHARED_SECRET,
                 env=itunesiap.env.review)
-            latest_receipt_info = response.latest_receipt_info[-1]
         except Exception as e:
             InAppPurchaseLogItem.objects.get_or_create(
                 subscriber=user,
-                itunes_receipt=itunes_receipt,
-            )
+                itunes_receipt=itunes_receipt)
             raise e from None
+
+        try:
+            latest_receipt_info = response.latest_receipt_info[-1]
+        except MissingFieldError:
+            InAppPurchaseLogItem.objects.get_or_create(
+                subscriber=user,
+                itunes_receipt=itunes_receipt)
+
+            # Empty in_app array means no purchases made.
+            if len(response.in_app) == 0:
+                return
+            else:
+                raise e from None
 
         original_transaction_id = (
             latest_receipt_info['original_transaction_id'])
