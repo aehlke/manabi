@@ -120,7 +120,7 @@ class SubscriptionManager(models.Manager):
                 original_transaction_id=original_transaction_id,
             )
 
-        # Confirm this incoming receipt isn't older than one on file.
+        # Confirm this incoming receipt is as old or newer than one on file.
         try:
             existing_subscription = Subscription.objects.get(
                 original_transaction_id=original_transaction_id)
@@ -128,7 +128,7 @@ class SubscriptionManager(models.Manager):
             existing_purchase_date = existing_subscription.purchase_date
             if (
                 existing_purchase_date is not None
-                and purchase_date > existing_purchase_date
+                and purchase_date < existing_purchase_date
             ):
                 raise OutOfDateReceiptError()
         except Subscription.DoesNotExist:
