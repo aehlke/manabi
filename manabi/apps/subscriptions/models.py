@@ -101,7 +101,7 @@ class SubscriptionManager(models.Manager):
                 itunes_receipt=itunes_receipt)
 
             # Empty in_app array means no purchases made.
-            if len(response.in_app) == 0:
+            if len(response.receipt.in_app) == 0:
                 return
             else:
                 raise e from None
