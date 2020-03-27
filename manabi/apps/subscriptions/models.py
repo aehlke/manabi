@@ -207,7 +207,7 @@ class SubscriptionManager(models.Manager):
             # retry status of the subscription, and grace_period_expires_date
             # to know the new service expiration date if the subscription is
             # in a billing grace period.
-            expiration_intent = notification['expiration_intent']
+            expiration_intent = notification.get('expiration_intent')
             if expiration_intent in ["1", "3"]:
                 # Customer canceled their subscription,
                 # or customer did not agree to a recent price increase.
