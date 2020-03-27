@@ -214,6 +214,8 @@ class SubscriptionManager(models.Manager):
                 subscription = Subscription.objects.get(
                     original_transaction_id=original_transaction_id)
                 subscription.active = False
+            else:
+                return
         elif notification_type == 'INITIAL_BUY':
             # Doesn't have an original_transaction_id yet so it's useless.
             # See https://forums.developer.apple.com/thread/98799
