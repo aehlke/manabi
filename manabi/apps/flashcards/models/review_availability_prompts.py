@@ -256,13 +256,16 @@ def _all_cards_buffered(review_availabilities, secondary=False):
     '''
     if secondary:
         return
-    if review_availabilities.is_for_manabi_reader:
-        return
     if (
         review_availabilities.base_cards_queryset.exists()
         or not review_availabilities.excluded_card_ids
     ):
         return
+    if review_availabilities.is_for_manabi_reader:
+        return (
+            "You've reviewed every card at least once already now in this "
+            "session."
+        )
     return (
         "You've reviewed every card at least once already now in this "
         "session. Go take a break or <a href='itms-apps://itunes.apple.com/app/id1247286380'>read something</a> instead."
