@@ -229,7 +229,6 @@ async def generate_nhk_easy_news_feed(
                 f'https://www3.nhk.or.jp/news/easy/{news_id}/{news_id}.html')
 
             for attempt in range(ATTEMPTS_PER_ENTRY):
-                print(nhk_post_url)
                 session = AsyncHTMLSession()
                 r = await session.get(nhk_post_url, timeout=60)
                 await r.html.arender(keep_page=True)
