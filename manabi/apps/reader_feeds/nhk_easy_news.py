@@ -15,7 +15,7 @@ from feedgen.feed import FeedGenerator
 from lxml import etree
 from requests_html import AsyncHTMLSession
 
-ENTRY_COUNT = 30
+ENTRY_COUNT = 45
 ATTEMPTS_PER_ENTRY = 15
 
 
