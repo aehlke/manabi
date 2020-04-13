@@ -83,17 +83,17 @@ async def _get_voice_audio_url(response):
     return m3u8_url
 
 
-def _get_comments(reddit, post):
+def _get_comments(reddit, reddit_post):
     '''
     Returns (comments URL, comment count)
     '''
-    post_id = re.search(r'comments/(.+?)/', post.link).groups()[0]
+    post_id = re.search(r'comments/(.+?)/', reddit_post.link).groups()[0]
     submission = reddit.submission(id=post_id)
-    return (post.link, submission.num_comments)
+    return (reddit_post.link, submission.num_comments)
 
 
-def _add_comments(reddit, post, entry):
-    comments_url, comments_count = _get_comments(reddit, post)
+def _add_comments(reddit, reddit_post, entry):
+    comments_url, comments_count = _get_comments(reddit, reddit_post)
 
     if comments_count == 0:
         return
@@ -123,18 +123,14 @@ def _article_body_html(response):
     return etree.tostring(article_body[0], method='html').decode('utf-8')
 
 
-def _post_title_and_date(raw_title):
-    m = re.search(r'\[(\d{2})\/(\d{2})\/(\d{4})\] (.*)', raw_title)
-    month, day, year = int(m.group(1)), int(m.group(2)), int(m.group(3))
-    title = m.group(4)
-    publication_date = datetime(
-        year=year, month=month, day=day,
-        tzinfo=pytz.timezone('Asia/Tokyo'),
-    )
-    return (title, publication_date)
+def _post_date(raw_nhk_json_date):
+    dt = datetime.strptime(raw_nhk_json_date, '%Y-%m-%d %H:%M:%S')
+    return pytz.timezone('Asia/Tokyo').localize(dt)
 
 
-async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
+async def _process_and_add_entry(
+    nhk_post_json, response, fg, reddit, reddit_posts,
+):
     content = _article_body_html(response)
 
     entry = fg.add_entry()
@@ -147,18 +143,18 @@ async def _process_and_add_entry(post, nhk_url, response, fg, reddit):
 
     content = f'<article class="article">{content}</article>'
 
-    entry.id(post.link)
-    entry.link({'href': nhk_url})
+    entry.id(nhk_post_json['news_web_url'])
+    entry.link({'href': nhk_post_json['news_web_url']})
 
-    title, publication_date = _post_title_and_date(post.title)
-
-    entry.title(title)
-    entry.published(publication_date)
+    entry.title(nhk_post_json['title'])
+    entry.published(_post_date(nhk_post_json['news_prearranged_time']))
 
     #TODO: entry.published()
     entry.content(content, type='CDATA')
 
-    _add_comments(reddit, post, entry)
+    reddit_post = reddit_posts.get(nhk_post_json['news_web_url'])
+    if reddit_post is not None:
+        _add_comments(reddit, reddit_post, entry)
 
     voice_audio_url = await _get_voice_audio_url(response)
     if voice_audio_url is not None:
@@ -189,11 +185,11 @@ async def generate_nhk_easy_news_feed(
         # Handle target environment that doesn't support HTTPS verification
         ssl._create_default_https_context = _create_unverified_https_context
 
-    feed = feedparser.parse(
+    reddit_feed = feedparser.parse(
         'https://www.reddit.com/r/NHKEasyNews.rss?limit={}'
         .format(entry_count))
-    if feed.get('bozo') == 1:
-        raise Exception(feed.get('bozo_exception'))
+    if reddit_feed.get('bozo') == 1:
+        raise Exception(reddit_feed.get('bozo_exception'))
 
     reddit = praw.Reddit(
         client_id=settings.REDDIT_CLIENT_ID,
@@ -203,42 +199,65 @@ async def generate_nhk_easy_news_feed(
         user_agent='Manabi Reader',
     )
 
-    entries = []
-    for post in reversed(feed.entries):
-        if 'discord server' in post.title.lower():
+    nhk_json_url = 'https://www3.nhk.or.jp/news/easy/news-list.json'
+    nhk_json_response = requests.get(nhk_json_url)
+    nhk_json_response.raise_for_status()
+    nhk_json = nhk_json_response.json()
+
+    reddit_posts = {}
+    for reddit_post in reversed(reddit_feed.entries):
+        if 'discord server' in reddit_post.title.lower():
             continue
 
-        reddit_content = post.content[0].value
+        reddit_content = reddit_post.content[0].value
         nhk_url_match = re.search(
             r'(http://www3.nhk.or.jp/news/easy/.*?\.html)', reddit_content)
         if nhk_url_match is None:
             continue
-        nhk_url = nhk_url_match.group()
-        nhk_url = nhk_url.replace('http://', 'https://', 1)
+        nhk_post_url = nhk_url_match.group()
+        nhk_post_url = nhk_post_url.replace('http://', 'https://', 1)
 
-        for attempt in range(ATTEMPTS_PER_ENTRY):
-            session = AsyncHTMLSession()
-            r = await session.get(nhk_url, timeout=60)
-            await r.html.arender(keep_page=True)
+        reddit_posts[nhk_post_url] = reddit_post
 
-            try:
-                entry = await _process_and_add_entry(
-                    post, nhk_url, r, fg, reddit)
-            except NoArticleBodyError:
-                if attempt < ATTEMPTS_PER_ENTRY - 1:
-                    time.sleep(1)
-                    continue
-                raise
+    entries = []
+    for nhk_posts in [nhk_json[0][key] for key in sorted(nhk_json[0].keys())]:
+        for nhk_post_json in sorted(
+            nhk_posts, key=lambda x: x['news_prearranged_time']
+        ):
+            nhk_post_url = nhk_post_json['news_web_url']
 
-            if entry is not None:
-                entries.append(entry)
+            for attempt in range(ATTEMPTS_PER_ENTRY):
+                session = AsyncHTMLSession()
+                r = await session.get(nhk_post_url, timeout=60)
+                await r.html.arender(keep_page=True)
 
-                #r.html.page.close()
-                await session.close()
-                break
+                try:
+                    entry = await _process_and_add_entry(
+                        nhk_post_json, r, fg, reddit, reddit_posts)
+                except NoArticleBodyError:
+                    if attempt < ATTEMPTS_PER_ENTRY - 1:
+                        time.sleep(1)
+                        continue
+                    raise
 
-        if entry is None:
-            continue
+                if entry is not None:
+                    entries.append(entry)
+
+                    #r.html.page.close()
+                    await session.close()
+                    break
+
+            if entry is None:
+                continue
+
+            if entry is not None and entry_count is not None:
+                entry_count -= 1
+
+                if entry_count <= 0:
+                    break
+
+        if entry_count <= 0:
+            break
 
     if return_content_only:
         html = ''
@@ -247,7 +266,6 @@ async def generate_nhk_easy_news_feed(
             content = entry.content()['content']
             html += f'<h1>{title}</h1>{content}'
         return html
-
 
     if fg.entry() == 0:
         raise Exception("Generated zero feed entries from NHK Easy News.")
