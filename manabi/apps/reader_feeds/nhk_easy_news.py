@@ -224,9 +224,12 @@ async def generate_nhk_easy_news_feed(
         for nhk_post_json in sorted(
             nhk_posts, key=lambda x: x['news_prearranged_time']
         ):
-            nhk_post_url = nhk_post_json['news_web_url']
+            news_id = nhk_post_json['news_id']
+            nhk_post_url = (
+                f'https://www3.nhk.or.jp/news/easy/{news_id}/{news_id}.html')
 
             for attempt in range(ATTEMPTS_PER_ENTRY):
+                print(nhk_post_url)
                 session = AsyncHTMLSession()
                 r = await session.get(nhk_post_url, timeout=60)
                 await r.html.arender(keep_page=True)
