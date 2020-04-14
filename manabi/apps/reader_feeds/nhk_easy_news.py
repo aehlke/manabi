@@ -220,9 +220,14 @@ async def generate_nhk_easy_news_feed(
         reddit_posts[nhk_post_url] = reddit_post
 
     entries = []
-    for nhk_posts in [nhk_json[0][key] for key in sorted(nhk_json[0].keys())]:
+    daily_nhk_posts = [
+        nhk_json[0][key] for key in sorted(nhk_json[0].keys(), reverse=True)
+    ]
+    for nhk_posts in daily_nhk_posts:
         for nhk_post_json in sorted(
-            nhk_posts, key=lambda x: x['news_prearranged_time']
+            nhk_posts,
+            key=lambda x: x['news_prearranged_time'],
+            reverse=True,
         ):
             news_id = nhk_post_json['news_id']
             nhk_post_url = (
