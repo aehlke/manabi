@@ -133,7 +133,7 @@ async def _process_and_add_entry(
 ):
     content = _article_body_html(response)
 
-    entry = fg.add_entry()
+    entry = fg.add_entry(order='append')
 
     image_url = _get_image_url(response)
     if image_url is not None:
