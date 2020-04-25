@@ -280,8 +280,6 @@ class Fact(models.Model):
             update_fields is None
             or {'deck', 'deck_id', 'suspended', 'active'} & set(update_fields)
         ):
-            self.deck.refresh_card_count()
-
             # Update cards.
             card_attrs = {
                 'deck_id': self.deck_id,
@@ -290,6 +288,8 @@ class Fact(models.Model):
             if not self.active:
                 card_attrs['active'] = False
             self.card_set.update(**card_attrs)
+
+            self.deck.refresh_card_count()
 
         if update_fields is None or 'jmdict_id' in update_fields:
             self.card_set.exclude(
