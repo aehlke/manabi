@@ -60,15 +60,12 @@ jobs:
           - v3-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           # Default branch if not
           - v3-deploy-dep-master-{{ checksum "Pipfile.lock" }}
-      - add_ssh_keys:
-          fingerprints:
-            - "b7:5e:f6:9c:28:cb:6e:b5:c4:9d:39:eb:3e:48:b4:f7"
       - run:
           command: |
             sudo apt-get install python-dev
             sudo pip install pipenv
             cd config
-            ssh-keyscan vps98220.vps.ovh.ca >> ~/.ssh/known_hosts
+            ssh-keyscan vps-ebcbb76d.vps.ovh.ca >> ~/.ssh/known_hosts
             echo $ANSIBLE_VAULT_PASSWORD > ~/.vault_password.txt && ./deploy.sh --vault-password-file=~/.vault_password.txt || ( rm ~/.vault_password.txt && exit 1 )
             rm ~/.vault_password.txt
             curl https://manabi.io
