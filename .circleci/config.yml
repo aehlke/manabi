@@ -75,6 +75,7 @@ jobs:
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python2.7/site-packages"
+            - "/usr/local/lib/python3.7/site-packages"
 
 workflows:
   version: 2
