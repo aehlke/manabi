@@ -36,6 +36,7 @@ jobs:
             - "/usr/local/bin"
             - "/usr/local/lib/python2.7/site-packages"
             - "/usr/local/lib/python3.7/site-packages"
+            - "/home/circleci/manabi/config/.venv"
       - run:
           command: |
             pipenv run python manage.py test
@@ -72,6 +73,7 @@ jobs:
       - save_cache:
           key: v3-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           paths:
+            - "/home/circleci/manabi/config/.venv"
             - ".venv"
             - "/usr/local/bin"
             - "/usr/local/lib/python2.7/site-packages"
