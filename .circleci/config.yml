@@ -60,6 +60,9 @@ jobs:
           - v3-deploy-dep-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
           # Default branch if not
           - v3-deploy-dep-master-{{ checksum "Pipfile.lock" }}
+      - add_ssh_keys:
+          fingerprints:
+            - "b7:5e:f6:9c:28:cb:6e:b5:c4:9d:39:eb:3e:48:b4:f7"
       - run:
           command: |
             sudo apt-get install python-dev
