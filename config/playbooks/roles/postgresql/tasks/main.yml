@@ -6,7 +6,7 @@
 
 - name: Add PostgreSQL apt repository
   apt_repository:
-    repo: 'deb https://apt.postgresql.org/pub/repos/apt {{ lsb_release|lower }}-pgdg main'
+    repo: 'deb https://apt.postgresql.org/pub/repos/apt {{ lsb_release.stdout|lower }}-pgdg main'
   become: yes
 
 - name: Add PostgreSQL repository key
