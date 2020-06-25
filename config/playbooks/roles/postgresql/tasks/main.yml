@@ -33,7 +33,7 @@
 - name: Add PostgreSQL configuration
   template:
     src: postgresql.conf.j2
-    dest: /etc/postgresql/10/main/postgresql.conf
+    dest: /etc/postgresql/12/main/postgresql.conf
     owner: postgres
     group: postgres
   become: yes
