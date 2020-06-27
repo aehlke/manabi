@@ -71,7 +71,7 @@
     creates: '{{ redis_install_dir }}/bin/redis-server'
   become: yes
 
-- import_role:
+- import_role
     name: ansible-supervisor_task
     task_name: redis-server
     directory: '{{ redis_install_dir }}'
