@@ -5,6 +5,10 @@ from datetime import datetime
 from time import mktime
 from urllib.parse import urlparse, urlunparse, urljoin
 
+# https://github.com/psf/requests-html/issues/262
+import requests_cache
+requests_cache.install_cache('reader_feeds_cache', backend='memory')
+
 import lxml.html
 import feedparser
 import praw
@@ -22,6 +26,13 @@ async def _get_image_url(article_url):
     r = await session.get(article_url, timeout=20)
     doc = r.html.lxml
     return doc.cssselect('meta[property="og:image"]')[0].get('content')
+
+
+async def _get_description(article_url):
+    session = AsyncHTMLSession()
+    r = await session.get(article_url, timeout=20)
+    doc = r.html.lxml
+    return doc.cssselect('meta[property="og:description"]')[0].get('content')
 
 
 async def _process_and_add_entry(post, fg):
@@ -50,7 +61,8 @@ async def _process_and_add_entry(post, fg):
         description = post.summary
         entry.description(description)
     except AttributeError:
-        pass
+        description = _get_description(article_url)
+        entry.description(description)
 
     return entry
 
