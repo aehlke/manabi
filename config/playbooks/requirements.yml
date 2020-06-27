@@ -2,4 +2,3 @@
 
 - src: https://github.com/aehlke/ansible-supervisor_task
 - src: https://github.com/aehlke/sa-tarsnap
-- src: https://github.com/William-Yeh/ansible-prometheus
