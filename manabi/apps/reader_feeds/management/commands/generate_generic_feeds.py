@@ -14,6 +14,7 @@ FEEDS = [
     ('https://wired.jp/', 'WIRED.jp', 'https://wired.jp/rssfeeder/', 'wired'),
     ('https://news.yahoo.co.jp/', 'Yahoo!ニュース', 'https://news.yahoo.co.jp/pickup/rss.xml', 'yahoo-news'),
     ('http://news.tbs.co.jp/', 'TBS News', 'https://news.tbs.co.jp/rss/tbs_newsi.rdf', 'tbs-news'),
+    ('https://animeanime.jp/', 'アニメ！アニメ！', 'https://animeanime.jp/rss/index.rdf', 'anime-anime'),
 ]
 
 class Command(BaseCommand):
