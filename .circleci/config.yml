@@ -8,7 +8,7 @@ jobs:
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
-      - image: circleci/postgres:10.3-alpine-ram
+      - image: circleci/postgres:12.0-apline-ram
         environment:
           POSTGRES_USER: root
           POSTGRES_DB: circle_test
