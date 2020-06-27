@@ -4,7 +4,7 @@ jobs:
   build:
     working_directory: ~/manabi
     docker:
-      - image: circleci/python:3.7.3
+      - image: circleci/python:3.7.7
         environment:
           PIPENV_VENV_IN_PROJECT: true
           DATABASE_URL: postgresql://root@localhost/circle_test?sslmode=disable
@@ -16,7 +16,6 @@ jobs:
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
       - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           keys:
@@ -34,7 +33,6 @@ jobs:
           paths:
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python2.7/site-packages"
             - "/usr/local/lib/python3.7/site-packages"
             - "/home/circleci/manabi/config/.venv"
       - run:
@@ -48,13 +46,13 @@ jobs:
   deploy:
     working_directory: ~/manabi
     docker:
-      - image: circleci/python:2.7.14
+      - image: circleci/python:3.7.7
     environment:
         PIPENV_VENV_IN_PROJECT: true
     steps:
       - checkout
       - run: sudo chown -R circleci:circleci /usr/local/bin
-      - run: sudo chown -R circleci:circleci /usr/local/lib/python2.7/site-packages
+      - run: sudo chown -R circleci:circleci /usr/local/lib/python3.7/site-packages
       - restore_cache:
           keys:
           # This branch if available
@@ -76,7 +74,6 @@ jobs:
             - "/home/circleci/manabi/config/.venv"
             - ".venv"
             - "/usr/local/bin"
-            - "/usr/local/lib/python2.7/site-packages"
             - "/usr/local/lib/python3.7/site-packages"
 
 workflows:
