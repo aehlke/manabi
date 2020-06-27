@@ -71,7 +71,8 @@
     creates: '{{ redis_install_dir }}/bin/redis-server'
   become: yes
 
-- include_role:
+- name: Redis in supervisor 
+  include_role:
     name: ansible-supervisor_task
   vars:
     task_name: redis-server
