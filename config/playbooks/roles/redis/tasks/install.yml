@@ -71,14 +71,14 @@
     creates: '{{ redis_install_dir }}/bin/redis-server'
   become: yes
 
-# - name: Redis in supervisor 
-#   include_role:
-#     name: ansible-supervisor_task
-#   vars:
-#     task_name: redis-server
-#     directory: '{{ redis_install_dir }}'
-#     command: '{{ redis_install_dir }}/bin/redis-server /etc/redis/redis.conf'
-#     process_name: redis-server
-#     user: '{{ redis_user }}'
-#     tags: redis-server
-#     numprocs: 1
+- name: Redis in supervisor 
+  include_role:
+    name: ansible-supervisor_task
+  vars:
+    task_name: redis-server
+    directory: '{{ redis_install_dir }}'
+    command: '{{ redis_install_dir }}/bin/redis-server /etc/redis/redis.conf'
+    process_name: redis-server
+    user: '{{ redis_user }}'
+    tags: redis-server
+    numprocs: 1
