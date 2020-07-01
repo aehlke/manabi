@@ -28,6 +28,14 @@
     regexp: "^PATH=.*# Python user bin"
     line: "PATH=$PATH:{{ python_user_base_dir.stdout }}/bin # Python user bin"
 
+- name: Ensure home user's local directory is owned by user (not root)
+  file:
+    path: '{{ ansible_env.HOME }}/.local'
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+  become: yes
+
 - name: Install aptitude for certain apt module commands
   apt:
     name: aptitude
