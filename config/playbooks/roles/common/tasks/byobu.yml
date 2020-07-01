@@ -10,3 +10,8 @@
 
 - name: Enable colorful byobu prompt
   command: byobu-enable-prompt
+
+- name: Add tmux config
+  template:
+    src: tmux.conf.j2
+    dest: '{{ ansible_env.HOME }}/.byobu/.tmux.conf'
