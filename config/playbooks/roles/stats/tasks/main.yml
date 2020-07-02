@@ -1,6 +1,6 @@
 ---
 
-- import_tasks: carbon.yml
 - import_tasks: graphite.yml
+- import_tasks: carbon.yml
 - import_tasks: collectd.yml
 - import_tasks: grafana.yml
