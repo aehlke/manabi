@@ -34,16 +34,16 @@ dependencies:
   #   stderr_logfile_maxbytes: '5MB'
   #   stderr_logfile_backups: 0
 
-  - role: ansible-supervisor_task
-    task_name: grafana
-    command: "grafana-server --config='{{ grafana.config_path }}' cfg:default.paths.data='{{ grafana.data_dir }}' cfg:default.paths.plugins='{{ grafana.plugins_dir }}'"
-    user: '{{ grafana.user }}'
-    directory: '{{ grafana.home_dir }}'
-    numprocs: 1
-    stdout_logfile_maxbytes: '5MB'
-    stdout_logfile_backups: 0
-    stderr_logfile_maxbytes: '5MB'
-    stderr_logfile_backups: 0
+  # - role: ansible-supervisor_task
+  #   task_name: grafana
+  #   command: "grafana-server --config='{{ grafana.config_path }}' cfg:default.paths.data='{{ grafana.data_dir }}' cfg:default.paths.plugins='{{ grafana.plugins_dir }}'"
+  #   user: '{{ grafana.user }}'
+  #   directory: '{{ grafana.home_dir }}'
+  #   numprocs: 1
+  #   stdout_logfile_maxbytes: '5MB'
+  #   stdout_logfile_backups: 0
+  #   stderr_logfile_maxbytes: '5MB'
+  #   stderr_logfile_backups: 0
 
   - role: oauth2_proxy
     oauth2_proxy_app_name: grafana
