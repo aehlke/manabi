@@ -2,37 +2,37 @@
 
 dependencies:
 
-  - role: ansible-supervisor_task
-    task_name: postgres_exporter
-    command: 'docker run -e DATA_SOURCE_NAME="postgresql://{{ postgres_exporter_secrets.postgres_username }}:{{ postgres_exporter_secrets.postgres_password }}@{{ postgres_host }}:{{ postgres_port }}/?sslmode=disable" -p {{ postgres_exporter.port }}:{{ postgres_exporter.port }} wrouesnel/postgres_exporter'
-    user: ubuntu
-    numprocs: 1
-    stdout_logfile_maxbytes: '5MB'
-    stdout_logfile_backups: 0
-    stderr_logfile_maxbytes: '5MB'
-    stderr_logfile_backups: 0
+  # - role: ansible-supervisor_task
+  #   task_name: postgres_exporter
+  #   command: 'docker run -e DATA_SOURCE_NAME="postgresql://{{ postgres_exporter_secrets.postgres_username }}:{{ postgres_exporter_secrets.postgres_password }}@{{ postgres_host }}:{{ postgres_port }}/?sslmode=disable" -p {{ postgres_exporter.port }}:{{ postgres_exporter.port }} wrouesnel/postgres_exporter'
+  #   user: ubuntu
+  #   numprocs: 1
+  #   stdout_logfile_maxbytes: '5MB'
+  #   stdout_logfile_backups: 0
+  #   stderr_logfile_maxbytes: '5MB'
+  #   stderr_logfile_backups: 0
 
-  - role: ansible-supervisor_task
-    task_name: carbon-cache
-    command: "carbon-cache --config='{{ carbon.config_path }}' --pidfile /tmp/carbon-cache.pid --nodaemon start"
-    user: '{{ carbon.user }}'
-    numprocs: 1
-    stdout_logfile_maxbytes: '5MB'
-    stdout_logfile_backups: 0
-    stderr_logfile_maxbytes: '5MB'
-    stderr_logfile_backups: 0
+  # - role: ansible-supervisor_task
+  #   task_name: carbon-cache
+  #   command: "carbon-cache --config='{{ carbon.config_path }}' --pidfile /tmp/carbon-cache.pid --nodaemon start"
+  #   user: '{{ carbon.user }}'
+  #   numprocs: 1
+  #   stdout_logfile_maxbytes: '5MB'
+  #   stdout_logfile_backups: 0
+  #   stderr_logfile_maxbytes: '5MB'
+  #   stderr_logfile_backups: 0
 
-  - role: ansible-supervisor_task
-    task_name: graphite-api
-    command: 'uwsgi --socket="{{ graphite_api.uwsgi_socket }}" --chmod-socket=666 -w graphite_api.app:app --processes=2 --ignore-sigpipe --die-on-term --enable-threads --max-requests=10000 --vacuum'
-    process_name: uwsgi
-    user: ubuntu
-    tags: uwsgi
-    numprocs: 1
-    stdout_logfile_maxbytes: '5MB'
-    stdout_logfile_backups: 0
-    stderr_logfile_maxbytes: '5MB'
-    stderr_logfile_backups: 0
+  # - role: ansible-supervisor_task
+  #   task_name: graphite-api
+  #   command: 'uwsgi --socket="{{ graphite_api.uwsgi_socket }}" --chmod-socket=666 -w graphite_api.app:app --processes=2 --ignore-sigpipe --die-on-term --enable-threads --max-requests=10000 --vacuum'
+  #   process_name: uwsgi
+  #   user: ubuntu
+  #   tags: uwsgi
+  #   numprocs: 1
+  #   stdout_logfile_maxbytes: '5MB'
+  #   stdout_logfile_backups: 0
+  #   stderr_logfile_maxbytes: '5MB'
+  #   stderr_logfile_backups: 0
 
   - role: ansible-supervisor_task
     task_name: grafana
