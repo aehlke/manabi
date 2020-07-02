@@ -61,7 +61,7 @@ async def _process_and_add_entry(post, fg):
         description = post.summary
         entry.description(description)
     except AttributeError:
-        description = _get_description(article_url)
+        description = await _get_description(article_url)
         entry.description(description)
 
     return entry
