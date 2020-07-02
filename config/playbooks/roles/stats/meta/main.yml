@@ -1,6 +1,8 @@
 ---
 
 dependencies:
+  # TODO: For these to work, move them to include_role/import_role in tasks
+  # so that they run after instead of before installing stuff.
 
   # - role: ansible-supervisor_task
   #   task_name: postgres_exporter
