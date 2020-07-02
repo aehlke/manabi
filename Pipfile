@@ -41,7 +41,7 @@ Jinja2 = "==2.11.2"
 django-webpack-loader = "==0.6.0"
 django-admin-sortable = "==2.1.4"
 Pillow = "==6.2.0"
-lxml = "==4.4.1"
+lxml = "==4.5.1"
 "beautifulsoup4" = "==4.6.0"
 "html5lib" = "==1.0.1"
 cssselect = "==1.0.1"
@@ -68,7 +68,7 @@ django-autoslug = {git = "https://github.com/justinmayer/django-autoslug.git",re
 freezegun = "==0.3.10"
 django-impersonate = "*"
 requests-html = "==0.10.0"
-feedgen = {git = "https://github.com/aehlke/python-feedgen.git",ref = "b80e122e9e45d05f6aaf67b1cb1438ea9a505c72"}
+feedgen = {git = "https://github.com/aehlke/python-feedgen.git",ref = "5923e4ea8c96366932ca1b496919904beb4cf76a"}
 psycopg2-binary = "*"
 sentry-sdk = "*"
 django-rest-framework-condition = "*"
