@@ -25,6 +25,10 @@
     dest: '{{ tarsnap_conf_path }}'
   become: yes
 
+- include_role:
+    name: sa-tarsnap
+  tags: tarsnap
+
 - name: Run Tarsnapper on cron
   cron:
     name: "Tarsnapper backups"
