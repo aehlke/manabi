@@ -45,11 +45,11 @@ dependencies:
   #   stderr_logfile_maxbytes: '5MB'
   #   stderr_logfile_backups: 0
 
-  - role: oauth2_proxy
-    oauth2_proxy_app_name: grafana
-    oauth2_proxy_client_id: '{{ grafana_secrets.github_client_id }}'
-    oauth2_proxy_client_secret: '{{ grafana_secrets.github_client_secret }}'
-    oauth2_proxy_port: '{{ grafana.oauth2_proxy_port }}'
-    oauth2_proxy_upstream: 'http://localhost:{{ grafana.port }}'
-    oauth2_proxy_redirect_url: 'https://{{ grafana.hostname }}/oauth2/callback'
-    oauth2_proxy_cookie_domain: '{{ grafana.hostname }}'
+  # - role: oauth2_proxy
+  #   oauth2_proxy_app_name: grafana
+  #   oauth2_proxy_client_id: '{{ grafana_secrets.github_client_id }}'
+  #   oauth2_proxy_client_secret: '{{ grafana_secrets.github_client_secret }}'
+  #   oauth2_proxy_port: '{{ grafana.oauth2_proxy_port }}'
+  #   oauth2_proxy_upstream: 'http://localhost:{{ grafana.port }}'
+  #   oauth2_proxy_redirect_url: 'https://{{ grafana.hostname }}/oauth2/callback'
+  #   oauth2_proxy_cookie_domain: '{{ grafana.hostname }}'
