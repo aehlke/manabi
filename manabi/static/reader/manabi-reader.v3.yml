@@ -176,6 +176,11 @@ categories:
       #  rss_contains_full_content: true
       #  icon_url: https://cdn-static-1.medium.com/_/fp/icons/favicon-medium.TAS6uQ-Y7kcKgi0xjcYHXw.ico
 
+      - title: アニメ！アニメ！
+        rss_url: https://manabi.io/media/feeds/anime-anime.rss
+        icon_url: https://animeanime.jp/base/images/touch-icon-120.png
+        description: Anime news, research, reviews and information.
+
       - title: 和タのC N4 – Upper Beginner
         rss_url: https://manabi.io/media/feeds/watanoc-n4.rss
         icon_url: https://watanoc.com/wp-content/uploads/fbrfg/favicon-96x96.png
@@ -387,13 +392,6 @@ categories:
   - title: Gaming
     background_image_url: https://manabi.io/static/reader/category_images/gaming.jpg
     feeds:
-      - title: Dengeki Online
-        rss_url: http://dengekionline.com/cate/11/rss.xml
-        icon_url: http://dengekionline.com/img/favicon.ico
-        inject_entry_image_into_header: true
-        display_publication_date: true
-        description: Online Japanese gaming magazine, covering console, PC, and mobile games.
-
       - title: IGN Japan
         rss_url: https://jp.ign.com/feed.xml
         icon_url: https://jp.ign.com/s/ign/favicon.ico
