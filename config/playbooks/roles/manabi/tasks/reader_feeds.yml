@@ -44,6 +44,14 @@
       - wget
   become: yes
 
+- name: Create Manabi Reader feed logs directory
+  file:
+    path: /var/log/manabi_reader_feeds
+    state: directory
+    owner: ubuntu
+    group: ubuntu
+  become: yes
+
 - name: Generate Manabi Reader RSS feeds on cron
   cron:
     name: "{{ item }}"
