@@ -14,6 +14,13 @@ server {
     # max upload size
     client_max_body_size 15M;
 
+    location = /static/fonts/PN.ttc {
+        add_header Cache-Control "public, no-transform";
+
+        autoindex off;
+        alias {{ app_static_files_path }}/fonts/PN.ttc;
+    }
+
     location /static {
         autoindex off;
         alias {{ app_static_files_path }};
