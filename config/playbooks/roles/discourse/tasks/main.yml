@@ -1,0 +1,20 @@
+---
+
+- name: Ensure Docker is running
+  service: name=docker state=restarted
+  sudo: yes
+
+- name: Add Discourse user
+  user: name=discourse groups=sudo,admin
+
+- git:
+    repo: https://github.com/discourse/discourse_docker.git
+    dest: '{{ discourse_location }}'
+    update: no
+
+- name: Copy Discourse configuration app.yml
+  copy: src=app.yml dest={{ discourse_location }}/containers/app.yml owner=discourse group=sudo
+
+- name: Fix Discourse permissions
+  file: path={{ discourse_location }} owner=discourse group=discourse recurse=yes
+  register: discourse_copied

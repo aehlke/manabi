@@ -1,0 +1,35 @@
+---
+
+- name: Stop Discourse
+  command: ./launcher stop app
+  args:
+    chdir: "{{ discourse_location }}"
+  ignore_errors: yes
+  sudo: yes
+
+- name: Start Discourse
+  command: ./launcher start app
+  args:
+    chdir: "{{ discourse_location }}"
+  ignore_errors: yes
+  sudo: yes
+
+- name: Restart Discourse
+  command: ./launcher restart app
+  args:
+    chdir: "{{ discourse_location }}"
+  ignore_errors: yes
+  sudo: yes
+
+- name: Rebuild Discourse
+  command: ./launcher rebuild app
+  args:
+    chdir: "{{ discourse_location }}"
+  ignore_errors: yes
+  sudo: yes
+
+- name: Bootstrap Discourse
+  command: ./launcher bootstrap app
+  args:
+    chdir: "{{ discourse_location }}"
+  sudo: yes

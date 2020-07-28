@@ -15,3 +15,4 @@
     # FIXME: Currently broken in Bionic: - { role: pghero, tags: ['pghero'] }
     - { role: stats, tags: ['stats'] }
     - { role: tarsnapper, tags: ['tarsnap'] }
+    - { role: discourse, tags: ['discourse'] }
