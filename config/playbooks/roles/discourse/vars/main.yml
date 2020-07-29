@@ -1,6 +1,9 @@
 ---
 
 discourse_location: /var/discourse
+discourse_port: 8090
+discourse_hostname: community.manabi.io
+
 discourse_postgres_password: !vault |
           $ANSIBLE_VAULT;1.1;AES256
           66343039376232353462613938626531343933363165313735636564333061313330346235636337
