@@ -1,3 +1,8 @@
+import base64
+import hashlib
+import hmac
+from urllib import parse
+
 from rest_framework.decorators import api_view
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -5,8 +10,10 @@ from rest_framework import serializers
 from rest_framework import status
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.exceptions import ParseError
+from rest_framework.views import APIView
 from requests.exceptions import HTTPError
 from social_django.utils import psa
 
@@ -55,6 +62,73 @@ def sign_in_with_apple_id(request):
         return Response(
             {'errors': {nfe: 'This user account is inactive'}},
             status=status.HTTP_400_BAD_REQUEST,
+        )
+
+
+# See: https://gist.github.com/anindyaspaul/c9d4650e8ffd4f133e393a57ddc21616
+class DiscourseSSOView(APIView):
+	"""
+	Single Sign On view for Discourse forum
+
+	The view returns the required payload and signature for discourse.
+	These payloads have to be urlencoded by the client and passed as
+	query parameter to the discourse sso login url.
+
+	Signature validation depends on settings.SECRET_KEY.
+	Add this as the secret key in discourse sso settings.
+
+	References:
+	- https://meta.discourse.org/t/sso-example-for-django/14258
+	- https://gist.github.com/alee/3c6161809ef78966454e434a8ed350d1
+	"""
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        """Query params:
+        - sso: Single Sign On payload
+        - sig: Signature
+        """
+
+        payload = request.query_params.get('sso')
+        signature = request.query_params.get('sig')
+
+        if None in [payload, signature]:
+            raise ParseError('No SSO payload or signature. Please contact support if this problem persists.')
+
+        # Validate the payload
+        payload = bytes(parse.unquote(payload), encoding='utf-8')
+        decoded = base64.decodebytes(payload).decode('utf-8')
+        if len(payload) == 0 or 'nonce' not in decoded:
+            raise ParseError('Invalid payload. Please contact support if this problem persists.')
+
+        key = bytes(settings.SECRET_KEY, encoding='utf-8')  # must not be unicode
+        h = hmac.new(key, payload, digestmod=hashlib.sha256)
+        this_signature = h.hexdigest()
+        if not hmac.compare_digest(this_signature, signature):
+            raise ParseError('Invalid payload. Please contact support if this problem persists.')
+
+        # Build the return payload
+        qs = parse.parse_qs(decoded)
+        user = request.user
+        params = {
+            'nonce': qs['nonce'][0],
+            'email': user.email,
+            'external_id': user.id,
+            'username': user.username,
+        }
+        return_payload = base64.encodebytes(bytes(parse.urlencode(params), 'utf-8'))
+        h = hmac.new(key, return_payload, digestmod=hashlib.sha256)
+        return_sig = h.hexdigest()
+
+        # Redirect back to Discourse
+        # query_string = parse.urlencode({'sso': return_payload, 'sig': return_sig})
+        # discourse_sso_url = '{0}/session/sso_login?{1}'.format("", query_string)
+
+        return Response(
+            data={
+                'sso': return_payload,
+                'sig': return_sig
+            }
         )
 
 
