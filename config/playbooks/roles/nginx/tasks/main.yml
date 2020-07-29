@@ -38,7 +38,7 @@
 
 - name: Add nginx sites
   template:
-    src: templates/manabi.conf.j2
+    src: templates/{{ item }}.conf.j2
     dest: /etc/nginx/sites-enabled/{{ item }}.conf
   with_items:
     - nginx
