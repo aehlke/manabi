@@ -10,8 +10,6 @@
 ## visit http://www.yamllint.com/ to validate this file as needed
 
 templates:
-  - "templates/postgres.template.yml"
-  - "templates/redis.template.yml"
   - "templates/web.template.yml"
   - "templates/web.ratelimited.template.yml"
 ## Uncomment these two lines if you wish to add Lets Encrypt (https)
@@ -65,6 +63,11 @@ env:
   DISCOURSE_SMTP_USER_NAME: SMTP_Injection
   DISCOURSE_SMTP_PASSWORD: {{ sparkpost_api_key_for_discourse }}
   #DISCOURSE_SMTP_ENABLE_START_TLS: true           # (optional, default true)
+
+  DISCOURSE_DB_USERNAME: discourse
+  DISCOURSE_DB_PASSWORD: {{ discourse_postgres_password }}
+  DISCOURSE_DB_HOST: localhost
+  DISCOURSE_DB_NAME: discourse
 
   ## If you added the Lets Encrypt template, uncomment below to get a free SSL certificate
   #LETSENCRYPT_ACCOUNT_EMAIL: me@example.com

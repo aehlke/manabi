@@ -24,10 +24,6 @@
     update: no
   become: yes
 
-- name: Copy Discourse configuration app.yml
-  copy: src=app.yml dest={{ discourse_location }}/containers/app.yml owner=discourse group=sudo
-  become: yes
-
 - name: Place Discourse app.yml configuration
   template:
     src: templates/app.yml.j2
