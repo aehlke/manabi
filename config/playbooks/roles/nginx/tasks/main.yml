@@ -29,6 +29,13 @@
     - '{{ app_static_files_path }}'
     - '{{ app_media_path }}'
 
+- name: Add default nginx config
+  template:
+    src: templates/nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+  become: yes
+  notify: Reload nginx
+
 - name: Disable default nginx welcome server
   template:
     src: templates/default.conf.j2
@@ -41,7 +48,6 @@
     src: templates/{{ item }}.conf.j2
     dest: /etc/nginx/sites-enabled/{{ item }}.conf
   with_items:
-    - nginx
     - manabi
     - manabi-reader
     - discourse
