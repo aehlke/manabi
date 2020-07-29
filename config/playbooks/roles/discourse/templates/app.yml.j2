@@ -15,12 +15,8 @@ templates:
 ## Uncomment these two lines if you wish to add Lets Encrypt (https)
   #- "templates/web.ssl.template.yml"
   #- "templates/web.letsencrypt.ssl.template.yml"
-
-## which TCP/IP ports should this container expose?
-## If you want Discourse to share a port with another webserver like Apache or nginx,
-## see https://meta.discourse.org/t/17247 for details
-expose:
-  - "{{ discourse_port }}:{{ discourse_port }}"
+  # https://meta.discourse.org/t/running-other-websites-on-the-same-machine-as-discourse/17247
+  - "templates/web.socketed.template.yml"
 
 params:
   db_default_text_search_config: "pg_catalog.english"
