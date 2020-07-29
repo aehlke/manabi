@@ -30,7 +30,7 @@
     dest: '{{ discourse_location }}/containers/app.yml'
     owner: discourse
   become: yes
-  notify: Restart Discourse
+  notify: Rebuild Discourse
 
 - name: Fix Discourse permissions
   file: path={{ discourse_location }} owner=discourse group=discourse recurse=yes
