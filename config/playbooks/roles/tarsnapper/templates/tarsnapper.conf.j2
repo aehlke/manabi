@@ -19,3 +19,6 @@ jobs:
   grafana:
     source: {{ grafana.data_dir }}/grafana.db
     target: grafana-$date.db
+  discourse:
+    source: {{ discourse_location }}/public/backup/default
+    target: discourse-$date.db
