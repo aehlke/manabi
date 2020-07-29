@@ -44,7 +44,6 @@
     - nginx
     - manabi
     - manabi-reader
-    - launchrock-redirect
     - discourse
   become: yes
   notify: Reload nginx
