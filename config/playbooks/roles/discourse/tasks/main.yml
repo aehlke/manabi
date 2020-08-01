@@ -36,3 +36,8 @@
   file: path={{ discourse_location }} owner=discourse group=discourse recurse=yes
   register: discourse_copied
   become: yes
+
+- name: Fix Discourse Postgres data permissions
+  file: path={{ discourse_location }}/shared/standalone/postgres_data owner=discourse group=discourse mode=0700 recurse=yes
+  register: discourse_copied
+  become: yes

@@ -8,7 +8,9 @@ server {
     http2_idle_timeout 5m;
 
     location / {
-        proxy_pass http://unix:{{ discourse_location }}/shared/standalone/nginx.http.sock:;
+        proxy_pass http://127.0.0.1:{{ discourse_port }};
+        proxy_read_timeout 90;
+
         proxy_set_header Host $http_host;
         proxy_http_version 1.1;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;

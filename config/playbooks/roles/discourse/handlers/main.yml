@@ -8,28 +8,28 @@
   become: yes
 
 - name: Start Discourse
-  command: ./launcher start app --docker-args --net=host --skip-mac-address
+  command: ./launcher start app
   args:
     chdir: "{{ discourse_location }}"
   ignore_errors: yes
   become: yes
 
 - name: Restart Discourse
-  command: ./launcher restart app --docker-args --net=host --skip-mac-address
+  command: ./launcher restart app
   args:
     chdir: "{{ discourse_location }}"
   ignore_errors: yes
   become: yes
 
 - name: Rebuild Discourse
-  command: ./launcher rebuild app --docker-args --net=host --skip-mac-address
+  command: ./launcher rebuild app
   args:
     chdir: "{{ discourse_location }}"
   ignore_errors: yes
   become: yes
 
 - name: Bootstrap Discourse
-  command: ./launcher bootstrap app --docker-args --net=host --skip-mac-address
+  command: ./launcher bootstrap app
   args:
     chdir: "{{ discourse_location }}"
   become: yes
