@@ -4,6 +4,8 @@ config:
     - alextest
     - KeithLeow
 
+  community_image_url: https://manabi.io/static/reader/category_images/community.jpg
+
 categories:
   - title: Beginners
     background_image_url: https://manabi.io/static/reader/category_images/beginners.jpg

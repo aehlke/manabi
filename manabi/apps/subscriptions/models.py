@@ -11,7 +11,9 @@ import itunesiap
 
 logger = logging.getLogger(__name__)
 
-GRACE_PERIOD = timedelta(days=365)
+# FIXME: If someone unsubscribes, keep them off.
+# FIXME: THIS IS TEMPORARY UNTIL WE FIX PAYMENT BUGS IN NEXT BIG UPDATE.
+GRACE_PERIOD = timedelta(days=365 * 4)
 
 
 def _receipt_date_to_datetime(receipt_date):
